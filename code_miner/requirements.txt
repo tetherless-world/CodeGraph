@@ -1,0 +1,7 @@
+requests
+rdflib
+pymongo
+matplotlib
+networkx
+pydotplus
+
