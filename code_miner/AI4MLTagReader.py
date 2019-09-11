@@ -3,7 +3,7 @@ import json
 
 def load_json(f):
 
-    with open(f, 'rb') as f:
+    with open(f) as f:
         return json.load(f)
 
 
