@@ -261,7 +261,7 @@ def addToGraph(g, graph, classes_to_superclasses=None, cf_edges_to_sources={}, d
                 g.add((idx2uri[edge[0]], codegraph_flow_type[str(edge[2])], idx2uri[edge[1]]))
 
     add_edges(data_flow_edges, df_edges_to_sources, codegraph['edge/dataflow'])
-    add_edges(control_flow_edges, cf_edges_to_sources, codegraph['http://edge/controlflow'])
+    add_edges(control_flow_edges, cf_edges_to_sources, codegraph['edge/controlflow'])
 
 
 # takes a set of control flow edges->sources, data flow edges -> sources, builds a summary of edges to counts
