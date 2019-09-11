@@ -14,6 +14,11 @@ Node = collections.namedtuple('Node', 'index source paths args expr data_flow_ed
 global_node_index = 0
 
 
+codegraph = rdflib.Namespace('http://purl.org/twc/codegraph/')
+codegraph_node = rdflib.Namespace('http://purl.org/twc/codegraph/node/')
+codegraph_tag = rdflib.Namespace('http://purl.org/twc/codegraph/tag/')
+codegraph_flow_type = rdflib.Namespace('http://purl.org/twc/codegraph/flow_type/')
+
 def parse_wala_into_graph(data, add_args=False):
     data_flow_edges = []
     control_flow_edges = []
@@ -212,7 +217,7 @@ def addToGraph(g, graph, classes_to_superclasses=None, cf_edges_to_sources={}, d
     for node in nodes:
         idx2node[node.index] = node
         # create a unique URI per node
-        uri = rdflib.URIRef('http://node/' + str(global_node_index))
+        uri = codegraph_node[str(global_node_index)]
         idx2uri[node.index] = uri
         global_node_index += 1
         if classes_to_superclasses:
@@ -224,15 +229,15 @@ def addToGraph(g, graph, classes_to_superclasses=None, cf_edges_to_sources={}, d
                 tags = classes_to_superclasses[has_ai4_ml.pop()]
                 tags = tags[0]  # classes to superclasses has 2 levels of lists
                 for tag in tags:
-                    g.add((uri, rdflib.RDF.type, rdflib.URIRef('http://' + tag)))
+                    g.add((uri, rdflib.RDF.type, codegraph_tag[tag]))
         path = '.'.join(node.paths)
-        g.add((uri, rdflib.URIRef('http://path'), rdflib.Literal(path)))
-        g.add((uri, rdflib.URIRef('http://source'), rdflib.Literal(node.source)))
-        g.add((uri, rdflib.URIRef('http://turtle_info'), rdflib.Literal(node.expr)))
-        g.add((uri, rdflib.URIRef('http://source_path'), rdflib.Literal(graph[3])))
+        g.add((uri, codegraph.path, rdflib.Literal(path)))
+        g.add((uri, codegraph.source, rdflib.Literal(node.source)))
+        g.add((uri, codegraph.turtle_info, rdflib.Literal(node.expr)))
+        g.add((uri, codegraph.source_path, rdflib.Literal(graph[3])))
         if node.constant_edge:
-            g.add((uri, rdflib.URIRef('http://constant_type'), rdflib.Literal(node.constant_edge[0])))
-            g.add((uri, rdflib.URIRef('http://constant_value'), rdflib.Literal(node.constant_edge[1])))
+            g.add((uri, codegraph.constant_type, rdflib.Literal(node.constant_edge[0])))
+            g.add((uri, codegraph.constant_value, rdflib.Literal(node.constant_edge[1])))
     data_flow_edges = graph[1]
     control_flow_edges = graph[2]
 
@@ -253,10 +258,10 @@ def addToGraph(g, graph, classes_to_superclasses=None, cf_edges_to_sources={}, d
             accumulator[label].append(edge_source)
             g.add((idx2uri[edge[0]], edge_type, idx2uri[edge[1]]))
             if len(edge) == 3:
-                g.add((idx2uri[edge[0]], rdflib.URIRef('http://flow_type' + str(edge[2])), idx2uri[edge[1]]))
+                g.add((idx2uri[edge[0]], codegraph_flow_type[str(edge[2])], idx2uri[edge[1]]))
 
-    add_edges(data_flow_edges, df_edges_to_sources, rdflib.URIRef('http://edge/dataflow'))
-    add_edges(control_flow_edges, cf_edges_to_sources, rdflib.URIRef('http://edge/controlflow'))
+    add_edges(data_flow_edges, df_edges_to_sources, codegraph['edge/dataflow'])
+    add_edges(control_flow_edges, cf_edges_to_sources, codegraph['http://edge/controlflow'])
 
 
 # takes a set of control flow edges->sources, data flow edges -> sources, builds a summary of edges to counts
