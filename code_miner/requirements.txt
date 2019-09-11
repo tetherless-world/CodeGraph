@@ -4,4 +4,4 @@ pymongo
 matplotlib
 networkx
 pydotplus
-
+jupyter
