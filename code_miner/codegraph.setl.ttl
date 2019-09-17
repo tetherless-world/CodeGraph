@@ -28,6 +28,12 @@ from uuid import uuid4 as result
 from json import loads as result
 '''.
 
+:reduce a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:value '''
+from functools import reduce as result
+'''.
+
 :reversed a owl:Class, prov:SoftwareAgent, setl:PythonScript;
   rdfs:subClassOf prov:Activity;
   prov:value '''
@@ -50,6 +56,7 @@ result = lambda x: list(reversed(x))
     prov:qualifiedUsage [ a prov:Usage; prov:entity :uuid4; prov:hadRole [ dcterms:identifier "uuid4"]];
     prov:qualifiedUsage [ a prov:Usage; prov:entity :from_json; prov:hadRole [ dcterms:identifier "from_json"]];
     prov:qualifiedUsage [ a prov:Usage; prov:entity :reversed; prov:hadRole [ dcterms:identifier "reversed"]];
+    prov:qualifiedUsage [ a prov:Usage; prov:entity :reduce; prov:hadRole [ dcterms:identifier "reduce"]];
     setl:hasContext '''{
     "sio" :     "http://semanticscience.org/resource/",
     "rdfs" :    "http://www.w3.org/2000/01/rdf-schema#",
@@ -74,49 +81,60 @@ result = lambda x: list(reversed(x))
                 "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}",
                 "@type" : [
                   "prov:Activity", 
-                  "urn:python/{{'.'.join(reversed(row['path']))}}",
-                  {
-                    "@if" : "'DATA' in row['edges']",
-                    "@id" : "codegraph:flow_type/{{from_json(row['edges']['DATA'])[1]}}"
-                  }
+                  "urn:python/{{'.'.join(reversed(row['path']))}}"
                 ],
                 "rdfs:label" : "{{row['source'].strip()}}",
                 "prov:used" : [
                   {
-                    "@if" : "'DATA' in row['edges']",
-                    "@for" : "data_flow in from_json(row['edges']['DATA'])[0]",
-                    "@do" : { "@id" : "codegraph:{{pubid}}/entity/{{data_flow}}"}
-                  },
-                  {
-                    "@for" : "position, arg in enumerate([x for x in row['args'] if not isinstance(x, list)])",
+                    "@for" : "position, arg in enumerate([x for x in row['args']])",
                     "@do" : {
+                      "@if" : "not isinstance(arg, list) and not len(list) > 0",
                       "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}/arg/{{position}}",
                       "@type" : [
                         "prov:Entity", 
-                        "codegraph:Constant", 
-                        "urn:python/{{arg.__class__.__module__}}.{{arg.__class__.__name__}}"
+                        { "@if" : "not isinstance(arg, list)", "@id" : "codegraph:Constant"}, 
+                        { 
+                          "@if" : "not isinstance(arg, list)", 
+                          "@id" : "urn:python/{{arg.__class__.__module__}}.{{arg.__class__.__name__}}"
+                        } 
                       ],
-                      "prov:value" : "{{str(arg)}}",
+                      "prov:value" : [ 
+                        { 
+                          "@if" : "not isinstance(arg, list)", 
+                          "@value":"{{str(arg)}}", 
+                          "@value" : "{{rdflib.Literal(arg).datatype}}"
+                        }
+                      ],
                       "@reverse" : {
                         "prov:entity" : [
                           {
-                            "@for" : "key in [key for key, value in row['named'].items() if value == arg]",
-                            "@do" : {
-                              "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}/usage/{{key}}",
-                              "@type" : "prov:Usage",
-                              "prov:hadRole" : {
-                                "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}/role/{{key}}",
-                                "@type" : ["prov:Role", "codegraph:NamedArgument"],
-                                "prov:value" : "{{key}}"
+                            "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}/usage/{{position}}",
+                            "@type" : "prov:Usage",
+                            "@reverse" : {
+                              "prov:qualifiedUsage" : {"@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}"}
+                            },
+                            "prov:hadRole" : [
+                              {
+                                "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}/role/{{position}}",
+                                "@type" : ["prov:Role", "codegraph:PositionalArgument"],
+                                "prov:value" : { "@value" : "{{position}}", "@type" : "xsd:integer"}
+                              },
+                              {
+                                "@for" : "key in [key for key, value in row['named'].items() if value == arg]",
+                                "@do" : {
+                                  "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}/role/{{key}}",
+                                  "@type" : ["prov:Role", "codegraph:NamedArgument"],
+                                  "prov:value" : "{{key}}"
+                                }
                               }
-                            }
+                            ]
                           }
                         ]
                       }
                     }
                   }      
                 ],
-                "prov:wasInformedBy" : [
+                "prov:informed" : [
                   {
                     "@if" : "'CONTROL' in row['edges']",
                     "@for" : "control_flow in row['edges']['CONTROL']",
@@ -126,8 +144,39 @@ result = lambda x: list(reversed(x))
               },
               {
                 "@id" : "codegraph:{{pubid}}/entity/{{row['nodeNumber']}}",
+                "@if" : "'DATA' in row['edges']",
                 "@type" : "prov:Entity",
-                "rdfs:label" : "{{row['nodeNumber']}}",
+                "rdfs:label" : "{{'.'.join(reversed(row['path']))}}",
+                "@reverse" : {
+                  "prov:used" : [
+                    {
+                      "@for" : "a, position in reduce(lambda x,y: x + y, [[(node,position) for node in nodes] for nodes, position in from_json('['+row['edges']['DATA']+']')] ) ",
+                      "@do" : [
+                        {
+                          "@id" : "codegraph:{{pubid}}/activity/{{a}}",
+                          "prov:qualifiedUsage" : {
+                            "@id" : "codegraph:{{pubid}}/activity/{{a}}/usage/{{position}}",
+                            "@type" : "prov:Usage",
+                            "prov:entity" : {
+                              "@id" : "codegraph:{{pubid}}/entity/{{row['nodeNumber']}}",
+                              "@type" : [ { "@if" : "position == 0", "@id" : "codegraph:Function" } ]
+                            },
+                            "prov:hadRole" : [
+                              {
+                                "@id" : "codegraph:{{pubid}}/activity/{{a}}/role/{{position}}",
+                                "@type" : [
+                                  "prov:Role", 
+                                  "codegraph:PositionalArgument"
+                                ],
+                                "prov:value" : { "@value" : "{{position}}", "@type" : "xsd:integer"}
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
                 "prov:wasGeneratedBy" : { "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}"}
               }
             ]
