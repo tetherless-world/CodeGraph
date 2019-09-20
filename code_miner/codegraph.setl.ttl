@@ -70,12 +70,12 @@ result = lambda x: list(reversed(x))
   {
     "@with" : "row['expr'].split(' ')[0] as pubid",
       "@do" : {
-        "@id": "codegraph:pub/{{pubid}}",
+        "@id": "codegraph:nanopub/{{pubid}}",
         "@graph" : {
-          "@id": "codegraph:pub/{{pubid}}",
+          "@id": "codegraph:nanopub/{{pubid}}",
           "@type" : "np:Nanopublication", 
           "np:hasAssertion" : {
-            "@id": "codegraph:pub/{{pubid}}_assertion",
+            "@id": "codegraph:nanopub/{{pubid}}_assertion",
             "@graph" : [
               {
                 "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}",
@@ -88,7 +88,7 @@ result = lambda x: list(reversed(x))
                   {
                     "@for" : "position, arg in enumerate([x for x in row['args']])",
                     "@do" : {
-                      "@if" : "not isinstance(arg, list) and not len(list) > 0",
+                      "@if" : "not isinstance(arg, list) or len(list) == 0 or not isinstance(arg[0],list)",
                       "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}/arg/{{position}}",
                       "@type" : [
                         "prov:Entity", 
@@ -101,8 +101,7 @@ result = lambda x: list(reversed(x))
                       "prov:value" : [ 
                         { 
                           "@if" : "not isinstance(arg, list)", 
-                          "@value":"{{str(arg)}}", 
-                          "@value" : "{{rdflib.Literal(arg).datatype}}"
+                          "@value":"{{str(arg)}}"
                         }
                       ],
                       "@reverse" : {
@@ -182,9 +181,9 @@ result = lambda x: list(reversed(x))
             ]
           },
           "np:hasProvenance" : {
-            "@id" : "codegraph:pub/{{pubid}}_provenance",
+            "@id" : "codegraph:nanopub/{{pubid}}_provenance",
             "@graph" : {
-              "@id" : "codegraph:pub/{{pubid}}_assertion",
+              "@id" : "codegraph:nanopub/{{pubid}}_assertion",
               "prov:wasDerivedFrom" : [
               ],
               "prov:wasGeneratedBy" : [

@@ -42,11 +42,11 @@ def main(inputdir, graphdir, jsondir, limit=-1):
             with open(json_file,'w') as out:
                 out.write(json.dumps(json_data,indent=4))
                 
-            fn = os.path.join(graphdir, f + '.ttl')
+            fn = os.path.join(graphdir, f + '.trig')
             
             g = convert_to_rdf(json_file)
             with open(fn, 'wb') as out:
-                out.write(g.serialize(format='turtle'))
+                out.write(g.serialize(format='trig'))
             success += 1
         else:
             fails += 1
