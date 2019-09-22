@@ -1,0 +1,6 @@
+SELECT ?z (count(*) as ?c) WHERE {
+       ?x <http://path> ?m .
+       ?x <http://edge/dataflow> ?y .
+       ?x <http://edge/controlflow>+ ?y .
+       ?y <http://path> ?z
+} group by ?z  order by desc(?c) limit 3

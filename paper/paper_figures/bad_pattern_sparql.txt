@@ -1,0 +1,24 @@
+select distinct ?x ?fn ?pn where {
+?x <http://path> ?p . |\label{sparql:model}|
+?x <http://flow_type0> ?fn . |\label{sparql:fit_edge}|
+?fn <http://path> ?fp . |\label{sparql:fit}|
+?x <http://flow_type0> ?pn . |\label{sparql:predict_edge}|
+?pn <http://path> ?pp . |\label{sparql:predict}|
+?an <http://flow_type1> ?fn . |\label{sparql:fit_data}|
+?an <http://flow_type1> ?pn . |\label{sparql:predict_data}|
+FILTER (strStarts( ?fp, "fit" ) && strStarts( ?pp, "predict" )) |\label{sparql:filter}|
+MINUS {|\label{sparql:minus}|
+?x <http://path> ?p .
+?x <http://flow_type0> ?fn .
+?fn <http://path> ?fp .
+?x <http://flow_type0> ?pn .
+?pn <http://path> ?pp .
+?bn <http://flow_type1> ?fn .
+?cn <http://flow_type1> ?pn .
+FILTER (?bn != ?cn && strStarts( ?fp, "fit" ) && strStarts( ?pp, "predict" )) |\label{sparql:minus_filter}|
+VALUES ?p {
+"ARDRegression.bayes.linear_model.sklearn" 
+...
+"_SigmoidCalibration.calibration.sklearn" 
+}
+} order by ?p ?z ?v

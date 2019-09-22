@@ -1,0 +1,14 @@
+\subsection{Knowledge Graph}
+\label{sec:graph}
+
+To make the analysis IR useful for multiple purposes, we created a knowledge graph from it.  We describe the graph construction in this section and then present uses for the graph in subsequent sections.  Unlike previous work that stores analysis information in a database, our knowledge graph aims to enable convenient queries about the relationships among APIs and their usage.  The graph for the running example from Figure~\ref{running_example} is shown in Figure~\ref{fig:rdf_graph}; it explicitly represents data flow as black arrows in the picture and control flow as orange arrows, with edge labels denoting the kind of flow.
+
+ To see how the edges are generated, consider the IR in Figure~\ref{code:ann_post}.  Instruction 2 is a call to the function read from the {\tt read\_csv} field of the {\tt pandas} object read from {\tt pd}, denoted as node 104 in Figure~\ref{fig:rdf_graph}.  Since the {\tt read\_csv} field is considered the same as {\tt pandas} by the analysis, {\tt pandas} itself is considered the receiver of the call, hence the receiver edge from node 10.  Similarly the {\tt constant\_arg} edge denotes the file name argument of the read call.  Then instructions 6-8 call the {\tt to\_list} function on the turtle it generates, so it becomes the receiver for that call, which is denoted by node 105.  To make this knowledge graph easy to query for multiple use cases, we adopted the W3C standard of RDF (Resource Description Framework)\footnote{\url{https://www.w3.org/RDF/}}, so we could easily issue declarative queries using the associated SPARQL\footnote{\url{https://www.w3.org/TR/sparql11-query/}} query language to query the knowledge graph. 
+
+\begin{figure*}[htb]
+\begin{center}
+\includegraphics[width=5in]{rdf_fig}
+\end{center}
+\caption{RDF representation of turtles in running example}
+\label{fig:rdf_graph}
+\end{figure*}

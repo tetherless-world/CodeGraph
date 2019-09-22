@@ -1,0 +1,61 @@
+\section{A Running Example}
+\label{sec:example}
+
+Figure~\ref{running_example} from GitHub brings out some of the analysis  
+challenges in constructing a knowledge graph for data science code.  
+The illustrative code shows a simple example in which a CSV file is  
+first read using the Pandas library on line~\ref{line:read}, then some  
+matrix computations are performed on the data using Numpy on  
+line~\ref{line:mat}, and then it is passed to {\tt ann\_show} for  
+visualization at line~\ref{line:plotcall}.  After adjusting based on  
+the type of the data starting at line~\ref{line:lencall}, the computed data is  
+displayed using Matplotlib on line~\ref{line:plot}.  These frameworks  
+are imported at lines~\ref{line:importplt},~\ref{line:importnp}, and~\ref{line:importpd}.  We want to  
+capture this common usage pattern of {\tt plot} in our knowledge  
+graph. 
+
+ The first thing to note is that the code in this snippet is in three
+sections spread over roughly 200 lines of the source file.  Techniques
+based on source text or local structures such as ASTs or CFGs will not
+be able to capture dependencies over this range.  Global structures like a
+call graph can, but the call graph needs to contend with the dynamic
+nature of Python, illustrated here by the assignment of the function
+{\tt regress\_show} to the variable {\tt ann\_show} on
+line~\ref{line:ann_show}.  Note that {\tt ann\_show} called on
+line~\ref{line:plotcall} is not even a function at all, but rather a variable
+assigned from the actual function.  Of the analysis frameworks that
+support interprocedural analysis including first class function,
+relatively few have been applied to Python.  We use WALA, which has.
+
+This snippet also illustrates the API-intensive nature of such data
+science code.  There are fives lines of user code, and these lines
+make use of three APIs---{\tt Pandas}, {\tt Numpy}, {\tt
+  Matplotlib}---and four functions from them---{\tt read\_csv}, {\tt
+  mat}, {\tt to\_list}, {\tt plot}---with {\tt to\_list} being used
+three times.  And simple models of such functions will not suffice, as
+the return from {\tt to\_list} depends on what the argument is.  Such
+intensive use of diverse API calls is typical, and just these three
+APIs together have many thousands of functions.  Any manual modeling
+will be daunting due to the sheer scope of the APIs.  There is no
+formal static typing in this code to help; there is idiosyncratic
+English API documentation of varying quality, but the precise
+parametric semantics of functions like {\tt to\_list} is hard to
+capture robustly in human- and machine-comprehensible English.
+Luckily, as we show, our goals do not require knowing what the APIs
+do.
+
+But while the precise meanings of API calls do not always matter, we
+do need to track the flow of objects between different calls.  Since
+we want to capture that {\tt plot} is used on the result of a {\tt
+  mat} call, we need to track data flow.  We really want an object
+that represents whatever it may be that {\tt mat} returns.  Beyond
+that, we need to follow accesses to that object, such as the read of
+{\tt T} on line~\ref{line:mat}.  To do this, we introduce turtle
+objects: every API call returns a fresh turtle, and accesses to
+properties---such as {\tt T}--- return the same unknown object as its
+container.  Thus the calls on {\tt read\_csv}, {\tt mat}, {\tt
+  to\_list}, and {\tt  plot} all return new turtle objects.  On the
+other hand, user code objects, such as the function {\tt
+  regress\_show} are treated normally.  As we show, this mechanism
+allows us to track data flow with sufficient precision without needing
+to model APIs at all.

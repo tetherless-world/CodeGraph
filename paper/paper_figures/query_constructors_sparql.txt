@@ -1,0 +1,6 @@
+select ?p ?z ?v where {
+?x <http://path> ?p .
+?x <http://flow_typeconstant> ?y .
+?y <http://constant_type> ?z .
+?y <http://constant_value> ?v .
+FILTER (strStarts(?p, "<model>"))}

@@ -1,0 +1,28 @@
+\subsection{Code Patterns}
+
+ As with any programming domain, programming errors are a common problem in data science.  Beyond the usual ways of getting code wrong, there are bad coding patterns that misuse statistical packages and result in misleading data.  One universal rule is to avoid testing any estimator against the same data that was used to train it.  The goal of much data science code is to create learnt models that generalize to unseen data; so the effectiveness of a model can only be evaluated using data that was not used for training.  Our whole-program analysis can provide the global perspective needed to detect such problems, and we discuss this specific rule as representative of a class of problems of this sort in data science code. 
+
+ This pattern is relatively complex to capture, because it is not sufficient to look for models that are trained and tested on the same data, since it is quite common to test on the training data to assess possible overfitting.  However, when that is the only data ever used for testing, that is a very suspicious piece of code.  Thus, the bad pattern we want is a model that uses the same data for training and test and also does not use any other data for testing.  Thus we need a pattern expressing negation.  And this query should be expressed at a relatively abstract level of data flow.
+
+This example shows the advantages of representing our code knowledge graph as RDF: we express queries in SPARQL, which can express complex graph patterns and negation, as shown in Figure~\ref{code:bad_pattern_sparql}.  We first make the variable {\tt x} represent the model object in line~\ref{sparql:model}.  That model must connect to {\tt fn} and {\tt pn} which represent the fit and predict operations respectively.  Further, the model must be used as the receiver of the two calls, specified on line~\ref{sparql:fit_edge} as flowing to its argument 0.  We extract the name of the operation of {\tt fn} in line~\ref{sparql:fit} so we can check its name on line~\ref{sparql:filter}.  The predict half is similar on lines~\ref{sparql:predict_edge} and~\ref{sparql:predict}.  Lastly, lines~\ref{sparql:fit_data} and ~\ref{sparql:predict_data} ensure that the same {\tt an} object flows to argument 1 of each operation.
+
+This gets cases where the same data is used to fit and predict on the same model, but it does not rule out cases where different data is also used on the same model.  To do that, we construct a very similar query except that the arguments to the two operations use different variables.  We then ensure that they must be different objects using {\tt bn != cn} as part of the filter on line~\ref{sparql:minus_filter}.  We join these two queries using SPARQL 1.1 minus on line~\ref{sparql:minus}.  While the detailed semantics of minus is complex, the key is that any answer to the first part is removed if there is any answer to the second part in which all common variables are the same.  The shared variables are only those for the model, fit and predict nodes, so all nodes also used with different arguments are removed as desired.
+
+\begin{figure*}[htb]
+\begin{centering}
+\lstinputlisting[language=Python,escapechar=|]{./bad_pattern_sparql.txt}
+\caption{SPARQL query to detect misuse of fit and predict in classifiers}
+\label{code:bad_pattern_sparql}
+\end{centering}
+\end{figure*}
+
+ We found 25 instances of this pattern in the GitHub data; an excerpt from one is shown in Figure~\ref{code:bad_pattern_code}.  Observe that {\tt test\_data} is created on line~\ref{line:bpc_test_def} by subsetting the data in {\tt train\_data}.  While taking a subset of data for test data is part of good practice, in this case it results merely in making the test data a subset of the training data.  A model {\tt bnb} is allocated on line~\ref{line:bpc_model_new} and trained on {\tt train\_data} on line~\ref{line:bpc_train_call}, and this model is then evaluated on {\tt test\_data} on line~\ref{line:bpc_test_call}.  Since the test data is a subset of the data used for training, testing will likely give a good but utterly spurious result.  Our query found this problem since the creation at line~\ref{line:bpc_model_new}, the fit call at line~\ref{line:bpc_train_call}, the predict call at line~\ref{line:bpc_test_call} bind to query variables {\tt x}, {\tt fn}, and {\tt pn} respectively.  We point out that this is one example of finding poor coding practices in data science code, and that our approach can be generalized to finding other instances of poor coding practices (e.g., do not call {\tt fit} on a test dataset, do not set the number of components in a feature reduction model to 0, and so on).
+
+\begin{figure}[htb]
+\begin{centering}
+\lstinputlisting[language=Python,escapechar=|]{./bad_pattern_code.txt}
+\caption{GitHub example of misuse of fit and predict in classifiers}
+\label{code:bad_pattern_code}
+\end{centering}
+\end{figure}
+
