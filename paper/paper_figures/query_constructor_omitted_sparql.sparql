@@ -1,0 +1,9 @@
+select (count(?m) as ?c) where {
+{ ?m <http://path> "RFECV.feature_selection.sklearn" .   
+}
+minus {
+?m <http://path> "RFECV.feature_selection.sklearn" .
+?m <http://flow_typeconstant> ?y .
+?y <http://constant_type> "cv" .
+?y <http://constant_value> ?v .
+} }

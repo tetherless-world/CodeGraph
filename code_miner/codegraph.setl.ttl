@@ -1,0 +1,197 @@
+@prefix rdf:           <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:          <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:           <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:           <http://www.w3.org/2002/07/owl#> .
+@prefix skos:          <http://www.w3.org/2004/02/skos/core#> .
+@prefix prov:          <http://www.w3.org/ns/prov#> .
+@prefix sio:           <http://semanticscience.org/resource/> .
+@prefix dcat:          <http://www.w3.org/ns/dcat#> .
+@prefix dcterms:       <http://purl.org/dc/terms/> .
+@prefix void:          <http://rdfs.org/ns/void#> .
+@prefix setl:          <http://purl.org/twc/vocab/setl/> .
+@prefix csvw:          <http://www.w3.org/ns/csvw#> .
+@prefix pv:            <http://purl.org/net/provenance/ns#> .
+@prefix np:            <http://www.nanopub.org/nschema#> .
+@prefix api_vocab: <http://purl.org/linked-data/api/vocab#>.
+@prefix :              <http://purl.org/twc/codegraph/setl/> .
+
+:uuid4 a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:value '''
+from uuid import uuid4 as result
+'''.
+
+
+:from_json a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:value '''
+from json import loads as result
+'''.
+
+:reduce a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:value '''
+from functools import reduce as result
+'''.
+
+:reversed a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:value '''
+result = lambda x: list(reversed(x))
+'''.
+
+:codegraph_json a setl:JSON;
+  api_vocab:selector "item";
+  prov:wasGeneratedBy [
+    a setl:Extract;
+  ].
+
+:import a setl:SemanticETLScript;
+  rdfs:label "CodeGraph Import SETL Script".
+
+:codegraph a void:Dataset;
+  prov:wasGeneratedBy :import, [
+    a setl:Transform, setl:JSLDT;
+    prov:used :codegraph_json;
+    prov:qualifiedUsage [ a prov:Usage; prov:entity :uuid4; prov:hadRole [ dcterms:identifier "uuid4"]];
+    prov:qualifiedUsage [ a prov:Usage; prov:entity :from_json; prov:hadRole [ dcterms:identifier "from_json"]];
+    prov:qualifiedUsage [ a prov:Usage; prov:entity :reversed; prov:hadRole [ dcterms:identifier "reversed"]];
+    prov:qualifiedUsage [ a prov:Usage; prov:entity :reduce; prov:hadRole [ dcterms:identifier "reduce"]];
+    setl:hasContext '''{
+    "sio" :     "http://semanticscience.org/resource/",
+    "rdfs" :    "http://www.w3.org/2000/01/rdf-schema#",
+    "np":       "http://www.nanopub.org/nschema#",
+    "dcterms":       "http://purl.org/dc/terms/",
+    "codegraph":   "http://purl.org/twc/codegraph/",
+    "prov":     "http://www.w3.org/ns/prov#"
+}''';
+    prov:value '''
+[
+  {
+    "@with" : "row['expr'].split(' ')[0] as pubid",
+      "@do" : {
+        "@id": "codegraph:nanopub/{{pubid}}",
+        "@graph" : {
+          "@id": "codegraph:nanopub/{{pubid}}",
+          "@type" : "np:Nanopublication", 
+          "np:hasAssertion" : {
+            "@id": "codegraph:nanopub/{{pubid}}_assertion",
+            "@graph" : [
+              {
+                "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}",
+                "@type" : [
+                  "prov:Activity", 
+                  "urn:python/{{'.'.join(reversed(row['path']))}}"
+                ],
+                "rdfs:label" : "{{row['source'].strip()}}",
+                "prov:used" : [
+                  {
+                    "@for" : "position, arg in enumerate([x for x in row['args']])",
+                    "@do" : {
+                      "@if" : "not isinstance(arg, list) or len(list) == 0 or not isinstance(arg[0],list)",
+                      "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}/arg/{{position}}",
+                      "@type" : [
+                        "prov:Entity", 
+                        { "@if" : "not isinstance(arg, list)", "@id" : "codegraph:Constant"}, 
+                        { 
+                          "@if" : "not isinstance(arg, list)", 
+                          "@id" : "urn:python/{{arg.__class__.__module__}}.{{arg.__class__.__name__}}"
+                        } 
+                      ],
+                      "prov:value" : [ 
+                        { 
+                          "@if" : "not isinstance(arg, list)", 
+                          "@value":"{{str(arg)}}"
+                        }
+                      ],
+                      "@reverse" : {
+                        "prov:entity" : [
+                          {
+                            "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}/usage/{{position}}",
+                            "@type" : "prov:Usage",
+                            "@reverse" : {
+                              "prov:qualifiedUsage" : {"@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}"}
+                            },
+                            "prov:hadRole" : [
+                              {
+                                "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}/role/{{position}}",
+                                "@type" : ["prov:Role", "codegraph:PositionalArgument"],
+                                "prov:value" : { "@value" : "{{position}}", "@type" : "xsd:integer"}
+                              },
+                              {
+                                "@for" : "key in [key for key, value in row['named'].items() if value == arg]",
+                                "@do" : {
+                                  "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}/role/{{key}}",
+                                  "@type" : ["prov:Role", "codegraph:NamedArgument"],
+                                  "prov:value" : "{{key}}"
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }      
+                ],
+                "prov:informed" : [
+                  {
+                    "@if" : "'CONTROL' in row['edges']",
+                    "@for" : "control_flow in row['edges']['CONTROL']",
+                    "@do" : { "@id" : "codegraph:{{pubid}}/activity/{{control_flow}}"}
+                  }
+                ]
+              },
+              {
+                "@id" : "codegraph:{{pubid}}/entity/{{row['nodeNumber']}}",
+                "@if" : "'DATA' in row['edges']",
+                "@type" : "prov:Entity",
+                "rdfs:label" : "{{'.'.join(reversed(row['path']))}}",
+                "@reverse" : {
+                  "prov:used" : [
+                    {
+                      "@for" : "a, position in reduce(lambda x,y: x + y, [[(node,position) for node in nodes] for nodes, position in from_json('['+row['edges']['DATA']+']')] ) ",
+                      "@do" : [
+                        {
+                          "@id" : "codegraph:{{pubid}}/activity/{{a}}",
+                          "prov:qualifiedUsage" : {
+                            "@id" : "codegraph:{{pubid}}/activity/{{a}}/usage/{{position}}",
+                            "@type" : "prov:Usage",
+                            "prov:entity" : {
+                              "@id" : "codegraph:{{pubid}}/entity/{{row['nodeNumber']}}",
+                              "@type" : [ { "@if" : "position == 0", "@id" : "codegraph:Function" } ]
+                            },
+                            "prov:hadRole" : [
+                              {
+                                "@id" : "codegraph:{{pubid}}/activity/{{a}}/role/{{position}}",
+                                "@type" : [
+                                  "prov:Role", 
+                                  "codegraph:PositionalArgument"
+                                ],
+                                "prov:value" : { "@value" : "{{position}}", "@type" : "xsd:integer"}
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "prov:wasGeneratedBy" : { "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}"}
+              }
+            ]
+          },
+          "np:hasProvenance" : {
+            "@id" : "codegraph:nanopub/{{pubid}}_provenance",
+            "@graph" : {
+              "@id" : "codegraph:nanopub/{{pubid}}_assertion",
+              "prov:wasDerivedFrom" : [
+              ],
+              "prov:wasGeneratedBy" : [
+              ]
+          }
+        }
+      }
+    }
+  }
+]'''].
+

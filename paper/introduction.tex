@@ -1,0 +1,33 @@
+\section{Introduction}
+A number of different knowledge graphs have been constructed in recent years such as DBpedia \cite{dbpedia-swj}, Wikidata \cite{Vrandecic:2014:WFC:2661061.2629489}, Freebase \cite{Bollacker08freebase:a}, YAGO \cite{Suchanek:2007:YCS:1242572.1242667} and NELL \cite{Carlson:2010:TAN:2898607.2898816}, and these have been used successfully in a number of different applications, such as search, semantic parsing, named entity disambiguation, information extraction, question answering and even image classification (see \cite{journals/tkde/WangMWG17} for a comprehensive review of uses of knowledge graph embeddings in applications).  To our knowledge, no such knowledge graph exists for code, although it would be equally useful in driving applications around code such as code search, code automation, refactoring, bug detection, code optimization, etc.  In this paper, we describe a set of generic techniques to construct such a knowledge graph, and we apply it to mining knowledge graphs about Python code on the web.
+
+Our first contribution in this knowledge graph is how we represent code itself.  We take a data driven approach to defining `useful` code to represent in the graph, which we define as libraries that are popular in terms of their imports.  The knowledge graph we build for user code then specifies how the user code manipulates code in these libraries, because (a) much of user code in modern languages is mostly about using library code \cite{?}, (b) a lot of tooling such as code refactoring, code automation etc can be performed by understanding the semantics of library code, in combination with an analysis of user code.  Since user code is variable, we focus on what is invariant across many user programs, which is library code.
+
+The next set of contributions is around how we represent the use of libraries in user code.  Much of the current work has focused on one of two approaches (a) treating code as if it were natural language, and applying natural language models and techniques to represent code (b) parsing code into abstract syntax trees, which reflect largely the syntactic structure of the code, and embellishing it when needed with limited types of deeper semantic information such as data flow or program dependence to support the more complex tasks (see \cite{Allamanis:2018:SML:3236632.3212695} for a comprehensive review).  Such task specific enhancements for instance have driven applications such as finding security bugs in code (\cite{DBLP:journals/corr/abs-1807-06756}), predicting variable names, method names, or types (\cite{DBLP:journals/corr/abs-1803-09544}), code summarization (\cite{DBLP:journals/corr/abs-1708-01837}), clone detection (\cite{White:2016:DLC:2970276.2970326}), predicting variable misuse, variable naming, deobfuscation, and method naming (\cite{DBLP:journals/corr/abs-1711-00740}, \cite{Bichsel:2016:SDA:2976749.2978422}, \cite{DBLP:journals/corr/abs-1808-01400}).   
+
+Our second contribution is that we represent library usage in a more generic way than in prior work, i.e., in terms of data flow and control flow across method calls.  Specifically, we capture which objects get passed as arguments to which methods or which objects get used to invoke methods (data flow) and which methods get called before which other ones (control flow).  To obtain data flow and control flow, we would like to build the knowledge graph with whole program analysis.  As pointed out by Allamanis et al. (\cite{Allamanis:2018:SML:3236632.3212695}), building models of code has not generally been done with traditional program analysis frameworks, and the use of more sophisticated techniques such as interprocedural analysis has previously been limited.  Even when interprocedural analysis has been employed, there has been no work that has exploited traditional analysis frameworks to make aggressive use of advanced techniques like context-sensitive analysis.  This is because such techniques tend to be expensive to apply over large bodies of code.  
+Another aspect that makes the application of traditional analysis techniques is the increase in pupularity of dynamic languages such as Python and Javascript.  Simple interprocedural issues like determining the target of a method call become involved: there are no static types on variables to reveal method targets and, in any case, methods as well as fields can be assigned freely, thus making types themselves of limited value.  Similarly, code in these languages often make heavy use of heap data structures, such a dictionaries, which greatly complicates precise tracking of data flow.  Our contribution is that we target one such language (Python) to demonstrate that applying whole program analysis can actually be employed effectively to construct more precise representations of data flow and control flow in programs, which can help drive diverse code applications.
+
+A third contribution is that we align code and its associated information in natural language.  Although part of the program semantics can be gleaned from what the program code actually does, many important higher level semantic details about the code reside in natural language for human consumption.  The power to bridge the two types of semantics is key for a lot of applications.  For instance, imagine that the user wanted to refactor a piece of code to run on memory constrained environments.  To understand that the creation of an object of type Class A can be replaced by type Class B needs an understanding that both are siblings in a type hierarchy (i.e., program specific features), along with associated usage specification which defines Class B to be appropriate for memory constrained environments.  Our knowledge graph therefore embeds natural language from usage documentation, embedded documentation in code, and forums into each library function call in the graph.
+
+
+
+\begin{figure*}[htb]
+\centering 
+{\renewcommand\thelstnumber{%
+\ifnum\value{lstnumber}>29\relax \the\numexpr 
+278+\value{lstnumber}\relax\else 
+\ifnum\value{lstnumber}>25\relax \the\numexpr 
+139+\value{lstnumber}\relax\else 
+\ifnum\value{lstnumber}>22\relax \the\numexpr 
+132+\value{lstnumber}\relax\else 
+\ifnum\value{lstnumber}>20\relax \the\numexpr 
+130+\value{lstnumber}\relax\else 
+\ifnum\value{lstnumber}>7\relax \the\numexpr 
+92+\value{lstnumber}\relax\else 
+\the\numexpr 
+6+\value{lstnumber}\fi\fi\fi\fi\fi}
+\lstinputlisting[language=Python,escapechar=|]{./example.py}}
+\caption{Code example from GitHub}
+\label{running_example}
+\end{figure*}

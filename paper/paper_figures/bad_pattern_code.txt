@@ -1,0 +1,14 @@
+test_data = train_data[0:3000]|\label{line:bpc_test_def}|
+test_label = train_label[0:3000] 
+
+bnb = BernoulliNB()|\label{line:bpc_model_new}|
+gnb = GaussianNB()
+mnb = MultinomialNB()
+...
+bnb.fit(train_data,train_label) |\label{line:bpc_train_call}|
+gnb.fit(train_data,train_label)
+mnb.fit(train_data,train_label)
+...
+bernoullipredict = bnb.predict(test_data) |\label{line:bpc_test_call}|
+gaussianpredict = gnb.predict(test_data)
+multinomialpredict = mnb.predict(test_data)

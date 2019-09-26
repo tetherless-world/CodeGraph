@@ -1,0 +1,27 @@
+BB0 
+BB1 
+0   v9 = lexical:pd@Lscript sample1787.py    sample1787.py [104:13] -> [104:15]
+1   v7 = getfield <PythonLoader,LRoot,read_csv,<PythonLoader,LRoot>> v9
+2   v6 = invokeFunction <PythonLoader,LCodeBody,do()LRoot;> v7,v10:#ann_out.csv
+BB2 
+4   v17 = lexical:np@Lscript sample1787.py   sample1787.py [105:13] -> [105:15]
+5   v15 = getfield <PythonLoader,LRoot,mat<PythonLoader,LRoot>> v17
+6   v20 = getfield <PythonLoader,LRoot,out,<PythonLoader,LRoot>> v6
+7   v19 = getfield <PythonLoader,LRoot,tolist,<PythonLoader,LRoot>> v20
+8   v18 = invokeFunction <PythonLoader,LCodeBody,do()LRoot;> v19 @8
+BB3 
+9   v14 = invokeFunction <PythonLoader,LCodeBody,do()LRoot;> v15,v18 @9
+BB4 
+10   v13 = getfield <PythonLoader,LRoot,T,<PythonLoader,LRoot>> v14
+12   v26 = global:global ann_show            sample1787.py [107:18] -> [107:26]
+13   fieldref v27:#disp.v28:#0 = v3 = v3     sample1787.py [107:40] -> [107:44]
+14   fieldref v29:#graph.v28:#0 = v4 = v4    sample1787.py [107:53] -> [107:58]
+15   v24 = invokeFunction <PythonLoader,LCodeBody,do()LRoot;> v26,v2,v13 disp:3 graph:4
+BB5 
+16   v33 = fieldref v24.v28:#0               sample1787.py [107:4] -> [107:9]
+18   v35 = fieldref v24.v31:#1               sample1787.py [107:4] -> [107:9]
+20   v36 = new <PythonLoader,Ltuple>@20      sample1787.py [100:0] -> [110:1]
+21   fieldref v36.v28:#0 = v33 = v33         sample1787.py [100:0] -> [110:1]
+22   fieldref v36.v31:#1 = v35 = v35         sample1787.py [100:0] -> [110:1]
+23   return v36                              sample1787.py [100:0] -> [110:1]
+BB6

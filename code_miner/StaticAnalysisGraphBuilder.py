@@ -15,9 +15,12 @@ global_node_index = 0
 
 
 codegraph = rdflib.Namespace('http://purl.org/twc/codegraph/')
-codegraph_node = rdflib.Namespace('http://purl.org/twc/codegraph/node/')
+codegraph_activity = rdflib.Namespace('http://purl.org/twc/codegraph/activity/')
+codegraph_entity = rdflib.Namespace('http://purl.org/twc/codegraph/entity/')
 codegraph_tag = rdflib.Namespace('http://purl.org/twc/codegraph/tag/')
 codegraph_flow_type = rdflib.Namespace('http://purl.org/twc/codegraph/flow_type/')
+prov = rdflib.Namespace('http://www.w3.org/ns/prov#')
+
 
 def parse_wala_into_graph(data, add_args=False):
     data_flow_edges = []
@@ -217,52 +220,78 @@ def addToGraph(g, graph, classes_to_superclasses=None, cf_edges_to_sources={}, d
     for node in nodes:
         idx2node[node.index] = node
         # create a unique URI per node
-        uri = codegraph_node[str(global_node_index)]
-        idx2uri[node.index] = uri
+        entity_uri = codegraph_entity[str(global_node_index)]
+        activity_uri = codegraph_activity[str(global_node_index)]
+        idx2uri[node.index] = (entity_uri, activity_uri)
         global_node_index += 1
-        if classes_to_superclasses:
-            classes = set(classes_to_superclasses.keys())
+        
+        g.add((entity_uri, rdflib.RDF.type, prov.Entity))
+        g.add((entity_uri, codegraph.turtle_info, rdflib.Literal(node.expr)))
 
-            has_ai4_ml = set(node.paths).intersection(classes)
-            if len(has_ai4_ml) > 0:
-                assert len(has_ai4_ml) == 1
-                tags = classes_to_superclasses[has_ai4_ml.pop()]
-                tags = tags[0]  # classes to superclasses has 2 levels of lists
-                for tag in tags:
-                    g.add((uri, rdflib.RDF.type, codegraph_tag[tag]))
-        path = '.'.join(node.paths)
-        g.add((uri, codegraph.path, rdflib.Literal(path)))
-        g.add((uri, codegraph.source, rdflib.Literal(node.source)))
-        g.add((uri, codegraph.turtle_info, rdflib.Literal(node.expr)))
-        g.add((uri, codegraph.source_path, rdflib.Literal(graph[3])))
         if node.constant_edge:
-            g.add((uri, codegraph.constant_type, rdflib.Literal(node.constant_edge[0])))
-            g.add((uri, codegraph.constant_value, rdflib.Literal(node.constant_edge[1])))
-    data_flow_edges = graph[1]
-    control_flow_edges = graph[2]
+            g.add((entity_uri, rdflib.RDF.type, codegraph[node.constant_edge[0].title()]))
+            g.add((entity_uri, prov.value, rdflib.Literal(node.constant_edge[1])))
+        else:
+            g.add((activity_uri, rdflib.RDF.type, prov.Activity))
+            g.add((entity_uri, prov.wasGeneratedBy, activity_uri))
+            
+            g.add((activity_uri, codegraph.turtle_info, rdflib.Literal(node.expr)))
+        
+            if classes_to_superclasses:
+                classes = set(classes_to_superclasses.keys())
 
-    def add_edges(edges, accumulator, edge_type):
+                has_ai4_ml = set(node.paths).intersection(classes)
+                if len(has_ai4_ml) > 0:
+                    assert len(has_ai4_ml) == 1
+                    tags = classes_to_superclasses[has_ai4_ml.pop()]
+                    tags = tags[0]  # classes to superclasses has 2 levels of lists
+                    for tag in tags:
+                        g.add((activity_uri, rdflib.RDF.type, codegraph_tag[tag]))
+            path = '.'.join(node.paths)
+            g.add((activity_uri, rdflib.RDFS.label, rdflib.Literal(node.source.strip())))
+            g.add((activity_uri, codegraph.path, rdflib.Literal(path)))
+            g.add((activity_uri, codegraph.source, rdflib.Literal(node.source)))
+            g.add((entity_uri, codegraph.source_path, rdflib.Literal(graph[3])))
+        
+    for edge in graph[1]: # dataflow
+        if len(idx2node[edge[0]].paths) == 0 or len(idx2node[edge[1]].paths) == 0:
+            continue
+        src = '.'.join(idx2node[edge[0]].paths)
+        target = '.'.join(idx2node[edge[1]].paths)
+        # Connect the activity of the target edge to have used the entity of the source edge.
+        g.add((idx2uri[edge[0]][1], prov.used, idx2uri[edge[1]][0]))
+        # if len(edge) == 3:
+            # this is a positional argument, add a role
+            # This isn't the right parameter here, just skip for now.
+            # usage = g.resource(rdflib.BNode())
+            # role = g.resource(rdflib.BNode())
+            # g.add((idx2uri[edge[0]][1], prov.qualifiedUsage, usage.identifier))
+            # usage.add(rdflib.RDF.type, prov.Usage)
+            # usage.add(prov.hadRole, role.identifier)
+            # usage.add(prov.entity, idx2uri[edge[1]][0])
+            # role.add(rdflib.RDF.type, codegraph.PositionalArgument)
+            # role.add(prov.value, rdflib.Literal(edge[2]))
+        
+    for edge in graph[2]: # control flow
+        if len(idx2node[edge[0]].paths) == 0 or len(idx2node[edge[1]].paths) == 0:
+            continue
+        src = '.'.join(idx2node[edge[0]].paths)
+        target = '.'.join(idx2node[edge[1]].paths)
+        # Connect the activity of the target edge to have been informed by the activity of the source edge.
+        g.add((idx2uri[edge[1]][1], prov.wasInformedBy, idx2uri[edge[0]][1]))
+        
+    def add_edges(edges, accumulator, edge_type, invert=False):
         for edge in edges:
             if len(idx2node[edge[0]].paths) == 0 or len(idx2node[edge[1]].paths) == 0:
                 continue
             src = '.'.join(idx2node[edge[0]].paths)
             target = '.'.join(idx2node[edge[1]].paths)
-            # data flow edge, has additional annotations about whether its a receiver or a positional argument
-            if len(edge) == 3:
-                label = (src, edge[2], target)
+            if invert:
+                g.add((idx2uri[edge[0]], edge_type, idx2uri[edge[1]]))
             else:
-                label = (src, target)
-            edge_source = idx2node[edge[0]].source + '\n' + idx2node[edge[1]].source
-            if label not in accumulator:
-                accumulator[label] = []
-            accumulator[label].append(edge_source)
-            g.add((idx2uri[edge[0]], edge_type, idx2uri[edge[1]]))
+                g.add((idx2uri[edge[1]], edge_type, idx2uri[edge[0]]))
             if len(edge) == 3:
                 g.add((idx2uri[edge[0]], codegraph_flow_type[str(edge[2])], idx2uri[edge[1]]))
-
-    add_edges(data_flow_edges, df_edges_to_sources, codegraph['edge/dataflow'])
-    add_edges(control_flow_edges, cf_edges_to_sources, codegraph['edge/controlflow'])
-
 
 # takes a set of control flow edges->sources, data flow edges -> sources, builds a summary of edges to counts
 def create_summary_graph(cf_edges_to_sources, df_edges_to_sources):

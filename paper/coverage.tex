@@ -1,0 +1,38 @@
+\subsection{Analysis Coverage}
+
+Table~\ref{turtles} defines the packages that we treated as turtles to cover the most commonly used libraries in code.  Most of these are very popular data science packages such as pandas, and numpy.  Others are supporting libraries commonly used in all python code (e.g. os, argparse, etc).  
+
+\begin{table}
+\begin{center}
+\begin{tabular}{ |l|}
+ \hline
+numpy, scikit learn, pandas, patsy, seaborn \\ \hline
+statsmodels, scipy, matplotlib, IPython \\ \hline
+tensorflow, mpl\_toolkits, argparse, csv \\ \hline
+itertools, json, logging, math, os, pickle \\ \hline
+pylab, random, re, sys, time, warnings, sknn \\ \hline
+\end{tabular}
+\end{center}
+\caption{Turtle Packages}
+\label{turtles}
+\end{table}
+ 
+To measure the coverage of the analysis, we measured the number of methods that were reachable, compared to the count of all methods, as determined by the AST, as shown in Table~\ref{coverage}.  As shown in Table~\ref{coverage}, 97\% of all methods were reachable from analysis.  The rest 3\% that were not covered were likely because our current analysis did not add entry points for nested functions.  We then looked at the coverage of call sites within these methods.  Of the 646,503 call sites across all programs that we could analyze, 461,281 were captured by the analysis (71.4\%).  Approximately 69.8\% were API calls, modeled in our work as turtles.  That is, a significant portion of user code in data science code is actually calls to various library functions, as one might expect.
+
+
+\begin{table}
+\begin{center}
+\begin{tabular}{ |l|l|}
+ \hline
+All methods count & 65900 \\
+All reachable methods count & 63957 \\ \hline
+All call sites count & 646503 \\ 
+All call sites that were targets in analysis & 461281 \\
+Turtle call site counts & 322122 \\ \hline
+\end{tabular}
+\end{center}
+\caption{Analysis Coverage Results}
+\label{coverage}
+\end{table}
+
+

@@ -1,0 +1,50 @@
+\subsection{AutoML}
+Automation of machine learning is a very rich space spanning the automated generation of data science workflows, which is nothing but a problem of program composition (e.g., \cite{Feurer:2015:ERA:2969442.2969547}, \cite{Olson:2016:ETP:2908812.2908918}), to the tuning of hyper-parameters that govern the performance of these models (\cite{Feurer:2014:UMI:3015544.3015549}).  For this example, we focus on the hyper-parameter tuning problem.  There are many techniques that have been explored for efficient parameter search such as grid search, Bayesian techniques, etc., but most require many different runs of machine learning models with parameters set to different values which becomes infeasible for large datasets.  Mining usage patterns can help reduce the search space, and gives an automated system helpful starting points for search.  To explore these ideas, we collected a set of 194 SciKit Learn models and constructed a graph query in SPARQL, to ask what constants or turtles flow into the arguments of each of these models.  For the purposes of this exercise, we asked about named parameters, because unifying them with the positional arguments that correspond to named parameters requires structuring the documentation on each method to establish correspondence between named arguments and their positions.  
+
+\begin{figure}[h]
+\begin{centering}
+\lstinputlisting[language=Python,escapechar=|]{./query_constructors_sparql.txt}
+\caption{SPARQL query to detect flow into parameters\\
+of SciKit Learn models}
+\label{code:query_constructors}
+\end{centering}
+\end{figure}
+
+\begin{figure}[h]
+\begin{centering}
+\lstinputlisting[language=Python,escapechar=|]{./query_constructor_omitted_sparql.txt}
+\caption{SPARQL query to detect models with \\
+cv set to its default}
+\label{code:query_constructors_omitted}
+\end{centering}
+\end{figure}
+
+Figure~\ref{code:query_constructors} shows the query used to find all the named arguments that flow into each model's constructor.  We modified the query in code to put in a constant for each class name we found for SciKit Learn's models using the following snippet from the library to find all estimators:
+\begin{verbatim}
+sklearn.utils.testing.all_estimators(
+  include_dont_test=True, 
+  include_meta_estimators=True, 
+  include_other=True)
+\end{verbatim}.  
+
+
+For each model, we constructed bins that captured the different sort of values that were used for each parameter.  The code mined 1452 parameters for the 194 models.  Table~\ref{hyper-parameter optimization} shows an interesting example, which is representative of many parameters in SciKit Learn.  The parameter \textbf{cv} here is a mixed type parameter, which determines the cross-validation splitting strategy. Possible inputs according to the documentation are: (a) None, to use the default 3-fold cross-validation, (b) integer, to specify the number of folds, (c) another cross validation splitter, (d) an iterable yielding (train, test) splits as arrays of indices.  While the query shown in Figure~\ref{code:query_constructors} finds all set named parameters for the model, one needs negation again to find constructors where the parameter was explicitly not set.  Figure~\ref{code:query_constructors_omitted} shows this query, where any model created for {\tt RFECV} is first computed, and any model with a named argument of \textbf{cv} is subtracted from this set.  As can be seen from Table ~\ref{hyper-parameter optimization}, we can see from the analysis the types of other cross validation objects passed in as parameters in usage, along with commonly used integer values.  This example highlights the problems when one is trying to automatically build a model using search - the space is large, and made worse by the fact that there are multiple types that one can try for just a single parameter.  Usage statistics can guide the search to be much more efficient by pruning the space of integers to try (1-10), and by restricting the types of cross validation objects to try.  Note that in reality, even knowing that specific types are valid here is not available in a machine interpretable form for auto tuning systems.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{ |l|l|} 
+ \hline
+None & 3 \\ \hline
+StratifiedKFold.cross\_validation.sklearn & 5 \\ \hline
+split.LeavePGroupsOut.model\_selection.sklearn & 3 \\ \hline
+10 & 1 \\ \hline
+5 & 4 \\ \hline
+3 & 2 \\ \hline
+2 & 2 \\ \hline
+\hline
+\end{tabular}
+\end{center}
+\caption{Distribution of \textbf{cv} parameter values\\
+of sklearn.feature\_selection.RFECV}
+\label{hyper-parameter optimization}
+\end{table}
