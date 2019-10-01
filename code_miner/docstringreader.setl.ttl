@@ -73,6 +73,27 @@ result = enumerate(docstrings_file)
 [{
 		"@for": "function in load_json('../'+row.decode('utf8').strip())",
 		"@do": {
+			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
+			"@type": [
+				"codegraph:PythonModule",
+			],
+		}
+	},
+	{
+		"@for": "function in load_json('../'+row.decode('utf8').strip())",
+		"@do": {
+			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}",
+			"@type": [
+				"codegraph:Class",
+				"owl:Class"
+			],
+			"dcterms:isPartOf": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
+			"rdfs:subClassOf": "prov:Entity",
+		}
+	},
+    {
+		"@for": "function in load_json('../'+row.decode('utf8').strip())",
+		"@do": {
 			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}.{{function['function']}}",
 			"@type": [
 				"codegraph:Function",
@@ -84,34 +105,6 @@ result = enumerate(docstrings_file)
 			"skos:definition": "{{function['docstring']}}"
 		}
 
-	},
-	{
-		"@for": "function in load_json('../'+row.decode('utf8').strip())",
-		"@do": {
-			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
-			"@type": [
-				"codegraph:Module",
-				"owl:Class"
-			],
-			"dcterms:isPartOf": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
-			"rdfs:subClassOf": "prov:Entity",
-			"rdfs:label": "{{function['module']}}",
-			"skos:definition": "{{function['docstring']}}"
-		}
-	},
-	{
-		"@for": "function in load_json('../'+row.decode('utf8').strip())",
-		"@do": {
-			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}",
-			"@type": [
-				"codegraph:Klass",
-				"owl:Class"
-			],
-			"dcterms:isPartOf": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
-			"rdfs:subClassOf": "prov:Entity",
-			"rdfs:label": "{{function['klass']}}",
-			"skos:definition": "{{function['docstring']}}"
-		}
 	}
 ]'''].
 
