@@ -75,7 +75,7 @@ result = enumerate(docstrings_file)
 		"@do": {
 			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
 			"@type": [
-				"codegraph:PythonModule",
+				"codegraph:PythonModule"
 			],
 		}
 	},
@@ -88,14 +88,14 @@ result = enumerate(docstrings_file)
 				"owl:Class"
 			],
 			"dcterms:isPartOf": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
-			"rdfs:subClassOf": "prov:Entity",
+			"rdfs:subClassOf": "prov:Entity"
 		}
 	},
     {
 		"@for": "function in load_json('../'+row.decode('utf8').strip())",
 		"@do": {
 			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}.{{function['function']}}",
-			"@type": [
+			"@type": [s
 				"codegraph:Function",
 				"owl:Class"
 			],
