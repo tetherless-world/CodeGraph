@@ -81,7 +81,7 @@ result = lambda x: list(reversed(x))
                 "@id" : "codegraph:{{pubid}}/activity/{{row['nodeNumber']}}",
                 "@type" : [
                   "prov:Activity", 
-                  "urn:python/{{'.'.join(reversed(row['path']))}}"
+                  "http://purl.org/twc/codegraph/python/{{'.'.join(reversed(row['path']))}}"
                 ],
                 "rdfs:label" : "{{row['source'].strip()}}",
                 "prov:used" : [
@@ -95,7 +95,7 @@ result = lambda x: list(reversed(x))
                         { "@if" : "not isinstance(arg, list)", "@id" : "codegraph:Constant"}, 
                         { 
                           "@if" : "not isinstance(arg, list)", 
-                          "@id" : "urn:python/{{arg.__class__.__module__}}.{{arg.__class__.__name__}}"
+                          "@id" : "http://purl.org/twc/codegraph/python/{{arg.__class__.__module__}}.{{arg.__class__.__name__}}"
                         } 
                       ],
                       "prov:value" : [ 

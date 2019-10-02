@@ -73,7 +73,7 @@ result = enumerate(docstrings_file)
 [{
 		"@for": "function in load_json('../'+row.decode('utf8').strip())",
 		"@do": {
-			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
+			"@id": "http://purl.org/twc/codegraph/python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
 			"@type": [
 				"codegraph:PythonModule"
 			],
@@ -82,24 +82,24 @@ result = enumerate(docstrings_file)
 	{
 		"@for": "function in load_json('../'+row.decode('utf8').strip())",
 		"@do": {
-			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}",
+			"@id": "http://purl.org/twc/codegraph/python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}",
 			"@type": [
 				"codegraph:Class",
 				"owl:Class"
 			],
-			"dcterms:isPartOf": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
+			"dcterms:isPartOf": "http://purl.org/twc/codegraph/python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
 			"rdfs:subClassOf": "prov:Entity"
 		}
 	},
     {
 		"@for": "function in load_json('../'+row.decode('utf8').strip())",
 		"@do": {
-			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}.{{function['function']}}",
-			"@type": [s
+			"@id": "http://purl.org/twc/codegraph/python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}.{{function['function']}}",
+			"@type": [
 				"codegraph:Function",
 				"owl:Class"
 			],
-			"dcterms:isPartOf": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}",
+			"dcterms:isPartOf": "http://purl.org/twc/codegraph/python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}",
 			"rdfs:subClassOf": "prov:Activity",
 			"rdfs:label": "{{function['klass']}}",
 			"skos:definition": "{{function['docstring']}}"

@@ -72,12 +72,12 @@ result = enumerate(hierarchies_file)
 [{
 		"@for": "function in load_json('../'+row.decode('utf8').strip())",
 		"@do": {
-			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}.{{function['base_classes']}}",
+			"@id": "http://purl.org/twc/codegraph/python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}.{{function['base_classes']}}",
 			"@type": [
 				"codegraph:Class",
 				"owl:Class"
 			],
-			"dcterms:isPartOf": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
+			"dcterms:isPartOf": "http://purl.org/twc/codegraph/python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
 			"rdfs:subClassOf": "prov:Entity",
 			"rdfs:label": "{{function['base_classes']}}"
 		}
@@ -86,12 +86,12 @@ result = enumerate(hierarchies_file)
 	{
 		"@for": "function in load_json('../'+row.decode('utf8').strip())",
 		"@do": {
-			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}",
+			"@id": "http://purl.org/twc/codegraph/python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}",
 			"@type": [
 				"codegraph:Class",
 				"owl:Class"
 			],
-			"dcterms:isPartOf": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}.{{function['base_classes']}}",
+			"dcterms:isPartOf": "http://purl.org/twc/codegraph/python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}.{{function['base_classes']}}",
 			"rdfs:subClassOf": "prov:Entity",
 			"rdfs:label": "{{function['klass']}}"
 		}
