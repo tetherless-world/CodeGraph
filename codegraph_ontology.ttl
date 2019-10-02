@@ -1,0 +1,162 @@
+@prefix : <http://purl.org/twc/codegraph/> .
+@prefix py: <urn:python/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://purl.org/twc/codegraph/ontology> .
+
+<http://purl.org/twc/codegraph/ontology> rdf:type owl:Ontology ;
+                                          owl:versionIRI <http://purl.org/twc/codegraph/ontology/0.1> ;
+                                          owl:imports <http://www.w3.org/ns/prov-o-20130430> .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://www.w3.org/2004/02/skos/core#altLabel
+<http://www.w3.org/2004/02/skos/core#altLabel> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#definition
+<http://www.w3.org/2004/02/skos/core#definition> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#notation
+<http://www.w3.org/2004/02/skos/core#notation> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#prefLabel
+<http://www.w3.org/2004/02/skos/core#prefLabel> rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://purl.org/twc/codegraph/Argument
+:Argument rdf:type owl:Class ;
+          rdfs:subClassOf <http://www.w3.org/ns/prov#Role> .
+
+
+###  http://purl.org/twc/codegraph/Class
+:Class rdf:type owl:Class ;
+       rdfs:subClassOf :InformationArtifact .
+
+
+###  http://purl.org/twc/codegraph/Constant
+:Constant rdf:type owl:Class ;
+          rdfs:subClassOf :Object .
+
+
+###  http://purl.org/twc/codegraph/Function
+:Function rdf:type owl:Class ;
+          rdfs:subClassOf :InformationArtifact .
+
+
+###  http://purl.org/twc/codegraph/InformationArtifact
+:InformationArtifact rdf:type owl:Class ;
+                     rdfs:subClassOf <http://www.w3.org/ns/prov#Entity> .
+
+
+###  http://purl.org/twc/codegraph/NamedArgument
+:NamedArgument rdf:type owl:Class ;
+               owl:equivalentClass [ owl:intersectionOf ( :Argument
+                                                          [ rdf:type owl:Restriction ;
+                                                            owl:onProperty <http://www.w3.org/ns/prov#value> ;
+                                                            owl:allValuesFrom xsd:string
+                                                          ]
+                                                        ) ;
+                                     rdf:type owl:Class
+                                   ] ;
+               rdfs:subClassOf :Argument .
+
+
+###  http://purl.org/twc/codegraph/Object
+:Object rdf:type owl:Class ;
+        rdfs:subClassOf :InformationArtifact .
+
+
+###  http://purl.org/twc/codegraph/PositionalArgument
+:PositionalArgument rdf:type owl:Class ;
+                    owl:equivalentClass [ owl:intersectionOf ( :Argument
+                                                               [ rdf:type owl:Restriction ;
+                                                                 owl:onProperty <http://www.w3.org/ns/prov#value> ;
+                                                                 owl:allValuesFrom xsd:integer
+                                                               ]
+                                                             ) ;
+                                          rdf:type owl:Class
+                                        ] ;
+                    rdfs:subClassOf :Argument .
+
+
+###  urn:python/builtins.bytes
+py:builtins.bytes rdf:type owl:Class ;
+                  rdfs:subClassOf :Constant ,
+                                  py:builtins.object ;
+                  rdfs:label "Byte Array" ;
+                  <http://www.w3.org/2004/02/skos/core#altLabel> "builtins.bytearray" ;
+                  <http://www.w3.org/2004/02/skos/core#notation> "bytes" .
+
+
+###  urn:python/builtins.float
+py:builtins.float rdf:type owl:Class ;
+                  owl:equivalentClass [ owl:intersectionOf ( py:builtins.object
+                                                             [ rdf:type owl:Restriction ;
+                                                               owl:onProperty <http://www.w3.org/ns/prov#value> ;
+                                                               owl:allValuesFrom xsd:decimal
+                                                             ]
+                                                           ) ;
+                                        rdf:type owl:Class
+                                      ] ;
+                  rdfs:subClassOf :Constant ,
+                                  py:builtins.object ;
+                  rdfs:label "Floating Point Number" ;
+                  <http://www.w3.org/2004/02/skos/core#altLabel> "builtins.float" ;
+                  <http://www.w3.org/2004/02/skos/core#notation> "float" .
+
+
+###  urn:python/builtins.int
+py:builtins.int rdf:type owl:Class ;
+                owl:equivalentClass [ owl:intersectionOf ( py:builtins.object
+                                                           [ rdf:type owl:Restriction ;
+                                                             owl:onProperty <http://www.w3.org/ns/prov#value> ;
+                                                             owl:allValuesFrom xsd:integer
+                                                           ]
+                                                         ) ;
+                                      rdf:type owl:Class
+                                    ] ;
+                rdfs:subClassOf :Constant ,
+                                py:builtins.object ;
+                rdfs:label "Integer" ;
+                <http://www.w3.org/2004/02/skos/core#altLabel> "builtins.int" ;
+                <http://www.w3.org/2004/02/skos/core#notation> "int" .
+
+
+###  urn:python/builtins.object
+py:builtins.object rdf:type owl:Class ;
+                   rdfs:subClassOf :Object ;
+                   rdfs:label "Python Object" ;
+                   <http://www.w3.org/2004/02/skos/core#altLabel> "builtins.object" ;
+                   <http://www.w3.org/2004/02/skos/core#notation> "object" .
+
+
+###  urn:python/builtins.str
+py:builtins.str rdf:type owl:Class ;
+                owl:equivalentClass [ owl:intersectionOf ( py:builtins.object
+                                                           [ rdf:type owl:Restriction ;
+                                                             owl:onProperty <http://www.w3.org/ns/prov#value> ;
+                                                             owl:allValuesFrom xsd:string
+                                                           ]
+                                                         ) ;
+                                      rdf:type owl:Class
+                                    ] ;
+                rdfs:subClassOf :Constant ,
+                                py:builtins.object ;
+                rdfs:label "String" ;
+                <http://www.w3.org/2004/02/skos/core#altLabel> "builtins.str" ;
+                <http://www.w3.org/2004/02/skos/core#notation> "str" .
+
+
+###  Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi

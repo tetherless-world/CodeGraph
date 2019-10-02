@@ -76,7 +76,7 @@ result = enumerate(docstrings_file)
 			"@id": "http://purl.org/twc/codegraph/python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
 			"@type": [
 				"codegraph:PythonModule"
-			],
+			]
 		}
 	},
 	{
@@ -94,6 +94,7 @@ result = enumerate(docstrings_file)
     {
 		"@for": "function in load_json('../'+row.decode('utf8').strip())",
 		"@do": {
+
 			"@id": "http://purl.org/twc/codegraph/python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}.{{function['function']}}",
 			"@type": [
 				"codegraph:Function",
@@ -101,10 +102,10 @@ result = enumerate(docstrings_file)
 			],
 			"dcterms:isPartOf": "http://purl.org/twc/codegraph/python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}",
 			"rdfs:subClassOf": "prov:Activity",
+      "rdf:value": "{{function['lineno']}}",
 			"rdfs:label": "{{function['klass']}}",
 			"skos:definition": "{{function['docstring']}}"
 		}
-
 	}
 ]'''].
 
