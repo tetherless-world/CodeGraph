@@ -73,30 +73,10 @@ result = enumerate(docstrings_file)
 [{
 		"@for": "function in load_json('../'+row.decode('utf8').strip())",
 		"@do": {
-			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}.{{function['function']}}",
-			"@type": [
-				"codegraph:Function",
-				"owl:Class"
-			],
-			"dcterms:isPartOf": "urn:python/{{module}}.{{function['klass']}}",
-			"rdfs:subClassOf": "prov:Activity",
-			"rdfs:label": "{{function['klass']}}",
-			"skos:definition": "{{function['docstring']}}"
-		}
-
-	},
-	{
-		"@for": "function in load_json('../'+row.decode('utf8').strip())",
-		"@do": {
 			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
 			"@type": [
-				"codegraph:Module",
-				"owl:Class"
-			],
-			"dcterms:isPartOf": "urn:python/{{module}}",
-			"rdfs:subClassOf": "prov:Entity",
-			"rdfs:label": "{{function['module']}}",
-			"skos:definition": "{{function['docstring']}}"
+				"codegraph:PythonModule"
+			]
 		}
 	},
 	{
@@ -104,11 +84,24 @@ result = enumerate(docstrings_file)
 		"@do": {
 			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}",
 			"@type": [
-				"codegraph:Klass",
+				"codegraph:Class",
 				"owl:Class"
 			],
-			"dcterms:isPartOf": "urn:python/{{klass}}",
-			"rdfs:subClassOf": "prov:Entity",
+			"dcterms:isPartOf": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
+			"rdfs:subClassOf": "prov:Entity"
+		}
+	},
+    {
+		"@for": "function in load_json('../'+row.decode('utf8').strip())",
+		"@do": {
+			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}.{{function['function']}}",
+			"@type": [
+				"codegraph:Function",
+				"owl:Class"
+			],
+			"dcterms:isPartOf": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}",
+			"rdfs:subClassOf": "prov:Activity",
+      "rdf:value": "{{function['lineno']}}",
 			"rdfs:label": "{{function['klass']}}",
 			"skos:definition": "{{function['docstring']}}"
 		}

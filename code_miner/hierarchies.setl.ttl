@@ -1,0 +1,106 @@
+@prefix rdf:           <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:          <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:           <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:           <http://www.w3.org/2002/07/owl#> .
+@prefix skos:          <http://www.w3.org/2004/02/skos/core#> .
+@prefix prov:          <http://www.w3.org/ns/prov#> .
+@prefix sio:           <http://semanticscience.org/resource/> .
+@prefix dcat:          <http://www.w3.org/ns/dcat#> .
+@prefix dcterms:       <http://purl.org/dc/terms/> .
+@prefix void:          <http://rdfs.org/ns/void#> .
+@prefix setl:          <http://purl.org/twc/vocab/setl/> .
+@prefix csvw:          <http://www.w3.org/ns/csvw#> .
+@prefix pv:            <http://purl.org/net/provenance/ns#> .
+@prefix np:            <http://www.nanopub.org/nschema#> .
+@prefix api_vocab: <http://purl.org/linked-data/api/vocab#>.
+@prefix :              <http://purl.org/twc/codegraph/setl/> .
+
+:load_json a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:value '''
+global load
+from json import load
+def result(f):
+    with open(f) as fh:
+        result = load(fh)
+        #print (result)
+        return result
+'''.
+
+:debug a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:value '''
+def result(x):
+    print(x)
+    return x
+'''.
+
+:hierarchies_file_list a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:qualifiedDerivation [
+    a prov:Derivation;
+    prov:entity :hierarchies_file;
+    prov:hadRole [ dcterms:identifier "hierarchies_file"]
+  ];
+  prov:value '''
+result = enumerate(hierarchies_file)
+'''.
+
+:hierarchies_file a <https://www.iana.org/assignments/media-types/text/plain>;
+  prov:wasGeneratedBy [
+    a setl:Extract;
+    prov:used <file://../class_hierarchies/index.txt>;
+  ].
+
+:hierarchies_import a setl:SemanticETLScript;
+  rdfs:label "CodeGraph Import SETL Script".
+
+:hierarchies_ontology a void:Dataset;
+  prov:wasGeneratedBy :import, [
+    a setl:Transform, setl:JSLDT;
+    prov:used :docstrings_file_list;
+    prov:qualifiedUsage [ a prov:Usage; prov:entity :load_json; prov:hadRole [ dcterms:identifier "load_json"]];
+    setl:hasContext '''{
+    "sio" :     "http://semanticscience.org/resource/",
+    "rdfs" :    "http://www.w3.org/2000/01/rdf-schema#",
+    "np":       "http://www.nanopub.org/nschema#",
+    "dcterms":       "http://purl.org/dc/terms/",
+    "codegraph":   "http://purl.org/twc/codegraph/",
+    "prov":     "http://www.w3.org/ns/prov#"
+}''';
+    prov:value '''
+[{
+		"@for": "function in load_json('../'+row.decode('utf8').strip())",
+		"@do": {
+			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}.{{function['base_classes']}}",
+			"@type": [
+				"codegraph:Class",
+				"owl:Class"
+			],
+			"dcterms:isPartOf": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
+			"rdfs:subClassOf": "prov:Entity",
+			"rdfs:label": "{{function['base_classes']}}"
+		}
+
+	},
+	{
+		"@for": "function in load_json('../'+row.decode('utf8').strip())",
+		"@do": {
+			"@id": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}",
+			"@type": [
+				"codegraph:Class",
+				"owl:Class"
+			],
+			"dcterms:isPartOf": "urn:python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}.{{function['base_classes']}}",
+			"rdfs:subClassOf": "prov:Entity",
+			"rdfs:label": "{{function['klass']}}"
+		}
+	}
+]'''].
+
+<docstrings.ttl> a pv:File;
+    dcterms:format "application/trig";
+    prov:wasGeneratedBy [
+      a setl:Load;
+      prov:used :docstrings_ontology ;
+    ].
