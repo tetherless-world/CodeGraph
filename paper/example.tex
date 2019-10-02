@@ -1,4 +1,4 @@
-\section{A Running Example}
+\section{Analysis Example}
 \label{sec:example}
 
 Figure~\ref{running_example} from GitHub brings out some of the analysis  
@@ -14,48 +14,83 @@ are imported at lines~\ref{line:importplt},~\ref{line:importnp}, and~\ref{line:i
 capture this common usage pattern of {\tt plot} in our knowledge  
 graph. 
 
- The first thing to note is that the code in this snippet is in three
-sections spread over roughly 200 lines of the source file.  Techniques
+\begin{figure*}[htb]
+\begin{center}
+\includegraphics[width=5in]{paper_figures/example_flow}
+\end{center}
+\caption{Dataflow in example}
+\label{fig:code_graph}
+\end{figure*}
+
+ The first thing to note is that the code in this snippet is in five
+pieces spread over roughly 200 lines of the source file.  Techniques
 based on source text or local structures such as ASTs or CFGs will not
 be able to capture dependencies over this range.  Global structures like a
-call graph can, but the call graph needs to contend with the dynamic
+call graph and dataflow analysis can.  Consider the call to {\tt ann\_show} on
+line~\ref{line:ann_show}; it clearly calls the function {\tt
+regress\_show} since that function is assigned to {\tt ann\_show}.
+Knowing this requires following the dataflow from the definition of
+{\tt regress\_show}, to its read, to the definition of {\tt
+ann\_show}, to its read.  Thus dataflow must be tracked globally
+across disparate portions of the code, as illustrated by the black
+lines and boxes in Figure~\ref{fig:code_graph}.  And the call graph
+must reflect that the function called depends on this dataflow, since
+the call is to {\tt regress\_show} due to the dataflow, as illustrated
+with the dashed arrow.  This is all complicated by the dynamic
 nature of Python, illustrated here by the assignment of the function
 {\tt regress\_show} to the variable {\tt ann\_show} on
 line~\ref{line:ann_show}.  Note that {\tt ann\_show} called on
 line~\ref{line:plotcall} is not even a function at all, but rather a variable
 assigned from the actual function.  Of the analysis frameworks that
-support interprocedural analysis including first class function,
+support interprocedural analysis including first class functions,
 relatively few have been applied to Python.  We use WALA, which has.
 
 This snippet also illustrates the API-intensive nature of such data
-science code.  There are fives lines of user code, and these lines
+science code.  There are seven lines of user code, and these lines
 make use of three APIs---{\tt Pandas}, {\tt Numpy}, {\tt
-  Matplotlib}---and four functions from them---{\tt read\_csv}, {\tt
-  mat}, {\tt to\_list}, {\tt plot}---with {\tt to\_list} being used
-three times.  And simple models of such functions will not suffice, as
-the return from {\tt to\_list} depends on what the argument is.  Such
-intensive use of diverse API calls is typical, and just these three
-APIs together have many thousands of functions.  Any manual modeling
-will be daunting due to the sheer scope of the APIs.  There is no
-formal static typing in this code to help; there is idiosyncratic
-English API documentation of varying quality, but the precise
-parametric semantics of functions like {\tt to\_list} is hard to
-capture robustly in human- and machine-comprehensible English.
-Luckily, as we show, our goals do not require knowing what the APIs
-do.
+Matplotlib}---and four functions from them---{\tt read\_csv}, {\tt
+mat}, {\tt to\_list}, {\tt plot}---with {\tt to\_list} being used
+three times.  The interplay of dataflow between the user code and its
+API calls is intricate and crucial to understanding dataflow.
+Consider what is required even to know that {\tt pyplot} is used on an
+object from {\tt numpy}.  The first step is straightforward dataflow
+from the {\tt import} call to {\tt np.mat}, shown by a yellow arrow.
+The {\tt mat} returns some object created by {\tt numpy} and then its
+{\tt T} field is extracted and assigned to {\tt yv\_ann}.  So {\tt
+yv\_ann} is created by {\tt numpy}, show by a yellow arrow to it.
+That same value is used in the {\tt ann\_show} call, with another
+yellow arrow connecting it.  We saw above how the call target was
+determined, so a dashed yellow arrow connects argument {\tt yv\_ann}
+to parameter {\tt yEv\_calc}.  The dataflow in {\tt regress\_show} is
+similar, with dataflow via {\tt yEv\_calc} and another value from {\tt
+numpy} created by {\tt np.mat}.  The last step is the dataflow from
+the {\tt pyplot} import to the {\tt plt.plot} call, where it is clear
+that a call to {\tt pyplot} is using a value from {\tt numpy}.
 
-But while the precise meanings of API calls do not always matter, we
-do need to track the flow of objects between different calls.  Since
-we want to capture that {\tt plot} is used on the result of a {\tt
-  mat} call, we need to track data flow.  We really want an object
-that represents whatever it may be that {\tt mat} returns.  Beyond
-that, we need to follow accesses to that object, such as the read of
-{\tt T} on line~\ref{line:mat}.  To do this, we introduce turtle
-objects: every API call returns a fresh turtle, and accesses to
-properties---such as {\tt T}--- return the same unknown object as its
-container.  Thus the calls on {\tt read\_csv}, {\tt mat}, {\tt
-  to\_list}, and {\tt  plot} all return new turtle objects.  On the
-other hand, user code objects, such as the function {\tt
-  regress\_show} are treated normally.  As we show, this mechanism
-allows us to track data flow with sufficient precision without needing
-to model APIs at all.
+The foregoing seems to assume we understand dataflow through the API
+calls, but any actual model of the libraries will be daunting.  Any
+actual analysis of the code must contend with a large code base in
+multiple languages.  And any model will be difficult due to the sheer
+scope of the APIs, with thousands of calls in these APIs alone.  There
+is no formal static typing in this code to help; there is
+idiosyncratic English API documentation of varying quality, but the
+precise parametric semantics of functions like {\tt to\_list} is hard
+to capture robustly in human- and machine-comprehensible English.  And
+yet we need to capture enough library semantics to understand dataflow
+at a high level.
+
+To just approximate dataflow, But the precise meanings of API calls do
+not always matter as long as we track the flow of objects between
+different calls.  For instance, since we want to capture that {\tt
+plot} is used on the result of a {\tt mat} call, we need to track
+data flow.  We really want an object that represents whatever it may
+be that {\tt mat} returns.  Beyond that, we need to follow accesses to
+that object, such as the read of {\tt T} on line~\ref{line:mat}.  To
+do this, we introduce turtle objects: every API call returns a fresh
+turtle, and accesses to properties---such as {\tt T}--- return the
+same unknown object as its container.  Thus the calls on {\tt
+  read\_csv}, {\tt mat}, {\tt to\_list}, and {\tt plot} all return new
+turtle objects.  On the other hand, user code objects, such as the
+function {\tt regress\_show} are treated normally.  As we show, this
+mechanism allows us to track data flow with sufficient precision
+without needing to model APIs at all.
