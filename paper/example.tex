@@ -79,7 +79,7 @@ computed from data read by {\tt pandas}.  The first steps are
 straightforward dataflow from the {\tt import} calls to {\tt np.mat}
 and {\tt pd.read\_csv}, shown by a yellow and pink arrow respectively.
 The result of {\tt read\_csv} is assigned to {\tt df\_ann}, which is
-used as an argument to {\tt np.mat}, shown by pink arrows.  The {\tt
+used to compute the argument to {\tt np.mat}, shown by pink arrows.  The {\tt
 mat} returns some object created by {\tt numpy} and then its {\tt T}
 field is extracted and assigned to {\tt yv\_ann}.  So {\tt yv\_ann} is
 created by {\tt numpy}, show by a yellow arrow to it.  That same value
