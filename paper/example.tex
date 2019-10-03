@@ -65,26 +65,32 @@ assigned from the actual function.  Of the analysis frameworks that
 support interprocedural analysis including first class functions,
 relatively few have been applied to Python.  We use WALA, which has, and supports many languages such as Javascript and Java.
 
-This snippet also illustrates the fact that user code tends to rely heavily on imported library code, which is the main focus of what we represent in the knowledge graph.  There are seven lines of user code, and these lines
-make use of three libraries ---{\tt Pandas}, {\tt Numpy}, {\tt
-Matplotlib}---and four functions from them---{\tt read\_csv}, {\tt
-mat}, {\tt to\_list}, {\tt plot}---with {\tt to\_list} being used
-three times.  The interplay of dataflow between the user code and its
-library calls is intricate and crucial to understanding dataflow.
-Consider what is required even to know that {\tt pyplot} is used on an
-object from {\tt numpy}.  The first step is straightforward dataflow
-from the {\tt import} call to {\tt np.mat}, shown by a yellow arrow.
-The {\tt mat} returns some object created by {\tt numpy} and then its
-{\tt T} field is extracted and assigned to {\tt yv\_ann}.  So {\tt
-yv\_ann} is created by {\tt numpy}, show by a yellow arrow to it.
-That same value is used in the {\tt ann\_show} call, with another
-yellow arrow connecting it.  We saw above how the call target was
-determined, so a dashed yellow arrow connects argument {\tt yv\_ann}
-to parameter {\tt yEv\_calc}.  The dataflow in {\tt regress\_show} is
-similar, with dataflow via {\tt yEv\_calc} and another value from {\tt
-numpy} created by {\tt np.mat}.  The last step is the dataflow from
-the {\tt pyplot} import to the {\tt plt.plot} call, where it is clear
-that a call to {\tt pyplot} is using a value from {\tt numpy}.
+This snippet also illustrates the fact that user code tends to rely
+heavily on imported library code, which is the main focus of what we
+represent in the knowledge graph.  There are seven lines of user code,
+and these lines make use of three libraries ---{\tt Pandas}, {\tt
+Numpy}, {\tt Matplotlib}---and four functions from them---{\tt
+read\_csv}, {\tt mat}, {\tt to\_list}, {\tt plot}---with {\tt
+to\_list} being used three times.  The interplay of dataflow between
+the user code and its library calls is intricate and crucial to
+understanding dataflow.  Consider what is required even to know that
+{\tt pyplot} is used on an object from {\tt numpy}, which is in turn
+computed from data read by {\tt pandas}.  The first steps are
+straightforward dataflow from the {\tt import} calls to {\tt np.mat}
+and {\tt pd.read\_csv}, shown by a yellow and pink arrow respectively.
+The result of {\tt read\_csv} is assigned to {\tt df\_ann}, which is
+used as an argument to {\tt np.mat}, shown by pink arrows.  The {\tt
+mat} returns some object created by {\tt numpy} and then its {\tt T}
+field is extracted and assigned to {\tt yv\_ann}.  So {\tt yv\_ann} is
+created by {\tt numpy}, show by a yellow arrow to it.  That same value
+is used in the {\tt ann\_show} call, with another yellow arrow
+connecting it.  We saw above how the call target was determined, so a
+dashed yellow arrow connects argument {\tt yv\_ann} to parameter {\tt
+yEv\_calc}.  The dataflow in {\tt regress\_show} is similar, with
+dataflow via {\tt yEv\_calc} and another value from {\tt numpy}
+created by {\tt np.mat}.  The last step is the dataflow from the {\tt
+pyplot} import to the {\tt plt.plot} call, where it is clear that a
+call to {\tt pyplot} is using a value from {\tt numpy}.
 
 The foregoing seems to assume we understand dataflow through the library
 calls, but any actual model of code within the libraries will be daunting.  Any
