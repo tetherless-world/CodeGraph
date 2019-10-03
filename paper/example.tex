@@ -1,6 +1,26 @@
 \section{Analysis Example}
 \label{sec:example}
 
+\begin{figure*}[htb]
+\centering 
+{\renewcommand\thelstnumber{%
+\ifnum\value{lstnumber}>29\relax \the\numexpr  
+278+\value{lstnumber}\relax\else 
+\ifnum\value{lstnumber}>25\relax \the\numexpr  
+139+\value{lstnumber}\relax\else 
+\ifnum\value{lstnumber}>22\relax \the\numexpr  
+132+\value{lstnumber}\relax\else 
+\ifnum\value{lstnumber}>20\relax \the\numexpr  
+130+\value{lstnumber}\relax\else 
+\ifnum\value{lstnumber}>7\relax \the\numexpr  
+92+\value{lstnumber}\relax\else 
+\the\numexpr  
+6+\value{lstnumber}\fi\fi\fi\fi\fi}
+\lstinputlisting[language=Python,escapechar=|]{./example.py}}
+\caption{Code example from GitHub}
+\label{running_example}
+\end{figure*}
+
 Figure~\ref{running_example} from GitHub brings out some of the analysis  
 challenges in constructing a knowledge graph for dynamic languages such as Python.  
 The illustrative code shows a simple example in which a CSV file is  
