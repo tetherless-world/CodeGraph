@@ -13,7 +13,7 @@
 @prefix pv:            <http://purl.org/net/provenance/ns#> .
 @prefix np:            <http://www.nanopub.org/nschema#> .
 @prefix api_vocab: <http://purl.org/linked-data/api/vocab#>.
-@prefix :              <http://purl.org/twc/codegraph/setl/> .
+@prefix :              <http://purl.org/twc/graph4code/setl/> .
 
 :load_json a owl:Class, prov:SoftwareAgent, setl:PythonScript;
   rdfs:subClassOf prov:Activity;
@@ -49,58 +49,52 @@ result = enumerate(hierarchies_file)
 :hierarchies_file a <https://www.iana.org/assignments/media-types/text/plain>;
   prov:wasGeneratedBy [
     a setl:Extract;
-    prov:used <file://../class_hierarchies/index.txt>;
+    prov:used <file:///data/data/indices/hierarchies.txt>;
   ].
 
 :hierarchies_import a setl:SemanticETLScript;
-  rdfs:label "CodeGraph Import SETL Script".
+  rdfs:label "Graph4code Import SETL Script".
 
 :hierarchies_ontology a void:Dataset;
   prov:wasGeneratedBy :import, [
     a setl:Transform, setl:JSLDT;
-    prov:used :docstrings_file_list;
+    prov:used :hierarchies_file_list;
     prov:qualifiedUsage [ a prov:Usage; prov:entity :load_json; prov:hadRole [ dcterms:identifier "load_json"]];
     setl:hasContext '''{
     "sio" :     "http://semanticscience.org/resource/",
     "rdfs" :    "http://www.w3.org/2000/01/rdf-schema#",
     "np":       "http://www.nanopub.org/nschema#",
     "dcterms":       "http://purl.org/dc/terms/",
-    "codegraph":   "http://purl.org/twc/codegraph/",
+    "skos" : "http://www.w3.org/2004/02/skos/core#",
+    "graph4code":   "http://purl.org/twc/graph4code/",
     "prov":     "http://www.w3.org/ns/prov#"
 }''';
     prov:value '''
 [{
-		"@for": "function in load_json('../'+row.decode('utf8').strip())",
+		"@for": "function in load_json('/data/data/'+row.decode('utf8').strip())",
 		"@do": {
-			"@id": "http://purl.org/twc/codegraph/python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}.{{function['base_classes']}}",
-			"@type": [
-				"codegraph:Class",
-				"owl:Class"
-			],
-			"dcterms:isPartOf": "http://purl.org/twc/codegraph/python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}",
-			"rdfs:subClassOf": "prov:Entity",
-			"rdfs:label": "{{function['base_classes']}}"
-		}
-
-	},
-	{
-		"@for": "function in load_json('../'+row.decode('utf8').strip())",
-		"@do": {
-			"@id": "http://purl.org/twc/codegraph/python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}",
-			"@type": [
-				"codegraph:Class",
-				"owl:Class"
-			],
-			"dcterms:isPartOf": "http://purl.org/twc/codegraph/python/{{'.'.join(row.decode('utf8').split('.')[0].split('/')[1:])}}.{{function['klass']}}.{{function['base_classes']}}",
-			"rdfs:subClassOf": "prov:Entity",
-			"rdfs:label": "{{function['klass']}}"
+    "@id": "http://purl.org/twc/graph4code/python/{{function['module']}}.{{function['klass']}}",
+    "@type": [ "graph4code:Class", "owl:Class" ],
+    "dcterms:isPartOf": {"@id" : "http://purl.org/twc/graph4code/python/{{function['module']}}"},
+    "rdfs:subClassOf": [
+      { "@id" : "prov:Entity"},
+      { "@if" : "len(function['base_classes']) == 0", "@id" : "graph4code:python/builtins.object"},
+      {
+        "@for" : "superClass in function['base_classes']",
+        "@do" : {
+          "@id" : "http://purl.org/twc/graph4code/python/{%if 'source_file_path' in superClass %}{{superClass['source_file_path'][0]}}{% else %}{{function['module']}}{%endif%}.{{superClass['klass']}}"
+        }
+      }
+    ],
+    "rdfs:label": "{{function['klass']}}",
+    "skos:altLabel": "{{function['module']}}.{{function['klass']}}"
 		}
 	}
 ]'''].
 
-<docstrings.ttl> a pv:File;
+<hierarchies.ttl> a pv:File;
     dcterms:format "application/trig";
     prov:wasGeneratedBy [
       a setl:Load;
-      prov:used :docstrings_ontology ;
+      prov:used :hierarchies_ontology ;
     ].

@@ -1,0 +1,8 @@
+{{'''
+  graph ?assertion {
+    ?x a prov:Activity, ?target.
+    ?source a <http://schema.org/SoftwareSourceCode>.
+  }
+    bind(prov:used as ?link)
+    filter (!sameTerm(?target,prov:Activity))
+''' | probit(source=this.identifier) | tojson }}

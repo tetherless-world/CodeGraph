@@ -1,0 +1,306 @@
+@prefix rdf:           <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:          <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:           <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:           <http://www.w3.org/2002/07/owl#> .
+@prefix skos:          <http://www.w3.org/2004/02/skos/core#> .
+@prefix prov:          <http://www.w3.org/ns/prov#> .
+@prefix sio:           <http://semanticscience.org/resource/> .
+@prefix dcat:          <http://www.w3.org/ns/dcat#> .
+@prefix dcterms:       <http://purl.org/dc/terms/> .
+@prefix void:          <http://rdfs.org/ns/void#> .
+@prefix setl:          <http://purl.org/twc/vocab/setl/> .
+@prefix csvw:          <http://www.w3.org/ns/csvw#> .
+@prefix pv:            <http://purl.org/net/provenance/ns#> .
+@prefix np:            <http://www.nanopub.org/nschema#> .
+@prefix api_vocab: <http://purl.org/linked-data/api/vocab#>.
+@prefix :              <http://purl.org/twc/graph4code/setl/> .
+
+:load_json a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:value '''
+global load
+from json import load
+def result(f):
+    with open(f) as fh:
+        result = load(fh)
+        #print (result)
+        return result
+'''.
+
+:debug a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:value '''
+def result(x):
+    print(x)
+    return x
+'''.
+
+:docstrings_file_list a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:qualifiedDerivation [
+    a prov:Derivation;
+    prov:entity :docstrings_file;
+    prov:hadRole [ dcterms:identifier "docstrings_file"]
+  ];
+  prov:value '''
+result = enumerate(docstrings_file)
+'''.
+
+:docstrings_file a <https://www.iana.org/assignments/media-types/text/plain>;
+  prov:wasGeneratedBy [
+    a setl:Extract;
+    prov:used <file:///data/data/indices/docstrings.txt>;
+  ].
+
+:docstrings_import a setl:SemanticETLScript;
+  rdfs:label "Graph4code Import SETL Script".
+
+:docstrings_ontology a void:Dataset;
+  prov:wasGeneratedBy :import, [
+    a setl:Transform, setl:JSLDT;
+    prov:used :docstrings_file_list;
+    prov:qualifiedUsage [ a prov:Usage; prov:entity :load_json; prov:hadRole [ dcterms:identifier "load_json"]];
+    setl:hasContext '''{
+    "sio" :     "http://semanticscience.org/resource/",
+    "rdfs" :    "http://www.w3.org/2000/01/rdf-schema#",
+    "np":       "http://www.nanopub.org/nschema#",
+    "dcterms":       "http://purl.org/dc/terms/",
+    "dcterms":       "http://purl.org/dc/terms/",
+    "graph4code":   "http://purl.org/twc/graph4code/",
+    "skos" : "http://www.w3.org/2004/02/skos/core#",
+    "comment": "rdfs:comment",
+    "isa": {
+      "@id":"rdfs:subClassOf",
+      "@type":"@id"
+    },
+    "owl" : "http://www.w3.org/2002/07/owl#",
+    "Property": "rdfs:Property",
+    "Relation": "owl:ObjectProperty",
+    "Attribute": "owl:DatatypeProperty",
+    "AnnotationProperty": "owl:AnnotationProperty",
+    "Transitive": "owl:TransitiveProperty",
+    "Reflexive": "owl:ReflexiveProperty",
+    "Irreflexive": "owl:IrreflexiveProperty",
+    "Symmetric": "owl:SymmetricProperty",
+    "Asymmetric": "owl:AsymmetricProperty",
+    "Functional": "owl:FunctionalProperty",
+    "InverseFunctional": "owl:InverseFunctionalProperty",
+    "Class": "owl:Class",
+    "Restriction": "owl:Restriction",
+    "AllDifferent": "owl:AllDifferent",
+    "Ontology": "owl:Ontology",
+    "imports": {
+      "@id": "owl:imports",
+      "@type": "@id"
+    },
+    "value":"owl:hasValue",
+    "distinct": {
+      "@id": "owl:distinctMembers",
+      "@type": "@id"
+    },
+    "distinct": {
+      "@id": "owl:distinctMembers",
+      "@type": "@id"
+    },
+    "definedBy": {
+      "@id": "rdfs:isDefinedBy",
+      "@type": "@id"
+    },
+    "subPropertyOf": {
+      "@id": "rdfs:subPropertyOf",
+      "@type": "@id"
+    },
+    "range": {
+      "@id": "rdfs:range",
+      "@type": "@id"
+    },
+    "domain": {
+      "@id": "rdfs:domain",
+      "@type": "@id"
+    },
+    "seeAlso": {
+      "@id": "rdfs:seeAlso",
+      "@type": "@id"
+    },
+    "label": {
+      "@id": "rdfs:label"
+    },
+    "not" : {
+      "@id":"owl:disjointWith",
+      "@type":"@id"
+    },
+    "complement" : {
+      "@id":"owl:complementOf",
+      "@type":"@id"
+    },
+    "some" : {
+      "@id":"owl:someValuesFrom",
+      "@type":"@id"
+    },
+    "only" : {
+      "@id":"owl:allValuesFrom",
+      "@type":"@id"
+    },
+    "on" : {
+      "@id":"owl:onProperty",
+      "@type":"@id"
+    },
+    "inverse" : {
+      "@id":"owl:inverseOf",
+      "@type":"@id"
+    },
+    "equivalent" : {
+      "@id":"owl:equivalentClass",
+      "@type":"@id"
+    },
+    "and" : {
+      "@id":"owl:intersectionOf",
+      "@type":"@id",
+      "@container":"@list"
+    },
+    "or" : {
+      "@id":"owl:unionOf",
+      "@type":"@id",
+      "@container":"@list"
+    },
+    "key" : {
+      "@id":"owl:hasKey",
+      "@type":"@id",
+      "@container":"@list"
+    },
+    "in": {
+      "@id": "owl:oneOf",
+      "@type": "@id",
+      "@container": "@list"
+    },
+    "min": {
+      "@id": "owl:minCardinality",
+      "@type": "xsd:nonNegativeInteger"
+    },
+    "max": {
+      "@id": "owl:maxCardinality",
+      "@type": "xsd:nonNegativeInteger"
+    },
+    "minq": {
+      "@id": "owl:minQualifiedCardinality",
+      "@type": "xsd:nonNegativeInteger"
+    },
+    "maxq": {
+      "@id": "owl:maxQualifiedCardinality",
+      "@type": "xsd:nonNegativeInteger"
+    },
+    "exactq": {
+      "@id": "owl:qualifiedCardinality",
+      "@type": "xsd:nonNegativeInteger"
+    },
+    "exactly": {
+      "@id": "owl:cardinality",
+      "@type": "xsd:nonNegativeInteger"
+    },
+    "onClass": {
+      "@id": "owl:onClass",
+      "@type": "@id"
+    },
+    "hasSelf": {
+      "@id": "owl:hasSelf",
+      "@type": "xsd:boolean"
+    },
+    "prov":     "http://www.w3.org/ns/prov#"
+}''';
+    prov:value '''
+[{
+		"@for": "node in load_json('/data/data/'+row.decode('utf8').strip())",
+		"@do": {
+    "@if" : "'function' in node",
+    "@id": "graph4code:python/{{node['module'].replace('.data.projects.repositories_v2.','')}}{% if 'klass' in node %}.{{node['klass']}}{% endif %}.{{node['function']}}",
+    "@type": [ "graph4code:Function", "owl:Class" ],
+    "dcterms:isPartOf": [
+      {
+        "@if" : "'function' not in node",
+        "@id": "graph4code:python/{{node['module'].replace('.data.projects.repositories_v2.','')}}.{{node['klass']}}",
+        "@type": [
+          "graph4code:Class",
+          "owl:Class"
+        ],
+        "dcterms:isPartOf":   {
+          "@id": "graph4code:python/{{node['module'].replace('.data.projects.repositories_v2.','')}}",
+          "@type": [ "graph4code:PythonModule" ],
+          "rdfs:label" : "{{node['module']}}"
+        },
+        "rdfs:label" : "{{node['klass']}}",
+        "skos:definition" : "{{node['docstring']}}",
+        "skos:altLabel" : "{{node['module'].replace('.data.projects.repositories_v2.','')}}.{{node['klass']}}"
+      }
+    ],
+    "rdfs:subClassOf": [
+      { "@id" : "prov:Activity" },
+      {
+        "@if" : "'params' in node and 'args' in node['params'] and node['params']['args'] is not None",
+        "@for" : "position, arg in enumerate(node['params']['params']) if 'klass' in node else enumerate([None]+node['params']['args'])",
+        "@do" : [
+          {
+            "@if" : "'klass' in node and position == 0",
+            "@type" : "owl:Restriction",
+            "on" : "prov:entity",
+            "only" : "graph4code:python/{{node['module'].replace('.data.projects.repositories_v2.','')}}.{{node['klass']}}"
+          },
+          {
+            "@if" : "'klass' not in node and position == 0",
+            "@type" : "owl:Restriction",
+            "on" : "prov:entity",
+            "value" : "graph4code:python/{{node['module'].replace('.data.projects.repositories_v2.','')}}.{{node['function']}}"
+          },
+          {
+            "@type" : "owl:Restriction",
+            "on" : "prov:qualifiedUsage",
+            "some" : {
+              "and" : [
+                {
+                  "@type" : "owl:Restriction",
+                  "on" : "prov:hasRole",
+                  "some" : {
+                    "and" : [
+                      "graph4code:PositionalArgument",
+                      {
+                        "on" : "prov:value",
+                        "value" : { "@value" : "{{position}}", "@type": "xsd:integer"}
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@if" : "arg is not None",
+                  "@type" : "owl:Restriction",
+                  "on" : "prov:hasRole",
+                  "some" : {
+                    "and" : [
+                      "graph4code:NamedArgument",
+                      {
+                        "on" : "prov:value",
+                        "value" : "{{arg['name']}}"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "prov:value": "{{node['code']}}",
+    "graph4code:lineNumber": "{{node['lineno']}}",
+    "rdfs:label": "{% if 'klass' in node%}{{node['klass']}}{% endif %}.{{node['function']}}",
+    "skos:notation": "{{node['function']}}",
+    "skos:definition": "{{node['docstring']}}",
+    "skos:altLabel" : "{{node['module'].replace('.data.projects.repositories_v2.','')}}{% if 'klass' in node%}.{{node['klass']}}{% endif %}"
+  }
+	}
+]'''].
+
+<docstrings.ttl> a pv:File;
+    dcterms:format "application/trig";
+    prov:wasGeneratedBy [
+      a setl:Load;
+      prov:used :docstrings_ontology ;
+    ].

@@ -1,0 +1,7 @@
+{{'''
+  graph ?assertion {
+    ?x a prov:Activity, ?source.
+    ?target a <http://schema.org/SoftwareSourceCode>.
+  }
+    bind(prov:used as ?link)
+''' | probit(source=this.identifier) | tojson }}

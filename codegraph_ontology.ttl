@@ -5,11 +5,11 @@
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://purl.org/twc/codegraph/ontology> .
+@base <http://purl.org/twc/graph4code/ontology> .
 
-<http://purl.org/twc/codegraph/ontology> rdf:type owl:Ontology ;
-                                          owl:versionIRI <http://purl.org/twc/codegraph/ontology/0.1> ;
-                                          owl:imports <http://www.w3.org/ns/prov-o-20130430> .
+<http://purl.org/twc/graph4code/ontology> rdf:type owl:Ontology ;
+                                           owl:versionIRI <http://purl.org/twc/graph4code/ontology/0.1> ;
+                                           owl:imports <http://www.w3.org/ns/prov-o-20130430> .
 
 #################################################################
 #    Annotation properties
@@ -35,65 +35,71 @@
 #    Classes
 #################################################################
 
-###  http://purl.org/twc/codegraph/Argument
-:Argument rdf:type owl:Class ;
-          rdfs:subClassOf <http://www.w3.org/ns/prov#Role> .
+###  http://purl.org/twc/graph4code/Argument
+<http://purl.org/twc/graph4code/Argument> rdf:type owl:Class ;
+                                          rdfs:subClassOf <http://www.w3.org/ns/prov#Role> .
 
 
-###  http://purl.org/twc/codegraph/Class
-:Class rdf:type owl:Class ;
-       rdfs:subClassOf :InformationArtifact .
+###  http://purl.org/twc/graph4code/Class
+<http://purl.org/twc/graph4code/Class> rdf:type owl:Class ;
+                                       rdfs:subClassOf <http://purl.org/twc/graph4code/InformationArtifact> .
 
 
-###  http://purl.org/twc/codegraph/Constant
-:Constant rdf:type owl:Class ;
-          rdfs:subClassOf :Object .
+###  http://purl.org/twc/graph4code/Constant
+<http://purl.org/twc/graph4code/Constant> rdf:type owl:Class ;
+                                          rdfs:subClassOf <http://purl.org/twc/graph4code/Object> .
 
 
-###  http://purl.org/twc/codegraph/Function
-:Function rdf:type owl:Class ;
-          rdfs:subClassOf :InformationArtifact .
+###  http://purl.org/twc/graph4code/Function
+<http://purl.org/twc/graph4code/Function> rdf:type owl:Class ;
+                                          rdfs:subClassOf <http://purl.org/twc/graph4code/InformationArtifact> .
 
 
-###  http://purl.org/twc/codegraph/InformationArtifact
-:InformationArtifact rdf:type owl:Class ;
-                     rdfs:subClassOf <http://www.w3.org/ns/prov#Entity> .
+###  http://purl.org/twc/graph4code/InformationArtifact
+<http://purl.org/twc/graph4code/InformationArtifact> rdf:type owl:Class ;
+                                                     rdfs:subClassOf <http://www.w3.org/ns/prov#Entity> .
 
 
-###  http://purl.org/twc/codegraph/NamedArgument
-:NamedArgument rdf:type owl:Class ;
-               owl:equivalentClass [ owl:intersectionOf ( :Argument
-                                                          [ rdf:type owl:Restriction ;
-                                                            owl:onProperty <http://www.w3.org/ns/prov#value> ;
-                                                            owl:allValuesFrom xsd:string
-                                                          ]
-                                                        ) ;
-                                     rdf:type owl:Class
-                                   ] ;
-               rdfs:subClassOf :Argument .
+###  http://purl.org/twc/graph4code/NamedArgument
+<http://purl.org/twc/graph4code/NamedArgument> rdf:type owl:Class ;
+                                               owl:equivalentClass [ owl:intersectionOf ( <http://purl.org/twc/graph4code/Argument>
+                                                                                          [ rdf:type owl:Restriction ;
+                                                                                            owl:onProperty <http://www.w3.org/ns/prov#value> ;
+                                                                                            owl:allValuesFrom xsd:string
+                                                                                          ]
+                                                                                        ) ;
+                                                                     rdf:type owl:Class
+                                                                   ] ;
+                                               rdfs:subClassOf <http://purl.org/twc/graph4code/Argument> .
 
 
-###  http://purl.org/twc/codegraph/Object
-:Object rdf:type owl:Class ;
-        rdfs:subClassOf :InformationArtifact .
+###  http://purl.org/twc/graph4code/Object
+<http://purl.org/twc/graph4code/Object> rdf:type owl:Class ;
+                                        rdfs:subClassOf <http://purl.org/twc/graph4code/InformationArtifact> .
 
 
-###  http://purl.org/twc/codegraph/PositionalArgument
-:PositionalArgument rdf:type owl:Class ;
-                    owl:equivalentClass [ owl:intersectionOf ( :Argument
-                                                               [ rdf:type owl:Restriction ;
-                                                                 owl:onProperty <http://www.w3.org/ns/prov#value> ;
-                                                                 owl:allValuesFrom xsd:integer
-                                                               ]
-                                                             ) ;
-                                          rdf:type owl:Class
-                                        ] ;
-                    rdfs:subClassOf :Argument .
+###  http://purl.org/twc/graph4code/PositionalArgument
+<http://purl.org/twc/graph4code/PositionalArgument> rdf:type owl:Class ;
+                                                    owl:equivalentClass [ owl:intersectionOf ( <http://purl.org/twc/graph4code/Argument>
+                                                                                               [ rdf:type owl:Restriction ;
+                                                                                                 owl:onProperty <http://www.w3.org/ns/prov#value> ;
+                                                                                                 owl:allValuesFrom xsd:integer
+                                                                                               ]
+                                                                                             ) ;
+                                                                          rdf:type owl:Class
+                                                                        ] ;
+                                                    rdfs:subClassOf <http://purl.org/twc/graph4code/Argument> .
+
+
+###  http://schema.org/SoftwareSourceCode
+<http://schema.org/SoftwareSourceCode> rdf:type owl:Class ;
+                                       rdfs:subClassOf <http://purl.org/twc/graph4code/InformationArtifact> ;
+                                       rdfs:label "Source Code" .
 
 
 ###  urn:python/builtins.bytes
 py:builtins.bytes rdf:type owl:Class ;
-                  rdfs:subClassOf :Constant ,
+                  rdfs:subClassOf <http://purl.org/twc/graph4code/Constant> ,
                                   py:builtins.object ;
                   rdfs:label "Byte Array" ;
                   <http://www.w3.org/2004/02/skos/core#altLabel> "builtins.bytearray" ;
@@ -110,7 +116,7 @@ py:builtins.float rdf:type owl:Class ;
                                                            ) ;
                                         rdf:type owl:Class
                                       ] ;
-                  rdfs:subClassOf :Constant ,
+                  rdfs:subClassOf <http://purl.org/twc/graph4code/Constant> ,
                                   py:builtins.object ;
                   rdfs:label "Floating Point Number" ;
                   <http://www.w3.org/2004/02/skos/core#altLabel> "builtins.float" ;
@@ -127,7 +133,7 @@ py:builtins.int rdf:type owl:Class ;
                                                          ) ;
                                       rdf:type owl:Class
                                     ] ;
-                rdfs:subClassOf :Constant ,
+                rdfs:subClassOf <http://purl.org/twc/graph4code/Constant> ,
                                 py:builtins.object ;
                 rdfs:label "Integer" ;
                 <http://www.w3.org/2004/02/skos/core#altLabel> "builtins.int" ;
@@ -136,7 +142,7 @@ py:builtins.int rdf:type owl:Class ;
 
 ###  urn:python/builtins.object
 py:builtins.object rdf:type owl:Class ;
-                   rdfs:subClassOf :Object ;
+                   rdfs:subClassOf <http://purl.org/twc/graph4code/Object> ;
                    rdfs:label "Python Object" ;
                    <http://www.w3.org/2004/02/skos/core#altLabel> "builtins.object" ;
                    <http://www.w3.org/2004/02/skos/core#notation> "object" .
@@ -152,7 +158,7 @@ py:builtins.str rdf:type owl:Class ;
                                                          ) ;
                                       rdf:type owl:Class
                                     ] ;
-                rdfs:subClassOf :Constant ,
+                rdfs:subClassOf <http://purl.org/twc/graph4code/Constant> ,
                                 py:builtins.object ;
                 rdfs:label "String" ;
                 <http://www.w3.org/2004/02/skos/core#altLabel> "builtins.str" ;

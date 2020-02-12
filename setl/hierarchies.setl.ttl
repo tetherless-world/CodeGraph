@@ -1,0 +1,65 @@
+@prefix rdf:           <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:          <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:           <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:           <http://www.w3.org/2002/07/owl#> .
+@prefix skos:          <http://www.w3.org/2004/02/skos/core#> .
+@prefix prov:          <http://www.w3.org/ns/prov#> .
+@prefix sio:           <http://semanticscience.org/resource/> .
+@prefix dcat:          <http://www.w3.org/ns/dcat#> .
+@prefix dcterms:       <http://purl.org/dc/terms/> .
+@prefix void:          <http://rdfs.org/ns/void#> .
+@prefix setl:          <http://purl.org/twc/vocab/setl/> .
+@prefix csvw:          <http://www.w3.org/ns/csvw#> .
+@prefix pv:            <http://purl.org/net/provenance/ns#> .
+@prefix np:            <http://www.nanopub.org/nschema#> .
+@prefix api_vocab: <http://purl.org/linked-data/api/vocab#>.
+@prefix graph4code:              <http://purl.org/twc/graph4code/ontology/> .
+@prefix :              <http://purl.org/twc/graph4code/setl/> .
+
+:hierarchy_file a setl:JSON;
+  api_vocab:selector "item";
+  prov:wasGeneratedBy [
+    a setl:Extract;
+    prov:used  [ a graph4code:ClassHierarchyFile];
+  ].
+
+:hierarchies_import rdfs:subClassOf setl:SemanticETLScript;
+  rdfs:label "Graph4code Import SETL Script";
+  setl:hasTemplatePrefix "http://purl.org/twc/graph4code/setl/";
+  rdfs:subClassOf [ a owl:Restriction;
+    owl:onProperty prov:used;
+    owl:someValuesFrom graph4code:ClassHierarchyFile
+  ].
+
+
+:hierarchies_ontology a void:Dataset;
+  prov:wasGeneratedBy [a :hierarchies_import], [
+    a setl:Transform, setl:JSLDT;
+    prov:used :hierarchy_file;
+    setl:hasContext '''{
+    "sio" :     "http://semanticscience.org/resource/",
+    "rdfs" :    "http://www.w3.org/2000/01/rdf-schema#",
+    "np":       "http://www.nanopub.org/nschema#",
+    "dcterms":       "http://purl.org/dc/terms/",
+    "graph4code":   "http://purl.org/twc/graph4code/",
+    "prov":     "http://www.w3.org/ns/prov#"
+}''';
+    prov:value '''
+[
+  {
+    "@id": "http://purl.org/twc/graph4code/python/{{row['module']}}.{{row['klass']}}",
+    "@type": [ "graph4code:Class", "owl:Class" ],
+    "dcterms:isPartOf": {"@id" : "http://purl.org/twc/graph4code/python/{{row['module']}}"},
+    "rdfs:subClassOf": [
+      "prov:Entity",
+      {
+        "@for" : "superClass in row['base_classes']",
+        "@do" : {
+          "@id" : "http://purl.org/twc/graph4code/python/{%if 'source_file_path' in superClass %}{{superClass['source_file_path'][0]}}{% else %}{{row['module']}}{%endif%}.{{superClass['klass']}}"
+        }
+      }
+    ],
+    "rdfs:label": "{{row['klass']}}",
+    "skos:altLabel": "{{row['module']}}.{{row['klass']}}"
+  }
+]'''].

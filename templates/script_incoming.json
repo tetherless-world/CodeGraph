@@ -1,0 +1,13 @@
+{{'''
+  graph ?assertion {
+    ?activity a ?fn, prov:Activity.
+    ?source a <http://schema.org/SoftwareSourceCode>.
+  }
+  graph ?assertion2 {
+    ?activity a ?fn, prov:Activity.
+    ?target a <http://schema.org/SoftwareSourceCode>.
+  }
+    bind(skos:related as ?link)
+    filter (!sameTerm(?fn,prov:Activity))
+    filter (!sameTerm(?source,?target))
+''' | probit(target=this.identifier) | tojson }}

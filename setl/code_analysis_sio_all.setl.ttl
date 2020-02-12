@@ -1,0 +1,238 @@
+@prefix rdf:           <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:          <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:           <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:           <http://www.w3.org/2002/07/owl#> .
+@prefix skos:          <http://www.w3.org/2004/02/skos/core#> .
+@prefix prov:          <http://www.w3.org/ns/prov#> .
+@prefix sio:           <http://semanticscience.org/resource/> .
+@prefix dcat:          <http://www.w3.org/ns/dcat#> .
+@prefix dcterms:       <http://purl.org/dc/terms/> .
+@prefix void:          <http://rdfs.org/ns/void#> .
+@prefix setl:          <http://purl.org/twc/vocab/setl/> .
+@prefix csvw:          <http://www.w3.org/ns/csvw#> .
+@prefix pv:            <http://purl.org/net/provenance/ns#> .
+@prefix np:            <http://www.nanopub.org/nschema#> .
+@prefix api_vocab: <http://purl.org/linked-data/api/vocab#>.
+@prefix graph4code:              <http://purl.org/twc/graph4code/ontology/> .
+@prefix :              <http://purl.org/twc/graph4code/setl/> .
+
+:uuid4 a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:value '''
+from uuid import uuid4 as result
+'''.
+
+:load_json a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:value '''
+global load
+from json import load
+def result(f):
+    with open(f) as fh:
+        try:
+            result = load(fh)
+            #print (result)
+            return result
+        except JSONDecodeError:
+            return {"turtle_analysis" : []}
+'''.
+
+:debug a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:value '''
+def result(x):
+    print(x)
+    return x
+'''.
+
+:code_analysis_file_list a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:qualifiedDerivation [
+    a prov:Derivation;
+    prov:entity :code_analysis_file;
+    prov:hadRole [ dcterms:identifier "code_analysis_file"]
+  ];
+  prov:value '''
+result = enumerate(code_analysis_file)
+'''.
+
+:code_analysis_file a <https://www.iana.org/assignments/media-types/text/plain>;
+  prov:wasGeneratedBy [
+    a setl:Extract;
+    prov:used <file:///data/data/indices/turtle_analysis.txt>;
+  ].
+
+:code_analysis_import a setl:SemanticETLScript;
+  rdfs:label "Graph4code Import SETL Script".
+
+
+:from_json a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:value '''
+from json import loads as result
+'''.
+
+:reduce a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:value '''
+from functools import reduce as result
+'''.
+
+:reversed a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:value '''
+result = lambda x: list(reversed(x))
+'''.
+
+:code_analysis a void:Dataset, setl:Persisted;
+  prov:wasGeneratedBy :code_analysis_import, [
+    a setl:Transform, setl:JSLDT;
+    prov:used :code_analysis_file_list;
+    prov:qualifiedUsage [ a prov:Usage; prov:entity :load_json; prov:hadRole [ dcterms:identifier "load_json"]];
+    prov:qualifiedUsage [ a prov:Usage; prov:entity :uuid4; prov:hadRole [ dcterms:identifier "uuid4"]];
+    prov:qualifiedUsage [ a prov:Usage; prov:entity :from_json; prov:hadRole [ dcterms:identifier "from_json"]];
+    prov:qualifiedUsage [ a prov:Usage; prov:entity :reversed; prov:hadRole [ dcterms:identifier "reversed"]];
+    prov:qualifiedUsage [ a prov:Usage; prov:entity :reduce; prov:hadRole [ dcterms:identifier "reduce"]];
+    setl:hasContext '''{
+    "sio" :     "http://semanticscience.org/resource/",
+    "rdfs" :    "http://www.w3.org/2000/01/rdf-schema#",
+    "np":       "http://www.nanopub.org/nschema#",
+    "schema":       "http://schema.org/",
+    "dbpedia":       "http://dbpedia.org/resource/",
+    "dcterms":       "http://purl.org/dc/terms/",
+    "graph4code":   "http://purl.org/twc/graph4code/",
+    "comment": "rdfs:comment",
+    "sio":     "http://semanticscience.org/resource/",
+    "prov":     "http://www.w3.org/ns/prov#"
+}''';
+    prov:value '''
+[
+  {
+    "@for" : "r, node, pubid in [[(r, node, pubid) for node in r['turtle_analysis']] for r, pubid in [(load_json('/data/data/'+row.decode('utf8').strip()),uuid4())]][0]",
+    "@do" :
+      {
+        "@id" : "graph4code:nanopub/{{pubid}}",
+        "@graph" : {
+          "@id" : "graph4code:nanopub/{{pubid}}",
+          "@type" : "np:Nanopublication",
+          "np:hasAssertion" : {
+            "@id" : "graph4code:nanopub/{{pubid}}_assertion",
+            "@graph" : {
+
+        "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{node['nodeNumber']}}",
+        "@type" : [
+          "prov:Activity",
+          "sio:SIO_000667",
+          "graph4code:python/{{'.'.join(reversed(node['path']))}}"
+        ],
+        "sio:SIO_000068" : {
+          "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}",
+          "@type" : "schema:SoftwareSourceCode",
+          "schema:programmingLanguage" : { "@id" : "dbpedia:Python_(programming_language)"},
+          "schema:url": { "@id" : "https://github.com/{{r['repo']}}/blob/master/{{r['repoPath'].replace(' ','+')}}"},
+          "rdfs:label" : "{{r['repoPath'].replace(' ','+')}}",
+          "schema:codeRepository" : { "@id" : "graph4code:github.com/{{r['repo']}}"},
+          "sio:SIO_000068" : {
+            "@id" : "graph4code:github.com/{{r['repo']}}",
+            "@type" : "http://usefulinc.com/ns/doap#Repository",
+            "rdfs:label" : "{{r['repo'].split('/')[1]}}",
+            "schema:url": { "@id" : "https://github.com/{{r['repo']}}"}
+          }
+        },
+        "sio:SIO_000300" : [ { "@if" : "len('source') > 0", "@value" : "{{node['source'].strip()}}"} ],
+        "sio:SIO_000230" : [
+          {
+            "@for" : "position, arg in enumerate([x for x in node['args']])",
+            "@do" : {
+              "@if" : "not isinstance(arg, list) or len(list) == 0 or not isinstance(arg[0],list)",
+              "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{node['nodeNumber']}}/arg/{{position}}",
+              "@type" : [
+                "sio:SIO_000069",
+                { "@if" : "not isinstance(arg, list)", "@id" : "graph4code:Constant"},
+                {
+                  "@if" : "not isinstance(arg, list)",
+                  "@id" : "graph4code:python/{{arg.__class__.__module__}}.{{arg.__class__.__name__}}"
+                }
+              ],
+              "sio:SIO_000300" : [
+                {
+                  "@if" : "not isinstance(arg, list)",
+                  "@value":"{{str(arg)}}"
+                }
+              ],
+              "sio:SIO_000228" : [
+                {
+                  "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{node['nodeNumber']}}/role/{{position}}",
+                  "@type" : [ "sio:SIO_000016", "graph4code:PositionalArgument"],
+                  "sio:SIO_000300" : { "@value" : "{{position}}", "@type" : "xsd:integer"},
+                  "sio:SIO_000668" : {
+                      "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{node['nodeNumber']}}"
+                  }
+                },
+                {
+                  "@for" : "key in [key for key, value in node['named'].items() if value == arg]",
+                  "@do" : {
+                    "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{node['nodeNumber']}}/role/{{key}}",
+                    "@type" : ["sio:SIO_000016", "graph4code:NamedArgument"],
+                    "sio:SIO_000300" : "{{key}}",
+                    "sio:SIO_000668" : {
+                        "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{node['nodeNumber']}}"
+                    }
+                  }
+                }
+
+              ]
+            }
+          }
+        ],
+        "sio:SIO_000250" : [
+          {
+            "@if" : "'edges' in node and 'CONTROL' in node['edges']",
+            "@for" : "control_flow in node['edges']['CONTROL']",
+            "@do" : { "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{control_flow}}"}
+          }
+        ],
+        "sio:SIO_000229" : {
+            "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/entity/{{node['nodeNumber']}}",
+            "@if" : "'DATA' in node['edges']",
+            "@type" : "sio:000602",
+            "rdfs:label" : "{{'.'.join(reversed(r['path']))}}",
+            "@reverse" : {
+              "sio:SIO_000230" : [
+                {
+                  "@for" : "a, position in reduce(lambda x,y: x + y, [[(node,position) for node in nodes] for nodes, position in from_json('['+node['edges']['DATA']+']')] ) ",
+                  "@do" : [
+                    {
+                      "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{a}}",
+                      "sio:SIO_000228" : {
+                        "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{a}}/role/{{position}}",
+                        "@type" : [
+                          "sio:SIO_000016",
+                          "graph4code:PositionalArgument"
+                        ],
+                        "sio:SIO_000300" : { "@value" : "{{position}}", "@type" : "xsd:integer"},
+                        "sio:SIO_000668" : {
+                          "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/entity/{{node['nodeNumber']}}",
+                          "@type" : [ { "@if" : "position == 0", "@id" : "graph4code:Function" } ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+  }
+]
+'''].
+
+<turtle_analysis.nq> a pv:File;
+    dcterms:format "application/n-quads";
+    prov:wasGeneratedBy [
+      a setl:Load;
+      prov:used :code_analysis ;
+    ].
