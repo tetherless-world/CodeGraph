@@ -1,0 +1,36 @@
+{
+    "module": "scipy",
+    "function": "scipy.linalg.det",
+    "stackoverflow": [
+        {
+            "_index": "datascience_stackexchange",
+            "_type": "_doc",
+            "_id": "6622",
+            "_score": 22.63842,
+            "_source": {
+                "title": "Is there a quick way to speed up ICP in python using a cached KD-tree",
+                "content": "Is there a quick way to speed up ICP in python using a cached KD-tree <p>I am currently using ICP to match 2 point clouds. These point clouds evolve in time, so I have to repeat this process many times. I am using a standard KD tree from scipy for my nearest neighbor lookup. Each point cloud has roughly 500 points each. I am looking at using a cached KD tree but I am unsure about how to turn a KD tree into a cached KD tree. Is there an implementation in Scipy? SVD in python seems fast enough for my needs at the moment, but I would also be open to any known faster SVD solvers. My current code for the ICP is:</p>\n\n<pre><code>&gt;tree=spatial.KDTree(TimeStep1)\n&gt;qHat=TimeStep2\n&gt; for i in range(10):\n&gt;         Phat=tree.query(qHat,eps=.15,distance_upper_bound=2)\n&gt;         H = np.dot(qHat.T, TimeStep1[Phat[1]-1,:])\n&gt;         U, S, Vt = np.linalg.svd(H)\n&gt;         R = np.dot(Vt.T, U.T)\n&gt;         if np.linalg.det(R) &lt; 0:\n&gt;             Vt[2,:] *= -1\n&gt;             R = np.dot(Vt.T, U.T)\n&gt;             Yes.append(1)\n&gt;         Eu=rotationMatrixToEulerAngles(R)\n&gt;         T=TimeStep1[Phat[1]-1,:].T-np.dot(R,qHat.T)\n&gt;         T=TimeStep1[Phat[1]-1,:]-qHat\n&gt;         T=T.mean(axis=0)\n&gt;         qHat=np.dot(R,TimeStep2.T).T+T\n&gt;         qHat=TimeStep2+T.shape\n</code></pre>\n <python><optimization><linear-algebra><p>Try using spatial.cKDTree, in my ICP implementation switching from KDTree to cKDTree 30 iterations went from ~160 seconds to ~50 seconds</p>\n",
+                "codes": [
+                    []
+                ],
+                "question_id:": "25614",
+                "question_votes:": "1",
+                "question_text:": "<p>I am currently using ICP to match 2 point clouds. These point clouds evolve in time, so I have to repeat this process many times. I am using a standard KD tree from scipy for my nearest neighbor lookup. Each point cloud has roughly 500 points each. I am looking at using a cached KD tree but I am unsure about how to turn a KD tree into a cached KD tree. Is there an implementation in Scipy? SVD in python seems fast enough for my needs at the moment, but I would also be open to any known faster SVD solvers. My current code for the ICP is:</p>\n\n<pre><code>&gt;tree=spatial.KDTree(TimeStep1)\n&gt;qHat=TimeStep2\n&gt; for i in range(10):\n&gt;         Phat=tree.query(qHat,eps=.15,distance_upper_bound=2)\n&gt;         H = np.dot(qHat.T, TimeStep1[Phat[1]-1,:])\n&gt;         U, S, Vt = np.linalg.svd(H)\n&gt;         R = np.dot(Vt.T, U.T)\n&gt;         if np.linalg.det(R) &lt; 0:\n&gt;             Vt[2,:] *= -1\n&gt;             R = np.dot(Vt.T, U.T)\n&gt;             Yes.append(1)\n&gt;         Eu=rotationMatrixToEulerAngles(R)\n&gt;         T=TimeStep1[Phat[1]-1,:].T-np.dot(R,qHat.T)\n&gt;         T=TimeStep1[Phat[1]-1,:]-qHat\n&gt;         T=T.mean(axis=0)\n&gt;         qHat=np.dot(R,TimeStep2.T).T+T\n&gt;         qHat=TimeStep2+T.shape\n</code></pre>\n",
+                "tags": "<python><optimization><linear-algebra>",
+                "answers": [
+                    [
+                        "38056",
+                        "2",
+                        "25614",
+                        "",
+                        "",
+                        "<p>Try using spatial.cKDTree, in my ICP implementation switching from KDTree to cKDTree 30 iterations went from ~160 seconds to ~50 seconds</p>\n",
+                        "",
+                        "1"
+                    ]
+                ]
+            },
+            "good_match": "True"
+        }
+    ]
+}
