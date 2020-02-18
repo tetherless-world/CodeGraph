@@ -2,6 +2,9 @@ import nltk
 import numpy as np
 from nltk.stem import WordNetLemmatizer
 import json
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 from testscript import clean_text
 from sklearn.decomposition import TruncatedSVD
 #nltk.download('stopwords')
@@ -25,7 +28,9 @@ from sklearn.decomposition import TruncatedSVD
 #tokens = [wordnet_lemmatizer.lemmatize(t) for t in tokens] 
 #tokens = [t for t in tokens if t not in projectStopwords]
 #print(tokens)
-files=['numpy.linalg.linalg.inv.json','scipy.linalg.det.json']
+files=['numpy.linalg.linalg.inv.json','scipy.linalg.det.json','sklearn.linear_model.LinearRegression.json','sklearn.linear_model.logistic.softmax.json',
+'sklearn.metrics.regression.mean_squared_error.json',
+'sklearn.metrics.scorer.f1_score.json']
 wordArr=[]
 moduleArr=[]
 lookupDict={}
@@ -45,13 +50,16 @@ X=np.zeros((currentRow,len(files)))
 for j in range(len(wordArr)):
     for word in wordArr[j]:
         X[lookupDict[word],j]=X[lookupDict[word],j]+1
-svd=TruncatedSVD(n_components=1)
-Z=svd.fit_transform(X)
+#svd=TruncatedSVD(n_components=1)
+#Z=svd.fit_transform(X)
+#for i in range(len(Z)):
+#    print(Z[i],lookdownDict[i])
+       
+svd = TruncatedSVD()
+Z = svd.fit_transform(X)
+plt.scatter(Z[:,0], Z[:,1])
 for i in range(len(Z)):
-    print(Z[i],lookdownDict[i])
-       
-       
-       
-
-
-
+    plt.annotate(s=lookdownDict[i], xy=(Z[i,0], Z[i,1]))
+plt.show()
+out_png = 'lsaspacialembedding.png'
+plt.savefig(out_png, dpi=150)
