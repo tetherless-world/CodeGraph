@@ -20,8 +20,7 @@ def clean_text(file):
 	tokenized_text = word_tokenize(text)
 	final_text = [word for word in tokenized_text if word not in stopset]
 	# for debugging purposes
-	print("\nOutput:\n")
-	print(final_text)
+	return final_text
 
-inputfile = input("Please enter name of json file you wish to parse.\n")
-clean_text(inputfile)
+#inputfile = input("Please enter name of json file you wish to parse.\n")
+#clean_text(inputfile)
