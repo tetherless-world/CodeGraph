@@ -46,10 +46,15 @@ for i in files:
           currentRow=currentRow+1
           lookdownDict[currentRow-1]=word
 
-X=np.zeros((currentRow,len(files)))
+#X=np.zeros((currentRow,len(files)))
+##documentrelevance
+X=np.zeros((len(files),currentRow))
+
 for j in range(len(wordArr)):
     for word in wordArr[j]:
-        X[lookupDict[word],j]=X[lookupDict[word],j]+1
+       # X[lookupDict[word],j]=X[lookupDict[word],j]+1
+       ##document relevance
+       X[j,lookupDict[word]]=X[j,lookupDict[word]]+1
 #svd=TruncatedSVD(n_components=1)
 #Z=svd.fit_transform(X)
 #for i in range(len(Z)):
@@ -59,7 +64,9 @@ svd = TruncatedSVD()
 Z = svd.fit_transform(X)
 plt.scatter(Z[:,0], Z[:,1])
 for i in range(len(Z)):
-    plt.annotate(s=lookdownDict[i], xy=(Z[i,0], Z[i,1]))
+    ##plt.annotate(s=lookdownDict[i], xy=(Z[i,0], Z[i,1]))
+    ##documentrelevance
+    plt.annotate(s=moduleArr[i], xy=(Z[i,0], Z[i,1]))
 plt.show()
-out_png = 'lsaspacialembedding.png'
+out_png = 'lsaspacialembeddingdocuments.png'
 plt.savefig(out_png, dpi=150)
