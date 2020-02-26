@@ -21,7 +21,7 @@ tsne = TSNE(n_components=2, verbose=1, perplexity=4, n_iter=300)
 tsne_results = tsne.fit_transform(Z)
 #df_subset['tsne-2d-one'] = tsne_results[:,0]
 #df_subset['tsne-2d-two'] = tsne_results[:,1]
-plt.figure(figsize=(16,10))
+#plt.figure(figsize=(16,10))
 for i in range(len(Z)):
     plt.annotate(s=moduleArr[i],xy=(tsne_results[i,0],tsne_results[i,1]))
 print('t-SNE done! Time elapsed: {} seconds'.format(time.time()-time_start))
