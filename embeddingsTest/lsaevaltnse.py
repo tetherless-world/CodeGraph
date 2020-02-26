@@ -3,7 +3,8 @@ import json
 from sklearn.decomposition import TruncatedSVD
 #import pandas as pd
 from sklearn.manifold import TSNE
-
+import pandas as pd
+import seaborn as sns
 #%matplotlib inline
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -22,14 +23,19 @@ tsne_results = tsne.fit_transform(Z)
 #df_subset['tsne-2d-one'] = tsne_results[:,0]
 #df_subset['tsne-2d-two'] = tsne_results[:,1]
 #plt.figure(figsize=(16,10))
-print(tsne_results)
-print(len(tsne_results))
+#print(len(moduleArr))
+#print(len(tsne_results))
 plt.autoscale(enable=True)
-for i in range(len(Z)):
-    plt.annotate(s=moduleArr[i],xy=(tsne_results[i,0],tsne_results[i,1]))
+df=pd.DataFrame({'x':tsne_results[:,0],'y':tsne_results[:,1],'group':moduleArr[0:-1]})
+sns_plt=sns.regplot(data=df, x="x", y="y", fit_reg=False, marker="+", color="skyblue")
+figure = sns_plt.get_figure()    
+
+figure.savefig("output.png")
+#for i in range(len(Z)):
+#    plt.annotate(s=moduleArr[i],xy=(tsne_results[i,0],tsne_results[i,1]))
 print('t-SNE done! Time elapsed: {} seconds'.format(time.time()-time_start))
-out_png = 'lsaspacialemTNSE.png'
-plt.savefig(out_png)
+#out_png = 'lsaspacialemTNSE.png'
+#plt.savefig(out_png)
 
 #print("pickle loaded")
 #svd = TruncatedSVD()
