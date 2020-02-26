@@ -7,7 +7,7 @@ for i in range(len(test_files)):
 	print("Document", test_files[i], "has tag", i)
 data = []
 for i in range(len(test_files)):
-	data.append(TaggedDocument(clean_text(test_files[i]), [str(i)]))
+	data.append(TaggedDocument(clean_text(test_files[i]), [test_files[i]]))
 model = Doc2Vec(size=20, alpha=0.025, min_alpha=0.00025, min_count=1, dm=1)
 model.build_vocab(data)
 
