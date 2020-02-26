@@ -29,7 +29,7 @@ for i in range(len(Z)):
     plt.annotate(s=moduleArr[i],xy=(tsne_results[i,0],tsne_results[i,1]))
 print('t-SNE done! Time elapsed: {} seconds'.format(time.time()-time_start))
 out_png = 'lsaspacialemTNSE.png'
-plt.savefig(out_png, dpi=150)
+plt.savefig(out_png)
 
 #print("pickle loaded")
 #svd = TruncatedSVD()
