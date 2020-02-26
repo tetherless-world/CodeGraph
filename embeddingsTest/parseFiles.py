@@ -5,6 +5,7 @@ import os
 def parse_text():
 	jsonFileDir = "../../../../data/data/datascience_stackexchange_graph_v2/all"
 	files = [i for i in os.listdir(jsonFileDir)]
+	files.sort()
 	textList = []
 	labelList = []
 	for target in files:

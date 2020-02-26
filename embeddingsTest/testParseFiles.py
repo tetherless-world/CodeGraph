@@ -4,6 +4,7 @@ import os
 def parse_text():
 	jsonFileDir = "../../../../data/data/datascience_stackexchange_graph_v2/all"
 	files = [i for i in os.listdir(jsonFileDir)]
+	files.sort()
 	textList = []
 	labelList = []
 	i = 0
@@ -19,5 +20,5 @@ def parse_text():
 	return (textList, labelList)
 
 textTest = parse_text()
-print(textTest[0][0])
-print(textTest[1][0])
+#print(textTest[0][2])
+#print(textTest[1][2])
