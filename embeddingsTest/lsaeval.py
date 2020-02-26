@@ -46,7 +46,7 @@ currentRow=0
 j=0
 interested_file_len=100
 for i in files:
-   moduleArr.append(i)
+   moduleArr.append(i.replace(jsonFileDir,""))
    if j == interested_file_len:
        break
 
