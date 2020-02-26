@@ -27,23 +27,12 @@ tsne_results = tsne.fit_transform(Z)
 #print(len(tsne_results))
 plt.autoscale(enable=True)
 df=pd.DataFrame({'x':tsne_results[:,0],'y':tsne_results[:,1],'group':moduleArr[0:-1]})
-sns_plt=sns.regplot(data=df, x="x", y="y", fit_reg=False, marker="+", color="skyblue")
-figure = sns_plt.get_figure()    
+#sns_plt=sns.regplot(data=df, x="x", y="y", fit_reg=False, marker="+", color="skyblue")
+p1=sns.regplot(data=df, x="x", y="y", fit_reg=False, marker="o", color="skyblue", scatter_kws={'s':400})
+for line in range(0,df.shape[0]):
+         p1.text(df.x[line]+0.2, df.y[line], df.group[line], horizontalalignment='left', size='small', color='black')
+figure = p1.get_figure()    
 
-figure.savefig("output.png")
-#for i in range(len(Z)):
-#    plt.annotate(s=moduleArr[i],xy=(tsne_results[i,0],tsne_results[i,1]))
+figure.savefig("tSNEout.png")
+
 print('t-SNE done! Time elapsed: {} seconds'.format(time.time()-time_start))
-#out_png = 'lsaspacialemTNSE.png'
-#plt.savefig(out_png)
-
-#print("pickle loaded")
-#svd = TruncatedSVD()
-#Z = svd.fit_transform(X)
-#plt.scatter(Z[:,0], Z[:,1])
-#for i in range(len(Z)):
-#        plt.annotate(s=moduleArr[i], xy=(Z[i,0], Z[i,1]))
-#        plt.show()
-#        out_png = 'lsaspacialembeddingdocuments.png'
-#        plt.savefig(out_png, dpi=150)
-
