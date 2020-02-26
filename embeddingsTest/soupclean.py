@@ -7,8 +7,10 @@ import string
 
 def clean_text(file):
         stopset = set(stopwords.words('english'))
-        
-        documentation = json.load(open(file, encoding = 'utf-8'))
+        try:
+           documentation = json.load(open(file, encoding = 'utf-8'))
+        except json.JSONDecodeError:
+           return []
         text = ''
         if type(documentation) is not dict:
             return []
