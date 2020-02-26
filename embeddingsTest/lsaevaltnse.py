@@ -29,7 +29,7 @@ plt.autoscale(enable=True)
 df=pd.DataFrame({'x':tsne_results[:,0],'y':tsne_results[:,1],'group':moduleArr[0:-1]})
 #sns_plt=sns.regplot(data=df, x="x", y="y", fit_reg=False, marker="+", color="skyblue")
 p1=sns.regplot(data=df, x="x", y="y", fit_reg=False, marker="o", color="skyblue", scatter_kws={'s':400})
-for line in range(0,df.shape[0]):
+for line in range(0,10):
          p1.text(df.x[line]+0.2, df.y[line], df.group[line], horizontalalignment='left', size='small', color='black')
 figure = p1.get_figure()    
 
