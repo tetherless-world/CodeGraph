@@ -18,15 +18,15 @@
 @prefix schema: <http://schema.org/> .
 @prefix graph4code: <http://purl.org/twc/graph4code/>.
 
-schema:SoftwareSourceCode whyis:hasView "script_view.html";
+schema:SoftwareSourceCode #a graph4code:MetaClass;
+  whyis:hasView "script_view.html";
   whyis:hasIncoming "script_incoming.json";
   whyis:hasOutgoing "script_outgoing.json".
 
-graph4code:Function 
+graph4code:Function
   whyis:hasIncoming "function_incoming.json".
 
-graph4code:MetaClass rdfs:subClassOf owl:Class;
-  whyis:hasFacets "class_facets.json".
+#graph4code:MetaClass rdfs:subClassOf owl:Class;
+#  whyis:hasFacets "script_facets.json".
 
-graph4code:Class a graph4code:MetaClass.
-
+#graph4code:Class a graph4code:MetaClass.

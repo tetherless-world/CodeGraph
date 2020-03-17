@@ -20,28 +20,36 @@
   api_vocab:selector "item";
   prov:wasGeneratedBy [
     a setl:Extract;
-    prov:used  [ a graph4code:DocStringsFile];
+    prov:used  </data/merge-15-22.2.format.json>;
   ].
 
-:docstrings_import rdfs:subClassOf setl:SemanticETLScript;
-  rdfs:label "Graph4code Import SETL Script";
-  setl:hasTemplatePrefix "http://purl.org/twc/graph4code/setl/";
-  rdfs:subClassOf [ a owl:Restriction;
-    owl:onProperty prov:used;
-    owl:someValuesFrom graph4code:DocStringsFile
-  ].
+:docstrings_import a setl:SemanticETLScript;
+  rdfs:label "Graph4code Import SETL Script".
+
+:uri_safe a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+    rdfs:subClassOf prov:Activity;
+    prov:value '''
+global parse
+from urllib import parse
+result = lambda x: parse.quote_plus(x.encode('utf8'), safe="/")
+'''.
 
 
-:docstrings_ontology a void:Dataset;
-  prov:wasGeneratedBy [a :docstrings_import], [
+graph4code:docstrings_ontology a void:Dataset;
+  prov:wasGeneratedBy :docstrings_import, [
     a setl:Transform, setl:JSLDT;
     prov:used :docstrings_file;
+    prov:qualifiedUsage [ a prov:Usage; prov:entity :uri_safe; prov:hadRole [ dcterms:identifier "uri_safe"]];
     setl:hasContext '''{
     "sio" :     "http://semanticscience.org/resource/",
     "rdfs" :    "http://www.w3.org/2000/01/rdf-schema#",
+    "rdf" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "skos" : "http://www.w3.org/2004/02/skos/core#",
+    "xsd" : "http://www.w3.org/2001/XMLSchema#",
     "np":       "http://www.nanopub.org/nschema#",
     "dcterms":       "http://purl.org/dc/terms/",
     "graph4code":   "http://purl.org/twc/graph4code/",
+    "owl" : "http://www.w3.org/2002/07/owl#",
     "comment": "rdfs:comment",
     "isa": {
       "@id":"rdfs:subClassOf",
@@ -183,92 +191,180 @@
     prov:value '''
 [
   {
-    "@id": "graph4code:python/{{row['module'].replace('.data.projects.repositories_v2.','')}}",
+    "@id": "graph4code:python/{{uri_safe(row['module'])}}",
+    "@if" : "row.get('module',False)",
     "@type": [ "graph4code:PythonModule" ],
     "rdfs:label" : "{{row['module']}}"
   },
   {
-    "@if" : "'function' not in row",
-    "@id": "graph4code:python/{{row['module'].replace('.data.projects.repositories_v2.','')}}.{{row['klass']}}",
+    "@if" : "row.get('module',False) and 'base_classes' in row",
+    "@id": "graph4code:python/{{uri_safe(row['klass'])}}",
     "@type": [
       "graph4code:Class",
       "owl:Class"
     ],
-    "dcterms:isPartOf": "graph4code:python/{{row['module'].replace('.data.projects.repositories_v2.','')}}",
-    "rdfs:label" : "{{row['klass']}}",
-    "skos:definition" : "{{row['docstring']}}",
-    "skos:altLabel" : "{{row['module'].replace('.data.projects.repositories_v2.','')}}.{{row['klass']}}"
+    "isa" : [
+      {
+          "@for" : "c in row['base_classes']",
+          "@do" : {
+              "@id" : "graph4code:python/{{uri_safe(c)}}",
+              "@type": [
+                "graph4code:Class",
+                "owl:Class"
+              ]
+          }
+      }
+    ],
+    "dcterms:isPartOf": "graph4code:python/{{uri_safe(row['module'])}}",
+    "rdfs:label" : "{{uri_safe(row['klass'].split('.')[-1])}}",
+    "skos:definition" : { "@if" : "'class_docstring' in row", "@value" : "{{row['docstring']}}"},
+    "skos:altLabel" : "{{uri_safe(row['klass'])}}"
   },
   {
-    "@if" : "'function' in row",
-    "@id": "graph4code:python/{{row['module'].replace('.data.projects.repositories_v2.','')}}{% if 'klass' in row %}.{{row['klass']}}{% endif %}.{{row['function']}}",
+    "@if" : "row.get('module',False) and 'base_classes' not in row and 'function' in row",
+    "@id": "graph4code:python/{% if 'klass' in row %}{{uri_safe(row['klass'])}}.{% endif %}{{uri_safe(row['function'])}}",
     "@type": [ "graph4code:Function", "owl:Class" ],
     "dcterms:isPartOf": [
       {
-        "@id" : "graph4code:python/{{row['module'].replace('.data.projects.repositories_v2.','')}}{% if 'klass' in row %}.{{row['klass']}}{% endif %}"
+        "@id" : "graph4code:python/{% if 'klass' in row %}{{uri_safe(row['klass'])}}{% endif %}"
+      }
+    ],
+    "equivalent" : [
+      {
+          "@type" : "Restriction",
+          "on" : "sio:SIO_000892",
+          "some" : {
+              "and" : [
+                "graph4code:PositionalArgument",
+                {
+                    "@type" : "owl:Restriction",
+                    "on" : "sio:SIO_000300",
+                    "value" : 0
+                },
+                {
+                    "@type" : "owl:Restriction",
+                    "on" : "sio:SIO_000227",
+                    "value" : { "@id" : "graph4code:python/{% if 'klass' in row %}{{uri_safe(row['klass'])}}.{% endif %}{{uri_safe(row['function'])}}"}
+                }
+              ]
+          }
       }
     ],
     "rdfs:subClassOf": [
-      "prov:Activity",
+      { "@id" : "sio:SIO_000006" },
       {
-        "@if" : "'params' in row and 'args' in row['params'] and row['params']['args'] is not None",
-        "@for" : "position, arg in enumerate(row['params']['params']) if 'klass' in row else enumerate([None]+row['params']['args'])",
-        "@do" : [
-          {
-            "@if" : "'klass' in row and position == 0",
+        "@if" : "'klass' in row",
+        "@type" : "owl:Restriction",
+        "on" : "sio:SIO_000230",
+        "some" : {
+            "and" : [
+                { "@id" : "graph4code:python/{{uri_safe(row['klass'])}}"},
+                {
+                   "on" : "sio:SIO_000228",
+                   "some" : {
+                       "and" : [
+                           { "@id" : "graph4code:PositionalArgument" },
+                           {
+                               "@type" : "owl:Restriction",
+                               "on" : "sio:SIO_000300",
+                               "value" : 1
+                           },
+                           {
+                               "@type" : "owl:Restriction",
+                               "on" : "sio:SIO_000227",
+                               "only" : { "@id" : "graph4code:python/{% if 'klass' in row %}{{uri_safe(row['klass'])}}.{% endif %}{{uri_safe(row['function'])}}"}
+                           }
+                       ]
+                   }
+               },
+               {
+                  "on" : "sio:SIO_000228",
+                  "some" : {
+                      "and" : [
+                          { "@id" : "graph4code:NamedArgument" },
+                          {
+                              "@type" : "owl:Restriction",
+                              "on" : "sio:SIO_000300",
+                              "value" : "self"
+                          },
+                          {
+                              "@type" : "owl:Restriction",
+                              "on" : "sio:SIO_000227",
+                              "only" : { "@id" : "graph4code:python/{% if 'klass' in row %}{{uri_safe(row['klass'])}}.{% endif %}{{uri_safe(row['function'])}}"}
+                          }
+                      ]
+                  }
+               }
+            ]
+        }
+      },
+      {
+        "@for" : "position, param in enumerate(row.get('param_names',[]), (2 if 'klass' in row else 1))",
+        "@do" : {
             "@type" : "owl:Restriction",
-            "on" : "prov:entity",
-            "only" : "graph4code:python/{{row['module'].replace('.data.projects.repositories_v2.','')}}.{{row['klass']}}"
-          },
-          {
-            "@if" : "'klass' not in row and position == 0",
-            "@type" : "owl:Restriction",
-            "on" : "prov:entity",
-            "value" : "graph4code:python/{{row['module'].replace('.data.projects.repositories_v2.','')}}.{{row['function']}}"
-          },
-          {
-            "@type" : "owl:Restriction",
-            "on" : "prov:qualifiedUsage",
+            "on" : "sio:SIO_000230",
             "some" : {
-              "and" : [
-                {
-                  "@type" : "owl:Restriction",
-                  "on" : "prov:hasRole",
-                  "some" : {
-                    "and" : [
-                      "graph4code:PositionalArgument",
-                      {
-                        "on" : "prov:value",
-                        "value" : { "@value" : "{{position}}", "@type": "xsd:integer"}
-                      }
-                    ]
+                "@id" : "graph4code:python/{% if 'klass' in row %}{{uri_safe(row['klass'])}}.{% endif %}{{uri_safe(row['function'])}}.{{uri_safe(param)}}",
+                "rdfs:label" : "{{param}}",
+                "skos:definition" : [
+                  {
+                    "@if" : "'param_map' in row and param in row['param_map']",
+                    "@value" : "{{row['param_map'][param]['param_doc']}}"
                   }
-                },
-                {
-                  "@if" : "arg is not None",
-                  "@type" : "owl:Restriction",
-                  "on" : "prov:hasRole",
-                  "some" : {
-                    "and" : [
-                      "graph4code:NamedArgument",
-                      {
-                        "on" : "prov:value",
-                        "value" : "{{arg['name']}}"
-                      }
-                    ]
-                  }
-                }
-              ]
+                ],
+                "isa" : [
+                    {
+                        "on" : "sio:SIO_000228",
+                        "some" : {
+                            "and" : [
+                                { "@id" : "graph4code:PositionalArgument" },
+                                {
+                                    "@type" : "owl:Restriction",
+                                    "on" : "sio:SIO_000300",
+                                    "value" : { "@value" : "{{position}}"}
+                                },
+                                {
+                                    "@type" : "owl:Restriction",
+                                    "on" : "sio:SIO_000227",
+                                    "only" : { "@id" : "graph4code:python/{% if 'klass' in row %}.{{uri_safe(row['klass'])}}{% endif %}.{{uri_safe(row['function'])}}"}
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "on" : "sio:SIO_000228",
+                        "some" : {
+                            "and" : [
+                                { "@id" : "graph4code:NamedArgument" },
+                                {
+                                    "@type" : "owl:Restriction",
+                                    "on" : "sio:SIO_000300",
+                                    "value" : "{{param}}"
+                                },
+                                {
+                                    "@type" : "owl:Restriction",
+                                    "on" : "sio:SIO_000227",
+                                    "only" : { "@id" : "graph4code:python/{% if 'klass' in row %}.{{uri_safe(row['klass'])}}{% endif %}.{{uri_safe(row['function'])}}"}
+                                }
+                            ]
+                        }
+                    }
+                ]
             }
-          }
-        ]
+        }
       }
     ],
-    "prov:value": "{{row['code']}}",
-    "graph4code:lineNumber": "{{row['lineno']}}",
-    "rdfs:label": "{% if 'klass' in row%}{{row['klass']}}{% endif %}.{{row['function']}}",
+    "sio:SIO_000300": "{{row['code']}}",
+    "rdfs:label": "{% if 'klass' in row%}{{row['klass'].split('.')[-1]}}{% endif %}.{{row['function']}}",
     "skos:notation": "{{row['function']}}",
     "skos:definition": "{{row['docstring']}}",
-    "skos:altLabel" : "{{row['module'].replace('.data.projects.repositories_v2.','')}}{% if 'klass' in row%}.{{row['klass']}}{% endif %}"
+    "skos:altLabel" : "{% if 'klass' in row%}.{{row['klass']}}{% endif %}"
   }
 ]'''].
+
+<docstrings.nq.gz> a pv:File, setl:GZipFile;
+    dcterms:format "application/n-quads";
+    prov:wasGeneratedBy [
+      a setl:Load;
+      prov:used graph4code:docstrings_ontology ;
+    ].

@@ -7,19 +7,33 @@
 <script>
 $( function() {
 
-code_graph = {{'''construct { ?s ?p ?o } where {
+code_graph = {{'''construct { ?s ?p ?o. ?p rdfs:label ?plabel. ?type rdfs:label ?typelabel } where {
   graph ?g {
-    ?s ?p ?o.
-    ?this a <http://schema.org/SoftwareSourceCode>.
+      ?this a <http://schema.org/SoftwareSourceCode>.
   }
-} values ?p {rdf:type prov:wasGeneratedBy prov:informed prov:value rdfs:label prov:used}
+  {
+      graph ?g {
+        ?s ?p ?o.
+        minus { ?s <http://semanticscience.org/resource/SIO_000068> ?o}
+        minus { ?s <http://semanticscience.org/resource/SIO_000228> ?o}
+        minus { ?s <http://semanticscience.org/resource/SIO_000668> ?o}
+      }
+      ?p rdfs:label ?plabel.
+  } union
+  {
+      graph ?g {
+        ?s a ?type.
+      }
+      ?type rdfs:label ?typelabel.
+  }
+}
     '''.replace("?this",this.identifier.n3()) | query | serialize(format="json-ld") | safe}};
     graph = new Graph();
     graph.load(code_graph).await(function(error) {
         d3.select("#code_graph").datum(graph).each(rdfview());
     });
     });
-    // 
+    //
 </script>
 {% endblock %}
 {% block styles %}

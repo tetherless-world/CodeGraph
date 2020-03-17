@@ -25,13 +25,24 @@ from uuid import uuid4 as result
 :load_json a owl:Class, prov:SoftwareAgent, setl:PythonScript;
   rdfs:subClassOf prov:Activity;
   prov:value '''
-global load
-from json import load
+global loads
+from json import loads
 def result(f):
-    with open(f) as fh:
-        result = load(fh)
-        #print (result)
-        return result
+    with open('errors.txt', 'a') as error_log:
+        with open(f, 'rb') as fh:
+            try:
+                data = fh.read().decode('utf8')
+                #print (f)
+                if len(data) == 0:
+                    print ("Empty file for",f)
+                    error_log.write("Empty file: {0}\\n".format(f))
+                    return { "turtle_analysis" : []}
+                result = loads(data)
+                return result
+            except Exception as err:
+                print("Exception parsing {0}: {1}".format(f, err))
+                error_log.write("Exception on {0}: {1}\\n".format(f, err))
+                return { "turtle_analysis" : []}
 '''.
 
 :debug a owl:Class, prov:SoftwareAgent, setl:PythonScript;
@@ -42,24 +53,13 @@ def result(x):
     return x
 '''.
 
-:code_analysis_file_list a owl:Class, prov:SoftwareAgent, setl:PythonScript;
-  rdfs:subClassOf prov:Activity;
-  prov:qualifiedDerivation [
-    a prov:Derivation;
-    prov:entity :code_analysis_file;
-    prov:hadRole [ dcterms:identifier "code_analysis_file"]
-  ];
-  prov:value '''
-result = enumerate(code_analysis_file)
-'''.
-
-:code_analysis_file a <https://www.iana.org/assignments/media-types/text/plain>;
+:stack_overflow_file_list a csvw:Table, setl:Table;
   prov:wasGeneratedBy [
     a setl:Extract;
-    prov:used <file:///data/data/sample_lists/turtle_analysis.txt>;
+    prov:used <file:///data/data/indices/stack_overflow_no_all_methods.txt>;
   ].
 
-:code_analysis_import a setl:SemanticETLScript;
+:stack_overflow_import a setl:SemanticETLScript;
   rdfs:label "Graph4code Import SETL Script".
 
 
@@ -75,171 +75,123 @@ from json import loads as result
 from functools import reduce as result
 '''.
 
+
+:uri_safe a owl:Class, prov:SoftwareAgent, setl:PythonScript;
+  rdfs:subClassOf prov:Activity;
+  prov:value '''
+global parse
+from urllib import parse
+result = lambda x: parse.quote_plus(x.encode('utf8'), safe="/")
+'''.
+
 :reversed a owl:Class, prov:SoftwareAgent, setl:PythonScript;
   rdfs:subClassOf prov:Activity;
   prov:value '''
 result = lambda x: list(reversed(x))
 '''.
 
-:code_analysis a void:Dataset, setl:Persisted;
-  prov:wasGeneratedBy :code_analysis_import, [
+:stack_overflow a void:Dataset; #, setl:Persisted;
+  prov:wasGeneratedBy :stack_overflow_import, [
     a setl:Transform, setl:JSLDT;
-    prov:used :code_analysis_file_list;
+    prov:used :stack_overflow_file_list;
     prov:qualifiedUsage [ a prov:Usage; prov:entity :load_json; prov:hadRole [ dcterms:identifier "load_json"]];
     prov:qualifiedUsage [ a prov:Usage; prov:entity :uuid4; prov:hadRole [ dcterms:identifier "uuid4"]];
     prov:qualifiedUsage [ a prov:Usage; prov:entity :from_json; prov:hadRole [ dcterms:identifier "from_json"]];
     prov:qualifiedUsage [ a prov:Usage; prov:entity :reversed; prov:hadRole [ dcterms:identifier "reversed"]];
     prov:qualifiedUsage [ a prov:Usage; prov:entity :reduce; prov:hadRole [ dcterms:identifier "reduce"]];
+    prov:qualifiedUsage [ a prov:Usage; prov:entity :uri_safe; prov:hadRole [ dcterms:identifier "uri_safe"]];
     setl:hasContext '''{
     "sio" :     "http://semanticscience.org/resource/",
     "rdfs" :    "http://www.w3.org/2000/01/rdf-schema#",
     "np":       "http://www.nanopub.org/nschema#",
+    "rdfs" :    "http://www.w3.org/2000/01/rdf-schema#",
+    "rdf" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "skos" : "http://www.w3.org/2004/02/skos/core#",
+    "xsd" : "http://www.w3.org/2001/XMLSchema#",
     "schema":       "http://schema.org/",
     "dbpedia":       "http://dbpedia.org/resource/",
     "dcterms":       "http://purl.org/dc/terms/",
     "graph4code":   "http://purl.org/twc/graph4code/",
     "comment": "rdfs:comment",
+    "sioc"   : "http://rdfs.org/sioc/ns#",
+    "sio":     "http://semanticscience.org/resource/",
     "prov":     "http://www.w3.org/ns/prov#"
 }''';
     prov:value '''
 [
   {
-    "@for" : "r, node, pubid in [[(r, node, pubid) for node in r['turtle_analysis']] for r, pubid in [(load_json('/data/data/'+row.decode('utf8').strip()),uuid4())]][0]",
-    "@do" :
-      {
+    "@with" : "(load_json('/data/data/'+row.filename),uuid4()) as r, pubid",
+    "@do" :{
         "@id" : "graph4code:nanopub/{{pubid}}",
         "@graph" : {
           "@id" : "graph4code:nanopub/{{pubid}}",
           "@type" : "np:Nanopublication",
           "np:hasAssertion" : {
             "@id" : "graph4code:nanopub/{{pubid}}_assertion",
-            "@graph" : {
-        
-        "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{node['nodeNumber']}}",
-        "@type" : [
-          "prov:Activity",
-          "graph4code:python/{{'.'.join(reversed(node['path']))}}"
-        ],
-        "dcterms:isPartOf" : {
-          "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}",
-          "@type" : "schema:SoftwareSourceCode",
-          "schema:programmingLanguage" : { "@id" : "dbpedia:Python_(programming_language)"},
-          "schema:url": { "@id" : "https://github.com/{{r['repo']}}/blob/master/{{r['repoPath'].replace(' ','+')}}"},
-          "rdfs:label" : "{{r['repoPath'].replace(' ','+')}}",
-          "schema:codeRepository" : { "@id" : "graph4code:github.com/{{r['repo']}}"},
-          "dcterms:isPartOf" : {
-            "@id" : "graph4code:github.com/{{r['repo']}}",
-            "@type" : "http://usefulinc.com/ns/doap#Repository",
-            "rdfs:label" : "{{r['repo'].split('/')[1]}}",
-            "schema:url": { "@id" : "https://github.com/{{r['repo']}}"}
-          }
-        },
-        "rdfs:label" : [ { "@if" : "len('source') > 0", "@value" : "{{node['source'].strip()}}"} ],
-        "prov:used" : [
-          {
-            "@for" : "position, arg in enumerate([x for x in node['args']])",
-            "@do" : {
-              "@if" : "not isinstance(arg, list) or len(list) == 0 or not isinstance(arg[0],list)",
-              "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{node['nodeNumber']}}/arg/{{position}}",
-              "@type" : [
-                "prov:Entity",
-                { "@if" : "not isinstance(arg, list)", "@id" : "graph4code:Constant"},
+            "@graph" : [
                 {
-                  "@if" : "not isinstance(arg, list)",
-                  "@id" : "graph4code:python/{{arg.__class__.__module__}}.{{arg.__class__.__name__}}"
-                }
-              ],
-              "prov:value" : [
-                {
-                  "@if" : "not isinstance(arg, list)",
-                  "@value":"{{str(arg)}}"
-                }
-              ],
-              "@reverse" : {
-                "prov:entity" : [
-                  {
-                    "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{node['nodeNumber']}}/usage/{{position}}",
-                    "@type" : "prov:Usage",
-                    "@reverse" : {
-                      "prov:qualifiedUsage" : {"@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{node['nodeNumber']}}"}
-                    },
-                    "prov:hadRole" : [
-                      {
-                        "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{node['nodeNumber']}}/role/{{position}}",
-                        "@type" : ["prov:Role", "graph4code:PositionalArgument"],
-                        "prov:value" : { "@value" : "{{position}}", "@type" : "xsd:integer"}
-                      },
-                      {
-                        "@for" : "key in [key for key, value in node['named'].items() if value == arg]",
-                        "@do" : {
-                          "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{node['nodeNumber']}}/role/{{key}}",
-                          "@type" : ["prov:Role", "graph4code:NamedArgument"],
-                          "prov:value" : "{{key}}"
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            }
-          }
-        ],
-        "prov:informed" : [
-          {
-            "@if" : "'edges' in node and 'CONTROL' in node['edges']",
-            "@for" : "control_flow in node['edges']['CONTROL']",
-            "@do" : { "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{control_flow}}"}
-          }
-        ],
-        "@reverse" : {
-          "prov:wasGeneratedBy" : {
-            "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/entity/{{node['nodeNumber']}}",
-            "@if" : "'DATA' in r['edges']",
-            "@type" : "prov:Entity",
-            "rdfs:label" : "{{'.'.join(reversed(r['path']))}}",
-            "@reverse" : {
-              "prov:used" : [
-                {
-                  "@for" : "a, position in reduce(lambda x,y: x + y, [[(node,position) for node in nodes] for nodes, position in from_json('['+node['edges']['DATA']+']')] ) ",
-                  "@do" : [
-                    {
-                      "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{a}}",
-                      "prov:qualifiedUsage" : {
-                        "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{a}}/usage/{{position}}",
-                        "@type" : "prov:Usage",
-                        "prov:entity" : {
-                          "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/entity/{{node['nodeNumber']}}",
-                          "@type" : [ { "@if" : "position == 0", "@id" : "graph4code:Function" } ]
+                    "@for" : "question in r['stackoverflow']",
+                    "@do" : {
+                        "@id" : "https://stackoverflow.com/questions/{{question['_source']['question_id:']}}",
+                        "@type" : "schema:Question",
+                        "schema:about" : [
+                            { "@if" : "'klass' in r", "@id" : "graph4code:python/{{uri_safe(r['klass'])}}" },
+                            { "@if" : "'module' in r",  "@id" : "graph4code:python/{{uri_safe(r['module'])}}" }
+                        ],
+                        "schema:keywords" : [
+                            {
+                                "@if" : "'tags' in question['_source']['tags']",
+                                "@for" : "tag in question['_source']['tags'][1:-1].split('><')",
+                                "@do" : {
+                                    "@value" : "{{tag}}"
+                                }
+                            }
+                        ],
+                        "schema:hasPart" : [
+                            {
+                                "@for" : "code_index, code in enumerate([x[0] for x in question['_source']['codes'] if len(x) > 0])",
+                                "@do" : {
+                                    "@id" : "https://stackoverflow.com/questions/{{question['_source']['question_id:']}}/code_snippet/{{code_index}}",
+                                    "@type" :  "schema:SoftwareSourceCode",
+                                    "prov:value" : "{{code}}"
+                                }
+                            }
+                        ],
+                        "sioc:content" : "{{question['_source']['question_text:']}}",
+                        "schema:name" : "{{question['_source']['title']}}",
+                        "schema:upvoteCount" : {
+                            "@if" : "len(question['_source']['question_votes:'] > 0)",
+                            "@value" : "{{question['_source']['question_votes:']}}",
+                            "@type" : "xsd:integer"
                         },
-                        "prov:hadRole" : [
-                          {
-                            "@id" : "graph4code:github.com/{{r['repo']}}/{{r['repoPath'].replace(' ','+')}}/activity/{{a}}/role/{{position}}",
-                            "@type" : [
-                              "prov:Role",
-                              "graph4code:PositionalArgument"
-                            ],
-                            "prov:value" : { "@value" : "{{position}}", "@type" : "xsd:integer"}
-                          }
+                        "schema:suggestedAnswer" : [
+                            {
+                                "@for" : "answer in question['_source']['answers']",
+                                "@do" : {
+                                    "@id" : "https://stackoverflow.com/a/{{answer[0]}}",
+                                    "@type" : "schema:Answer",
+                                    "sioc:content" : "{{answer[5]}}",
+                                    "schema:upvoteCount" : {
+                                        "@if" : "len(answer[7] > 0)",
+                                        "@value" : "{{answer[7]}}",
+                                        "@type" : "xsd:integer"
+                                    }
+                                }
+                            }
                         ]
-                      }
                     }
-                  ]
                 }
-              ]
-            }
+            ]
           }
-        }
-      }
+       }
     }
-  }
-  }
   }
 ]
 '''].
 
-<turtle_analysis.trig> a pv:File;
-    dcterms:format "application/trig";
+<stackoverflow.nq.gz> a pv:File, setl:GZipFile;
+    dcterms:format "application/n-quads";
     prov:wasGeneratedBy [
       a setl:Load;
-      prov:used :code_analysis ;
+      prov:used :stack_overflow ;
     ].

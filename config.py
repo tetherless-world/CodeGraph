@@ -103,8 +103,8 @@ Config = dict(
     admin_queryEndpoint = 'http://localhost:8080/blazegraph/namespace/admin/sparql',
     admin_updateEndpoint = 'http://localhost:8080/blazegraph/namespace/admin/sparql',
     
-    knowledge_queryEndpoint = 'http://localhost:8080/blazegraph/namespace/knowledge/sparql',
-    knowledge_updateEndpoint = 'http://localhost:8080/blazegraph/namespace/knowledge/sparql',
+    knowledge_queryEndpoint = 'http://localhost:8180/knowledge',
+    knowledge_updateEndpoint = 'http://localhost:8180/knowledge',
 
     LOGIN_USER_TEMPLATE = "auth/login.html",
     CELERY_BROKER_URL = 'redis://localhost:6379/0',

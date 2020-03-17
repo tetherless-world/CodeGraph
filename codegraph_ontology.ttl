@@ -1,4 +1,4 @@
-@prefix : <http://purl.org/twc/codegraph/> .
+@prefix : <http://purl.org/twc/graph4code/ontology/> .
 @prefix py: <urn:python/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -8,8 +8,8 @@
 @base <http://purl.org/twc/graph4code/ontology> .
 
 <http://purl.org/twc/graph4code/ontology> rdf:type owl:Ontology ;
-                                           owl:versionIRI <http://purl.org/twc/graph4code/ontology/0.1> ;
-                                           owl:imports <http://www.w3.org/ns/prov-o-20130430> .
+                                           owl:versionIRI : ;
+                                           owl:imports <http://semanticscience.org/ontology/sio.owl> .
 
 #################################################################
 #    Annotation properties
@@ -37,12 +37,12 @@
 
 ###  http://purl.org/twc/graph4code/Argument
 <http://purl.org/twc/graph4code/Argument> rdf:type owl:Class ;
-                                          rdfs:subClassOf <http://www.w3.org/ns/prov#Role> .
+                                          rdfs:subClassOf <http://semanticscience.org/resource/SIO_000016> .
 
 
 ###  http://purl.org/twc/graph4code/Class
 <http://purl.org/twc/graph4code/Class> rdf:type owl:Class ;
-                                       rdfs:subClassOf <http://purl.org/twc/graph4code/InformationArtifact> .
+                                       rdfs:subClassOf <http://semanticscience.org/resource/SIO_000602> .
 
 
 ###  http://purl.org/twc/graph4code/Constant
@@ -52,117 +52,114 @@
 
 ###  http://purl.org/twc/graph4code/Function
 <http://purl.org/twc/graph4code/Function> rdf:type owl:Class ;
-                                          rdfs:subClassOf <http://purl.org/twc/graph4code/InformationArtifact> .
-
-
-###  http://purl.org/twc/graph4code/InformationArtifact
-<http://purl.org/twc/graph4code/InformationArtifact> rdf:type owl:Class ;
-                                                     rdfs:subClassOf <http://www.w3.org/ns/prov#Entity> .
+                                          rdfs:subClassOf <http://semanticscience.org/resource/SIO_000602> .
 
 
 ###  http://purl.org/twc/graph4code/NamedArgument
 <http://purl.org/twc/graph4code/NamedArgument> rdf:type owl:Class ;
                                                owl:equivalentClass [ owl:intersectionOf ( <http://purl.org/twc/graph4code/Argument>
                                                                                           [ rdf:type owl:Restriction ;
-                                                                                            owl:onProperty <http://www.w3.org/ns/prov#value> ;
+                                                                                            owl:onProperty <http://semanticscience.org/resource/SIO_000300> ;
                                                                                             owl:allValuesFrom xsd:string
                                                                                           ]
                                                                                         ) ;
                                                                      rdf:type owl:Class
                                                                    ] ;
-                                               rdfs:subClassOf <http://purl.org/twc/graph4code/Argument> .
+                                               rdfs:subClassOf <http://purl.org/twc/graph4code/Argument> ;
+                                               rdfs:label "Named Argument" .
 
 
 ###  http://purl.org/twc/graph4code/Object
 <http://purl.org/twc/graph4code/Object> rdf:type owl:Class ;
-                                        rdfs:subClassOf <http://purl.org/twc/graph4code/InformationArtifact> .
+                                        rdfs:subClassOf <http://semanticscience.org/resource/SIO_000602> .
 
 
 ###  http://purl.org/twc/graph4code/PositionalArgument
 <http://purl.org/twc/graph4code/PositionalArgument> rdf:type owl:Class ;
                                                     owl:equivalentClass [ owl:intersectionOf ( <http://purl.org/twc/graph4code/Argument>
                                                                                                [ rdf:type owl:Restriction ;
-                                                                                                 owl:onProperty <http://www.w3.org/ns/prov#value> ;
+                                                                                                 owl:onProperty <http://semanticscience.org/resource/SIO_000300> ;
                                                                                                  owl:allValuesFrom xsd:integer
                                                                                                ]
                                                                                              ) ;
                                                                           rdf:type owl:Class
                                                                         ] ;
-                                                    rdfs:subClassOf <http://purl.org/twc/graph4code/Argument> .
+                                                    rdfs:subClassOf <http://purl.org/twc/graph4code/Argument> ;
+                                                    rdfs:label "Positional Argument" .
+
+
+###  http://purl.org/twc/graph4code/python/bytes
+<http://purl.org/twc/graph4code/python/bytes> rdf:type owl:Class ;
+                                              rdfs:subClassOf <http://purl.org/twc/graph4code/Constant> ,
+                                                              <http://purl.org/twc/graph4code/python/object> ;
+                                              rdfs:label "Byte Array" ;
+                                              <http://www.w3.org/2004/02/skos/core#notation> "bytes" .
+
+
+###  http://purl.org/twc/graph4code/python/float
+<http://purl.org/twc/graph4code/python/float> rdf:type owl:Class ;
+                                              owl:equivalentClass [ owl:intersectionOf ( <http://purl.org/twc/graph4code/python/object>
+                                                                                         [ rdf:type owl:Restriction ;
+                                                                                           owl:onProperty <http://semanticscience.org/resource/SIO_000300> ;
+                                                                                           owl:allValuesFrom xsd:decimal
+                                                                                         ]
+                                                                                       ) ;
+                                                                    rdf:type owl:Class
+                                                                  ] ;
+                                              rdfs:subClassOf <http://purl.org/twc/graph4code/Constant> ,
+                                                              <http://purl.org/twc/graph4code/python/object> ;
+                                              rdfs:label "Floating Point Number" ;
+                                              <http://www.w3.org/2004/02/skos/core#notation> "float" .
+
+
+###  http://purl.org/twc/graph4code/python/int
+<http://purl.org/twc/graph4code/python/int> rdf:type owl:Class ;
+                                            owl:equivalentClass [ owl:intersectionOf ( <http://purl.org/twc/graph4code/python/object>
+                                                                                       [ rdf:type owl:Restriction ;
+                                                                                         owl:onProperty <http://semanticscience.org/resource/SIO_000300> ;
+                                                                                         owl:allValuesFrom xsd:integer
+                                                                                       ]
+                                                                                     ) ;
+                                                                  rdf:type owl:Class
+                                                                ] ;
+                                            rdfs:subClassOf <http://purl.org/twc/graph4code/Constant> ,
+                                                            <http://purl.org/twc/graph4code/python/object> ;
+                                            rdfs:label "Integer" ;
+                                            <http://www.w3.org/2004/02/skos/core#notation> "int" .
+
+
+###  http://purl.org/twc/graph4code/python/object
+<http://purl.org/twc/graph4code/python/object> rdf:type owl:Class ;
+                                               rdfs:subClassOf <http://purl.org/twc/graph4code/Object> ;
+                                               rdfs:label "Python Object" ;
+                                               <http://www.w3.org/2004/02/skos/core#altLabel> "builtins.object" ;
+                                               <http://www.w3.org/2004/02/skos/core#notation> "object" .
+
+
+###  http://purl.org/twc/graph4code/python/str
+<http://purl.org/twc/graph4code/python/str> rdf:type owl:Class ;
+                                            owl:equivalentClass [ owl:intersectionOf ( <http://purl.org/twc/graph4code/python/object>
+                                                                                       [ rdf:type owl:Restriction ;
+                                                                                         owl:onProperty <http://semanticscience.org/resource/SIO_000300> ;
+                                                                                         owl:allValuesFrom xsd:string
+                                                                                       ]
+                                                                                     ) ;
+                                                                  rdf:type owl:Class
+                                                                ] ;
+                                            rdfs:subClassOf <http://purl.org/twc/graph4code/Constant> ,
+                                                            <http://purl.org/twc/graph4code/python/object> ;
+                                            rdfs:label "String" ;
+                                            <http://www.w3.org/2004/02/skos/core#notation> "str" .
 
 
 ###  http://schema.org/SoftwareSourceCode
 <http://schema.org/SoftwareSourceCode> rdf:type owl:Class ;
-                                       rdfs:subClassOf <http://purl.org/twc/graph4code/InformationArtifact> ;
+                                       rdfs:subClassOf <http://semanticscience.org/resource/SIO_000602> ;
                                        rdfs:label "Source Code" .
 
 
-###  urn:python/builtins.bytes
-py:builtins.bytes rdf:type owl:Class ;
-                  rdfs:subClassOf <http://purl.org/twc/graph4code/Constant> ,
-                                  py:builtins.object ;
-                  rdfs:label "Byte Array" ;
-                  <http://www.w3.org/2004/02/skos/core#altLabel> "builtins.bytearray" ;
-                  <http://www.w3.org/2004/02/skos/core#notation> "bytes" .
-
-
-###  urn:python/builtins.float
-py:builtins.float rdf:type owl:Class ;
-                  owl:equivalentClass [ owl:intersectionOf ( py:builtins.object
-                                                             [ rdf:type owl:Restriction ;
-                                                               owl:onProperty <http://www.w3.org/ns/prov#value> ;
-                                                               owl:allValuesFrom xsd:decimal
-                                                             ]
-                                                           ) ;
-                                        rdf:type owl:Class
-                                      ] ;
-                  rdfs:subClassOf <http://purl.org/twc/graph4code/Constant> ,
-                                  py:builtins.object ;
-                  rdfs:label "Floating Point Number" ;
-                  <http://www.w3.org/2004/02/skos/core#altLabel> "builtins.float" ;
-                  <http://www.w3.org/2004/02/skos/core#notation> "float" .
-
-
-###  urn:python/builtins.int
-py:builtins.int rdf:type owl:Class ;
-                owl:equivalentClass [ owl:intersectionOf ( py:builtins.object
-                                                           [ rdf:type owl:Restriction ;
-                                                             owl:onProperty <http://www.w3.org/ns/prov#value> ;
-                                                             owl:allValuesFrom xsd:integer
-                                                           ]
-                                                         ) ;
-                                      rdf:type owl:Class
-                                    ] ;
-                rdfs:subClassOf <http://purl.org/twc/graph4code/Constant> ,
-                                py:builtins.object ;
-                rdfs:label "Integer" ;
-                <http://www.w3.org/2004/02/skos/core#altLabel> "builtins.int" ;
-                <http://www.w3.org/2004/02/skos/core#notation> "int" .
-
-
-###  urn:python/builtins.object
-py:builtins.object rdf:type owl:Class ;
-                   rdfs:subClassOf <http://purl.org/twc/graph4code/Object> ;
-                   rdfs:label "Python Object" ;
-                   <http://www.w3.org/2004/02/skos/core#altLabel> "builtins.object" ;
-                   <http://www.w3.org/2004/02/skos/core#notation> "object" .
-
-
-###  urn:python/builtins.str
-py:builtins.str rdf:type owl:Class ;
-                owl:equivalentClass [ owl:intersectionOf ( py:builtins.object
-                                                           [ rdf:type owl:Restriction ;
-                                                             owl:onProperty <http://www.w3.org/ns/prov#value> ;
-                                                             owl:allValuesFrom xsd:string
-                                                           ]
-                                                         ) ;
-                                      rdf:type owl:Class
-                                    ] ;
-                rdfs:subClassOf <http://purl.org/twc/graph4code/Constant> ,
-                                py:builtins.object ;
-                rdfs:label "String" ;
-                <http://www.w3.org/2004/02/skos/core#altLabel> "builtins.str" ;
-                <http://www.w3.org/2004/02/skos/core#notation> "str" .
+###  http://semanticscience.org/resource/SIO_000602
+<http://semanticscience.org/resource/SIO_000602> rdf:type owl:Class .
 
 
 ###  Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi
