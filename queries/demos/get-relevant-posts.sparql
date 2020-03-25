@@ -1,0 +1,23 @@
+select ?t ?q ?aa ?c ?v ?a where {
+ graph ?g {
+   {
+     select ?v (count(?s1) as ?c) where {
+        values (?tp) {
+     	  ("sklearn.svm.SVC")
+     	  ("sklearn.svm.SVC.fit")
+   	}
+
+       ?s1 <https://stackoverflow.com/name> ?tp;
+           <https://stackoverflow.com/id> ?v .
+     } group by ?v
+   }
+
+   ?v <https://stackoverflow.com/title> ?t ;
+      <https://stackoverflow.com/body> ?q .
+
+    optional {
+      ?v <https://stackoverflow.com/answer> ?a .
+      ?a <https://stackoverflow.com/body> ?aa .
+    }
+ }
+} order by ?c 
