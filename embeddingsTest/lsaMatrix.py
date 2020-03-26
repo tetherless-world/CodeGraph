@@ -1,6 +1,7 @@
 import numpy as np
 import re
 
+# mrOutput is filename of MRJob output to compute the matrix from
 def computeMatrix(mrOutput):
 	inputFile = open(mrOutput, 'r')
 	docList = set()
