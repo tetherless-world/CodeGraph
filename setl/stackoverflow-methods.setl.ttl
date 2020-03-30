@@ -36,13 +36,16 @@ def result(f):
                 if len(data) == 0:
                     print ("Empty file for",f)
                     error_log.write("Empty file: {0}\\n".format(f))
-                    return { "turtle_analysis" : []}
+                    return []
                 result = loads(data)
-                return result
+                if not isinstance(result, list):
+                    return [result]
+                else:
+                    return result
             except Exception as err:
                 print("Exception parsing {0}: {1}".format(f, err))
                 error_log.write("Exception on {0}: {1}\\n".format(f, err))
-                return { "turtle_analysis" : []}
+                return []
 '''.
 
 :debug a owl:Class, prov:SoftwareAgent, setl:PythonScript;
@@ -56,7 +59,7 @@ def result(x):
 :stack_overflow_file_list a csvw:Table, setl:Table;
   prov:wasGeneratedBy [
     a setl:Extract;
-    prov:used <file:///data/data/indices/stack_overflow_no_all_methods.txt>;
+    prov:used <file:///data/data/indices/stack_overflow_all_methods.txt>;
   ].
 
 :stack_overflow_import a setl:SemanticETLScript;
@@ -128,7 +131,7 @@ result = lambda x: list(reversed(x))
     prov:value '''
 [
   {
-    "@with" : "load_json('/data/data/'+row.filename) as r",
+    "@for" : "r in load_json('/data/data/'+row.filename)",
     "@do" : {
         "@for" : "question in r['stackoverflow']",
         "@do" : {
@@ -144,7 +147,15 @@ result = lambda x: list(reversed(x))
                         "@type" : "schema:Question",
                         "schema:about" : [
                             { "@if" : "'klass' in r", "@id" : "graph4code:python/{{uri_safe(r['klass'])}}" },
-                            { "@if" : "'module' in r",  "@id" : "graph4code:python/{{uri_safe(r['module'])}}" }
+                            { "@if" : "'module' in r",  "@id" : "graph4code:python/{{uri_safe(r['module'])}}" },
+                            {
+                                "@if" : "'function' in r and 'klass' in r",
+                                "@id" : "graph4code:python/{{uri_safe(r['klass'])}}.{{uri_safe(r['function'])}}"
+                            },
+                            {
+                                "@if" : "'function' in r and 'klass' not in r",
+                                "@id" : "graph4code:python/{{uri_safe(r['module'])}}.{{uri_safe(r['function'])}}"
+                            }
                         ],
                         "schema:keywords" : [
                             {
@@ -197,7 +208,7 @@ result = lambda x: list(reversed(x))
 ]
 '''].
 
-<stackoverflow.nq.gz> a pv:File, setl:GZipFile;
+<stackoverflow_all_methods.nq.gz> a pv:File, setl:GZipFile;
     dcterms:format "application/n-quads";
     prov:wasGeneratedBy [
       a setl:Load;

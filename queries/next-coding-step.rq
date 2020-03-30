@@ -1,0 +1,17 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <http://schema.org/>
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+prefix py: <http://purl.org/twc/graph4code/python/>
+prefix sio: <http://semanticscience.org/resource/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix graph4code: <http://purl.org/twc/graph4code/>
+
+select (count(?g) as ?c) ?predict where {
+ graph ?g {
+   ?equiv a py:sklearn.ensemble.RandomForestClassifier.predict .
+   ?equiv sio:SIO_000230/^sio:SIO_000229 ?next .
+   ?next a ?predict .
+ }
+ ?predict a graph4code:Function.
+} group by ?predict order by desc(?c) limit 3

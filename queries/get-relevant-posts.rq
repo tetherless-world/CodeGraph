@@ -1,0 +1,23 @@
+prefix py: <http://purl.org/twc/graph4code/python/>
+prefix schema: <http://schema.org/>
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+
+select ?t ?q ?aa ?c ?v ?a where {
+  {
+    select ?v (count(?tp) as ?c) where {
+      ?v schema:about ?tp.
+    } group by ?v
+    values (?tp) {
+      (py:sklearn.svm.SVC)
+      (py:sklearn.svm.SVC.fit)
+    }
+  }
+
+  ?v schema:name ?t ;
+     sioc:content ?q .
+
+  optional {
+    ?v schema:suggestedAnswer ?a .
+    ?a sioc:content ?aa .
+  }
+} order by ?c
