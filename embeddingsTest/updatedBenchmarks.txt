@@ -1,0 +1,11 @@
+Benchmark for cleaning text for 500 modules:
+20 minutes
+
+Benchmark running Doc2Vec for 100 iterations on pickled data with 48 workers:
+19 minutes 18 seconds
+
+Benchmark for cleaning text for 500 modules with rewritten functions:
+20 minutes 20 seconds
+
+Benchmark for cleaning text for 500 modules with rewritten functions + 48 worker processes:
+3 minutes 19 seconds
