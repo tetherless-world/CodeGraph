@@ -3,6 +3,7 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix graph4code: <http://purl.org/twc/graph4code/>
+prefix py: <http://purl.org/twc/graph4code/python/>
 
 SELECT distinct ?g ?fitfnname ?fit ?fitsource ?read ?readsource ?x ?xsource ?y ?ysource WHERE {
   {
@@ -23,7 +24,7 @@ SELECT distinct ?g ?fitfnname ?fit ?fitsource ?read ?readsource ?x ?xsource ?y ?
   ?x sio:SIO_000300 ?xsource.
   ?y sio:SIO_000300 ?ysource.
 
-  ?read a <http://purl.org/twc/graph4code/python/pandas.read_csv>.
+  ?read a py:pandas.read_csv.
   ?read sio:SIO_000300 ?readsource.
 
   }

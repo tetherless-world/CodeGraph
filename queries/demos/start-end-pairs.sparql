@@ -1,0 +1,16 @@
+select (count(?g) as ?count) ?x_name ?y_name where {
+ graph ?g {
+  BIND ("sklearn.ensemble.RandomForestClassifier.fit" AS ?x_name)
+  
+  ?read <http://path> "pandas.read_csv" .
+  
+  ?read <http://edge/dataflow>+ ?fitCall1 .
+  ?fitCall1 <http://path> ?x_name .
+	   
+  ?read <http://edge/dataflow>+ ?fitCall2 .
+  ?fitCall2 <http://path> ?y_name .
+
+  filter(?x_name != ?y_name)
+  filter(strends(?y_name, ".fit"))
+}
+} group by ?x_name ?y_name order by desc(?count) limit 15

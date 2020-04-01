@@ -1,0 +1,11 @@
+select (count(?g) as ?c) ?predict where {
+ graph ?g {
+   values ?pred { "sklearn.ensemble.RandomForestClassifier"  }
+   ?prev <http://path> ?pred .
+   ?prev <http://edge/dataflow> ?equiv . 
+   ?equiv <http://path> "sklearn.ensemble.RandomForestClassifier.predict" . 
+   ?equiv <http://edge/dataflow> ?next . 
+   ?next <http://path> ?predict . 
+   filter (! contains(?predict, ":"))
+ } 
+} group by ?predict order by desc(?c) limit 3

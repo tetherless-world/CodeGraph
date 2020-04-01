@@ -118,20 +118,32 @@ result = lambda x: list(reversed(x))
     "@for" : "r, node, pubid in [[(r, node, pubid) for node in r['turtle_analysis']] for r, pubid in [(load_json('/data/data/analysis_results/'+row.filename),uuid4())]][0]",
     "@do" :
       {
-        "@id" : "graph4code:nanopub/{{pubid}}",
+        "@id" : "graph4code:nanopub/{{row.filename}}",
         "@graph" : {
-          "@id" : "graph4code:nanopub/{{pubid}}",
+          "@id" : "graph4code:nanopub/{{row.filename}}",
           "@type" : "np:Nanopublication",
+          "np:hasPublicationInfo" : {
+              "@id" : "graph4code:nanopub/{{row.filename}}_pubinfo",
+              "@graph" : {
+                  "@id" : "graph4code:nanopub/{{row.filename}}",
+                  "prov:wasDerivedFrom" : { "@id" : "file:///data/data/analysis_results/{{row.filename}}" }
+              }
+          },
           "np:hasAssertion" : {
-            "@id" : "graph4code:nanopub/{{pubid}}_assertion",
+            "@id" : "graph4code:nanopub/{{row.filename}}_assertion",
             "@graph" : {
 
-        "@id" : "graph4code:github.com/{{r['repo']}}/{{uri_safe(r['repoPath'])}}/activity/{{node['nodeNumber']}}",
+        "@id" : "graph4code:analysis/{{row.filename}}/activity/{{node['nodeNumber']}}",
         "@type" : [
           "prov:Activity",
           "sio:SIO_000667",
           "graph4code:python/{{uri_safe('.'.join(reversed(node['path'])))}}"
         ],
+        "sio:SIO_000061" : {
+          "@type" : "sio:SIO_000788",
+          "sio:SIO_000300" : "{{node['expr']}}"
+        },
+        "rdfs:label" : "{{'.'.join(reversed(node['path']))}}",
         "sio:SIO_000068" : {
           "@id" : "graph4code:github.com/{{r['repo']}}/{{uri_safe(r['repoPath'])}}",
           "@type" : "schema:SoftwareSourceCode",
@@ -146,13 +158,13 @@ result = lambda x: list(reversed(x))
             "schema:url": { "@id" : "https://github.com/{{r['repo']}}"}
           }
         },
-        "sio:SIO_000300" : [ { "@if" : "len('source') > 0", "@value" : "{{node['source'].strip()}}"} ],
+        "sio:SIO_000300" : [ { "@if" : "len(node['source']) > 0", "@value" : "{{node['source'].strip()}}"} ],
         "sio:SIO_000230" : [
           {
             "@for" : "position, arg in enumerate([x for x in node['args']])",
             "@do" : {
               "@if" : "not isinstance(arg, list) or len(list) == 0 or not isinstance(arg[0],list)",
-              "@id" : "graph4code:github.com/{{r['repo']}}/{{uri_safe(r['repoPath'])}}/activity/{{node['nodeNumber']}}/arg/{{position}}",
+              "@id" : "graph4code:analysis/{{row.filename}}/activity/{{node['nodeNumber']}}/arg/{{position}}",
               "@type" : [
                 "sio:SIO_000069",
                 { "@if" : "not isinstance(arg, list)", "@id" : "graph4code:Constant"},
@@ -169,21 +181,21 @@ result = lambda x: list(reversed(x))
               ],
               "sio:SIO_000228" : [
                 {
-                  "@id" : "graph4code:github.com/{{r['repo']}}/{{uri_safe(r['repoPath'])}}/activity/{{node['nodeNumber']}}/role/{{position}}",
+                  "@id" : "graph4code:analysis/{{row.filename}}/activity/{{node['nodeNumber']}}/role/{{position}}",
                   "@type" : [ "sio:SIO_000016", "graph4code:PositionalArgument"],
                   "sio:SIO_000300" : { "@value" : "{{position}}", "@type" : "xsd:integer"},
                   "sio:SIO_000668" : {
-                      "@id" : "graph4code:github.com/{{r['repo']}}/{{uri_safe(r['repoPath'])}}/activity/{{node['nodeNumber']}}"
+                      "@id" : "graph4code:analysis/{{row.filename}}/activity/{{node['nodeNumber']}}"
                   }
                 },
                 {
                   "@for" : "key in [key for key, value in node['named'].items() if value == arg]",
                   "@do" : {
-                    "@id" : "graph4code:github.com/{{r['repo']}}/{{uri_safe(r['repoPath'])}}/activity/{{node['nodeNumber']}}/role/{{key}}",
+                    "@id" : "graph4code:analysis/{{row.filename}}/activity/{{node['nodeNumber']}}/role/{{key}}",
                     "@type" : ["sio:SIO_000016", "graph4code:NamedArgument"],
                     "sio:SIO_000300" : "{{key}}",
                     "sio:SIO_000668" : {
-                        "@id" : "graph4code:github.com/{{r['repo']}}/{{uri_safe(r['repoPath'])}}/activity/{{node['nodeNumber']}}"
+                        "@id" : "graph4code:analysis/{{row.filename}}/activity/{{node['nodeNumber']}}"
                     }
                   }
                 }
@@ -196,32 +208,36 @@ result = lambda x: list(reversed(x))
           {
             "@if" : "'edges' in node and 'CONTROL' in node['edges']",
             "@for" : "control_flow in node['edges']['CONTROL']",
-            "@do" : { "@id" : "graph4code:github.com/{{r['repo']}}/{{uri_safe(r['repoPath'])}}/activity/{{control_flow}}"}
+            "@do" : { "@id" : "graph4code:analysis/{{row.filename}}/activity/{{control_flow}}"}
           }
         ],
         "sio:SIO_000229" : {
-            "@id" : "graph4code:github.com/{{r['repo']}}/{{uri_safe(r['repoPath'])}}/entity/{{node['nodeNumber']}}",
+            "@id" : "graph4code:analysis/{{row.filename}}/entity/{{node['nodeNumber']}}",
             "@if" : "'DATA' in node['edges']",
-            "@type" : "sio:000602",
-            "rdfs:label" : "{{'.'.join(reversed(r['path']))}}",
+            "@type" : "sio:SIO_000602",
+            "rdfs:label" : "{{'.'.join(reversed(node['path']))}}",
             "@reverse" : {
               "sio:SIO_000230" : [
                 {
                   "@for" : "a, position in reduce(lambda x,y: x + y, [[(node,position) for node in nodes] for nodes, position in from_json('['+node['edges']['DATA']+']')] ) ",
                   "@do" : [
                     {
-                      "@id" : "graph4code:github.com/{{r['repo']}}/{{uri_safe(r['repoPath'])}}/activity/{{a}}",
-                      "sio:SIO_000228" : {
-                        "@id" : "graph4code:github.com/{{r['repo']}}/{{uri_safe(r['repoPath'])}}/activity/{{a}}/role/{{position}}",
-                        "@type" : [
-                          "sio:SIO_000016",
-                          "graph4code:PositionalArgument"
-                        ],
-                        "sio:SIO_000300" : { "@value" : "{{position}}", "@type" : "xsd:integer"},
-                        "sio:SIO_000668" : {
-                          "@id" : "graph4code:github.com/{{r['repo']}}/{{uri_safe(r['repoPath'])}}/entity/{{node['nodeNumber']}}",
-                          "@type" : [ { "@if" : "position == 0", "@id" : "graph4code:Function" } ]
-                        }
+                      "@id" : "graph4code:analysis/{{row.filename}}/activity/{{a}}",
+                      "@reverse" : {
+                          "sio:SIO_000668" : {
+                            "@id" : "graph4code:analysis/{{row.filename}}/activity/{{a}}/role/{{position}}",
+                            "@type" : [
+                              "sio:SIO_000016",
+                              "graph4code:PositionalArgument"
+                            ],
+                            "sio:SIO_000300" : { "@value" : "{{position}}", "@type" : "xsd:integer"},
+                            "@reverse" : {
+                              "sio:SIO_000228" : {
+                                "@id" : "graph4code:analysis/{{row.filename}}/activity/{{node['nodeNumber']}}",
+                                "@type" : [ { "@if" : "position == 0", "@id" : "graph4code:Function" } ]
+                              }
+                            }
+                          }
                       }
                     }
                   ]
