@@ -1,11 +1,12 @@
 from soupclean import clean_text
 import os
 from multiprocessing import Pool
+import pickleFiles as pf
 
 def parse_text():
 #	jsonFileDir = "../../../../data/data/datascience_stackexchange_graph_v2/all/first500"
 	jsonFileDir = "../../../../data/data/datascience_stackexchange_graph_v2/all"
-	files = [i for i in os.listdir(jsonFileDir)]
+	files = [i for i in os.listdir(jsonFileDir) if i != 'first500']
 	print('Total number of files is', len(files))
 #	files = files[0:150]
 	files.sort()
@@ -15,7 +16,10 @@ def parse_text():
 	cleanedTexts = workerPool.map(clean_text, fullFiles)
 	textList = []
 	labelList = []
-	for i in range(0, 500):
+	if len(cleanedTexts) != len(files):
+		print("Uh oh.")
+		return	
+	for i in range(0, len(cleanedTexts)):
 		textList.append(cleanedTexts[i])
 		labelList.append(files[i])
 		'''for target in files:
@@ -26,8 +30,8 @@ def parse_text():
 		labelList.append(target)
 		cleanedFiles += 1'''
 	return (textList, labelList)
-print()
-print()
-result = parse_text()
-print(result[1][1])
-print(result[0][1])
+if __name__ == "__main__":
+	print()
+	print()
+	result = parse_text()
+	pf.store_text(result, "allPickledFiles.p")	
