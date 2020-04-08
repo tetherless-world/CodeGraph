@@ -1,0 +1,19 @@
+select distinct ?info where {
+    graph ?g {
+        ?x <http://path> ?p .
+        ?x <http://flow_type0> ?fn .
+        ?fn <http://path> ?fp .
+        ?x <http://flow_type0> ?pn .
+        ?pn <http://path> ?pp .
+        ?an <http://flow_type1> ?fn .
+        ?an <http://flow_type1> ?pn .
+        ?an <http://turtle_info> ?info .
+        FILTER (strEnds( ?fp, "fit" ) && strEnds( ?pp, "predict" ))
+        FILTER NOT EXISTS {
+            ?pn2 <http://path> ?pp2 .
+            ?bn <http://flow_type1> ?pn2 .
+            ?x <http://flow_type0> ?pn2 .
+            FILTER ( (?bn != ?an) && strEnds( ?pp2, "predict" ) )
+        }
+    }
+} order by ?info
