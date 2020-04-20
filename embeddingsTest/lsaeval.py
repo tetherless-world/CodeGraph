@@ -7,7 +7,8 @@ import json
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from soupclean import clean_text
+#from soupclean import clean_text
+from shortParseFiles import parse_text
 from sklearn.decomposition import TruncatedSVD
 #nltk.download('stopwords')
 #nltk.download('punkt')
@@ -16,28 +17,8 @@ from sklearn.decomposition import TruncatedSVD
 #wordnet_lemmatizer = WordNetLemmatizer()
 #file=open('scipy.linalg.det.json')
 
-#with open('scipy.linalg.det.json') as f:
- # data = json.load(f)
-#listData=data['stackoverflow']
-#contentCorpus=""
-#for i in listData:
-#    contentCorpus=contentCorpus+i['_source']['content']
-#projectStopwords=stopwords.words('english')
-#additionalStopWords=['<','>','/p','.']
-#for i in additionalStopWords:
-#    projectStopwords.append(i)
-#tokens = nltk.tokenize.word_tokenize(contentCorpus)
-#tokens = [wordnet_lemmatizer.lemmatize(t) for t in tokens] 
-#tokens = [t for t in tokens if t not in projectStopwords]
-#print(tokens)
-jsonFileDir="../../../../data/data/datascience_stackexchange_graph_v2/all"
-files=[]
-for i in os.listdir(jsonFileDir):
-    files.append(jsonFileDir+"/"+i)
-    
-#files=['numpy.linalg.linalg.inv.json','scipy.linalg.det.json','sklearn.linear_model.LinearRegression.json','sklearn.linear_model.logistic.softmax.json',
-#'sklearn.metrics.regression.mean_squared_error.json',
-#'sklearn.metrics.scorer.f1_score.json']
+dataTuple=parse_text()
+print(dataTuple[1][0])
 wordArr=[]
 moduleArr=[]
 lookupDict={}
