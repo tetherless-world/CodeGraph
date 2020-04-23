@@ -9,7 +9,7 @@ if op.isfile('allPickledFiles.p'):
 	data = []
 	for i in range(0, len(dataTuple[0])):
 		data.append(TaggedDocument(dataTuple[0][i], [dataTuple[1][i]]))
-	model = Doc2Vec(size=20,alpha=0.025,min_alpha=0.00025,min_count=1,dm=1, workers=48)
+	model = Doc2Vec(vector_size=300,alpha=0.025,min_alpha=0.00025,min_count=1,dm=1, workers=48)
 	model.build_vocab(data)
 	for epoch in range(100):
 		print('Iteration', epoch)
@@ -24,7 +24,7 @@ else:
 	data = []
 	for i in range(0, len(dataTuple[0])):
 		data.append(TaggedDocument(dataTuple[0][i], [dataTuple[1][i]]))
-	model = Doc2Vec(size=20,alpha=0.025,min_alpha=0.00025,min_count=1,dm=1, workers=96)
+	model = Doc2Vec(vector_size=300,alpha=0.025,min_alpha=0.00025,min_count=1,dm=1, workers=96)
 	model.build_vocab(data)
 	for epoch in range(100):
 		print('Iteration', epoch)

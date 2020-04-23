@@ -27,14 +27,35 @@ import string
         final_text = [word.lower() for word in tokenized_text if word not in stopset and word not in string.punctuation]
         return final_text'''
 if __name__ == '__main__':
+	stopset = set(stopwords.words('english'))
 	file = '/data/merge-15-22.2.format.json'
+	docMap = {}
 	with open(file, 'r') as data:
-		docStringObjects = ijson.items(data, 'item')
-		docMap = {}
+		docStringObjects = ijson.items(data, 'item')	
 		for docString in docStringObjects:
-			if 'function_docstring' in docString:
+			if 'module' in docString:
 				name = docString['module']
 				if name not in docMap:
 					docMap[name] = []
-				docMap[name].append((docString['function'], docString['function_docstring']))
-		print(docMap['httpretty'])
+				for element in docString:
+					if 'docstring' in element:
+						if docString[element] != None:
+							'''print("This one is perfectly fine.")
+							input()'''
+							docMap[name].append(docString[element])
+						else:
+							'''print("Something is wrong with this text element.")
+							print("The element is", element)
+							print("The module name is", name)
+							print("The element contents are", docString[element])
+							print(docString)'''
+			#print(docMap['httpretty'])
+	for module, moduleTextList in docMap.items():
+		space = ' '
+#		print(moduleTextList)
+		combinedModuleText = space.join(moduleTextList)
+		tokenized_text = word_tokenize(combinedModuleText)
+		final_text = [word.lower() for word in tokenized_text if word not in stopset and word not in string.punctuation]
+		docMap[module] = final_text
+
+	print(docMap['httpretty'])
