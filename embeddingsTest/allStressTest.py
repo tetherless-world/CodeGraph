@@ -16,7 +16,7 @@ if op.isfile('allPickledFiles.p'):
 		model.train(data,total_examples=model.corpus_count,epochs=model.iter)
 		model.alpha -= 0.0002
 		model.min_alpha = model.alpha
-	model.save('stressTestOutput.model')
+	model.save('newStressTestOutput.model')
 	print("Model saved")
 else:
 	print("No pickled data detected.")
@@ -31,5 +31,5 @@ else:
 		model.train(data,total_examples=model.corpus_count,epochs=model.iter)
 		model.alpha -= 0.0002
 		model.min_alpha = model.alpha
-	model.save('stressTestOutput.model')
+	model.save('newStressTestOutput.model')
 	print("Model saved")
