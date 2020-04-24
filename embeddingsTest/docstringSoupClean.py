@@ -6,27 +6,7 @@ from nltk.corpus import stopwords
 import string
 
 # this is left commented here for reference
-'''def clean_text(file):
-        stopset = set(stopwords.words('english'))
-        try:
-           documentation = json.load(open(file, encoding = 'utf-8'))
-        except json.JSONDecodeError:
-           return []
-        text = ''
-        if type(documentation) is not dict:
-            return []
-        for section in documentation['stackoverflow']:
-                plaintext = section['_source']['content']
-                text += ' ' + plaintext
-        if not text:
-                   return []
-        soup = BeautifulSoup(text, 'html.parser')
-        for code in soup.find_all('code'):
-                code.decompose()
-        tokenized_text = word_tokenize(soup.get_text())
-        final_text = [word.lower() for word in tokenized_text if word not in stopset and word not in string.punctuation]
-        return final_text'''
-if __name__ == '__main__':
+def clean_docstrings():
 	stopset = set(stopwords.words('english'))
 	file = '/data/merge-15-22.2.format.json'
 	docMap = {}
@@ -44,18 +24,19 @@ if __name__ == '__main__':
 							input()'''
 							docMap[name].append(docString[element])
 						else:
-							'''print("Something is wrong with this text element.")
-							print("The element is", element)
-							print("The module name is", name)
-							print("The element contents are", docString[element])
-							print(docString)'''
+							pass
+	docItems = []
+	for label, text in docMap.items():
+		space = ' '
+		combinedModuleText = space.join(text)
+		docItems.append((label, combinedModuleText))
+	#return docMap
+	return docItems
 			#print(docMap['httpretty'])
-	for module, moduleTextList in docMap.items():
+	'''for module, moduleTextList in docMap.items():
 		space = ' '
 #		print(moduleTextList)
 		combinedModuleText = space.join(moduleTextList)
 		tokenized_text = word_tokenize(combinedModuleText)
 		final_text = [word.lower() for word in tokenized_text if word not in stopset and word not in string.punctuation]
-		docMap[module] = final_text
-
-	print(docMap['httpretty'])
+		docMap[module] = final_text'''
