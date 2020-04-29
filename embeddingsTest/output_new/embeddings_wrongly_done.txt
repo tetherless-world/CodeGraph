@@ -1,0 +1,1500 @@
+Files not accurately embedded ANY.json
+
+ predicted instead timeit.Timer.json
+Files not accurately embedded ARRAY.json
+
+ predicted instead distutils.msvccompiler.CompileError.json
+Files not accurately embedded Abs.json
+
+ predicted instead tensorflow.keras.layers.GlobalMaxPooling2D.json
+Files not accurately embedded Abs_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded AbstractNode.json
+
+ predicted instead keras.backend.tensorflow_backend.gather.json
+Files not accurately embedded AbstractType.json
+
+ predicted instead distutils.command.bdist.DistutilsModuleError.json
+Files not accurately embedded AccessControl.unauthorized.Unauthorized.json
+
+ predicted instead tensorflow.python.keras.wrappers.scikit_learn.KerasRegressor.json
+Files not accurately embedded AccessControl_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded AddPackagePath.json
+
+ predicted instead tensorflow.python.keras.wrappers.scikit_learn.KerasRegressor.json
+Files not accurately embedded AiryBase.json
+
+ predicted instead theano.tensor.MaxAndArgmax.json
+Files not accurately embedded AiryBase_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded AllArgs.json
+
+ predicted instead tensorflow.compat.v1.logging.get_verbosity.json
+Files not accurately embedded AllArgs_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded And.json
+
+ predicted instead tensorflow.python.tensor_array_split_v2.json
+Files not accurately embedded And_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded AnyArgs.json
+
+ predicted instead keras.preprocessing.image.load_img.json
+Files not accurately embedded AnyArgs_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded Application.json
+
+ predicted instead tensorflow.logging.set_verbosity.json
+Files not accurately embedded Application_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded ArithmeticError.json
+
+ predicted instead docutils.nodes.description.json
+Files not accurately embedded Array.json
+
+ predicted instead setuptools.wheel.type.json
+Files not accurately embedded AssertionError.json
+
+ predicted instead tensorflow.v1.VarianceScaling.json
+Files not accurately embedded AssertionError_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded AttributeError.json
+
+ predicted instead sklearn.cluster.optics_.cluster_optics_dbscan.json
+Files not accurately embedded AutoProxy.json
+
+ predicted instead networkx.algorithms.shortest_path_length.json
+Files not accurately embedded Barrier.json
+
+ predicted instead sklearn.feature_extraction.text.FeatureHasher.json
+Files not accurately embedded BaseException.json
+
+ predicted instead chainer.link._is_shape.json
+Files not accurately embedded BaseType.json
+
+ predicted instead h2o.backend.server.is_type.json
+Files not accurately embedded BaseType_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded Boolean.json
+
+ predicted instead html5lib.parse.json
+Files not accurately embedded BooleanFunction.json
+
+ predicted instead tensorflow.python.ops.nn.in_top_k.json
+Files not accurately embedded BooleanFunction_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded Boolean_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded _85encode.json
+
+ predicted instead distutils.command.build.Command.json
+Files not accurately embedded _AttributesAttributes.json
+
+ predicted instead tensorflow.v1.get_local_variable.json
+Files not accurately embedded _abc_init.json
+
+ predicted instead selectors.SelectSelector.json
+Files not accurately embedded _abc_instancecheck.json
+
+ predicted instead theano.tensor.nnet.h_softmax.json
+Files not accurately embedded _abc_register.json
+
+ predicted instead tensorflow.python.feature_column.feature_column.make_parse_example_spec.json
+Files not accurately embedded _add_filter.json
+
+ predicted instead keras.utils.np_utils.normalize.json
+Files not accurately embedded _after_fork.json
+
+ predicted instead dask.dataframe.multi.first.json
+Files not accurately embedded _alias.json
+
+ predicted instead argparse.ArgumentTypeError.json
+Files not accurately embedded _all_string_prefixes.json
+
+ predicted instead is_HDN.json
+Files not accurately embedded _append_child.json
+
+ predicted instead pyspark.sql.functions.max.json
+Files not accurately embedded _as_int.json
+
+ predicted instead tensorflow.v1.clip_by_value.json
+Files not accurately embedded _assert_python.json
+
+ predicted instead pandas.errors.DtypeWarning.json
+Files not accurately embedded _ast.AST.json
+
+ predicted instead tensorflow.python.feature_column.feature_column._EmbeddingColumnLayer.json
+Files not accurately embedded _ast.And.json
+
+ predicted instead pandas._config.option_context.json
+Files not accurately embedded _ast.Assert.json
+
+ predicted instead tensorflow.keras.initializers.GlorotUniform.json
+Files not accurately embedded _ast.BitAnd.json
+
+ predicted instead tensorflow.compat.v1.train.shuffle_batch.json
+Files not accurately embedded _ast.BitOr.json
+
+ predicted instead sklearn.model_selection.RepeatedStratifiedKFold.json
+Files not accurately embedded _ast.Call.json
+
+ predicted instead sklearn.neighbors.dist_metrics.PyFuncDistance.json
+Files not accurately embedded _ast.ClassDef.json
+
+ predicted instead numpy.ComplexWarning.json
+Files not accurately embedded _ast.Constant.json
+
+ predicted instead pymc3.distributions.HalfNormal.json
+Files not accurately embedded _ast.Dict.json
+
+ predicted instead tensorflow.python.estimator.estimator_lib.LinearEstimator.json
+Files not accurately embedded _ast.For.json
+
+ predicted instead concurrent.futures._base.DoneAndNotDoneFutures.json
+Files not accurately embedded _ast.FunctionDef.json
+
+ predicted instead ctypes.byref.json
+Files not accurately embedded _ast.FunctionType.json
+
+ predicted instead scipy.ndimage.gaussian_filter.json
+Files not accurately embedded _ast.Global.json
+
+ predicted instead tensorflow._api.v1.image.encode_jpeg.json
+Files not accurately embedded _ast.Gt.json
+
+ predicted instead tensorflow.summary.SessionLog.json
+Files not accurately embedded _ast.GtE.json
+
+ predicted instead scipy.stats.wilcoxon.json
+Files not accurately embedded _ast.If.json
+
+ predicted instead pandas.io.sql.partial.json
+Files not accurately embedded _ast.Import.json
+
+ predicted instead tensorflow.python.estimator.estimator_lib.LinearEstimator.json
+Files not accurately embedded _ast.ImportFrom.json
+
+ predicted instead coverage.data.line_counts.json
+Files not accurately embedded _ast.In.json
+
+ predicted instead statsmodels.tsa.statespace.varmax.VARMAX.json
+Files not accurately embedded _ast.Index.json
+
+ predicted instead numpy.lib.type_check.set_module.json
+Files not accurately embedded _ast.Is.json
+
+ predicted instead bokeh.models.ZoomOutTool.json
+Files not accurately embedded _ast.IsNot.json
+
+ predicted instead traceback.format_exc.json
+Files not accurately embedded _ast.List.json
+
+ predicted instead tensorflow.keras.metrics.FalseNegatives.json
+Files not accurately embedded _ast.Lt.json
+
+ predicted instead pandas.io.sql.partial.json
+Files not accurately embedded _ast.LtE.json
+
+ predicted instead scipy.optimize._trustregion_constr.minimize_trustregion_constr.CanonicalConstraint.json
+Files not accurately embedded _ast.Module.json
+
+ predicted instead pandas.merge_ordered.json
+Files not accurately embedded _ast.Name.json
+
+ predicted instead keras.backend.tensorflow_backend.gather.json
+Files not accurately embedded _ast.NameConstant.json
+
+ predicted instead numpy.lib.fv.json
+Files not accurately embedded _ast.Not.json
+
+ predicted instead sklearn.cluster.k_means_.check_random_state.json
+Files not accurately embedded _ast.NotIn.json
+
+ predicted instead nltk.parse.stanford.java.json
+Files not accurately embedded _ast.Or.json
+
+ predicted instead tensorflow.python.framework.tensor_util.TensorShapeProtoToList.json
+Files not accurately embedded _ast.Pass.json
+
+ predicted instead mpl_toolkits.mplot3d.proj3d.proj_transform.json
+Files not accurately embedded _ast.Raise.json
+
+ predicted instead sklearn.datasets._base.load_wine.json
+Files not accurately embedded _ast.Return.json
+
+ predicted instead markdown.core.markdown.json
+Files not accurately embedded _ast.Set.json
+
+ predicted instead tensorflow.python.keras.engine.saving.load_weights_from_hdf5_group.json
+Files not accurately embedded _ast.Store.json
+
+ predicted instead stats.circular_mean.json
+Files not accurately embedded _ast.Str.json
+
+ predicted instead pylab.split.json
+Files not accurately embedded _ast.Sub.json
+
+ predicted instead tensorflow.contrib.learn.python.NotFittedError.json
+Files not accurately embedded _ast.Try.json
+
+ predicted instead statsmodels.api.PCA.json
+Files not accurately embedded _ast.Tuple.json
+
+ predicted instead tensorflow.contrib.estimator.add_metrics.json
+Files not accurately embedded _ast.While.json
+
+ predicted instead statsmodels.tsa.arma_mle.Arma.json
+Files not accurately embedded _ast.With.json
+
+ predicted instead scipy.stats.wilcoxon.json
+Files not accurately embedded _ast.Yield.json
+
+ predicted instead tqdm.tqdm_notebook.json
+Files not accurately embedded _ast.arguments.json
+
+ predicted instead tensorflow.python.keras.engine.network._is_hdf5_filepath.json
+Files not accurately embedded _basename.json
+
+ predicted instead tensorflow.python.ops.embedding_ops.range.json
+Files not accurately embedded _binary.json
+
+ predicted instead distutils.command.build_clib.DistutilsFileError.json
+Files not accurately embedded _blake2.blake2b.json
+
+ predicted instead nn.train._training_eager.json
+Files not accurately embedded _blake2.blake2s.json
+
+ predicted instead pandas.merge_ordered.json
+Files not accurately embedded _bootstrap.json
+
+ predicted instead torch._C.FileCheck.json
+Files not accurately embedded a2b_base64.json
+
+ predicted instead boto.s3.bucket.BucketLogging.json
+Files not accurately embedded a2b_hex.json
+
+ predicted instead nn.tf.is_non_decreasing.json
+Files not accurately embedded a2b_qp.json
+
+ predicted instead tensorflow.python.framework.tensor_util.TensorShapeProtoToList.json
+Files not accurately embedded a2b_uu.json
+
+ predicted instead nn.tf.string_strip.json
+Files not accurately embedded a85decode.json
+
+ predicted instead pymc3.sampling.Point.json
+Files not accurately embedded a85encode.json
+
+ predicted instead pymc3.GLM.json
+Files not accurately embedded abc.ABC.json
+
+ predicted instead sklearn.ensemble.gradient_boosting.MeanEstimator.json
+Files not accurately embedded abc.BaseBuildOptions.json
+
+ predicted instead tensorflow.python.keras.backend.identity.json
+Files not accurately embedded abc.abstractmethod.json
+
+ predicted instead sklearn.preprocessing._encoders._encode.json
+Files not accurately embedded abc_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded abort.json
+
+ predicted instead importlib._bootstrap._find_and_load.json
+Files not accurately embedded abs.json
+
+ predicted instead sklearn.feature_extraction.text.partial.json
+Files not accurately embedded abs_paths.json
+
+ predicted instead decimal.Rounded.json
+Files not accurately embedded absl.app.Error.json
+
+ predicted instead pandas.util.testing.check_output.json
+Files not accurately embedded abspath.json
+
+ predicted instead tensorflow.python.ops.math_grad._MulGrad.json
+Files not accurately embedded abstractmethod.json
+
+ predicted instead keras.backend.resize_images.json
+Files not accurately embedded access.json
+
+ predicted instead csv.excel.json
+Files not accurately embedded acos.json
+
+ predicted instead construct.Hex.json
+Files not accurately embedded acos_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded acosh.json
+
+ predicted instead tensorflow._api.v1.image.encode_jpeg.json
+Files not accurately embedded acosh_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded active_count.json
+
+ predicted instead statsmodels.stats.outliers_influence.variance_inflation_factor.json
+Files not accurately embedded adapt.json
+
+ predicted instead tensorflow.python.feature_column.feature_column._check_default_value.json
+Files not accurately embedded add.json
+
+ predicted instead tensorflow.initializers.variables_initializer.json
+Files not accurately embedded addLevelName.json
+
+ predicted instead numpy.core.fromnumeric.generator.json
+Files not accurately embedded add_alias.json
+
+ predicted instead tensorflow.python.keras.backend.var.json
+Files not accurately embedded add_callers.json
+
+ predicted instead tensorflow.python.diag.json
+Files not accurately embedded add_charset.json
+
+ predicted instead tensorflow.image.resize_bilinear.json
+Files not accurately embedded add_extension.json
+
+ predicted instead tensorflow.python.keras.backend.image_data_format.json
+Files not accurately embedded add_func_stats.json
+
+ predicted instead tensorflow.python.framework.ops._NodeDef.json
+Files not accurately embedded add_history.json
+
+ predicted instead _read_float.json
+Files not accurately embedded add_type.json
+
+ predicted instead tensorflow.sparse_placeholder.json
+Files not accurately embedded address_type.json
+
+ predicted instead sklearn.manifold.spectral_embedding_.spectral_embedding.json
+Files not accurately embedded affine.Affine.json
+
+ predicted instead tensorflow.python.ops.variable_scope._get_trainable_value.json
+Files not accurately embedded affine_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded alarm.json
+
+ predicted instead numpy.distutils.fcompiler.DistutilsExecError.json
+Files not accurately embedded alignment.json
+
+ predicted instead sklearn.utils.validation.NotFittedError.json
+Files not accurately embedded all.json
+
+ predicted instead boto.exception.BotoClientError.json
+Files not accurately embedded all_methods.json
+
+ predicted instead scipy.stats.stats._ttest_ind_from_stats.json
+Files not accurately embedded all_suffixes.json
+
+ predicted instead boto.s3.bucket.BucketLogging.json
+Files not accurately embedded all_tasks.json
+
+ predicted instead tensorflow.linalg.matmul.json
+Files not accurately embedded allocate.json
+
+ predicted instead keras.backend.numpy_backend.minimum.json
+Files not accurately embedded alt.json
+
+ predicted instead tensorflow.python.ops.variable_scope.range.json
+Files not accurately embedded and_.json
+
+ predicted instead sphinx.domains.python.PyField.json
+Files not accurately embedded answer_challenge.json
+
+ predicted instead is_tarfile.json
+Files not accurately embedded anticipate_failure.json
+
+ predicted instead pandas.core.sparse.array.is_string_dtype.json
+Files not accurately embedded any.json
+
+ predicted instead tensorflow.reduce_max_v1.json
+Files not accurately embedded app.add.json
+
+ predicted instead tensorflow.train.remove_checkpoint.json
+Files not accurately embedded app.hello.json
+
+ predicted instead ctypes.byref.json
+Files not accurately embedded app.person.Person.json
+
+ predicted instead sklearn.linear_model._stochastic_gradient.BaseSGDClassifier.json
+Files not accurately embedded append_history_file.json
+
+ predicted instead numpy.lib.npyio.loadtxt.json
+Files not accurately embedded application_uri.json
+
+ predicted instead scipy.moveaxis.json
+Files not accurately embedded apscheduler.schedulers.background.BackgroundScheduler.json
+
+ predicted instead tensorflow.contrib.legacy_seq2seq.attention_decoder.json
+Files not accurately embedded apscheduler.schedulers.blocking.BlockingScheduler.json
+
+ predicted instead numpy.compress.json
+Files not accurately embedded apscheduler_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded arbitrary_address.json
+
+ predicted instead pandas.errors.EmptyDataError.json
+Files not accurately embedded architecture.json
+
+ predicted instead scipy.spatial.distance.mahalanobis.json
+Files not accurately embedded arg.json
+
+ predicted instead tensorflow.logging.log_every_n.json
+Files not accurately embedded arg_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded argparse.Action.json
+
+ predicted instead nn.layers.Conv3DTranspose.json
+Files not accurately embedded argparse.ArgumentDefaultsHelpFormatter.json
+
+ predicted instead networkx.algorithms.community.is_partition.json
+Files not accurately embedded argparse.ArgumentError.json
+
+ predicted instead nltk.tokenize.mwe.MWETokenizer.json
+Files not accurately embedded argparse.ArgumentParser.json
+
+ predicted instead sklearn.utils.validation.has_fit_parameter.json
+Files not accurately embedded argparse.ArgumentTypeError.json
+
+ predicted instead tensorflow_datasets.testing.tmp_dir.json
+Files not accurately embedded argparse.FileType.json
+
+ predicted instead pymc3.sampling.Point.json
+Files not accurately embedded argparse.HelpFormatter.json
+
+ predicted instead construct.FormatFieldError.json
+Files not accurately embedded argparse.MetavarTypeHelpFormatter.json
+
+ predicted instead statsmodels.robust.Huber.json
+Files not accurately embedded argparse._ArgumentGroup.json
+
+ predicted instead tensorflow._api.v1.errors.InternalError.json
+Files not accurately embedded argparse._HelpAction.json
+
+ predicted instead tensorflow.io.TFRecordWriter.json
+Files not accurately embedded argparse._StoreAction.json
+
+ predicted instead pip._vendor.urllib3.connection.ConnectionError.json
+Files not accurately embedded argparse._StoreFalseAction.json
+
+ predicted instead numpy.lib.utils.get_include.json
+Files not accurately embedded argparse._StoreTrueAction.json
+
+ predicted instead jupyter_client.session.Session.json
+Files not accurately embedded argparse._get_action_name.json
+
+ predicted instead tensorflow.contrib.learn.python.learn.datasets.load_dataset.json
+Files not accurately embedded argparse_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded array.array.json
+
+ predicted instead tensorflow.python.batch_matrix_diag_part.json
+Files not accurately embedded arrow.Arrow.json
+
+ predicted instead keras.losses.LossFunctionWrapper.json
+Files not accurately embedded arrow.arrow.Arrow.json
+
+ predicted instead boto.ec2.ec2object.EC2Object.json
+Files not accurately embedded arrow.get.json
+
+ predicted instead tensorflow.contrib.learn.python.learn.learn_io.data_feeder.DaskDataFeeder.json
+Files not accurately embedded arrow.now.json
+
+ predicted instead sklearn.ensemble.setup.configuration.json
+Files not accurately embedded arrow_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded as_completed.json
+
+ predicted instead numpy.seterr.json
+Files not accurately embedded ascii.json
+
+ predicted instead traits.api.List.json
+Files not accurately embedded ascii_decode.json
+
+ predicted instead pandas.core.indexes.base.is_categorical_dtype.json
+Files not accurately embedded ascii_encode.json
+
+ predicted instead tensor2tensor.data_generators.text_encoder.TokenTextEncoder.json
+Files not accurately embedded asctime.json
+
+ predicted instead _ast.Assert.json
+Files not accurately embedded ase.build.stack.json
+
+ predicted instead h2o.h2o.import_sql_select.json
+Files not accurately embedded asin.json
+
+ predicted instead tensorflow.saved_model.signature_def_utils.regression_signature_def.json
+Files not accurately embedded asin_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded assert_.json
+
+ predicted instead chainer.report_scope.json
+Files not accurately embedded assert_python_ok.json
+
+ predicted instead tensorflow.python.pack.json
+Files not accurately embedded ast.AST.json
+
+ predicted instead pandas.core.missing._cast_values_for_fillna.json
+Files not accurately embedded ast.And.json
+
+ predicted instead pyspark.mllib.tree.RandomForestModel.json
+Files not accurately embedded ast.Assert.json
+
+ predicted instead tensorflow.keras.layers.GlobalMaxPooling1D.json
+Files not accurately embedded ast.BitAnd.json
+
+ predicted instead tensorflow._api.v1.image.encode_jpeg.json
+Files not accurately embedded ast.BitOr.json
+
+ predicted instead tensorflow.python.is_variable_initialized.json
+Files not accurately embedded ast.Call.json
+
+ predicted instead tensorflow.compat.v1.logging.log_every_n.json
+Files not accurately embedded ast.ClassDef.json
+
+ predicted instead numpy.ComplexWarning.json
+Files not accurately embedded ast.Constant.json
+
+ predicted instead tensorflow.keras.backend.greater.json
+Files not accurately embedded ast.Dict.json
+
+ predicted instead pyspark.ml.regression.TreeEnsembleModel.json
+Files not accurately embedded ast.For.json
+
+ predicted instead tensorflow._api.v1.train.AdamOptimizer.json
+Files not accurately embedded ast.FunctionDef.json
+
+ predicted instead tensorflow.python.client.client_lib.OpError.json
+Files not accurately embedded ast.Global.json
+
+ predicted instead pandas.core.series.OrderedDict.json
+Files not accurately embedded ast.Gt.json
+
+ predicted instead tensorflow.python.keras.backend.exp.json
+Files not accurately embedded ast.GtE.json
+
+ predicted instead tensorflow.contrib.labeled_tensor.reduce_mean.json
+Files not accurately embedded ast.If.json
+
+ predicted instead tensorflow.contrib.layers.python.layers.multi_class_target.json
+Files not accurately embedded ast.Import.json
+
+ predicted instead gevent.hub.greenlet.json
+Files not accurately embedded ast.ImportFrom.json
+
+ predicted instead tensorflow.python.estimator.estimator_lib.LinearEstimator.json
+Files not accurately embedded ast.In.json
+
+ predicted instead sklearn.feature_extraction.text.FeatureHasher.json
+Files not accurately embedded ast.Index.json
+
+ predicted instead tensorflow._api.v1.image.encode_jpeg.json
+Files not accurately embedded ast.Is.json
+
+ predicted instead tensorflow.python.ops.gen_image_ops._InitOpDefLibrary.json
+Files not accurately embedded ast.IsNot.json
+
+ predicted instead sklearn.datasets._base.join.json
+Files not accurately embedded ast.List.json
+
+ predicted instead scipy.special.softmax.json
+Files not accurately embedded ast.Lt.json
+
+ predicted instead tensorflow.python.reduce_any_v1.json
+Files not accurately embedded ast.LtE.json
+
+ predicted instead tensorflow.python.ops.nn.sigmoid.json
+Files not accurately embedded ast.Module.json
+
+ predicted instead autograd.numpy.arange.json
+Files not accurately embedded ast.Name.json
+
+ predicted instead tensorflow.python.is_variable_initialized.json
+Files not accurately embedded ast.NameConstant.json
+
+ predicted instead tensorflow.python.is_variable_initialized.json
+Files not accurately embedded ast.NodeVisitor.json
+
+ predicted instead numpy.distutils.fcompiler.mips.FCompiler.json
+Files not accurately embedded ast.Not.json
+
+ predicted instead chainer.link._is_shape.json
+Files not accurately embedded ast.NotIn.json
+
+ predicted instead tensorflow._api.v1.keras.activations.linear.json
+Files not accurately embedded ast.Or.json
+
+ predicted instead nn.np.sort.json
+Files not accurately embedded ast.Pass.json
+
+ predicted instead concurrent.futures.process._RemoteTraceback.json
+Files not accurately embedded ast.Raise.json
+
+ predicted instead pandas.core.index.Int64Index.json
+Files not accurately embedded ast.Return.json
+
+ predicted instead tensorflow.python.is_variable_initialized.json
+Files not accurately embedded ast.Set.json
+
+ predicted instead _get_traces.json
+Files not accurately embedded ast.Store.json
+
+ predicted instead keras.backend.tensorflow_backend.placeholder.json
+Files not accurately embedded ast.Str.json
+
+ predicted instead tensorflow.contrib.labeled_tensor.python.ops.nn.elu.json
+Files not accurately embedded ast.Sub.json
+
+ predicted instead sklearn.metrics._regression.UndefinedMetricWarning.json
+Files not accurately embedded ast.Try.json
+
+ predicted instead tensorflow._api.v1.v1.name_scope.json
+Files not accurately embedded ast.Tuple.json
+
+ predicted instead tensorflow.contrib.layers.embedding_lookup_unique.json
+Files not accurately embedded ast.While.json
+
+ predicted instead sklearn.metrics.pairwise.gen_even_slices.json
+Files not accurately embedded ast.With.json
+
+ predicted instead tensorflow.keras.initializers.GlorotUniform.json
+Files not accurately embedded ast.Yield.json
+
+ predicted instead scipy.pv.json
+Files not accurately embedded ast.arguments.json
+
+ predicted instead keras.backend.tensorflow_backend.dtype.json
+Files not accurately embedded ast.literal_eval.json
+
+ predicted instead tensorflow.python.estimator.estimator_lib.LinearEstimator.json
+Files not accurately embedded ast.parse.json
+
+ predicted instead ast.Call.json
+Files not accurately embedded ast_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded astroid_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded async_timeout.timeout.json
+
+ predicted instead sklearn.preprocessing._encoders._encode.json
+Files not accurately embedded async_timeout.traceback.json
+
+ predicted instead tensorflow.contrib.learn.PredictionKey.json
+Files not accurately embedded async_timeout_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded atan.json
+
+ predicted instead nn.tf.string_strip.json
+Files not accurately embedded atan2.json
+
+ predicted instead tensorflow.python.util.lazy_loader.LazyLoader.json
+Files not accurately embedded atan2_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded atan_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded atom.atom.Atom.json
+
+ predicted instead tables.index.join_path.json
+Files not accurately embedded atom.atom.function.json
+
+ predicted instead scipy.cluster.hierarchy._dendrogram_calculate_info.json
+Files not accurately embedded atom.instance.Instance.json
+
+ predicted instead tensorflow.python.keras.utils.layer_utils.print_summary.json
+Files not accurately embedded atom.list.List.json
+
+ predicted instead nn.train._training_eager.json
+Files not accurately embedded atom.signal.Signal.json
+
+ predicted instead multiprocessing.context.ProcessError.json
+Files not accurately embedded atom.sub.Sub.json
+
+ predicted instead tensorflow.keras.initializers.GlorotUniform.json
+Files not accurately embedded atom.tuple.Tuple.json
+
+ predicted instead tensorflow.python.keras.wrappers.scikit_learn.KerasRegressor.json
+Files not accurately embedded atom_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded attr._make.Attribute.json
+
+ predicted instead keras.backend.load_backend.var.json
+Files not accurately embedded attr._make._Nothing.json
+
+ predicted instead sklearn.metrics._classification.zero_one_loss.json
+Files not accurately embedded attr._make._make_attr_tuple_class.json
+
+ predicted instead system.logger.json
+Files not accurately embedded attr._make.and_.json
+
+ predicted instead theano.compile.function_module.range.json
+Files not accurately embedded attr._make.attrs.json
+
+ predicted instead tensorflow._api.v1.train.AdamOptimizer.json
+Files not accurately embedded attr._make.make_class.json
+
+ predicted instead chainer.optimizers.adam.Adam.json
+Files not accurately embedded attr.attrs.json
+
+ predicted instead numpy.core.fromnumeric.reshape.json
+Files not accurately embedded attr.fields.json
+
+ predicted instead construct.debug.Default.json
+Files not accurately embedded attr.has.json
+
+ predicted instead keras.backend.tensorflow_backend.minimum.json
+Files not accurately embedded attr.make_class.json
+
+ predicted instead sklearn.datasets._base.load_wine.json
+Files not accurately embedded attr_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded auth.run_simple.json
+
+ predicted instead tensorflow.python.ceil.json
+Files not accurately embedded autograd.checkpoint.json
+
+ predicted instead sklearn.neighbors._graph.RadiusNeighborsMixin.json
+Files not accurately embedded autograd.dict.json
+
+ predicted instead pandas.util.testing.Index.json
+Files not accurately embedded autograd.elementwise_grad.json
+
+ predicted instead tensorflow.python.ops.gen_image_ops.encode_png.json
+Files not accurately embedded autograd.grad.json
+
+ predicted instead tensorflow.python.ceil.json
+Files not accurately embedded autograd.jacobian.json
+
+ predicted instead platform.python_compiler.json
+Files not accurately embedded autograd.list.json
+
+ predicted instead keras.engine.saving.model_from_json.json
+Files not accurately embedded autograd.numpy.AxisError.json
+
+ predicted instead autograd.numpy.minimum.json
+Files not accurately embedded autograd.numpy.absolute.json
+
+ predicted instead KeyboardInterrupt.json
+Files not accurately embedded autograd.numpy.all.json
+
+ predicted instead tensorflow.contrib.learn.python.LinearRegressor.json
+Files not accurately embedded autograd.numpy.any.json
+
+ predicted instead tensorflow.compat.v1.layers.Conv1D.json
+Files not accurately embedded autograd.numpy.append.json
+
+ predicted instead gym.spaces.MultiBinary.json
+Files not accurately embedded autograd.numpy.arange.json
+
+ predicted instead scipy.ufunc.json
+Files not accurately embedded autograd.numpy.array.json
+
+ predicted instead scipy.ndimage.rotate.json
+Files not accurately embedded autograd.numpy.array_split.json
+
+ predicted instead xlrd.sheet.Note.json
+Files not accurately embedded autograd.numpy.array_str.json
+
+ predicted instead joblib.test.test_numpy_pickle._new.json
+Files not accurately embedded autograd.numpy.average.json
+
+ predicted instead tensorflow.python.framework.common_shapes.max_pool_shape.json
+Files not accurately embedded autograd.numpy.c_.json
+
+ predicted instead sklearn.utils.testing.all_estimators.json
+Files not accurately embedded autograd.numpy.copy.json
+
+ predicted instead matplotlib.dates.IndexDateFormatter.json
+Files not accurately embedded autograd.numpy.cross.json
+
+ predicted instead tensorflow._api.v1.math.reduce_sum_v1.json
+Files not accurately embedded autograd.numpy.dot.json
+
+ predicted instead torchvision.datasets.vision.VisionDataset.json
+Files not accurately embedded autograd.numpy.dtype.json
+
+ predicted instead statsmodels.tsa.base.tsa_model.Int64Index.json
+Files not accurately embedded autograd.numpy.fix.json
+
+ predicted instead pandas.io.sql.partial.json
+Files not accurately embedded autograd.numpy.flip.json
+
+ predicted instead nn.tf.string_strip.json
+Files not accurately embedded autograd.numpy.float.json
+
+ predicted instead _check_timeout.json
+Files not accurately embedded autograd.numpy.float64.json
+
+ predicted instead scipy.special.softmax.json
+Files not accurately embedded autograd.numpy.generic.json
+
+ predicted instead autograd.numpy.var.json
+Files not accurately embedded autograd.numpy.gradient.json
+
+ predicted instead pandas.merge_ordered.json
+Files not accurately embedded autograd.numpy.i0.json
+
+ predicted instead distutils.command.install_data.install_data.json
+Files not accurately embedded autograd.numpy.in1d.json
+
+ predicted instead tensorflow._api.v1.io.FixedLenFeature.json
+Files not accurately embedded autograd.numpy.int64.json
+
+ predicted instead distutils.extension.Extension.json
+Files not accurately embedded autograd.numpy.linspace.json
+
+ predicted instead numpy.imag.json
+Files not accurately embedded autograd.numpy.log.json
+
+ predicted instead pandas._libs.index.datetime.json
+Files not accurately embedded autograd.numpy.log10.json
+
+ predicted instead traits.has_traits.HasStrictTraits.json
+Files not accurately embedded autograd.numpy.log1p.json
+
+ predicted instead tensorflow.python.framework.framework_lib.SparseTensorValue.json
+Files not accurately embedded autograd.numpy.log2.json
+
+ predicted instead scipy.ndimage.gaussian_filter.json
+Files not accurately embedded autograd.numpy.matrix.json
+
+ predicted instead sech.json
+Files not accurately embedded autograd.numpy.maximum.json
+
+ predicted instead tensorflow.python.ops.ragged.ragged_conversion_ops.to_tensor.json
+Files not accurately embedded autograd.numpy.mean.json
+
+ predicted instead tensorflow.python.argmin.json
+Files not accurately embedded autograd.numpy.minimum.json
+
+ predicted instead seaborn.utils.categorical_order.json
+Files not accurately embedded autograd.numpy.number.json
+
+ predicted instead tensorflow.python.keras.utils.get_source_inputs.json
+Files not accurately embedded autograd.numpy.ones.json
+
+ predicted instead tensorflow.v1.SparseTensor.json
+Files not accurately embedded autograd.numpy.ones_like.json
+
+ predicted instead matplotlib.dates.DateLocator.json
+Files not accurately embedded autograd.numpy.r_.json
+
+ predicted instead tensorflow.metrics.recall_at_k.json
+Files not accurately embedded autograd.numpy.random.f.json
+
+ predicted instead tensorflow.keras.backend.gather.json
+Files not accurately embedded autograd.numpy.random.normal.json
+
+ predicted instead autograd.numpy.matrix.json
+Files not accurately embedded autograd.numpy.random.random.json
+
+ predicted instead torchvision.models.resnet.resnet50.json
+Files not accurately embedded autograd.numpy.random.shuffle.json
+
+ predicted instead boto.ec2.address.Address.json
+Files not accurately embedded autograd.numpy.rate.json
+
+ predicted instead sklearn.decomposition._kernel_pca.check_array.json
+Files not accurately embedded autograd.numpy.reshape.json
+
+ predicted instead numpy.core.ComplexWarning.json
+Files not accurately embedded autograd.numpy.shape.json
+
+ predicted instead pip._internal.commands.check.CheckCommand.json
+Files not accurately embedded autograd.numpy.sin.json
+
+ predicted instead pandas._libs.lib.Number.json
+Files not accurately embedded autograd.numpy.size.json
+
+ predicted instead tensorflow.python.keras.backend.minimum.json
+Files not accurately embedded autograd.numpy.sort.json
+
+ predicted instead h2o.h2o.as_list.json
+Files not accurately embedded autograd.numpy.split.json
+
+ predicted instead torchvision.models.resnet.resnet50.json
+Files not accurately embedded autograd.numpy.squeeze.json
+
+ predicted instead tensorflow.estimator.BaselineRegressor.json
+Files not accurately embedded autograd.numpy.stack.json
+
+ predicted instead tensorflow.python.depth_to_space_v2.json
+Files not accurately embedded autograd.numpy.str.json
+
+ predicted instead dvc.repo.install.install.json
+Files not accurately embedded autograd.numpy.str_.json
+
+ predicted instead argparse._get_action_name.json
+Files not accurately embedded autograd.numpy.sum.json
+
+ predicted instead tensorflow.math.neg.json
+Files not accurately embedded autograd.numpy.take.json
+
+ predicted instead tensorflow.contrib.learn.python.learn.learn_io.data_feeder.extract_pandas_data.json
+Files not accurately embedded autograd.numpy.take_along_axis.json
+
+ predicted instead tensorflow.contrib.learn.python.learn.estimators.dnn.DNNEstimator.json
+Files not accurately embedded autograd.numpy.var.json
+
+ predicted instead uniform.json
+Files not accurately embedded autograd.numpy.where.json
+
+ predicted instead nltk.lm.api.LanguageModel.json
+Files not accurately embedded autograd.numpy.zeros.json
+
+ predicted instead scipy.character.json
+Files not accurately embedded autograd.scipy.special.i1.json
+
+ predicted instead pylab.split.json
+Files not accurately embedded autograd.scipy.special.j1.json
+
+ predicted instead tensorflow.nn.moments.json
+Files not accurately embedded autograd.type.json
+
+ predicted instead scipy.cluster.hierarchy._dendrogram_calculate_info.json
+Files not accurately embedded autograd.value_and_grad.json
+
+ predicted instead pandas.core.api.Int8Dtype.json
+Files not accurately embedded autograd_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded avg.json
+
+ predicted instead keras.layers.convolutional.SeparableConv1D.json
+Files not accurately embedded azure.batch.models.DataDisk.json
+
+ predicted instead plotnine.ggplot.aes.json
+Files not accurately embedded azure.batch.models.ImageReference.json
+
+ predicted instead tensorflow._api.v1.compat.v1.errors.PermissionDeniedError.json
+Files not accurately embedded azure.batch.models.Schedule.json
+
+ predicted instead pymc3.sampling.Point.json
+Files not accurately embedded azure.batch.models.data_disk.DataDisk.json
+
+ predicted instead tensorflow.contrib.learn.python.learn.MetricKey.json
+Files not accurately embedded azure.batch.models.data_disk.Model.json
+
+ predicted instead tensorflow.contrib.learn.python.LinearRegressor.json
+Files not accurately embedded azure.batch.models.image_reference.ImageReference.json
+
+ predicted instead tensorflow.contrib.labeled_tensor.reduce_mean.json
+Files not accurately embedded azure.batch.models.image_reference.Model.json
+
+ predicted instead distutils.command.build.Command.json
+Files not accurately embedded azure.batch.models.schedule.Model.json
+
+ predicted instead pymc3.sampling.Point.json
+Files not accurately embedded azure.batch.models.schedule.Schedule.json
+
+ predicted instead networkx.algorithms.shortest_paths.dijkstra_path.json
+Files not accurately embedded azure.batch.operations.TaskOperations.json
+
+ predicted instead keras.backend.load_backend.ones_like.json
+Files not accurately embedded azure.batch.operations.task_operations.TaskOperations.json
+
+ predicted instead keras.backend.tensorflow_backend.conv2d_transpose.json
+Files not accurately embedded azure_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded b16decode.json
+
+ predicted instead _sync_close.json
+Files not accurately embedded b16encode.json
+
+ predicted instead sklearn.metrics.v_measure_score.json
+Files not accurately embedded b2a_base64.json
+
+ predicted instead tensorflow._api.v1.train.AdamOptimizer.json
+Files not accurately embedded b2a_hex.json
+
+ predicted instead nn.metrics.precision_at_k.json
+Files not accurately embedded b2a_qp.json
+
+ predicted instead nts.json
+Files not accurately embedded b2a_uu.json
+
+ predicted instead tensorflow._api.v1.keras.backend.zeros_like.json
+Files not accurately embedded b32decode.json
+
+ predicted instead keras.utils.losses_utils.compute_weighted_loss.json
+Files not accurately embedded b32encode.json
+
+ predicted instead pandas.io.pytables.DataFrame.json
+Files not accurately embedded b64decode.json
+
+ predicted instead boto.s3.bucket.BucketLogging.json
+Files not accurately embedded b64encode.json
+
+ predicted instead tensorflow.compat.v1.nn.sparse_softmax_cross_entropy_with_logits.json
+Files not accurately embedded b85decode.json
+
+ predicted instead tensorflow.python.framework.op_def_library._MakeTensor.json
+Files not accurately embedded b85encode.json
+
+ predicted instead tensorflow.python.ops.variables.initialize_all_variables.json
+Files not accurately embedded back.json
+
+ predicted instead scipy.optimize._lsq.trf.trf_bounds.json
+Files not accurately embedded backward.json
+
+ predicted instead luigi.scheduler.Failures.json
+Files not accurately embedded bar.json
+
+ predicted instead tensorflow.v1.RunOptions.json
+Files not accurately embedded base.base.Base.json
+
+ predicted instead sqlalchemy.sql.select.json
+Files not accurately embedded base64._bytes_from_decode_data.json
+
+ predicted instead keras.backend.load_backend.eval.json
+Files not accurately embedded base64._input_type_check.json
+
+ predicted instead tensorflow._api.v1.keras.backend.zeros_like.json
+Files not accurately embedded base64.b16decode.json
+
+ predicted instead tensorflow.contrib.learn.python.learn.estimators.dnn.DNNEstimator.json
+Files not accurately embedded base64.b32decode.json
+
+ predicted instead _write_file_prefix.json
+Files not accurately embedded base64.b64decode.json
+
+ predicted instead tensorflow.python.ops.variable_scope.variable_scope.json
+Files not accurately embedded base64.b64encode.json
+
+ predicted instead tensorflow.saved_model.signature_def_utils.predict_signature_def.json
+Files not accurately embedded base64.decode.json
+
+ predicted instead tensorflow.python.sparse_tensor_dense_add.json
+Files not accurately embedded base64.encode.json
+
+ predicted instead keras.backend.numpy_backend.ones_like.json
+Files not accurately embedded base64.main.json
+
+ predicted instead tensorflow.compat.v1.layers.max_pooling1d.json
+Files not accurately embedded base64.standard_b64decode.json
+
+ predicted instead sklearn.preprocessing._encoders._encode.json
+Files not accurately embedded base64.test.json
+
+ predicted instead keras.backend.load_backend.concatenate.json
+Files not accurately embedded basename.json
+
+ predicted instead numpy.distutils.command.config_compiler.config_cc.json
+Files not accurately embedded basicConfig.json
+
+ predicted instead tensorflow.keras.preprocessing.image.random_shear.json
+Files not accurately embedded bdb.Bdb.json
+
+ predicted instead nltk.parse.corenlp.java.json
+Files not accurately embedded begin_fill.json
+
+ predicted instead _check_timeout.json
+Files not accurately embedded begin_poly.json
+
+ predicted instead scipy.interpolate.CubicSpline.json
+Files not accurately embedded bell.json
+
+ predicted instead dask.array.random.random_state_data.json
+Files not accurately embedded bell_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded bernoulli.json
+
+ predicted instead tensorflow.python.batch_to_space.json
+Files not accurately embedded bernoulli_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded beta.json
+
+ predicted instead erf.json
+Files not accurately embedded beta_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded bias.json
+
+ predicted instead tensorflow._api.v1.v1.log1p.json
+Files not accurately embedded bidirectional.json
+
+ predicted instead keras.utils.data_utils.get_index.json
+Files not accurately embedded bigml.fields.Fields.json
+
+ predicted instead construct.core.Optional.json
+Files not accurately embedded bigml.linear.LinearRegression.json
+
+ predicted instead nn.np.apply_along_axis.json
+Files not accurately embedded bigml.model.Model.json
+
+ predicted instead distutils.command.build.Command.json
+Files not accurately embedded bigml.supervised.SupervisedModel.json
+
+ predicted instead joblib.numpy_pickle.dump.json
+Files not accurately embedded bigml_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded bin.json
+
+ predicted instead dvc.api.get_url.json
+Files not accurately embedded binascii.crc32.json
+
+ predicted instead tensorflow.python.load_op_library.json
+Files not accurately embedded binomial.json
+
+ predicted instead tensorflow.python.sparse_tensor_dense_add.json
+Files not accurately embedded binomial_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded bisect.bisect.json
+
+ predicted instead distutils.msvccompiler.get_build_version.json
+Files not accurately embedded bitcoin.F0.json
+
+ predicted instead keras.metrics.kullback_leibler_divergence.json
+Files not accurately embedded bitcoin.F1.json
+
+ predicted instead pip._internal.utils.hashes.Hashes.json
+Files not accurately embedded bitcoin.F2.json
+
+ predicted instead theano.gof.op.Op.json
+Files not accurately embedded bitcoin.F3.json
+
+ predicted instead tensorflow.python.is_variable_initialized.json
+Files not accurately embedded bitcoin.F4.json
+
+ predicted instead tensorflow.distributions.Beta.json
+Files not accurately embedded bitcoin.R.json
+
+ predicted instead scipy.ndimage.gaussian_filter.json
+Files not accurately embedded bitcoin.getG.json
+
+ predicted instead tensorflow.python.upper_bound.json
+Files not accurately embedded bitcoin.history.json
+
+ predicted instead scipy.stats.wilcoxon.json
+Files not accurately embedded bitcoin.is_address.json
+
+ predicted instead pyspark.ml.regression.TreeEnsembleModel.json
+Files not accurately embedded bitcoin.main.F0.json
+
+ predicted instead tensorflow.compat.v1.train.Checkpoint.json
+Files not accurately embedded bitcoin.main.F1.json
+
+ predicted instead tensorflow.contrib.learn.python.learn.estimators.constants.ProblemType.json
+Files not accurately embedded bitcoin.main.F2.json
+
+ predicted instead pylab.split.json
+Files not accurately embedded bitcoin.main.F3.json
+
+ predicted instead docutils.nodes.status.json
+Files not accurately embedded bitcoin.main.F4.json
+
+ predicted instead tensorflow.keras.layers.GaussianDropout.json
+Files not accurately embedded bitcoin.multiply.json
+
+ predicted instead nn.train._training_eager.json
+Files not accurately embedded bitcoin.new.json
+
+ predicted instead joblib.effective_n_jobs.json
+Files not accurately embedded bitcoin.send.json
+
+ predicted instead chainercv.links.model.ssd.multibox.Multibox.json
+Files not accurately embedded bitcoin.set_network.json
+
+ predicted instead tensorflow.contrib.framework.python.framework.tensor_util.is_tensor.json
+Files not accurately embedded bitcoin.slice.json
+
+ predicted instead whoosh.scoring.bm25.json
+Files not accurately embedded bitcoin.sum.json
+
+ predicted instead PIL.Image.fromstring.json
+Files not accurately embedded bitcoin.transaction.is_address.json
+
+ predicted instead networkx.algorithms.graphical.is_graphical.json
+Files not accurately embedded bk.json
+
+ predicted instead tensorflow.python.map_clear.json
+Files not accurately embedded body_encode.json
+
+ predicted instead tensorflow.keras.layers.GaussianDropout.json
+Files not accurately embedded bokeh.__main__.main.json
+
+ predicted instead lib2to3.main.warn.json
+Files not accurately embedded bokeh.application.Application.json
+
+ predicted instead tensorflow.python.ops.variable_scope._get_trainable_value.json
+Files not accurately embedded bokeh.application.application.Application.json
+
+ predicted instead tensorflow.keras.losses.get.json
+Files not accurately embedded bokeh.io.output.output_file.json
+
+ predicted instead numpy.core.ComplexWarning.json
+Files not accurately embedded bokeh.io.output.output_notebook.json
+
+ predicted instead statsmodels.tsa.api.SARIMAX.json
+Files not accurately embedded bokeh.model.Model.json
+
+ predicted instead mpl_toolkits.axes_grid1.axes_size.MaxHeight.json
+Files not accurately embedded bokeh.models.Annotation.json
+
+ predicted instead pyspark.mllib.regression._convert_to_vector.json
+Files not accurately embedded bokeh.models.Axis.json
+
+ predicted instead bokeh.models.Grid.json
+Files not accurately embedded bokeh.models.Box.json
+
+ predicted instead mainloop.json
+Files not accurately embedded bokeh.models.BoxAnnotation.json
+
+ predicted instead theano.tensor.Alloc.json
+Files not accurately embedded bokeh.models.BoxZoomTool.json
+
+ predicted instead register_dialect.json
+Files not accurately embedded bokeh.models.CategoricalAxis.json
+
+ predicted instead tensorflow.v1.acosh.json
+Files not accurately embedded bokeh.models.Circle.json
+
+ predicted instead tensorflow.keras.layers.GaussianDropout.json
+Files not accurately embedded bokeh.models.CircleX.json
+
+ predicted instead tensorflow.python.ops.distributions.distribution.Distribution.json
+Files not accurately embedded bokeh.models.ColorBar.json
+
+ predicted instead sklearn.linear_model.base.LinearClassifierMixin.json
+Files not accurately embedded bokeh.models.Column.json
+
+ predicted instead pymc3.sampling.Point.json
+Files not accurately embedded bokeh.models.ColumnDataSource.json
+
+ predicted instead tensorflow.keras.metrics.FalseNegatives.json
+Files not accurately embedded bokeh.models.DataRange.json
+
+ predicted instead nltk.tokenize.regexp.regexp_tokenize.json
+Files not accurately embedded bokeh.models.DataRange1d.json
+
+ predicted instead tensorflow.keras.backend.minimum.json
+Files not accurately embedded bokeh.models.DataSource.json
+
+ predicted instead pip._vendor.urllib3.exceptions.DecodeError.json
+Files not accurately embedded bokeh.models.FactorRange.json
+
+ predicted instead tensorflow.python.keras.layers.convolutional.AveragePooling1D.json
+Files not accurately embedded bokeh.models.Grid.json
+
+ predicted instead tensorflow.python.ops.ragged.ragged_tensor._ragged_tensor_session_feed.json
+Files not accurately embedded bokeh.models.Group.json
+
+ predicted instead numpy.fft.fftpack.fft.json
+Files not accurately embedded bokeh.models.HoverTool.json
+
+ predicted instead tensorflow.python.batch_matrix_solve.json
+Files not accurately embedded bokeh.models.Image.json
+
+ predicted instead dask.array.random.random_state_data.json
+Files not accurately embedded bokeh.models.Label.json
+
+ predicted instead tensorflow.python.keras.engine.base_layer.Layer.json
+Files not accurately embedded bokeh.models.LabelSet.json
+
+ predicted instead statsmodels.tsa.api.SARIMAX.json
+Files not accurately embedded bokeh.models.Legend.json
+
+ predicted instead pylab.zeros_like.json
+Files not accurately embedded bokeh.models.Line.json
+
+ predicted instead theano.tensor.MaxAndArgmax.json
+Files not accurately embedded bokeh.models.Model.json
+
+ predicted instead matplotlib.matplotlib_fname.json
+Files not accurately embedded bokeh.models.PanTool.json
+
+ predicted instead decimal.Rounded.json
+Files not accurately embedded bokeh.models.Plot.json
+
+ predicted instead regex.compile.json
+Files not accurately embedded bokeh.models.Range.json
+
+ predicted instead stats.quadratic_mean.json
+Files not accurately embedded bokeh.models.Range1d.json
+
+ predicted instead numpy.lib.npyio.loadtxt.json
+Files not accurately embedded bokeh.models.SaveTool.json
+
+ predicted instead tensorflow._api.v1.errors.InternalError.json
+Files not accurately embedded bokeh.models.Selection.json
+
+ predicted instead param.SelectorBase.json
+Files not accurately embedded bokeh.models.Stack.json
+
+ predicted instead numpy.random.bit_generator.SeedSequence.json
+Files not accurately embedded bokeh.models.Text.json
+
+ predicted instead tensorflow.keras.initializers.GlorotUniform.json
+Files not accurately embedded bokeh.models.Title.json
+
+ predicted instead bokeh.io.output.output_notebook.json
+Files not accurately embedded bokeh.models.Tool.json
+
+ predicted instead numpy.pv.json
+Files not accurately embedded bokeh.models.Toolbar.json
+
+ predicted instead tensorflow.python.layers.utils.conv_input_length.json
+Files not accurately embedded bokeh.models.VBar.json
+
+ predicted instead tensorflow.python.strided_slice.json
+Files not accurately embedded bokeh.models.WheelPanTool.json
+
+ predicted instead networkx.node_clique_number.json
+Files not accurately embedded bokeh.models.WheelZoomTool.json
+
+ predicted instead ipywidgets.widgets.widget.Widget.json
+Files not accurately embedded bokeh.models.X.json
+
+ predicted instead pip._internal.commands.help.CommandError.json
+Files not accurately embedded bokeh.models.ZoomInTool.json
+
+ predicted instead sklearn.cluster._affinity_propagation.AffinityPropagation.json
+Files not accurately embedded bokeh.models.ZoomOutTool.json
+
+ predicted instead numpy.lib.utils.get_include.json
+Files not accurately embedded bokeh.models.field.json
+
+ predicted instead offset_from_tz_string.json
+Files not accurately embedded bokeh.models.sources.ColumnDataSource.json
+
+ predicted instead scipy.moveaxis.json
+Files not accurately embedded bokeh.models.sources.DataSource.json
+
+ predicted instead tables.filters.Filters.json
+Files not accurately embedded bokeh.models.tools.BoxZoomTool.json
+
+ predicted instead pylab.zeros_like.json
+Files not accurately embedded bokeh.models.tools.HoverTool.json
+
+ predicted instead sklearn.linear_model.ModifiedHuber.json
+Files not accurately embedded bokeh.models.tools.PanTool.json
+
+ predicted instead h5py.h5f.FileID.json
+Files not accurately embedded bokeh.models.tools.SaveTool.json
+
+ predicted instead sklearn.linear_model.base.safe_sparse_dot.json
+Files not accurately embedded bokeh.models.tools.Tool.json
+
+ predicted instead tensorflow.estimator.RunConfig.json
+Files not accurately embedded bokeh.models.tools.Toolbar.json
+
+ predicted instead ast.BitAnd.json
+Files not accurately embedded bokeh.models.tools.WheelPanTool.json
+
+ predicted instead django.core.files.images.File.json
+Files not accurately embedded bokeh.models.tools.WheelZoomTool.json
+
+ predicted instead _check_unpack_options.json
+Files not accurately embedded bokeh.models.tools.ZoomInTool.json
+
+ predicted instead theano.scalar.Type.json
+Files not accurately embedded bokeh.models.tools.ZoomOutTool.json
+
+ predicted instead nn.np.sinc.json
+Files not accurately embedded bokeh.models.value.json
+
+ predicted instead tensorflow.python.is_variable_initialized.json
+Files not accurately embedded bokeh.resources.BaseResources.json
+
+ predicted instead concurrent.futures.CancelledError.json
+Files not accurately embedded bokeh.resources.Model.json
+
+ predicted instead numpy.core.hstack.json
+Files not accurately embedded bokeh.resources.Resources.json
+
+ predicted instead pyspark.ml.classification._py2java.json
+Files not accurately embedded bokeh.transform.Stack.json
+
+ predicted instead pandas.io.pytables.DataFrame.json
+Files not accurately embedded bokeh.transform.stack.json
+
+ predicted instead offset_from_tz_string.json
+Files not accurately embedded bokeh.transform.transform.json
+
+ predicted instead pandas.core.series.TimedeltaIndex.json
+Files not accurately embedded bokeh_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded bool.json
+
+ predicted instead sklearn.multioutput.MultiOutputClassifier.json
+Files not accurately embedded bootstrap.json
+
+ predicted instead statsmodels.tsa.arima_model.ARIMA.json
+Files not accurately embedded boto.Config.json
+
+ predicted instead tensorflow._api.v1.layers.Conv3DTranspose.json
+Files not accurately embedded boto.connect_ec2.json
+
+ predicted instead nltk.py25.json
+Files not accurately embedded boto.connect_redshift.json
+
+ predicted instead tensorflow.keras.callbacks.LearningRateScheduler.json
+Files not accurately embedded boto.connection.ConnectionPool.json
+
+ predicted instead tensorflow.python.is_variable_initialized.json
+Files not accurately embedded boto.connection.ResultSet.json
+
+ predicted instead tensorflow._api.v1.compat.v1.errors.PermissionDeniedError.json
+Files not accurately embedded boto3.Session.json
+
+ predicted instead tensorflow.python.ops.ragged.ragged_array_ops.gather.json
+Files not accurately embedded boto3.client.json
+
+ predicted instead tensorflow.saved_model.signature_def_utils.regression_signature_def.json
+Files not accurately embedded boto3.resource.json
+
+ predicted instead cgi.Message.json
+Files not accurately embedded boto3.resources.model.ResourceModel.json
+
+ predicted instead base64.standard_b64decode.json
+Files not accurately embedded boto3.s3.transfer.ClientError.json
+
+ predicted instead statsmodels.tsa.statespace.varmax.VARMAX.json
+Files not accurately embedded boto3.s3.transfer.S3Transfer.json
+
+ predicted instead scipy.pv.json
+Files not accurately embedded boto3.s3.transfer.TransferManager.json
+
+ predicted instead pandas.core.dtypes.missing.isna.json
+Files not accurately embedded boto3.session.DataNotFoundError.json
+
+ predicted instead sklearn.feature_selection.univariate_selection.safe_mask.json
+Files not accurately embedded boto3.session.Session.json
+
+ predicted instead theano.compile.ops.shape_i.json
+Files not accurately embedded boto3_all_methods.json
+
+ predicted instead ufl.Form.json
+Files not accurately embedded boto_all_methods.json
+
+ predicted instead ufl.Form.json
