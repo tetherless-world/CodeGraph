@@ -1,1 +1,1 @@
-Training accuracy for embeddings using Doc2vec 0.0
+Training accuracy for embeddings using Doc2vec 0.476
