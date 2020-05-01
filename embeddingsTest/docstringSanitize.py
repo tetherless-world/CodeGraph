@@ -3,6 +3,7 @@ from nltk.corpus import stopwords
 import string
 
 def sanitize_text(textTuple):
+	stopset = set(stopwords.words('english'))
 	text = textTuple[1]
 	tokenized_text = word_tokenize(text)
 	final_text = [word.lower() for word in tokenized_text if word not in stopset and word not in string.punctuation]
