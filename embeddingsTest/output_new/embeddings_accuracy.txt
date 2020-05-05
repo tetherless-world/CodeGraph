@@ -1,1 +1,5 @@
-Training accuracy for embeddings using Doc2vec 0.6675761709868122
+Training accuracy for embeddings using Doc2vec with hyperparameters vector_size=300, min_count=5, numofEpochs30 0.6743974533879036
+Training accuracy for embeddings using Doc2vec with hyperparameters vector_size=600, min_count=5, numofEpochs30 0.6634834015461574
+Training accuracy for embeddings using Doc2vec with hyperparameters vector_size=100, min_count=5, numofEpochs30 0.6703046839472487
+Training accuracy for embeddings using Doc2vec with hyperparameters vector_size=300, min_count=1, numofEpochs30 0.6630286493860846
+Training accuracy for embeddings using Doc2vec with hyperparameters vector_size=300, min_count=10, numofEpochs30 0.6725784447476125
