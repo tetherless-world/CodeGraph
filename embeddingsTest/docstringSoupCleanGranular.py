@@ -13,21 +13,32 @@ def clean_docstrings():
 	with open(file, 'r') as data:
 		docStringObjects = ijson.items(data, 'item')	
 		for docString in docStringObjects:
-			if 'module' in docString:
-				name = docString['module']
-				if name not in docMap:
-					docMap[name] = []
-				for element in docString:
-					if 'docstring' in element:
-						if docString[element] != None:
-							docMap[name].append(docString[element])
-						else:
-							pass
+			if 'function_docstring' in docString:
+				name = docString['function']
+				if docString['function_docstring'] != None:
+					if name not in docMap:
+						docMap[name] = []
+					docMap[name].append(docString['function_docstring'])
+			elif 'class_docstring' in docString:
+				name = docString['klass']
+				if docString['class_docstring'] != None:
+					if name not in docMap:
+						docMap[name] = []
+					docMap[name].append(docString['class_docstring'])
+							
 	docItems = []
 	for label, text in docMap.items():
 		space = ' '
+		for thing in text:
+			if thing == None:
+				print(label)
 		combinedModuleText = space.join(text)
 		docItems.append((label, combinedModuleText))
 	#return docMap
 	return docItems
 			#print(docMap['httpretty'])
+
+if __name__ == '__main__':
+	itemMap = clean_docstrings()
+	print(itemMap[0][1])
+	print(itemMap[0][0])
