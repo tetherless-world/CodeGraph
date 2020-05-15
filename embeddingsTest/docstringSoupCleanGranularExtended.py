@@ -8,9 +8,9 @@ import pickleFiles as pf
 # this is left commented here for reference
 def clean_docstrings():
 	stopset = set(stopwords.words('english'))
-	file = '/data/merge-15-22.2.format.json'
+	file = '../../data/merge-15-22.2.format.json'
 	classDocStrings = {}
-	with open(file, 'r') as data:
+	with open(file, 'r', encoding ="utf-8") as data:
 		docStringObjects = ijson.items(data, 'item')
 		for docString in docStringObjects:
 			if 'klass' in docString:
@@ -18,7 +18,7 @@ def clean_docstrings():
 					if 'class_docstring' != None:
 						classDocStrings[docString['klass']] = docString['class_docstring']
 	docMap = {}
-	with open(file, 'r') as data:
+	with open(file, 'r', encoding = 'utf-8') as data:
 		docStringObjects = ijson.items(data, 'item')	
 		for docString in docStringObjects:
 			if docString['module'] != None:
