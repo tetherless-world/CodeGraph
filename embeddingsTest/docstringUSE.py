@@ -57,10 +57,11 @@ def clean_docstrings():
             embeddingVector = tuple(computedEmbedding[0].numpy().tolist())
             embeddingList.append(embeddingVector) 
             embeddingMapping[embeddingVector] = totalLabel
-    return (embeddingList, embeddingMapping)
+    return (embeddingList, embeddingMapping, classDocStrings)
 
 if __name__ == '__main__':
     itemMap = clean_docstrings()
     firstembedding = itemMap[0][0]
     print(firstembedding)
     print(itemMap[1][firstembedding])
+    print(itemMap[2]['httpretty.core.EmptyRequestHeaders'])
