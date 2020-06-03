@@ -1,7 +1,5 @@
 from bs4 import BeautifulSoup
 import ijson
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
 import string
 import pickleFiles as pf
 import tensorflow as tf

@@ -1,0 +1,4 @@
+tensorflow
+tensorflow_hub
+ijson
+beautifulsoup4
