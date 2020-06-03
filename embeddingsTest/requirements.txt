@@ -2,3 +2,8 @@ tensorflow
 ijson
 beautifulsoup4
 tensorflow_hub
+matplotlib
+numpy
+seaborn
+pandas
+absl-py
