@@ -1,4 +1,4 @@
 tensorflow
-tensorflow_hub
 ijson
 beautifulsoup4
+tensorflow_hub
