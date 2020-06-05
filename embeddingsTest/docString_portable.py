@@ -103,7 +103,7 @@ def batch_embed_evaluate(input_path,output_path):
         embeded_stringdocmessages.append(docStringsset2)
         index.add(message_embeddings)
 
-    k=6
+    k=11
     embeded_distance_index_info=[]
     embeded_distance_info=[]
     for i in range(len(embeded_docmessages)):
