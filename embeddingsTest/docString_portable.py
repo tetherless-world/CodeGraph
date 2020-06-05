@@ -125,4 +125,4 @@ def batch_embed_evaluate(input_path,output_path):
     sys.stdout.close()
 if __name__ == '__main__':
     itemMap = batch_embed_evaluate(sys.argv[1:][0],sys.argv[1:][1])
-    print("job finished")
+    #print("job finished")
