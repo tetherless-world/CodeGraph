@@ -99,8 +99,8 @@ def batch_embed_evaluate(input_path,output_path):
         message_embeddings=tf.make_tensor_proto(message_embeddings)
         message_embeddings=tf.make_ndarray(message_embeddings)
         embeded_docnames.append(docStringsset1)
-        embeded_docmessages.append(message_embeddings)
-        embeded_stringdocmessages.append(docStringsset2)
+        #embeded_docmessages.append(message_embeddings)
+        #embeded_stringdocmessages.append(docStringsset2)
         index.add(message_embeddings)
 
     k=11
