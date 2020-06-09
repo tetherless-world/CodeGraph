@@ -1,3 +1,4 @@
+import faiss 
 if __name__ == '__main__':
         embeddingspath = '../../data/codeGraph/embeddings.csv'
         embeddingsToLabelPath='../../data/codeGraph/embeddingtolabel.csv'
