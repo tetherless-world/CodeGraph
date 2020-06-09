@@ -8,17 +8,17 @@ if __name__ == '__main__':
         embeded_docmessages=[]
         index = faiss.IndexFlatL2(512)
 
-        with open(embeddingspath, 'r') as embeddings, open(textToLabelPath,'r') as embeddingsToLabels,open(embeddingsToLabelPath,'r') as textToLabels:
+        with open(embeddingspath, 'r') as embeddings, open(embeddingsToLabelPath,'r') as embeddingsToLabels,open(textToLabelPath,'r') as textToLabels:
                 i = 0
                 for (line1,line2,line3) in zip(embeddings,embeddingsToLabels,textToLabels):
-                        if i == 10:
+                        if i == 1:
                                 break
                         newline = line1.rstrip()
                         parsedline = newline.split(',')
                         embeded_docmessages.append(parsedline)
                         index.add(np.asarray(parsedline,dtype=np.float32).reshape(1,-1)
                                  )
-
+                        print(parsedline)
                         newline = line2.rstrip()
                         parsedline = newline.split(',')
                         print(parsedline)

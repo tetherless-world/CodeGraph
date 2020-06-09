@@ -8,13 +8,6 @@ import tensorflow_hub as hub
 # this is left commented here for reference
 def clean_docstrings():
     classDocStrings = {}
-    with open('../../data/codeGraph/merge-15-22.2.format.json','rb') as data:
-        docStringObjects = ijson.items(data, 'item')
-        for docString in docStringObjects:
-            if 'klass' in docString:
-                if 'class_docstring' in docString:
-                    if 'class_docstring' != None:
-                        classDocStrings[docString['klass']] = docString['class_docstring']
     docMap = {}
     embeddingList = []
     embeddingMapping = {}
@@ -23,42 +16,25 @@ def clean_docstrings():
     print("Embedding model fetched.")
     with open('../../data/codeGraph/merge-15-22.2.format.json','rb') as data:
         docStringObjects = ijson.items(data, 'item')
-        embeddedDocument = 0
+        parsedLines = 0
         for docString in docStringObjects:
-            embeddedDocument += 1
-            if embeddedDocument % 1000 == 0:
-                print('Embedding', embeddedDocument, 'documents')
-            if docString['module'] != None:
-                totalLabel = docString['module']
-            else:
-                totalLabel = 'noModule'
-            className = 'noClass'
-    #         functionName = 'noFunction'
-            if 'klass' in docString:
-                if docString['klass'] != None:
-                    className = docString['klass']  
-            totalLabel = totalLabel + ' ' + className 
-    #         if 'function' in docString:
-    #             if docString['function'] != None:
-    #                 functionName = docString['function']
-    #         totalLabel = totalLabel + ' ' + functionName
-            totalText = '' 
-            if className != 'noClass':
-                totalText = totalText + className
-    #         if functionName != 'noFunction':
-    #             totalText = totalText + ' ' + functionName
-    #         functionDocString = ''
-            classDocString = ''
-    #         if 'function_docstring' in docString:
-    #             functionDocString = docString['function_docstring']
-    #             if functionDocString != None:
-    #                 totalText = totalText + ' ' + functionDocString
-            if className in classDocStrings:
-                totalText = totalText + ' ' + classDocStrings[className]
-            computedEmbedding = embed([totalText])
-            embeddingVector = tuple(computedEmbedding[0].numpy().tolist())
-            embeddingList.append(embeddingVector) 
-            embeddingMapping[embeddingVector] = totalLabel
+            parsedLines += 1
+            if parsedLines % 1000 == 0:
+                print('Parsed', parsedLines, 'lines') 
+            if parsedLines == 1000000:
+                break
+            if 'class_docstring' in docString:
+                if 'class_docstring' != None:
+                    text = docString['class_docstring']
+                    className = docString['klass']
+                    totalText = className + ' ' + text
+                    computedEmbedding = embed([totalText])
+                    embeddingVector = tuple(computedEmbedding[0].numpy().tolist())
+                    embeddingList.append(embeddingVector) 
+                    embeddingMapping[embeddingVector] = className
+                    classDocStrings[className] = totalText
+                else:
+                    print("Class docstring empty, skipped")
     return (embeddingList, embeddingMapping, classDocStrings)
 
 if __name__ == '__main__':
