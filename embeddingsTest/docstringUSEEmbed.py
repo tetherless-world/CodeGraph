@@ -26,7 +26,7 @@ def clean_docstrings():
         embeddedDocument = 0
         for docString in docStringObjects:
             embeddedDocument += 1
-            if embeddedDocument % 100 == 0:
+            if embeddedDocument % 1000 == 0:
                 print('Embedding', embeddedDocument, 'documents')
             if docString['module'] != None:
                 totalLabel = docString['module']
