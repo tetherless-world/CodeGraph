@@ -11,7 +11,7 @@ if __name__ == '__main__':
         with open(embeddingspath, 'r') as embeddings, open(embeddingsToLabelPath,'r') as embeddingsToLabels,open(textToLabelPath,'r') as textToLabels:
                 i = 0
                 for (line1,line2,line3) in zip(embeddings,embeddingsToLabels,textToLabels):
-                        if i == 1:
+                        if i == 100:
                                 break
                         newline = line1.rstrip()
                         parsedline = newline.split(',')

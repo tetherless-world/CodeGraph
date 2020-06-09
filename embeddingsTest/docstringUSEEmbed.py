@@ -21,8 +21,6 @@ def clean_docstrings():
             parsedLines += 1
             if parsedLines % 1000 == 0:
                 print('Parsed', parsedLines, 'lines') 
-            if parsedLines == 1000000:
-                break
             if 'class_docstring' in docString:
                 if 'class_docstring' != None:
                     text = docString['class_docstring']
