@@ -11,10 +11,12 @@ if __name__ == '__main__':
         index = faiss.IndexFlatL2(512)
 
         with open(embeddingspath, 'r') as embeddings, open(embeddingsToLabelPath,'r') as embeddingsToLabels,open(textToLabelPath,'r') as textToLabels:
-                #i = 0
-                embeddingtolabellist = []
-                labeltotextlist = []
+                i = 0
+                embeddingtolabelmap = {}
+                labeltotextmap = {}
                 for (line1,line2,line3) in zip(embeddings,embeddingsToLabels,textToLabels):
+                        if i == 500:
+                            break
                         newline = line1.rstrip()
                         parsedline = newline.split(',')
                         embeded_docmessages.append(parsedline)
@@ -23,13 +25,19 @@ if __name__ == '__main__':
                         #print(parsedline)
                         newline = line2.rstrip()
                         parsedline = newline.split(',')
-                        embeddingtolabellist.append(parsedline[1])
+                        splitembedding = parsedline[0].split(';')
+                        arrayembedding = np.asarray(splitembedding, dtype=np.float32).reshape(1,-1)
+                        arrayembedding = arrayembedding.tolist()
+                        #print(arrayembedding)
+                        finalembedding = tuple(arrayembedding[0])
+                        #print(finalembedding)
+                        embeddingtolabelmap[finalembedding] = parsedline[1]
                         #print(parsedline)
 
                         newline = line3.rstrip()
                         parsedline = newline.split(',')
                         try:
-                            labeltotextlist.append(parsedline[1])
+                            labeltotextmap[parsedline[0]] = parsedline[1]    
                         # this was originally included to find a bug caused by not omitting
                         # carriage return in the csv, feel free to leave this part out
                         except IndexError:
@@ -40,8 +48,8 @@ if __name__ == '__main__':
                         #print(parsedline)
                         
                         
-                        #i += 1
-                k=11
+                        i += 1
+                k=6
                     
                 embeded_distance_index_info=[]
                 embeded_distance_info=[]
@@ -58,20 +66,24 @@ if __name__ == '__main__':
 #        print(embeded_distance_index_info) 
 #        print(embeded_distance_info)
         originalOut = sys.stdout
-        with open('../../data/codeGraph/similarityAnalysis.txt', 'w') as outputFile:
+        with open('../../data/codeGraph/newSimilarityAnalysis.txt', 'w') as outputFile:
             sys.stdout = outputFile
             for i in range(embeded_docmessages.shape[0]):
                         print("\n-------------------------------------------------------------")
-                        print("Document name is:", embeddingtolabellist[i])
-                        print("\nText for document is:", labeltotextlist[i]) 
-#                         print("document name  : \n"+str(embeded_docnames[i][j])+"\n")
+                        adjustedtopembedding = tuple(embeded_docmessages[i].tolist())
+                        toplabel = embeddingtolabelmap[adjustedtopembedding]
+                        print('\nName of document is:', toplabel)
+                        print('\nText of document is:', labeltotextmap[toplabel])
                         for p in range(len(embeded_distance_index_info[i])):
                             # call to tolist() here is optional, just looks better for output imo
                             print("\nIndices of related vectors:", embeded_distance_index_info[i][p].tolist()) 
                             print("Distances to each related vector:", embeded_distance_info[i][p].tolist())
                             for f in range(0, k):
-                                print('\nDocument related by', str(f) +'th position is:', embeddingtolabellist[embeded_distance_index_info[i][p][f]])
-                                print('\nText for document', str(f), 'is:', labeltotextlist[embeded_distance_index_info[i][p][f]])
+                                numpyembedding = embeded_docmessages[embeded_distance_index_info[i][p][f]] 
+                                adjustedembedding = tuple(numpyembedding.tolist())
+                                label = embeddingtolabelmap[adjustedembedding]
+                                print('\nName of document in ranking order', f, 'is:', label)
+                                print('\nText of document', f, 'is:', labeltotextmap[label])
             sys.stdout = originalOut
 
 
