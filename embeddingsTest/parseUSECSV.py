@@ -11,11 +11,10 @@ if __name__ == '__main__':
         index = faiss.IndexFlatL2(512)
 
         with open(embeddingspath, 'r') as embeddings, open(embeddingsToLabelPath,'r') as embeddingsToLabels,open(textToLabelPath,'r') as textToLabels:
-                i = 0
+                #i = 0
                 embeddingtolabellist = []
+                labeltotextlist = []
                 for (line1,line2,line3) in zip(embeddings,embeddingsToLabels,textToLabels):
-                        if i == 5000:
-                                break
                         newline = line1.rstrip()
                         parsedline = newline.split(',')
                         embeded_docmessages.append(parsedline)
@@ -29,11 +28,20 @@ if __name__ == '__main__':
 
                         newline = line3.rstrip()
                         parsedline = newline.split(',')
+                        try:
+                            labeltotextlist.append(parsedline[1])
+                        # this was originally included to find a bug caused by not omitting
+                        # carriage return in the csv, feel free to leave this part out
+                        except IndexError:
+                            print(newline)
+                            print('\n\n\n\n\nSEPARATOR\n\n\n\n\n')
+                            print(parsedline)
+                            exit()
                         #print(parsedline)
                         
                         
-                        i += 1
-                k=4
+                        #i += 1
+                k=11
                     
                 embeded_distance_index_info=[]
                 embeded_distance_info=[]
@@ -55,13 +63,15 @@ if __name__ == '__main__':
             for i in range(embeded_docmessages.shape[0]):
                         print("\n-------------------------------------------------------------")
                         print("Document name is:", embeddingtolabellist[i])
+                        print("\nText for document is:", labeltotextlist[i]) 
 #                         print("document name  : \n"+str(embeded_docnames[i][j])+"\n")
                         for p in range(len(embeded_distance_index_info[i])):
                             # call to tolist() here is optional, just looks better for output imo
                             print("\nIndices of related vectors:", embeded_distance_index_info[i][p].tolist()) 
                             print("Distances to each related vector:", embeded_distance_info[i][p].tolist())
                             for f in range(0, k):
-                                print('Document related by', str(f) +'th position is:', embeddingtolabellist[embeded_distance_index_info[i][p][f]])
+                                print('\nDocument related by', str(f) +'th position is:', embeddingtolabellist[embeded_distance_index_info[i][p][f]])
+                                print('\nText for document', str(f), 'is:', labeltotextlist[embeded_distance_index_info[i][p][f]])
             sys.stdout = originalOut
 
 
