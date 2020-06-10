@@ -11,12 +11,10 @@ if __name__ == '__main__':
         index = faiss.IndexFlatL2(512)
 
         with open(embeddingspath, 'r') as embeddings, open(embeddingsToLabelPath,'r') as embeddingsToLabels,open(textToLabelPath,'r') as textToLabels:
-                i = 0
+#                i = 0
                 embeddingtolabelmap = {}
                 labeltotextmap = {}
                 for (line1,line2,line3) in zip(embeddings,embeddingsToLabels,textToLabels):
-                        if i == 500:
-                            break
                         newline = line1.rstrip()
                         parsedline = newline.split(',')
                         embeded_docmessages.append(parsedline)
@@ -48,8 +46,8 @@ if __name__ == '__main__':
                         #print(parsedline)
                         
                         
-                        i += 1
-                k=6
+#                        i += 1
+                k=11
                     
                 embeded_distance_index_info=[]
                 embeded_distance_info=[]
