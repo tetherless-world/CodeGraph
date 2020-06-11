@@ -4,7 +4,7 @@ import pickle
 import faiss
 import numpy as np
 
-def compute_neighbors_in_index():
+def compute_neighbors_in_index(inputFile):
 	print('Fetching embedding model.')
 	embed = tf_hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
 	print("Embedding model fetched.")
@@ -18,9 +18,10 @@ def compute_neighbors_in_index():
 	with open('embeddingtolabelmap.pickle', 'rb') as inEmbedding:
 		embeddingtolabelmap = pickle.load(inEmbedding)
 	with open('labeltotextmap.pickle', 'rb') as inText:
-		labeltotextmap = pickle.load(inText)
-	inputFile = 'sampleText.txt'
+		labeltotextmap = pickle.load(inText)	
 	k = 11
+	# the input file is expected to contain any number of queries,
+	# separated by having each query begin on a new line
 	with open(inputFile, 'r') as dataIn:
 		for line in dataIn:
 			embeddedText = embed([line])
@@ -42,4 +43,4 @@ def compute_neighbors_in_index():
 				print('\nText of document', i, 'is:', labeltotextmap[label])
 
 if __name__ == '__main__':
-	compute_neighbors_in_index()
+	compute_neighbors_in_index('sampleText.txt')
