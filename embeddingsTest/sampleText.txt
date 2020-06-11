@@ -1,0 +1,4 @@
+Let's get some tensor stuff going!
+Ok, now I want to analyze some http code.
+What about if I want to do some data manipulation?
+How do I use numpy arrays?
