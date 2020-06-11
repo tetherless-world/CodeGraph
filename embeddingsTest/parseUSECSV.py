@@ -64,7 +64,7 @@ if __name__ == '__main__':
 #        print(embeded_distance_index_info) 
 #        print(embeded_distance_info)
         originalOut = sys.stdout
-        with open('../../data/codeGraph/newSimilarityAnalysis.txt', 'w') as outputFile:
+        with open('../../data/codeGraph/finalSimilarityAnalysis.txt', 'w') as outputFile:
             sys.stdout = outputFile
             for i in range(embeded_docmessages.shape[0]):
                         print("\n-------------------------------------------------------------")
