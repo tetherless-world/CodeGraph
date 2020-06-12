@@ -14,7 +14,32 @@ if __name__ == '__main__':
 #                i = 0
                 embeddingtolabelmap = {}
                 labeltotextmap = {}
+                encounteredTexts = set()
+                discardedDocuments = {}
                 for (line1,line2,line3) in zip(embeddings,embeddingsToLabels,textToLabels):
+#                        if i == 4000:
+#                            break
+                        newline = line3.rstrip()
+                        parsedline = newline.split(',')
+                        label = parsedline[0]
+                        text = parsedline[1]
+                        if text in encounteredTexts:
+                            print("Duplicate eliminated.")
+                            discardedDocuments[label] = text
+                            continue
+                        else:
+                            encounteredTexts.add(text)
+                        try:
+                            labeltotextmap[label] = text    
+                        # this was originally included to find a bug caused by not omitting
+                        # carriage return in the csv, feel free to leave this part out
+                        except IndexError:
+                            print(newline)
+                            print('\n\n\n\n\nSEPARATOR\n\n\n\n\n')
+                            print(parsedline)
+                            exit()
+                        #print(parsedline)
+
                         newline = line1.rstrip()
                         parsedline = newline.split(',')
                         embeded_docmessages.append(parsedline)
@@ -30,21 +55,7 @@ if __name__ == '__main__':
                         finalembedding = tuple(arrayembedding[0])
                         #print(finalembedding)
                         embeddingtolabelmap[finalembedding] = parsedline[1]
-                        #print(parsedline)
-
-                        newline = line3.rstrip()
-                        parsedline = newline.split(',')
-                        try:
-                            labeltotextmap[parsedline[0]] = parsedline[1]    
-                        # this was originally included to find a bug caused by not omitting
-                        # carriage return in the csv, feel free to leave this part out
-                        except IndexError:
-                            print(newline)
-                            print('\n\n\n\n\nSEPARATOR\n\n\n\n\n')
-                            print(parsedline)
-                            exit()
-                        #print(parsedline)
-                        
+                        #print(parsedline)                        
                         
 #                        i += 1
                 k=11
@@ -82,8 +93,9 @@ if __name__ == '__main__':
                                 label = embeddingtolabelmap[adjustedembedding]
                                 print('\nName of document in ranking order', f, 'is:', label)
                                 print('\nText of document', f, 'is:', labeltotextmap[label])
+            sys.stdout = originalOut 
+        with open('../../data/codeGraph/discardedDocuments.txt', 'w') as discardFile:
+            sys.stdout = discardFile
+            for discardLabel, discardText in discardedDocuments.items():
+                print(discardLabel + ',' + discardText)
             sys.stdout = originalOut
-
-
-
-
