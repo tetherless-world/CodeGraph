@@ -11,6 +11,8 @@ def clean_docstrings():
     docMap = {}
     embeddingList = []
     embeddingMapping = {}
+    encounteredTexts = set()
+    discardedTexts = {}
     print("Fetching embedding model.")
     embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
     print("Embedding model fetched.")
@@ -25,7 +27,12 @@ def clean_docstrings():
                 if 'class_docstring' != None:
                     text = docString['class_docstring']
                     className = docString['klass']
-                    totalText = className + ' ' + text
+                    totalText = text
+                    if totalText in encounteredTexts:
+                        discardedTexts[className] = totalText
+                        continue 
+                    else:
+                        encounteredTexts.add(totalText)
                     computedEmbedding = embed([totalText])
                     embeddingVector = tuple(computedEmbedding[0].numpy().tolist())
                     embeddingList.append(embeddingVector) 
@@ -33,6 +40,13 @@ def clean_docstrings():
                     classDocStrings[className] = totalText
                 else:
                     print("Class docstring empty, skipped")
+        with open('../../data/codeGraph/discardedDocuments.csv', 'w') as discard:
+            for label, text in discardedTexts.items():
+                text = text.replace('\n', ' ')
+                text = text.replace('\r', ' ')
+                text = text.replace(',', ';')
+                discard.write(label + ',' + text + '\n')
+
     return (embeddingList, embeddingMapping, classDocStrings)
 
 if __name__ == '__main__':
