@@ -7,12 +7,28 @@ if __name__ == '__main__':
         embeddingspath = '../../data/codeGraph/embeddings.csv'
         embeddingsToLabelPath='../../data/codeGraph/embeddingtolabel.csv'
         textToLabelPath='../../data/codeGraph/labeltotext.csv'
+        discardedPath='../../data/codeGraph/discardedDocuments.csv'
         embeded_docmessages=[]
         index = faiss.IndexFlatL2(512)
 
-        with open(embeddingspath, 'r') as embeddings, open(embeddingsToLabelPath,'r') as embeddingsToLabels,open(textToLabelPath,'r') as textToLabels:
+        with open(embeddingspath, 'r') as embeddings, open(embeddingsToLabelPath,'r') as embeddingsToLabels,open(textToLabelPath,'r') as textToLabels,open(discardedPath,'r') as discarded:
                 embeddingtolabelmap = {}
                 labeltotextmap = {}
+                duplicate_documents_to_original={}
+                for line in discarded:
+                    newline = line.rstrip()
+                    parsedline = newline.split(',')
+                    try:
+                        
+                        duplicate_documents_to_original[parsedline[1]] =    parsedline[0]
+                    # this was originally included to find a bug caused by not omitting
+                    # carriage return in the csv, feel free to leave this part out
+                    except IndexError:
+                        print(newline)
+                        print('\n\n\n\n\nSEPARATOR\n\n\n\n\n')
+                        print(parsedline)
+                        exit()
+                    
                 for (line1,line2,line3) in zip(embeddings,embeddingsToLabels,textToLabels):
 
                         newline = line1.rstrip()
@@ -44,6 +60,7 @@ if __name__ == '__main__':
                             print(parsedline)
                             exit()
                         #print(parsedline)
+                  
                         
                         
 #                        i += 1
@@ -59,6 +76,8 @@ if __name__ == '__main__':
                     pickle.dump(labeltotextmap, f, pickle.HIGHEST_PROTOCOL)
                 with open('embeddingtolabelmap.pickle', 'wb') as f:
                     pickle.dump(embeddingtolabelmap, f, pickle.HIGHEST_PROTOCOL)
+                with open('duplicate_documents.pickle', 'wb') as f:
+                    pickle.dump(duplicate_documents_to_original, f, pickle.HIGHEST_PROTOCOL)
                 print("Program terminated")
 
     
