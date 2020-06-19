@@ -23,7 +23,7 @@ def analyze_posts():
                 with open('duplicate_documents.pickle', 'rb') as inDuplicateDocs:
                         duplicateDocToText=pickle.load(inDuplicateDocs)
                 originalOut = sys.stdout
-                with open('../../data/codeGraph/stackOverFlowSimilarityAnalysis.txt', 'w') as outputFile:
+                with open('../../data/codeGraph/AllstackOverFlowSimilarityAnalysis.txt', 'w') as outputFile:
                         sys.stdout=outputFile
                         for docString in docStringObjects:
                                 classType = docString['type']['value'].replace('http://purl.org/twc/graph4code/ontology/', '')
