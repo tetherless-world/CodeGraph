@@ -10,7 +10,7 @@ def analyze_posts():
         with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data:
                 docStringObjects = ijson.items(data, 'results.bindings.item')
                 originalOut = sys.stdout
-                with open('../../data/codeGraph/docstringplusAllstackOverFlowSimilarityAnalysis.txt', 'w') as outputFile:
+                with open('../../data/codeGraph/docstringplusAllstackOverFlowSimilarityAnalysisAdjusted.txt', 'w') as outputFile:
                         sys.stdout=outputFile
                         print("Fetching embedding model.")
                         embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
@@ -46,7 +46,7 @@ def analyze_posts():
                                 embeddedDS = embed([docstringText])
                                 embeddingVectorDS = embeddedDS[0]
                                 embeddingArrayDS= np.asarray(embeddingVectorDS, dtype=np.float32).reshape(1, -1)
-                                dist = np.linalg.norm(embeddingArrayDS-embeddingArray)
+                                dist = np.linalg.norm(embeddingArrayDS-embeddingArray)**2
                                 sumdist+=dist
                                 print('\n---------------------------------')
                                 print('\nTitle of Stack Overflow Post:', title)
