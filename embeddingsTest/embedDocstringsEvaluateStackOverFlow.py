@@ -14,6 +14,7 @@ def build_index():
     docMessages = []
     embeddingtolabelmap = {}
     labeltotextmap = {}
+    embedCollect = set()
     with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data:
         jsonCollect = ijson.items(data, 'results.bindings.item')
         i = 0
@@ -24,21 +25,27 @@ def build_index():
                 continue
             label = jsonObject['class_func_label']['value']
             docLabel = label
-            docStringText = jsonObject['docstr']['value'] + ' ' + str(i)
+            docStringText = jsonObject['docstr']['value']# + ' ' + str(i)
             soup = BeautifulSoup(docStringText, 'html.parser')
             for code in soup.find_all('code'):
                 code.decompose()
             docStringText = soup.get_text()
-            embeddedDocText = embed([docStringText])[0]
-            newText = np.asarray(
+            if docStringText in embedCollect:
+                embeddedDocText = embed([docStringText])[0]
+                embeddingtolabelmap[tuple(
+                embeddedDocText.numpy().tolist())].append(docLabel)
+            else:
+                embedCollect.add(docStringText)
+                embeddedDocText = embed([docStringText])[0]
+                newText = np.asarray(
                 embeddedDocText, dtype=np.float32).reshape(1, -1)
-            index.add(newText)
-            docMessages.append(embeddedDocText.numpy().tolist())
-            embeddingtolabelmap[tuple(
-                embeddedDocText.numpy().tolist())] = docLabel
-            labeltotextmap[docLabel] = docStringText
+                docMessages.append(embeddedDocText.numpy().tolist())
+                index.add(newText)
+                embeddingtolabelmap[tuple(
+                embeddedDocText.numpy().tolist())] = [docLabel]
+#            labeltotextmap[docLabel] = docStringText
             i += 1
-        return (index, docMessages, embeddingtolabelmap, labeltotextmap)
+        return (index, docMessages, embeddingtolabelmap)#, labeltotextmap)
 
 
 def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
@@ -51,7 +58,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
     totaldocs=0
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
     originalout = sys.stdout
-    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data, open('../../data/codeGraph/resultsFromEmbeddingDocStringThenStackOverflowWithoutMaskingPr@10.txt', 'w') as outputFile:
+    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data, open('../../data/codeGraph/resultsFromNoDupeEmbeddingDocStringThenStackOverflowWithoutMaskingPr@10.txt', 'w') as outputFile:
         jsonCollect = ijson.items(data, 'results.bindings.item')
         sys.stdout = outputFile
         for jsonObject in jsonCollect:
@@ -109,4 +116,5 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
 
 if __name__ == '__main__':
     dataTuple = build_index()
-    evaluate_neighbors(dataTuple[0], dataTuple[1], dataTuple[2], dataTuple[3])
+    print("Completed building index.")
+    evaluate_neighbors(dataTuple[0], dataTuple[1], dataTuple[2], None)#dataTuple[3])
