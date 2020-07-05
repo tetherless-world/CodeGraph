@@ -1,3 +1,4 @@
+##docstring and stackoverflow texts analysed, old methods of evaluation
 import ijson
 import tensorflow_hub as hub
 import faiss
