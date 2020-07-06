@@ -15,6 +15,7 @@ def build_index():
     embeddingtolabelmap = {}
     labeltotextmap = {}
     embedCollect = set()
+    duplicateClassDocString=set()
     with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data:
         jsonCollect = ijson.items(data, 'results.bindings.item')
         i = 0
@@ -31,10 +32,16 @@ def build_index():
                 code.decompose()
             docStringText = soup.get_text()
             if docStringText in embedCollect:
-                embeddedDocText = embed([docStringText])[0]
-                embeddingtolabelmap[tuple(
-                embeddedDocText.numpy().tolist())].append(docLabel)
+                if docLabel in duplicateClassDocString:
+                    pass
+                    
+                else:
+                    duplicateClassDocString.add(docLabel)
+                    embeddedDocText = embed([docStringText])[0]
+                    embeddingtolabelmap[tuple(
+                    embeddedDocText.numpy().tolist())].append(docLabel)
             else:
+                duplicateClassDocString.add(docLabel)
                 embedCollect.add(docStringText)
                 embeddedDocText = embed([docStringText])[0]
                 newText = np.asarray(
@@ -43,6 +50,9 @@ def build_index():
                 index.add(newText)
                 embeddingtolabelmap[tuple(
                 embeddedDocText.numpy().tolist())] = [docLabel]
+#                 if  docLabel == 'pysnmp.smi.rfc1902.ObjectType':
+#                     print("text for pysnmp.smi.rfc1902.ObjectType' is")
+#                     print(docStringText)
 #            labeltotextmap[docLabel] = docStringText
             i += 1
         return (index, docMessages, embeddingtolabelmap)#, labeltotextmap)
@@ -109,32 +119,39 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
                 embedding = docMessages[properIndex]
                 adjustedembedding = tuple(embedding)
                 label = embeddingtolabelmap[adjustedembedding]
+                ##multiple docstrings associated with the same embedding mapped
                 ##array of labels mapped
+                j=0
                 for l in label:
+                    
                     if l.startswith(classLabel.split(".")[0]):
                         positivepresent=True
-                        print("\n True positive label being contributed by \n",label)
+                        if j == 0:
+                            print("\n True positive label being contributed by \n",l)
+                        else:
+                            print("\t and",l)
                     if l == classLabel:
                         exactpositivepresent=True
-                        print("\n Exact positive label being contributed by \n",label)
+                        print("\n Exact positive label being contributed by \n",l)
+                    j=j+1
                         
                     
             if not positivepresent:
                 fp=fp+1
-                print("Loose False Positive Present ------------------------------------------------------- \n")
+#                 print("Loose False Positive Present ------------------------------------------------------- \n")
             else:
                 tp=tp+1
-                print("Loose True Positive Present -------------------------------------------------------- \n")
+#                 print("Loose True Positive Present -------------------------------------------------------- \n")
             if not exactpositivepresent:
                 efp=efp+1
-                print("Loose False Positive Present ------------------------------------------------------- \n")
+#                 print("match  False Positive Present ------------------------------------------------------- \n")
             else:
                 etp=etp+1
-                print("Loose True Positive Present -------------------------------------------------------- \n")
+#                 print("match True Positive Present -------------------------------------------------------- \n")
                 
 
         print(tp/(tp+fp), " Loose Precision at 10 without masking ")
-        print(etp/(etp+efp), " Loose Precision at 10 without masking ")
+        print(etp/(etp+efp), "Exact Precision at 10 without masking ")
 
         sys.stdout=originalout
 
