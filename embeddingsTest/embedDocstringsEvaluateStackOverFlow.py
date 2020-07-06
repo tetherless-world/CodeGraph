@@ -54,7 +54,12 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
     fn=0
     tp=0
     tn=0
+    efp=0
+    efn=0
+    etp=0
+    etn=0
     positivepresent=False
+    exactpositivepresent=False
     totaldocs=0
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
     originalout = sys.stdout
@@ -86,6 +91,8 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
 #                     maskedText = partPattern.sub(' ', maskedText)#maskedText.replace(labelPart, ' ')
 #             print('Text of post after masking:', maskedText)
 
+## masking removed for now
+
             embeddedText = embed([stackText])
             embeddingVector = embeddedText[0]
             embeddingArray = np.asarray(
@@ -96,22 +103,39 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
 #             print("Distances of related vectors:", distances)
 #             print("Indices of related vectors:", indices)
             positivepresent=False
+            exactpositivepresent=False
             for p in range(0, k):
                 properIndex = indices[p]
                 embedding = docMessages[properIndex]
                 adjustedembedding = tuple(embedding)
                 label = embeddingtolabelmap[adjustedembedding]
-                if label.startswith(classLabel.split(".")[0]):
+                ##array of labels mapped
+                for l in label:
+                    if l.startswith(classLabel.split(".")[0]):
                         positivepresent=True
-                        tp=tp+1
                         print("\n True positive label being contributed by \n",label)
+                    if l == classLabel:
+                        exactpositivepresent=True
+                        print("\n Exact positive label being contributed by \n",label)
+                        
+                    
             if not positivepresent:
                 fp=fp+1
                 print("Loose False Positive Present ------------------------------------------------------- \n")
             else:
+                tp=tp+1
                 print("Loose True Positive Present -------------------------------------------------------- \n")
+            if not exactpositivepresent:
+                efp=efp+1
+                print("Loose False Positive Present ------------------------------------------------------- \n")
+            else:
+                etp=etp+1
+                print("Loose True Positive Present -------------------------------------------------------- \n")
+                
 
         print(tp/(tp+fp), " Loose Precision at 10 without masking ")
+        print(etp/(etp+efp), " Loose Precision at 10 without masking ")
+
         sys.stdout=originalout
 
 if __name__ == '__main__':
