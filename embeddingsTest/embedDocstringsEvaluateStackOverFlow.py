@@ -73,7 +73,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
     totaldocs=0
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
     originalout = sys.stdout
-    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data, open('../../data/codeGraph/resultsFromNoDupeEmbeddingDocStringThenStackOverflowWithoutMaskingPr@10.txt', 'w') as outputFile:
+    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data, open('./resultsFromNoDupeEmbeddingDocStringThenStackOverflowWithMaskingPr@10.txt', 'w') as outputFile:
         jsonCollect = ijson.items(data, 'results.bindings.item')
         sys.stdout = outputFile
         for jsonObject in jsonCollect:
@@ -93,17 +93,17 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
             print('\nTitle of Stack Overflow Post:', title)
             print('Class associated with post:', classLabel)
             print('Text of post before masking:', stackText)
-#             splitLabel = classLabel.lower().split('.')
-#             wholePattern = re.compile(classLabel.lower(), re.IGNORECASE)
-#             maskedText = wholePattern.sub(' ', stackText)
-#             for labelPart in splitLabel:
-#                     partPattern = re.compile(labelPart, re.IGNORECASE)
-#                     maskedText = partPattern.sub(' ', maskedText)#maskedText.replace(labelPart, ' ')
-#             print('Text of post after masking:', maskedText)
+            splitLabel = classLabel.lower().split('.')
+            wholePattern = re.compile(classLabel.lower(), re.IGNORECASE)
+            maskedText = wholePattern.sub(' ', stackText)
+            for labelPart in splitLabel:
+                    partPattern = re.compile(labelPart, re.IGNORECASE)
+                    maskedText = partPattern.sub(' ', maskedText)#maskedText.replace(labelPart, ' ')
+            print('Text of post after masking:', maskedText)
 
 ## masking removed for now
 
-            embeddedText = embed([stackText])
+            embeddedText = embed([maskedText])#[stackText])
             embeddingVector = embeddedText[0]
             embeddingArray = np.asarray(
                 embeddingVector, dtype=np.float32).reshape(1, -1)
