@@ -58,7 +58,7 @@ def build_index():
 
 
 def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
-    k = 10
+    k =1 
     fp=0
     fn=0
     tp=0
@@ -72,7 +72,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
     totaldocs=0
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
     originalout = sys.stdout
-    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data, open('./resultsFromNoDupeEmbeddingDocStringThenStackOverflowAllMaskingPr@10.txt', 'w') as outputFile:
+    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data, open('./resultsFromNoDupeEmbeddingDocStringThenStackOverflowAllMaskingPr@1.txt', 'w') as outputFile:
         firstJsonCollect = ijson.items(data, 'results.bindings.item') 
         postMap = {}
         for jsonObject in firstJsonCollect:
@@ -168,8 +168,8 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
 #                 print("match True Positive Present -------------------------------------------------------- \n")
                 
 
-        print(tp/(tp+fp), " Loose Precision at 10 with all  masking ")
-        print(etp/(etp+efp), "Exact Precision at 10 with all masking ")
+        print(tp/(tp+fp), " Loose Precision at 1 with all  masking ")
+        print(etp/(etp+efp), "Exact Precision at 1 with all masking ")
 
         sys.stdout=originalout
 
