@@ -168,8 +168,8 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
 #                 print("match True Positive Present -------------------------------------------------------- \n")
                 
 
-        print(tp/(tp+fp), " Loose Precision at 10 without masking ")
-        print(etp/(etp+efp), "Exact Precision at 10 without masking ")
+        print(tp/(tp+fp), " Loose Precision at 10 with all  masking ")
+        print(etp/(etp+efp), "Exact Precision at 10 with all masking ")
 
         sys.stdout=originalout
 

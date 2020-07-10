@@ -73,7 +73,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
     totaldocs=0
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
     originalout = sys.stdout
-    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data, open('./resultsFromNoDupeEmbeddingDocStringThenStackOverflowWithMaskingPr@10.txt', 'w') as outputFile:
+    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data, open('../../data/codeGraph/resultsFromNoDupeEmbeddingDocStringThenStackOverflowWithMaskingPr@10.txt', 'w') as outputFile:
         jsonCollect = ijson.items(data, 'results.bindings.item')
         sys.stdout = outputFile
         for jsonObject in jsonCollect:
@@ -101,8 +101,6 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
                     maskedText = partPattern.sub(' ', maskedText)#maskedText.replace(labelPart, ' ')
             print('Text of post after masking:', maskedText)
 
-## masking removed for now
-
             embeddedText = embed([maskedText])#[stackText])
             embeddingVector = embeddedText[0]
             embeddingArray = np.asarray(
@@ -129,7 +127,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
                         if j == 0:
                             print("\n True positive label being contributed by \n",l)
                         else:
-                            print("\t and",l)
+                            print("and \t",l)
                     if l == classLabel:
                         exactpositivepresent=True
                         print("\n Exact positive label being contributed by \n",l)
@@ -150,8 +148,8 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap, labeltotextmap):
 #                 print("match True Positive Present -------------------------------------------------------- \n")
                 
 
-        print(tp/(tp+fp), " Loose Precision at 10 without masking ")
-        print(etp/(etp+efp), "Exact Precision at 10 without masking ")
+        print(tp/(tp+fp), " Loose Precision at 10 with masking ")
+        print(etp/(etp+efp), "Exact Precision at 10 with masking ")
 
         sys.stdout=originalout
 
