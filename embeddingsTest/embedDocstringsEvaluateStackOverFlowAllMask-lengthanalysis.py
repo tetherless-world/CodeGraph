@@ -1,4 +1,3 @@
-
 import ijson
 import tensorflow_hub as hub
 import faiss
@@ -23,11 +22,10 @@ def build_index():
     docStringLength_avg=[]
     docLabelToTextForSentenceTokenizationAndAnalysis= {}
     with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data,open('./lengthAnalysisDocstrings.txt', 'w') as outputFile:
+        originalout = sys.stdout
+        sys.stdout= outputFile
         jsonCollect = ijson.items(data, 'results.bindings.item')
         i = 0
-        originalout = sys.stdout
-        sys.stdout = outputFile
-
         for jsonObject in jsonCollect:
             objectType = jsonObject['class_func_type']['value'].replace(
                 'http://purl.org/twc/graph4code/ontology/', '')
@@ -40,9 +38,7 @@ def build_index():
             for code in soup.find_all('code'):
                 code.decompose()
             docStringText = soup.get_text()
-            
             if docStringText in embedCollect:
-                ##had to include this because the same class was getting addded into the mapped array
                 if docLabel in duplicateClassDocString:
                     pass
                     
@@ -98,12 +94,29 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
     exactpositivepresent=False
     totaldocs=0
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
-    originalout = sys.stdout
-    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data, open('./lengthAnalysisStack.txt', 'w') as outputFile:
-        
-        jsonCollect = ijson.items(data, 'results.bindings.item')
+   
+    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data, open('.lengthAnalysisDocstringsAllMask.txt', 'w') as outputFile:
+        originalout = sys.stdout
+        sys.stdout= outputFile
+        firstJsonCollect = ijson.items(data, 'results.bindings.item') 
+        postMap = {}
+        for jsonObject in firstJsonCollect:
+            objectType = jsonObject['class_func_type']['value'].replace('http://purl.org/twc/graph4code/ontology/','')
+            stackText = jsonObject['content']['value'] + \
+                " " + jsonObject['answerContent']['value']
+            soup = BeautifulSoup(stackText, 'html.parser')
+            for code in soup.find_all('code'):
+                code.decompose()
+            stackText = soup.get_text()
+            classLabel = jsonObject['class_func_label']['value']
+            if stackText in postMap:
+                postMap[stackText].append(classLabel) 
+            else:
+                postMap[stackText] = [classLabel]
+        data.close()
+        newData = open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r')
+        jsonCollect = ijson.items(newData, 'results.bindings.item')
         sys.stdout = outputFile
-        stack_overflow_length=[]
         for jsonObject in jsonCollect:
             totaldocs+=1
             objectType = jsonObject['class_func_type']['value'].replace(
@@ -112,13 +125,9 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
                 continue
             title = jsonObject['title']['value']
             classLabel = jsonObject['class_func_label']['value']
-            if classLabel in droppedClassWithLessLength:
-                continue  
-
-            stackText = jsonObject['content']['value'] + \
+            originalStackText = jsonObject['content']['value'] + \
                 " " + jsonObject['answerContent']['value']
-            soup = BeautifulSoup(stackText, 'html.parser')
-
+            soup = BeautifulSoup(originalStackText, 'html.parser')
             for code in soup.find_all('code'):
                 code.decompose()
             stackText = soup.get_text()
@@ -127,17 +136,19 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
 #              print('\nTitle of Stack Overflow Post:', title)
             print('Class associated with post:', classLabel)
             print('Text of post before masking:', stackText)
-            splitLabel = classLabel.lower().split('.')
-#             wholePattern = re.compile(classLabel.lower(), re.IGNORECASE)
-#             maskedText = wholePattern.sub(' ', stackText)
-#             for labelPart in splitLabel:
-#                     partPattern = re.compile(labelPart, re.IGNORECASE)
-#                     maskedText = partPattern.sub(' ', maskedText)#maskedText.replace(labelPart, ' ')
-#             print('Text of post after masking:', maskedText)
+            maskedText = None
+            for foundLabel in postMap[stackText]: 
+                splitLabel = foundLabel.lower().split('.')
+                wholePattern = re.compile(foundLabel.lower(), re.IGNORECASE)
+                maskedText = wholePattern.sub(' ', stackText)
+                for labelPart in splitLabel:
+                    partPattern = re.compile(labelPart, re.IGNORECASE)
+                    maskedText = partPattern.sub(' ', maskedText)#maskedText.replace(labelPart, ' ')
+            print('Text of post after masking:', maskedText)
 
-            embeddedText = embed([stackText])#[maskedText])
-            stack_overflow_length.append(len(stackText))
-            print("length of stack text",len(stackText))
+## masking removed for now
+
+            embeddedText = embed([maskedText])#[stackText])
             embeddingVector = embeddedText[0]
             embeddingArray = np.asarray(
                 embeddingVector, dtype=np.float32).reshape(1, -1)
@@ -185,8 +196,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
 #                 print("match  False Positive Present ------------------------------------------------------- \n")
             else:
                 etp=etp+1
-            
-#                 print("match True Positive Present -------------------------------------------------------- \n")
+                print("match True Positive Present -------------------------------------------------------- \n")
                 
         print("average length of docstrings getting embedded (with duplicates removed)",mean(docStringLength_avg))
         print("average length of stackoverflow posts",mean(stack_overflow_length))
@@ -196,8 +206,8 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
         print("max length of stackoverflow getting",max(stack_overflow_length))
         print("min  length of docstrings getting embedded (with duplicates removed)",min(docStringLength_avg))
         print("min length of stackoverflow getting",min(stack_overflow_length))
-        print(tp/(tp+fp), " Loose Precision at 10 without masking ")
-        print(etp/(etp+efp), "Exact Precision at 10 without masking ")
+        print(tp/(tp+fp), " Loose Precision at 1 with all  masking ")
+        print(etp/(etp+efp), "Exact Precision at 1 with all masking ")
 
         sys.stdout=originalout
 
