@@ -13,6 +13,7 @@ def sort_answers():
 #    embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4') 
     modelList = ['bert-base-nli-stsb-mean-tokens', 'bert-large-nli-stsb-mean-tokens',
      'roberta-base-nli-stsb-mean-tokens','roberta-large-nli-stsb-mean-tokens', 'distilbert-base-nli-stsb-mean-tokens']
+    encounteredPosts = {}
     for model in modelList:
         print("Loading model")
         transformer = SentenceTransformer(model)
@@ -30,6 +31,10 @@ def sort_answers():
                 f += 1 
                 label = jsonObject['class_func_label']['value']
                 stackQuestion = jsonObject['content_wo_code']
+                if stackQuestion in encounteredPosts:
+                    continue
+                else:
+                    encounteredPosts[stackQuestion] = []
 #                embeddedQuestion = embed([stackQuestion])
                 embeddedQuestion = transformer.encode([stackQuestion])
                 embeddingVector = embeddedQuestion[0]
@@ -54,8 +59,8 @@ def sort_answers():
                         for code in soup.find_all('code'):
                             code.decompose()
                         answer = soup.get_text()
-#                        answerEmbed = embed([answer])
-                        answerEmbed = transformer.encode([answer])
+                        answerEmbed = embed([answer])
+#                        answerEmbed = transformer.encode([answer])
                         answerVector = answerEmbed[0]
                         answerArray = np.asarray(answerVector, dtype=np.float32).reshape(1,-1)
                         dist = np.linalg.norm(answerArray - embeddingQuestionArray)**2
