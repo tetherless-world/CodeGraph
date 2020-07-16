@@ -47,7 +47,7 @@ def build_index():
                     pass
                     
                 else:
-                    if len(docStringText) < 250:
+                    if len(docStringText) < 300:
                         droppedClassWithLessLength.add(docLabel)
                         continue
                     duplicateClassDocString.add(docLabel)
@@ -58,7 +58,7 @@ def build_index():
                     embeddingtolabelmap[tuple(
                     embeddedDocText.numpy().tolist())].append(docLabel)
             else:
-                if len(docStringText) < 250:
+                if len(docStringText) < 300:
                         droppedClassWithLessLength.add(docLabel)
                         continue
                 duplicateClassDocString.add(docLabel)
@@ -85,7 +85,7 @@ def build_index():
 
 
 def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_avg,droppedClassWithLessLength,docLabelToTextForSentenceTokenizationAndAnalysis):
-    k = 10
+    k = 5
     fp=0
     fn=0
     tp=0
@@ -171,10 +171,9 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
                         print("\n Exact positive label being contributed by \n",l)
                     j=j+1
                         
-            print("---------------------------------------------")
             if not positivepresent:
                 fp=fp+1
-                print("Loose False Positive Present ------------------------------------------------------- \n")
+                print("Loose False Positive Present \n")
                 print("Investigating the reason with sentence tokenized docstring for:", classLabel,"\n")
                 print(sent_tokenize(docLabelToTextForSentenceTokenizationAndAnalysis[classLabel]))
             else:
@@ -187,7 +186,8 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
                 etp=etp+1
             
 #                 print("match True Positive Present -------------------------------------------------------- \n")
-                
+        print("--------------------------------------------- \n")
+        
         print("average length of docstrings getting embedded (with duplicates removed)",mean(docStringLength_avg))
         print("average length of stackoverflow posts",mean(stack_overflow_length))
         print("std of docstrings getting embedded (with duplicates removed)",pstdev(docStringLength_avg))

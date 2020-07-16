@@ -17,8 +17,6 @@ doclabel itertools.product
 doclabel sympy.polys.polytools.Poly
 doclabel sympy.core.numbers.Integer
 618
-doclabel sympy.MatMul
-258
 doclabel sympy.core.symbol.Symbol
 doclabel sympy.Basic
 483
@@ -34,8 +32,6 @@ doclabel sqlalchemy.exc.StatementError
 374
 doclabel sqlalchemy.types.Unicode
 2276
-doclabel sqlalchemy.types.UnicodeText
-291
 doclabel sqlalchemy.engine.result.ResultProxy
 603
 doclabel sqlalchemy.engine.base.Engine
@@ -65,8 +61,6 @@ doclabel sklearn.tree.DecisionTreeClassifier
 doclabel pandas.DataFrame
 doclabel sqlalchemy.sql.visitors.VisitableType
 626
-doclabel contextlib.closing
-254
 doclabel matplotlib.axes.Axes
 797
 doclabel tables.exceptions.HDF5ExtError
@@ -147,16 +141,10 @@ doclabel sympy.functions.special.error_functions.erfinv
 1109
 doclabel sympy.core.numbers.Float
 4847
-doclabel tempfile.TemporaryDirectory
-299
 doclabel keras.optimizers.RMSprop
 456
 doclabel keras.losses.MeanSquaredError
 560
-doclabel psycopg2._json.Json
-272
-doclabel django.middleware.csrf.CsrfViewMiddleware
-250
 doclabel sklearn.feature_extraction.text.CountVectorizer
 8217
 doclabel sklearn.preprocessing.OneHotEncoder
@@ -221,10 +209,6 @@ doclabel keras.initializers.RandomNormal
 365
 doclabel pexpect.searcher_re
 598
-doclabel asyncio.streams.FlowControlMixin
-297
-doclabel asyncio.streams.StreamWriter
-295
 doclabel subprocess.Popen
 1506
 doclabel psutil.Process
@@ -292,8 +276,6 @@ doclabel typing.NamedTuple
 693
 doclabel abc.ABCMeta
 656
-doclabel matplotlib.collections.PatchCollection
-254
 doclabel pyparsing.ParseException
 570
 doclabel pip._vendor.pyparsing.ParseException
@@ -340,8 +322,6 @@ doclabel scrapy.core.scheduler.Scheduler
 1141
 doclabel sre_constants.error
 361
-doclabel boto.sqs.message.RawMessage
-263
 doclabel lxml.etree.XPath
 572
 doclabel lxml.etree.XPathElementEvaluator
@@ -364,8 +344,6 @@ doclabel pandas.DatetimeIndex
 3659
 doclabel numpy.vectorize
 5298
-doclabel matplotlib.lines.Line2D
-262
 doclabel numpy.ndarray
 4296
 doclabel statsmodels.tsa.arima_model.AR
@@ -377,8 +355,6 @@ doclabel pandas._libs.tslibs.timestamps.Timestamp
 doclabel pandas.Timestamp
 doclabel pandas.core.index.Index
 1243
-doclabel pandas.option_context
-284
 doclabel matplotlib.figure.Figure
 688
 doclabel pandas.core.groupby.groupby.Series
@@ -389,12 +365,8 @@ doclabel bokeh.core.properties.JSON
 926
 doclabel numpy.memmap
 6562
-doclabel matplotlib.collections.LineCollection
-280
 doclabel pandas.Categorical
 3051
-doclabel PySide2.QtCore.QRegExp
-264
 doclabel dask.bag.core.Bag
 790
 doclabel numpy.dtype
@@ -408,8 +380,6 @@ doclabel matplotlib.widgets.Cursor
 786
 doclabel matplotlib.widgets.Slider
 322
-doclabel threading.Thread
-263
 doclabel matplotlib.backend_bases.MouseEvent
 1031
 doclabel matplotlib.collections.Collection
@@ -444,8 +414,6 @@ doclabel _lsprof.Profiler
 349
 doclabel mtrand.RandomState
 1956
-doclabel numpy.float32
-273
 doclabel scipy.spatial.cKDTree
 3927
 doclabel sklearn.preprocessing.MinMaxScaler
@@ -573,16 +541,12 @@ doclabel numpy.ma.MaskedArray
 2329
 doclabel keras.layers.advanced_activations.LeakyReLU
 670
-doclabel tensorflow.contrib.learn.python.learn.monitors.NanLoss
-295
 doclabel matplotlib.colors.ListedColormap
 808
 doclabel scipy.interpolate.UnivariateSpline
 3685
 doclabel sklearn.neighbors.BallTree
 3897
-doclabel decimal.Decimal
-260
 doclabel dask.config.set
 927
 doclabel numpy.complex64
@@ -592,8 +556,6 @@ doclabel sklearn.preprocessing.LabelBinarizer
 doclabel scipy.spatial.ckdtree.cKDTree
 doclabel selenium.webdriver.chrome.webdriver.WebDriver
 701
-doclabel json.decoder.JSONDecodeError
-288
 doclabel selenium.common.exceptions.NoSuchElementException
 425
 doclabel selenium.webdriver.support.expected_conditions.visibility_of
@@ -606,17 +568,12 @@ doclabel operator.attrgetter
 doclabel numpy.recarray
 3821
 doclabel numpy.core.float64
-doclabel numpy.core.float32
-doclabel wtforms.validators.Email
-297
 doclabel wtforms.fields.BooleanField
 427
 doclabel xarray.DataArray
 1530
 doclabel xarray.Dataset
 501
-doclabel param.ClassSelector
-285
 doclabel param.Parameterized
 1914
 doclabel netCDF4.Dataset
@@ -645,10 +602,6 @@ doclabel zmq.backend.Socket
 604
 doclabel nose.loader.TestLoader
 321
-doclabel nose.plugins.logcapture.LogCapture
-262
-doclabel nose.plugins.skip.Skip
-290
 doclabel nose.suite.ContextSuite
 308
 doclabel webtest.TestApp
@@ -663,16 +616,12 @@ doclabel sympy.core.numbers.Number
 doclabel sympy.core.numbers.Rational
 1909
 doclabel sympy.core.basic.Basic
-doclabel sympy.core.numbers.Zero
-292
 doclabel sympy.core.power.Pow
 5188
 doclabel gensim.models.ldamodel.LdaModel
 1005
 doclabel email.generator.BytesGenerator
 510
-doclabel gzip.GzipFile
-266
 doclabel sqlalchemy.sql.functions.FunctionElement
 378
 doclabel sqlalchemy.dialects.postgresql.array
@@ -687,8 +636,6 @@ doclabel tensorflow.python.training.server_lib.ClusterSpec
 1228
 doclabel logging.Filter
 502
-doclabel logging.handlers.SysLogHandler
-279
 doclabel logging.NullHandler
 473
 doclabel sympy.geometry.ellipse.Ellipse
@@ -697,8 +644,6 @@ doclabel boto.s3.key.Key
 1347
 doclabel threading.BoundedSemaphore
 681
-doclabel zmq.eventloop.ioloop.DelayedCallback
-250
 doclabel joblib.externals.loky.process_executor.BrokenProcessPool
 306
 doclabel threading.Semaphore
@@ -766,22 +711,16 @@ doclabel logging.Logger
 882
 doclabel _thread.lock
 469
-doclabel redis.Redis
-294
 doclabel http.server.SimpleHTTPRequestHandler
 343
 doclabel tornado.platform.asyncio.AnyThreadEventLoopPolicy
 580
 doclabel http.server.BaseHTTPRequestHandler
 3580
-doclabel IPython.display.DisplayHandle
-264
 doclabel werkzeug.local.LocalProxy
 1128
 doclabel tornado.httpclient.AsyncHTTPClient
 1432
-doclabel tornado.ioloop.TimeoutError
-259
 doclabel tornado.testing.AsyncTestCase
 2025
 doclabel tornado.testing.AsyncHTTPTestCase

@@ -21,7 +21,7 @@ def build_index():
     droppedClassWithLessLength=set()
     docStringLength_avg=[]
     docLabelToTextForSentenceTokenizationAndAnalysis= {}
-    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data,open('./lengthAnalysisDocstrings.txt', 'w') as outputFile:
+    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data,open('./lengthAnalysisDocstringsAllMask.txt', 'w') as outputFile:
         originalout = sys.stdout
         sys.stdout= outputFile
         jsonCollect = ijson.items(data, 'results.bindings.item')
@@ -43,7 +43,7 @@ def build_index():
                     pass
                     
                 else:
-                    if len(docStringText) < 250:
+                    if len(docStringText) < 300:
                         droppedClassWithLessLength.add(docLabel)
                         continue
                     duplicateClassDocString.add(docLabel)
@@ -54,7 +54,7 @@ def build_index():
                     embeddingtolabelmap[tuple(
                     embeddedDocText.numpy().tolist())].append(docLabel)
             else:
-                if len(docStringText) < 250:
+                if len(docStringText) < 300:
                         droppedClassWithLessLength.add(docLabel)
                         continue
                 duplicateClassDocString.add(docLabel)
@@ -95,13 +95,15 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
     totaldocs=0
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
    
-    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data, open('.lengthAnalysisDocstringsAllMask.txt', 'w') as outputFile:
+    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_1M_filtered.json', 'r') as data, open('lengthAnalysisStackOverflowAllMask.txt', 'w') as outputFile:
         originalout = sys.stdout
         sys.stdout= outputFile
         firstJsonCollect = ijson.items(data, 'results.bindings.item') 
         postMap = {}
         for jsonObject in firstJsonCollect:
             objectType = jsonObject['class_func_type']['value'].replace('http://purl.org/twc/graph4code/ontology/','')
+            if objectType != 'Class':
+                continue
             stackText = jsonObject['content']['value'] + \
                 " " + jsonObject['answerContent']['value']
             soup = BeautifulSoup(stackText, 'html.parser')
@@ -127,6 +129,8 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
             classLabel = jsonObject['class_func_label']['value']
             originalStackText = jsonObject['content']['value'] + \
                 " " + jsonObject['answerContent']['value']
+            if classLabel in droppedClassWithLessLength:
+                continue  
             soup = BeautifulSoup(originalStackText, 'html.parser')
             for code in soup.find_all('code'):
                 code.decompose()
@@ -134,8 +138,8 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
             if len(stackText) < 50:
                 continue
 #              print('\nTitle of Stack Overflow Post:', title)
-            print('Class associated with post:', classLabel)
-            print('Text of post before masking:', stackText)
+            print('Class associated with post:', classLabel, '\n')
+            print('Text of post before masking:', stackText, '\n')
             maskedText = None
             for foundLabel in postMap[stackText]: 
                 splitLabel = foundLabel.lower().split('.')
@@ -144,7 +148,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
                 for labelPart in splitLabel:
                     partPattern = re.compile(labelPart, re.IGNORECASE)
                     maskedText = partPattern.sub(' ', maskedText)#maskedText.replace(labelPart, ' ')
-            print('Text of post after masking:', maskedText)
+            print('Text of post after masking:', maskedText, '\n')
 
 ## masking removed for now
 
@@ -182,10 +186,9 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
                         print("\n Exact positive label being contributed by \n",l)
                     j=j+1
                         
-            print("---------------------------------------------")
             if not positivepresent:
                 fp=fp+1
-                print("Loose False Positive Present ------------------------------------------------------- \n")
+                print("Loose False Positive Present  \n")
                 print("Investigating the reason with sentence tokenized docstring for:", classLabel,"\n")
                 print(sent_tokenize(docLabelToTextForSentenceTokenizationAndAnalysis[classLabel]))
             else:
@@ -196,18 +199,12 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
 #                 print("match  False Positive Present ------------------------------------------------------- \n")
             else:
                 etp=etp+1
-                print("match True Positive Present -------------------------------------------------------- \n")
-                
-        print("average length of docstrings getting embedded (with duplicates removed)",mean(docStringLength_avg))
-        print("average length of stackoverflow posts",mean(stack_overflow_length))
-        print("std of docstrings getting embedded (with duplicates removed)",pstdev(docStringLength_avg))
-        print("std of stackoverflow getting",pstdev(stack_overflow_length))
-        print("max  length of docstrings getting embedded (with duplicates removed)",max(docStringLength_avg))
-        print("max length of stackoverflow getting",max(stack_overflow_length))
-        print("min  length of docstrings getting embedded (with duplicates removed)",min(docStringLength_avg))
-        print("min length of stackoverflow getting",min(stack_overflow_length))
-        print(tp/(tp+fp), " Loose Precision at 1 with all  masking ")
-        print(etp/(etp+efp), "Exact Precision at 1 with all masking ")
+                print("match True Positive Present \n")
+            print("--------------------------------------------- \n")
+
+
+        print(tp/(tp+fp), " Loose Precision at 10 with all  masking ")
+        print(etp/(etp+efp), "Exact Precision at 10 with all masking ")
 
         sys.stdout=originalout
 
