@@ -28,7 +28,6 @@ def beginAnalysis():
             calculateMRR(properJsonObjects, USE, True)
             print("Calculating NDCG with model", USE)
             calculateNDCG(properJsonObjects, USE, True)
-#        calculateMRR(properJsonObjects, 'bert-base-nli-mean-tokens', False)
         modelList = ['bert-base-nli-mean-tokens', 'bert-large-nli-mean-tokens',
         'roberta-base-nli-mean-tokens',
         'roberta-large-nli-mean-tokens', 'distilbert-base-nli-mean-tokens',
@@ -40,6 +39,12 @@ def beginAnalysis():
             calculateMRR(properJsonObjects, model, False)
             print("Calculating NDCG with model", model)
             calculateNDCG(properJsonObjects, model, False)
+
+def countObjects(jsonCollect):
+    i = 0
+    for jsonObject in jsonCollect:
+        i += 1
+    print(i)
 
 def calculateNDCG(jsonCollect, model, isUSE):
     embed = None
