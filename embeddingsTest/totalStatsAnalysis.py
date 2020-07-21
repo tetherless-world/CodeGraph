@@ -6,14 +6,20 @@ import sys
 import re
 import math
 from sentence_transformers import SentenceTransformer
+import random
+import statistics
 
 def beginAnalysis():
-    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r') as data:
+    with open('../../data/codeGraph/stackoverflow_questions_with_answers_1000000.json', 'r') as data:
         properJsonObjects = []
         encounteredPosts = set()
         jsonObjects = ijson.items(data, 'results.bindings.item')
         for jsonObject in jsonObjects:
-            objectType = jsonObject['class_func_type']['value'].replace('http://purl.org/twc/graph4code/ontology/', '')
+            objectType = "Class"
+            try:
+                objectType = jsonObject['class_func_type']['value'].replace('http://purl.org/twc/graph4code/ontology/', '')
+            except KeyError as e:
+                pass
             if objectType != 'Class':
                 continue
             stackUrl = jsonObject['q']['value']
@@ -22,12 +28,16 @@ def beginAnalysis():
             else:
                 encounteredPosts.add(stackUrl)
             properJsonObjects.append(jsonObject)
+
+
         USEList = ['https://tfhub.dev/google/universal-sentence-encoder/4']
         for USE in USEList:
             print("Calculating MRR with model", USE)
             calculateMRR(properJsonObjects, USE, True)
             print("Calculating NDCG with model", USE)
             calculateNDCG(properJsonObjects, USE, True)
+            print("Calculating T statistic with model", USE)
+            calculatePairedTTest(properJsonObjects, USE, True)
         modelList = ['bert-base-nli-mean-tokens', 'bert-large-nli-mean-tokens',
         'roberta-base-nli-mean-tokens',
         'roberta-large-nli-mean-tokens', 'distilbert-base-nli-mean-tokens',
@@ -39,12 +49,116 @@ def beginAnalysis():
             calculateMRR(properJsonObjects, model, False)
             print("Calculating NDCG with model", model)
             calculateNDCG(properJsonObjects, model, False)
+            print("Calculating T statistic with model", model)
+            calculatePairedTTest(properJsonObjects, model, False)
 
 def countObjects(jsonCollect):
     i = 0
     for jsonObject in jsonCollect:
         i += 1
     print(i)
+
+def calculatePairedTTest(jsonCollect, model, isUSE):
+    embed = None
+    transformer = None
+    coefficients = []
+    rPattern = r'https:\/\/stackoverflow\.com\/questions\/\d+'
+    
+    if isUSE:
+        embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
+    else:
+        transformer = SentenceTransformer(model)
+    
+    urlMapping = {}
+    urlList = []
+
+    differences = []
+
+    for jsonObject in jsonCollect:
+        qUrl = jsonObject['q']['value']
+        urlMapping[qUrl] = jsonObject
+        urlList.append(qUrl)
+
+    for jsonObject in jsonCollect:
+        qUrl = jsonObject['q']['value']
+        urlContent = jsonObject['stackoverflow_urls']
+        for potentialUrl in urlContent:
+            urlMatch = re.search(rPattern, potentialUrl)
+            if urlMatch == None:
+                continue
+            actualUrl = urlMatch.group(0)
+            if actualUrl not in urlMapping or qUrl == actualUrl:
+                continue
+            post2Object = urlMapping[actualUrl]
+
+            post1Url = qUrl
+            post2Url = actualUrl
+
+            post1Question = jsonObject['content_wo_code']
+            post2Question = post2Object['content_wo_code']
+
+            if isUSE:
+                post1Embedding = embed([post1Question])
+                post2Embedding = embed([post2Question])
+            else:
+                post1Embedding = transformer.encode([post1Question])
+                post2Embedding = transformer.encode([post2Question])
+
+            post1EmbeddingVector = post1Embedding[0]
+            post2EmbeddingVector = post2Embedding[0]
+
+            post1EmbeddingArray = np.asarray(post1EmbeddingVector, dtype=np.float32).reshape(1,-1)
+            post2EmbeddingArray = np.asarray(post2EmbeddingVector, dtype=np.float32).reshape(1,-1)
+            
+            linkedDist = np.linalg.norm(post1EmbeddingArray - post2EmbeddingArray)**2
+            if linkedDist <= .001:
+                continue
+
+            post3Url = random.choice(urlList)
+            post4Url = random.choice(urlList)
+
+            while post3Url == post1Url or post3Url == post2Url:
+                post3Url = random.choice(urlList)
+
+            while post4Url == post2Url or post4Url == post1Url:
+                post4Url = random.choice(urlList)
+
+            post3Object = urlMapping[post3Url]
+            post4Object = urlMapping[post4Url]
+
+            post3Question = post3Object['content_wo_code']
+            post4Question = post4Object['content_wo_code']
+
+            if isUSE:
+                post3Embedding = embed([post3Question])
+                post4Embedding = embed([post4Question])
+            else:
+                post3Embedding = transformer.encode([post3Question])
+                post4Embedding = transformer.encode([post4Question])
+
+            post3EmbeddingVector = post3Embedding[0]
+            post4EmbeddingVector = post4Embedding[0]
+
+            post3EmbeddingArray = np.asarray(post3EmbeddingVector, dtype=np.float32).reshape(1,-1)
+            post4EmbeddingArray = np.asarray(post4EmbeddingVector, dtype=np.float32).reshape(1,-1)
+
+            post1And3Dist = np.linalg.norm(post1EmbeddingArray - post3EmbeddingArray)**2
+            post2And4Dist = np.linalg.norm(post2EmbeddingArray - post4EmbeddingArray)**2
+
+            foreignDistAverage = (post1And3Dist + post2And4Dist)/2
+
+            difference = foreignDistAverage - linkedDist
+
+            differences.append(difference)
+
+    dataMean = statistics.mean(differences)
+    dataStdDev = statistics.stdev(differences)
+    dataStandardError = dataStdDev/math.sqrt(len(differences))
+    dataTStat = dataMean/dataStandardError
+    print("Total sample size is:", len(differences))
+    print("T statistic is:", dataTStat)
+
+
 
 def calculateNDCG(jsonCollect, model, isUSE):
     embed = None
