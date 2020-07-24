@@ -9,6 +9,8 @@ from sentence_transformers import SentenceTransformer
 import random
 import statistics
 
+# parse input data file and remove duplicates for analysis
+# also calls all necessary analysis functions
 def beginAnalysis():
     with open('../../data/codeGraph/stackoverflow_questions_with_answers_1000000.json', 'r') as data:
         properJsonObjects = []
@@ -43,6 +45,8 @@ def beginAnalysis():
             print("Calculating T statistic with model", USE)
             print("Calculating T statistic with model", USE, file=sys.stderr)
             calculatePairedTTest(properJsonObjects, USE, True)
+
+
         modelList = ['bert-base-nli-mean-tokens', 'bert-large-nli-mean-tokens',
         'roberta-base-nli-mean-tokens',
         'roberta-large-nli-mean-tokens', 'distilbert-base-nli-mean-tokens',
@@ -60,7 +64,7 @@ def beginAnalysis():
             print("Calculating T statistic with model", model, file=sys.stderr)
             calculatePairedTTest(properJsonObjects, model, False)
 
-
+# function to calculate paired t test for linked posts
 def calculatePairedTTest(jsonCollect, model, isUSE):
     embed = None
     transformer = None
@@ -162,7 +166,7 @@ def calculatePairedTTest(jsonCollect, model, isUSE):
     print("T statistic is:", dataTStat)
 
 
-
+# function to calculate NDCG for question and answer rankings
 def calculateNDCG(jsonCollect, model, isUSE):
     embed = None
     transformer = None
@@ -240,7 +244,9 @@ def calculateNDCG(jsonCollect, model, isUSE):
             coefficients.append(nDCG)
     fullNDCG = sum(coefficients)/len(coefficients)
     print("Average NDCG:", fullNDCG)
-            
+
+
+# function to calculate MRR for question and answer rankings            
 def calculateMRR(jsonCollect, model, isUSE):
     embed = None
     transformer = None
