@@ -32,21 +32,7 @@ def beginAnalysis():
             i += 1
 
 
-        USEList = ['https://tfhub.dev/google/universal-sentence-encoder/4']
-        for USE in USEList:
-            print("Calculating MRR with model", USE)
-            print("Calculating MRR with model", USE, file=sys.stderr)
-            calculateMRR(properJsonObjects, USE, True)
-            print("Calculating NDCG with model", USE)
-            print("Calculating NDCG with model", USE, file=sys.stderr)
-            calculateNDCG(properJsonObjects, USE, True)
-            print("Calculating T statistic with model", USE)
-            print("Calculating T statistic with model", USE, file=sys.stderr)
-            calculatePairedTTest(properJsonObjects, USE, True)
-        modelList = ['bert-base-nli-mean-tokens', 'bert-large-nli-mean-tokens',
-        'roberta-base-nli-mean-tokens',
-        'roberta-large-nli-mean-tokens', 'distilbert-base-nli-mean-tokens',
-        'bert-base-nli-stsb-mean-tokens', 'bert-large-nli-stsb-mean-tokens',
+        modelList = ['bert-base-nli-stsb-mean-tokens', 'bert-large-nli-stsb-mean-tokens',
         'roberta-base-nli-stsb-mean-tokens', 'roberta-large-nli-stsb-mean-tokens',
         'distilbert-base-nli-stsb-mean-tokens']
         for model in modelList:
@@ -60,6 +46,11 @@ def beginAnalysis():
             print("Calculating T statistic with model", model, file=sys.stderr)
             calculatePairedTTest(properJsonObjects, model, False)
 
+def countObjects(jsonCollect):
+    i = 0
+    for jsonObject in jsonCollect:
+        i += 1
+    print(i)
 
 def calculatePairedTTest(jsonCollect, model, isUSE):
     embed = None
