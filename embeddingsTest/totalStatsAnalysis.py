@@ -8,6 +8,7 @@ import math
 from sentence_transformers import SentenceTransformer
 import random
 import statistics
+from scipy import stats as stat
 
 # parse input data file and remove duplicates for analysis
 # also calls all necessary analysis functions
@@ -78,6 +79,9 @@ def calculatePairedTTest(jsonCollect, model, isUSE):
     
     urlMapping = {}
     urlList = []
+
+    linkedDists = []
+    foreignDists = []
 
     differences = []
 
@@ -153,17 +157,16 @@ def calculatePairedTTest(jsonCollect, model, isUSE):
             post2And4Dist = np.linalg.norm(post2EmbeddingArray - post4EmbeddingArray)**2
 
             foreignDistAverage = (post1And3Dist + post2And4Dist)/2
+            
+            linkedDists.append(linkedDist)
+            foreignDists.append(foreignDistAverage)
 
             difference = foreignDistAverage - linkedDist
 
             differences.append(difference)
 
-    dataMean = statistics.mean(differences)
-    dataStdDev = statistics.stdev(differences)
-    dataStandardError = dataStdDev/math.sqrt(len(differences))
-    dataTStat = dataMean/dataStandardError
-    print("Total sample size is:", len(differences))
-    print("T statistic is:", dataTStat)
+    results = stat.ttest_rel(foreignDists, linkedDists)
+    print('Result of T statistic calculation is:', results)
 
 
 # function to calculate NDCG for question and answer rankings
