@@ -87,7 +87,7 @@ def build_index():
 
 
 def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_avg,droppedClassWithLessLength,docLabelToTextForSentenceTokenizationAndAnalysis):
-    k = 5
+    k = 10
     fp=0
     fn=0
     tp=0
@@ -128,18 +128,15 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
 #                 continue
 #              print('\nTitle of Stack Overflow Post:', title)
             print('Class associated with post:', classLabel)
-            print('Text of post before masking:', stackText)
             splitLabel = classLabel.lower().split('.')
-#             wholePattern = re.compile(classLabel.lower(), re.IGNORECASE)
-#             maskedText = wholePattern.sub(' ', stackText)
-#             for labelPart in splitLabel:
-#                     partPattern = re.compile(labelPart, re.IGNORECASE)
-#                     maskedText = partPattern.sub(' ', maskedText)#maskedText.replace(labelPart, ' ')
-#             print('Text of post after masking:', maskedText)
+            wholePattern = re.compile(classLabel.lower(), re.IGNORECASE)
+            maskedText = wholePattern.sub(' ', stackText)
+            for labelPart in splitLabel:
+                    partPattern = re.compile(labelPart, re.IGNORECASE)
+                    maskedText = partPattern.sub(' ', maskedText)#maskedText.replace(labelPart, ' ')
 
-            embeddedText = embed([stackText])#[maskedText])
-            stack_overflow_length.append(len(stackText))
-            print("length of stack text",len(stackText))
+            embeddedText = embed([maskedText])#[maskedText])
+
             embeddingVector = embeddedText[0]
             embeddingArray = np.asarray(
                 embeddingVector, dtype=np.float32).reshape(1, -1)
@@ -190,14 +187,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
 #                 print("match True Positive Present -------------------------------------------------------- \n")
         print("--------------------------------------------- \n")
         
-        print("average length of docstrings getting embedded (with duplicates removed)",mean(docStringLength_avg))
-        print("average length of stackoverflow posts",mean(stack_overflow_length))
-        print("std of docstrings getting embedded (with duplicates removed)",pstdev(docStringLength_avg))
-        print("std of stackoverflow getting",pstdev(stack_overflow_length))
-        print("max  length of docstrings getting embedded (with duplicates removed)",max(docStringLength_avg))
-        print("max length of stackoverflow getting",max(stack_overflow_length))
-        print("min  length of docstrings getting embedded (with duplicates removed)",min(docStringLength_avg))
-        print("min length of stackoverflow getting",min(stack_overflow_length))
+
         print(tp/(tp+fp), " Loose Precision at 5 without masking ")
         print(etp/(etp+efp), "Exact Precision at 5 without masking ")
 
