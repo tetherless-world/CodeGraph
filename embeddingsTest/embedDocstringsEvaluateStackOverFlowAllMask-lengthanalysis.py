@@ -43,7 +43,7 @@ def build_index():
                     pass
                     
                 else:
-                    if len(docStringText) < 300:
+                    if len(docStringText) < -1:
                         droppedClassWithLessLength.add(docLabel)
                         continue
                     duplicateClassDocString.add(docLabel)
@@ -54,7 +54,7 @@ def build_index():
                     embeddingtolabelmap[tuple(
                     embeddedDocText.numpy().tolist())].append(docLabel)
             else:
-                if len(docStringText) < 300:
+                if len(docStringText) < -1:
                         droppedClassWithLessLength.add(docLabel)
                         continue
                 duplicateClassDocString.add(docLabel)
