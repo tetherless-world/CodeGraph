@@ -1,3 +1,4 @@
+
 import ijson
 import tensorflow_hub as hub
 import faiss
@@ -24,6 +25,9 @@ def build_index():
     with open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r') as data,open('./lengthAnalysisDocstrings_NewJson.txt', 'w') as outputFile:
         jsonCollect = ijson.items(data, 'results.bindings.item')
         i = 0
+        originalout = sys.stdout
+        sys.stdout = outputFile
+
         for jsonObject in jsonCollect:
             objectType = jsonObject['class_func_type']['value'].replace(
                 'http://purl.org/twc/graph4code/ontology/', '')
@@ -36,30 +40,35 @@ def build_index():
             for code in soup.find_all('code'):
                 code.decompose()
             docStringText = soup.get_text()
+            
             if docStringText in embedCollect:
+                ##had to include this because the same class was getting addded into the mapped array
                 if docLabel in duplicateClassDocString:
                     pass
                     
                 else:
-                    if len(docStringText) < 300:
+                    if len(docStringText) < -1:
+                        print("has less than 300 character,class:",docLabel,"docstring:",docStringText)
                         droppedClassWithLessLength.add(docLabel)
                         continue
                     duplicateClassDocString.add(docLabel)
                     docStringLength_avg.append(len(docStringText))
-
+                    print("doclabel",docLabel)
                     docLabelToTextForSentenceTokenizationAndAnalysis[docLabel]=docStringText
                     embeddedDocText = embed([docStringText])[0]
                     embeddingtolabelmap[tuple(
                     embeddedDocText.numpy().tolist())].append(docLabel)
             else:
-                if len(docStringText) < 300:
+                if len(docStringText) < -1:
+                        print("has less than 300 character,class:",docLabel,"docstring:",docStringText)
                         droppedClassWithLessLength.add(docLabel)
                         continue
                 duplicateClassDocString.add(docLabel)
                 embedCollect.add(docStringText)
                 docStringLength_avg.append(len(docStringText))
                 docLabelToTextForSentenceTokenizationAndAnalysis[docLabel]=docStringText
-
+                print("doclabel",docLabel)
+                print(len(docStringText))
                 embeddedDocText = embed([docStringText])[0]
                 newText = np.asarray(
                 embeddedDocText, dtype=np.float32).reshape(1, -1)
@@ -72,12 +81,13 @@ def build_index():
 #                     print(docStringText)
 #            labeltotextmap[docLabel] = docStringText
             i += 1
+        sys.stdout=originalout
 
         return (index, docMessages, embeddingtolabelmap, docStringLength_avg,droppedClassWithLessLength,docLabelToTextForSentenceTokenizationAndAnalysis)
 
 
 def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_avg,droppedClassWithLessLength,docLabelToTextForSentenceTokenizationAndAnalysis):
-    k = 3
+    k = 10
     fp=0
     fn=0
     tp=0
@@ -90,40 +100,18 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
     exactpositivepresent=False
     totaldocs=0
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
-
-    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r') as data, open('../../data/codeGraph/classes2superclass.out', 'r') as class2superclass, open('../../data/codeGraph/classes.map', 'r') as classes,open('lengthAnalysisStackOverflowAllMask.txt', 'w') as outputFile:
+    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r') as data, open('../../data/codeGraph/classes2superclass.out', 'r') as class2superclass, open('../../data/codeGraph/classes.map', 'r') as classes,open('./lengthAnalysisStackNewJson.txt', 'w') as outputFile:
         getHierarchy = ijson.items(class2superclass, 'results.bindings.item')
         classToSuperClass={}
-
         for iterateInHierarchy in getHierarchy:
             superClass = iterateInHierarchy['superclass']['value'].replace('http://purl.org/twc/graph4code/python/','')
             class_sub = iterateInHierarchy['class']['value'].replace('http://purl.org/twc/graph4code/python/','')
             classToSuperClass[class_sub]=superClass
           
-
-           
-        firstJsonCollect = ijson.items(data, 'results.bindings.item') 
-        postMap = {}
-        for jsonObject in firstJsonCollect:
-            objectType = jsonObject['class_func_type']['value'].replace('http://purl.org/twc/graph4code/ontology/','')
-            if objectType != 'Class':
-                continue
-            stackText = jsonObject['content_wo_code']+ \
-                " " + jsonObject['answer_wo_code']
-            soup = BeautifulSoup(stackText, 'html.parser')
-            for code in soup.find_all('code'):
-                code.decompose()
-            stackText = soup.get_text()
-            classLabel = jsonObject['class_func_label']['value']
-            if stackText in postMap:
-                postMap[stackText].append(classLabel) 
-            else:
-                postMap[stackText] = [classLabel]
         correctHierarchy=0
         wrongHierarchy=0
-        data.close()
-        newData = open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r')
-        jsonCollect = ijson.items(newData, 'results.bindings.item')
+        jsonCollect = ijson.items(data, 'results.bindings.item')
+        stack_overflow_length=[]
         for jsonObject in jsonCollect:
             totaldocs+=1
             objectType = jsonObject['class_func_type']['value'].replace(
@@ -132,28 +120,29 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
                 continue
             title = jsonObject['title']['value']
             classLabel = jsonObject['class_func_label']['value']
-            originalStackText = jsonObject['content_wo_code']+ \
-                " " + jsonObject['answer_wo_code']
             if classLabel in droppedClassWithLessLength:
                 continue  
-            soup = BeautifulSoup(originalStackText, 'html.parser')
+
+            stackText = jsonObject['content_wo_code']+ \
+                " " + jsonObject['answer_wo_code']
+            soup = BeautifulSoup(stackText, 'html.parser')
+
             for code in soup.find_all('code'):
                 code.decompose()
             stackText = soup.get_text()
-            if len(stackText) < 50:
-                continue
-            maskedText = None
-            for foundLabel in postMap[stackText]: 
-                splitLabel = foundLabel.lower().split('.')
-                wholePattern = re.compile(foundLabel.lower(), re.IGNORECASE)
-                maskedText = wholePattern.sub(' ', stackText)
-                for labelPart in splitLabel:
+#             if len(stackText) < 50:
+#                 continue
+#              print('\nTitle of Stack Overflow Post:', title)
+            print('Class associated with post:', classLabel)
+            splitLabel = classLabel.lower().split('.')
+            wholePattern = re.compile(classLabel.lower(), re.IGNORECASE)
+            maskedText = wholePattern.sub(' ', stackText)
+            for labelPart in splitLabel:
                     partPattern = re.compile(labelPart, re.IGNORECASE)
                     maskedText = partPattern.sub(' ', maskedText)#maskedText.replace(labelPart, ' ')
 
-## masking removed for now
+            embeddedText = embed([stackText])#[maskedText])
 
-            embeddedText = embed([maskedText])#[stackText])
             embeddingVector = embeddedText[0]
             embeddingArray = np.asarray(
                 embeddingVector, dtype=np.float32).reshape(1, -1)
