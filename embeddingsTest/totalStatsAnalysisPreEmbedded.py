@@ -15,7 +15,8 @@ import pickle
 # also calls all necessary analysis functions
 
 def fetchEmbeddingDict(fileName):
-    fullFile = '../../data/codeGraph/tempFolder/stackoverflow_embeddings_cp/' + str(fileName)
+    fullFile = '../../data/codeGraph/fullUSE/stackoverflow_embeddings' + \
+    str(fileName)
     try:
         openFile = open(fullFile, 'rb')
     except FileNotFoundError as e:
