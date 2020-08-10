@@ -1,3 +1,4 @@
+
 import ijson
 import tensorflow_hub as hub
 import faiss
@@ -9,10 +10,21 @@ from statistics import mean
 from statistics import pstdev
 import nltk
 nltk.download('punkt')
+from sentence_transformers import SentenceTransformer
+
 from nltk.tokenize import sent_tokenize
-def build_index():
+
+def run_differentmodels():
+        modelList = ['bert-base-nli-stsb-mean-tokens', 'bert-large-nli-stsb-mean-tokens','roberta-base-nli-stsb-mean-tokens','roberta-large-nli-stsb-mean-tokens', 'distilbert-base-nli-stsb-mean-tokens']
+        for i in modelList:
+                print("running model",i)
+                dataTuple = build_index(i)
+                evaluate_neighbors(dataTuple[0], dataTuple[1], dataTuple[2], dataTuple[3],dataTuple[4],dataTuple[5],i)
+                
+    
+def build_index(model):
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
-    index = faiss.IndexFlatL2(512)
+
     docMessages = []
     embeddingtolabelmap = {}
     labeltotextmap = {}
@@ -20,13 +32,17 @@ def build_index():
     duplicateClassDocString=set()
     droppedClassWithLessLength=set()
     docStringLength_avg=[]
-    bucket_size=4
     docLabelToTextForSentenceTokenizationAndAnalysis= {}
-    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r') as data,open('./lengthAnalysisDocstringsAllMask_NewJson.txt', 'w') as outputFile:
-        originalout = sys.stdout
-        sys.stdout= outputFile
+
+    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r') as data,open('./lengthAnalysisDocstrings_NewJson.txt', 'w') as outputFile:
         jsonCollect = ijson.items(data, 'results.bindings.item')
         i = 0
+        transformer = SentenceTransformer(model)
+        embeddedDocTextLen = len(transformer.encode(["index builder"])[0])
+        index = faiss.IndexFlatL2(embeddedDocTextLen)
+        originalout = sys.stdout
+        sys.stdout = outputFile
+
         for jsonObject in jsonCollect:
             objectType = jsonObject['class_func_type']['value'].replace(
                 'http://purl.org/twc/graph4code/ontology/', '')
@@ -39,79 +55,55 @@ def build_index():
             for code in soup.find_all('code'):
                 code.decompose()
             docStringText = soup.get_text()
+            
             if docStringText in embedCollect:
+                ##had to include this because the same class was getting addded into the mapped array
                 if docLabel in duplicateClassDocString:
                     pass
                     
                 else:
-#                     if len(docStringText) < 300:
-#                         print("has less than 300 character,class:",docLabel,"docstring:",docStringText)
-#                         droppedClassWithLessLength.add(docLabel)
-#                         continue
+                    if len(docStringText) < -1:
+                        print("has less than -1 character,class:",docLabel,"docstring:",docStringText)
+                        droppedClassWithLessLength.add(docLabel)
+                        continue
                     duplicateClassDocString.add(docLabel)
                     docStringLength_avg.append(len(docStringText))
                     print("doclabel",docLabel)
                     docLabelToTextForSentenceTokenizationAndAnalysis[docLabel]=docStringText
-                    
+                    embeddedDocText = transformer.encode([docStringText])
+                    print("embeddedDoctext shape",np.asarray(embeddedDocText, dtype=np.float32).shape)
 
-                    for formbucket in range(0,len(sent_docStrings),bucket_size):
-                            if formbucket >= len(sent_docStrings)-bucket_size :
-                                text_combined=""
-                                for t in sent_docStrings[formbucket:len(sent_docStrings)]:
-                                    text_combined=text_combined+t
-                                print("shappeeee",newText.shape)
+                    embeddingtolabelmap[np.asarray(embeddedDocText, dtype=np.float32).tobytes()] = [docLabel]
 
-                                embeddedDocText = embed([text_combined])[0]
-                                embeddingtolabelmap[tuple(embeddedDocText.numpy().tolist())] = [docLabel]
             else:
-#                 if len(docStringText) < 300:
-#                         print("has less than 300 character,class:",docLabel,"docstring:",docStringText)
-#                         droppedClassWithLessLength.add(docLabel)
-#                         continue
+                if len(docStringText) < -1:
+                        print("has less than -1 character,class:",docLabel,"docstring:",docStringText)
+                        droppedClassWithLessLength.add(docLabel)
+                        continue
                 duplicateClassDocString.add(docLabel)
                 embedCollect.add(docStringText)
-                        ##had  to include this because the same class was getting addded into the mapped array
-
                 docStringLength_avg.append(len(docStringText))
                 docLabelToTextForSentenceTokenizationAndAnalysis[docLabel]=docStringText
-                sent_docStrings=sent_tokenize(docStringText)
                 print("doclabel",docLabel)
-                for formbucket in range(0,len(sent_docStrings),bucket_size):
-                            if formbucket >= len(sent_docStrings)-bucket_size :
-                                text_combined=""
-                                for t in sent_docStrings[formbucket:len(sent_docStrings)]:
-                                    text_combined=text_combined+t
-                                embeddedDocText = embed([text_combined])[0]
-                                newText = np.asarray(
-                                embeddedDocText, dtype=np.float32).reshape(1, -1)
-                                docMessages.append(embeddedDocText.numpy().tolist())
-                                print("shappeeee",newText.shape)
-                                index.add(newText)
-                                embeddingtolabelmap[tuple(
-                                embeddedDocText.numpy().tolist())] = [docLabel]
-                                    
-                            else:
-                                text_combined=""
-                                for t in sent_docStrings[formbucket:formbucket+bucket_size]:
-                                    text_combined=text_combined+t
-                                embeddedDocText = embed([text_combined])[0]
-                                newText = np.asarray(
-                                embeddedDocText, dtype=np.float32).reshape(1, -1)
-                                print("shappeeee",newText.shape)
-
-                                docMessages.append(embeddedDocText.numpy().tolist())
-                                index.add(newText)
-                                embeddingtolabelmap[tuple(
-                                embeddedDocText.numpy().tolist())] = [docLabel]
-
+                print(len(docStringText))
+                
+                embeddedDocText = transformer.encode([docStringText])  
+                print("embeddedDoctext shape",np.asarray(embeddedDocText, dtype=np.float32).shape)
+                docMessages.append(np.asarray(embeddedDocText, dtype=np.float32))
+                index.add(np.asarray(embeddedDocText, dtype=np.float32))
+                embeddingtolabelmap[np.asarray(embeddedDocText, dtype=np.float32).tobytes()] = [docLabel]
+#                 if  docLabel == 'pysnmp.smi.rfc1902.ObjectType':
+#                     print("text for pysnmp.smi.rfc1902.ObjectType' is")
+#                     print(docStringText)
+#            labeltotextmap[docLabel] = docStringText
             i += 1
         sys.stdout=originalout
 
-        return (index, docMessages, embeddingtolabelmap, docStringLength_avg,droppedClassWithLessLength,docLabelToTextForSentenceTokenizationAndAnalysis,bucket_size)
+        return (index, docMessages, embeddingtolabelmap, docStringLength_avg,droppedClassWithLessLength,docLabelToTextForSentenceTokenizationAndAnalysis)
 
 
-def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_avg,droppedClassWithLessLength,docLabelToTextForSentenceTokenizationAndAnalysis,bucket_size):
-    k = 5*3
+def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_avg,droppedClassWithLessLength,docLabelToTextForSentenceTokenizationAndAnalysis,model):
+    k = 3
     fp=0
     fn=0
     tp=0
@@ -124,10 +116,10 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
     exactpositivepresent=False
     totaldocs=0
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
-   
-    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r') as data, open('lengthAnalysisStackOverflowAllMask.txt', 'w') as outputFile:
-        originalout = sys.stdout
-        sys.stdout= outputFile
+    originalout = sys.stdout
+    transformer = SentenceTransformer(model)
+    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r') as data, open('./stackNewJsonAllMask_'+model+'_.txt', 'w') as outputFile:
+
         firstJsonCollect = ijson.items(data, 'results.bindings.item') 
         postMap = {}
         for jsonObject in firstJsonCollect:
@@ -165,52 +157,38 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
             for code in soup.find_all('code'):
                 code.decompose()
             stackText = soup.get_text()
-#             if len(stackText) < 50:
-#                 continue
+            if len(stackText) < 50:
+                continue
 #              print('\nTitle of Stack Overflow Post:', title)
-            print("---------------------------------------------------\n")
-            print('Class associated with post:', classLabel)
-            splitLabel = classLabel.lower().split('.')
-            wholePattern = re.compile(classLabel.lower(), re.IGNORECASE)
-            maskedText = wholePattern.sub(' ', stackText)
-            for labelPart in splitLabel:
+            print('Class associated with post:', classLabel, '\n')
+            print('Text of post before masking:', stackText, '\n')
+            maskedText = None
+            for foundLabel in postMap[stackText]: 
+                splitLabel = foundLabel.lower().split('.')
+                wholePattern = re.compile(foundLabel.lower(), re.IGNORECASE)
+                maskedText = wholePattern.sub(' ', stackText)
+                for labelPart in splitLabel:
                     partPattern = re.compile(labelPart, re.IGNORECASE)
                     maskedText = partPattern.sub(' ', maskedText)#maskedText.replace(labelPart, ' ')
-            print('Text of post after masking:', maskedText, '\n')
 
-## masking removed for now
-
-            embeddedText = embed([maskedText])#[stackText])
-            embeddingVector = embeddedText[0]
-            embeddingArray = np.asarray(
-                embeddingVector, dtype=np.float32).reshape(1, -1)
-            D, I = index.search(embeddingArray, k)
+            embeddedText = transformer.encode([maskedText]) #maskedText
+            D, I = index.search(  np.asarray(embeddedText, dtype=np.float32), k)
             distances = D[0]
             indices = I[0]
 #             print("Distances of related vectors:", distances)
 #             print("Indices of related vectors:", indices)
             positivepresent=False
             exactpositivepresent=False
-            finallabels=[]
-            actuallabelcount=0
             for p in range(0, k):
-                if actuallabelcount >= (k / 3):
-                    break
-
                 properIndex = indices[p]
                 embedding = docMessages[properIndex]
-                adjustedembedding = tuple(embedding)
+                adjustedembedding = np.asarray(embedding, dtype=np.float32).tobytes()
                 label = embeddingtolabelmap[adjustedembedding]
-                if label in finallabels:
-                    continue
-                actuallabelcount=actuallabelcount+1
-
-                
                 ##multiple docstrings associated with the same embedding mapped
                 ##array of labels mapped
                 j=0
                 for l in label:
-                    finallabels.append(l)
+                    
                     if l.startswith(classLabel.split(".")[0]):
                         positivepresent=True
                         if j == 0:
@@ -242,13 +220,11 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
         print("--------------------------------------------- \n")
         
 
-
-        print(tp/(tp+fp), " Loose Precision at 5 with all  masking ")
-        print(etp/(etp+efp), "Exact Precision at 5 with all masking ")
+        print(tp/(tp+fp), " Loose Precision at 5 with all masking for model: "+model)
+        print(etp/(etp+efp), "Exact Precision at 5 with all  masking for model: "+model)
 
         sys.stdout=originalout
 
 if __name__ == '__main__':
-    dataTuple = build_index()
-    print("Completed building index.")
-    evaluate_neighbors(dataTuple[0], dataTuple[1], dataTuple[2], dataTuple[3],dataTuple[4],dataTuple[5], dataTuple[6])
+    run_differentmodels()
+        

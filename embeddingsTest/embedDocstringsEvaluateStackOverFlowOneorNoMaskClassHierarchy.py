@@ -47,7 +47,7 @@ def build_index():
                     pass
                     
                 else:
-                    if len(docStringText) < 300:
+                    if len(docStringText) < -1:
                         print("has less than 300 character,class:",docLabel,"docstring:",docStringText)
                         droppedClassWithLessLength.add(docLabel)
                         continue
@@ -59,7 +59,7 @@ def build_index():
                     embeddingtolabelmap[tuple(
                     embeddedDocText.numpy().tolist())].append(docLabel)
             else:
-                if len(docStringText) < 300:
+                if len(docStringText) < -1:
                         print("has less than 300 character,class:",docLabel,"docstring:",docStringText)
                         droppedClassWithLessLength.add(docLabel)
                         continue
@@ -87,7 +87,7 @@ def build_index():
 
 
 def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_avg,droppedClassWithLessLength,docLabelToTextForSentenceTokenizationAndAnalysis):
-    k = 5
+    k = 10
     fp=0
     fn=0
     tp=0
@@ -100,11 +100,17 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
     exactpositivepresent=False
     totaldocs=0
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
-    originalout = sys.stdout
-    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r') as data, open('./lengthAnalysisStackNewJson.txt', 'w') as outputFile:
-        
+    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r') as data, open('../../data/codeGraph/classes2superclass.out', 'r') as class2superclass, open('../../data/codeGraph/classes.map', 'r') as classes,open('./lengthAnalysisStackNewJson.txt', 'w') as outputFile:
+        getHierarchy = ijson.items(class2superclass, 'results.bindings.item')
+        classToSuperClass={}
+        for iterateInHierarchy in getHierarchy:
+            superClass = iterateInHierarchy['superclass']['value'].replace('http://purl.org/twc/graph4code/python/','')
+            class_sub = iterateInHierarchy['class']['value'].replace('http://purl.org/twc/graph4code/python/','')
+            classToSuperClass[class_sub]=superClass
+          
+        correctHierarchy=0
+        wrongHierarchy=0
         jsonCollect = ijson.items(data, 'results.bindings.item')
-        sys.stdout = outputFile
         stack_overflow_length=[]
         for jsonObject in jsonCollect:
             totaldocs+=1
@@ -135,7 +141,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
                     partPattern = re.compile(labelPart, re.IGNORECASE)
                     maskedText = partPattern.sub(' ', maskedText)#maskedText.replace(labelPart, ' ')
 
-            embeddedText = embed([maskedText])#[maskedText])
+            embeddedText = embed([stackText])#[maskedText])
 
             embeddingVector = embeddedText[0]
             embeddingArray = np.asarray(
@@ -147,6 +153,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
 #             print("Indices of related vectors:", indices)
             positivepresent=False
             exactpositivepresent=False
+
             for p in range(0, k):
                 properIndex = indices[p]
                 embedding = docMessages[properIndex]
@@ -156,42 +163,19 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
                 ##array of labels mapped
                 j=0
                 for l in label:
-                    
-                    if l.startswith(classLabel.split(".")[0]):
-                        positivepresent=True
-                        if j == 0:
-                             print("\n True positive label being contributed by \n",l)
-                        else:
-                            print("and \t",l)
+                    if classLabel not in classToSuperClass or l not in classToSuperClass:
+                        continue
+           ##not all labels present
+                    if classToSuperClass[l]==classToSuperClass[classLabel]:
+                        correctHierarchy=correctHierarchy+1
                     else:
-                        print("class not associated",l)
-                    if l == classLabel:
-                        exactpositivepresent=True
-                        print("\n Exact positive label being contributed by \n",l)
-                    j=j+1
+                        wrongHierarchy=wrongHierarchy+1
                         
-            if not positivepresent:
-                fp=fp+1
-                print("Loose False Positive Present \n")
-                print("Investigating the reason with sentence tokenized docstring for:", classLabel,"\n")
-                print(sent_tokenize(docLabelToTextForSentenceTokenizationAndAnalysis[classLabel]))
-            else:
-                tp=tp+1
-#                 print("Loose True Positive Present -------------------------------------------------------- \n")
-            if not exactpositivepresent:
-                efp=efp+1
-#                 print("match  False Positive Present ------------------------------------------------------- \n")
-            else:
-                etp=etp+1
-            
-#                 print("match True Positive Present -------------------------------------------------------- \n")
-        print("--------------------------------------------- \n")
-        
+        print("iterms correctly classified",correctHierarchy)
+        print("iterms wrongly classfied",wrongHierarchy)
 
-        print(tp/(tp+fp), " Loose Precision at 5 with one masking ")
-        print(etp/(etp+efp), "Exact Precision at 5 with one masking ")
+        print("hierarchy accuracy %=",correctHierarchy*100/(correctHierarchy+wrongHierarchy))
 
-        sys.stdout=originalout
 
 if __name__ == '__main__':
     dataTuple = build_index()

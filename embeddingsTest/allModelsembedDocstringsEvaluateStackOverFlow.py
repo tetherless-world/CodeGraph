@@ -10,10 +10,21 @@ from statistics import mean
 from statistics import pstdev
 import nltk
 nltk.download('punkt')
+from sentence_transformers import SentenceTransformer
+
 from nltk.tokenize import sent_tokenize
-def build_index():
+
+def run_differentmodels():
+        modelList = ['bert-base-nli-stsb-mean-tokens', 'bert-large-nli-stsb-mean-tokens','roberta-base-nli-stsb-mean-tokens','roberta-large-nli-stsb-mean-tokens', 'distilbert-base-nli-stsb-mean-tokens']
+        for i in modelList:
+                print("running model",i)
+                dataTuple = build_index(i)
+                evaluate_neighbors(dataTuple[0], dataTuple[1], dataTuple[2], dataTuple[3],dataTuple[4],dataTuple[5],i)
+                
+    
+def build_index(model):
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
-    index = faiss.IndexFlatL2(512)
+
     docMessages = []
     embeddingtolabelmap = {}
     labeltotextmap = {}
@@ -22,9 +33,13 @@ def build_index():
     droppedClassWithLessLength=set()
     docStringLength_avg=[]
     docLabelToTextForSentenceTokenizationAndAnalysis= {}
+
     with open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r') as data,open('./lengthAnalysisDocstrings_NewJson.txt', 'w') as outputFile:
         jsonCollect = ijson.items(data, 'results.bindings.item')
         i = 0
+        transformer = SentenceTransformer(model)
+        embeddedDocTextLen = len(transformer.encode(["index builder"])[0])
+        index = faiss.IndexFlatL2(embeddedDocTextLen)
         originalout = sys.stdout
         sys.stdout = outputFile
 
@@ -48,16 +63,18 @@ def build_index():
                     
                 else:
                     if len(docStringText) < 300:
-                        print("has less than 300 character,class:",docLabel,"docstring:",docStringText)
+                        print("has less than -1 character,class:",docLabel,"docstring:",docStringText)
                         droppedClassWithLessLength.add(docLabel)
                         continue
                     duplicateClassDocString.add(docLabel)
                     docStringLength_avg.append(len(docStringText))
                     print("doclabel",docLabel)
                     docLabelToTextForSentenceTokenizationAndAnalysis[docLabel]=docStringText
-                    embeddedDocText = embed([docStringText])[0]
-                    embeddingtolabelmap[tuple(
-                    embeddedDocText.numpy().tolist())].append(docLabel)
+                    embeddedDocText = transformer.encode([docStringText])
+                    print("embeddedDoctext shape",np.asarray(embeddedDocText, dtype=np.float32).shape)
+
+                    embeddingtolabelmap[np.asarray(embeddedDocText, dtype=np.float32).tobytes()] = [docLabel]
+
             else:
                 if len(docStringText) < 300:
                         print("has less than 300 character,class:",docLabel,"docstring:",docStringText)
@@ -69,13 +86,12 @@ def build_index():
                 docLabelToTextForSentenceTokenizationAndAnalysis[docLabel]=docStringText
                 print("doclabel",docLabel)
                 print(len(docStringText))
-                embeddedDocText = embed([docStringText])[0]
-                newText = np.asarray(
-                embeddedDocText, dtype=np.float32).reshape(1, -1)
-                docMessages.append(embeddedDocText.numpy().tolist())
-                index.add(newText)
-                embeddingtolabelmap[tuple(
-                embeddedDocText.numpy().tolist())] = [docLabel]
+                
+                embeddedDocText = transformer.encode([docStringText])  
+                print("embeddedDoctext shape",np.asarray(embeddedDocText, dtype=np.float32).shape)
+                docMessages.append(np.asarray(embeddedDocText, dtype=np.float32))
+                index.add(np.asarray(embeddedDocText, dtype=np.float32))
+                embeddingtolabelmap[np.asarray(embeddedDocText, dtype=np.float32).tobytes()] = [docLabel]
 #                 if  docLabel == 'pysnmp.smi.rfc1902.ObjectType':
 #                     print("text for pysnmp.smi.rfc1902.ObjectType' is")
 #                     print(docStringText)
@@ -86,7 +102,7 @@ def build_index():
         return (index, docMessages, embeddingtolabelmap, docStringLength_avg,droppedClassWithLessLength,docLabelToTextForSentenceTokenizationAndAnalysis)
 
 
-def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_avg,droppedClassWithLessLength,docLabelToTextForSentenceTokenizationAndAnalysis):
+def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_avg,droppedClassWithLessLength,docLabelToTextForSentenceTokenizationAndAnalysis,model):
     k = 5
     fp=0
     fn=0
@@ -101,7 +117,8 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
     totaldocs=0
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
     originalout = sys.stdout
-    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r') as data, open('./lengthAnalysisStackNewJson.txt', 'w') as outputFile:
+    transformer = SentenceTransformer(model)
+    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r') as data, open('./stackNewJsonAllMask_'+model+'_.txt', 'w') as outputFile:
         
         jsonCollect = ijson.items(data, 'results.bindings.item')
         sys.stdout = outputFile
@@ -135,12 +152,9 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
                     partPattern = re.compile(labelPart, re.IGNORECASE)
                     maskedText = partPattern.sub(' ', maskedText)#maskedText.replace(labelPart, ' ')
 
-            embeddedText = embed([maskedText])#[maskedText])
+            embeddedText = transformer.encode([stackText]) #maskedText
+            D, I = index.search(  np.asarray(embeddedText, dtype=np.float32), k)
 
-            embeddingVector = embeddedText[0]
-            embeddingArray = np.asarray(
-                embeddingVector, dtype=np.float32).reshape(1, -1)
-            D, I = index.search(embeddingArray, k)
             distances = D[0]
             indices = I[0]
 #             print("Distances of related vectors:", distances)
@@ -150,7 +164,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
             for p in range(0, k):
                 properIndex = indices[p]
                 embedding = docMessages[properIndex]
-                adjustedembedding = tuple(embedding)
+                adjustedembedding = np.asarray(embedding, dtype=np.float32).tobytes()
                 label = embeddingtolabelmap[adjustedembedding]
                 ##multiple docstrings associated with the same embedding mapped
                 ##array of labels mapped
@@ -188,12 +202,11 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
         print("--------------------------------------------- \n")
         
 
-        print(tp/(tp+fp), " Loose Precision at 5 with one masking ")
-        print(etp/(etp+efp), "Exact Precision at 5 with one masking ")
+        print(tp/(tp+fp), " Loose Precision at 5 without masking for model: "+model)
+        print(etp/(etp+efp), "Exact Precision at 5 without masking for model: "+model)
 
         sys.stdout=originalout
 
 if __name__ == '__main__':
-    dataTuple = build_index()
-    print("Completed building index.")
-    evaluate_neighbors(dataTuple[0], dataTuple[1], dataTuple[2], dataTuple[3],dataTuple[4],dataTuple[5])
+    run_differentmodels()
+        
