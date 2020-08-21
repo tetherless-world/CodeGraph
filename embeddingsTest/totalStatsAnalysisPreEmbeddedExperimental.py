@@ -10,6 +10,8 @@ import random
 import statistics
 from scipy import stats as stat
 import pickle
+import pandas
+import lenskit.topn as metrics
 
 # parse input data file and remove duplicates for analysis
 # also calls all necessary analysis functions
@@ -18,10 +20,8 @@ def fetchEmbeddingDict(fileName, model):
     if model == 'https://tfhub.dev/google/universal-sentence-encoder/4':
         fullFile = '../../data/codeGraph/fullUSE/stackoverflow_embeddings/' + str(fileName)
     elif model == 'bert-base-nli-mean-tokens':
-        print("Yup this is the one.")
         fullFile = '../../data/codeGraph/fullBERT/stackoverflow_embeddings_bert2/' + str(fileName)
     else:
-        print("And this one.")
         fullFile = '../../data/codeGraph/fullBERT/stackoverflow_embeddings_roberta/' + str(fileName)
     try:
         openFile = open(fullFile, 'rb')
@@ -54,7 +54,7 @@ def beginAnalysis():
             i += 1
 
 
-        '''USEList = ['https://tfhub.dev/google/universal-sentence-encoder/4']
+        USEList = ['https://tfhub.dev/google/universal-sentence-encoder/4']
         for USE in USEList:
             print("Calculating MRR with model", USE)
             print("Calculating MRR with model", USE, file=sys.stderr)
@@ -64,10 +64,10 @@ def beginAnalysis():
             calculateNDCG(properJsonObjects, USE, True)
             print("Calculating T statistic with model", USE)
             print("Calculating T statistic with model", USE, file=sys.stderr)
-            calculatePairedTTest(properJsonObjects, USE, True)'''
+            calculatePairedTTest(properJsonObjects, USE, True)
 
 
-        modelList = ['bert-base-nli-mean-tokens', 'roberta-base-nli-mean-tokens']
+        '''modelList = ['bert-base-nli-mean-tokens', 'roberta-base-nli-mean-tokens']
         for model in modelList:
             print("Calculating MRR with model", model)
             print("Calculating MRR with model", model, file=sys.stderr)
@@ -77,7 +77,7 @@ def beginAnalysis():
             calculateNDCG(properJsonObjects, model, False)
             print("Calculating T statistic with model", model)
             print("Calculating T statistic with model", model, file=sys.stderr)
-            calculatePairedTTest(properJsonObjects, model, False)
+            calculatePairedTTest(properJsonObjects, model, False)'''
 
 # function to calculate paired t test for linked posts
 def calculatePairedTTest(jsonCollect, model, isUSE):
@@ -141,8 +141,8 @@ def calculatePairedTTest(jsonCollect, model, isUSE):
             post1EmbeddingVector = post1Embedding[0]
             post2EmbeddingVector = post2Embedding[0]'''
 
-            post1EmbeddingArray = post1NewEmbed['content']#.numpy()[0]
-            post2EmbeddingArray = post2NewEmbed['content']#.numpy()[0]
+            post1EmbeddingArray = post1NewEmbed['content'].numpy()[0]
+            post2EmbeddingArray = post2NewEmbed['content'].numpy()[0]
             
             linkedDist = np.linalg.norm(post1EmbeddingArray - post2EmbeddingArray)**2
             if linkedDist <= .001:
@@ -182,8 +182,8 @@ def calculatePairedTTest(jsonCollect, model, isUSE):
             post3EmbeddingVector = post3Embedding[0]
             post4EmbeddingVector = post4Embedding[0]'''
 
-            post3EmbeddingArray = post3NewEmbed['content']#.numpy()[0]
-            post4EmbeddingArray = post4NewEmbed['content']#.numpy()[0]
+            post3EmbeddingArray = post3NewEmbed['content'].numpy()[0]
+            post4EmbeddingArray = post4NewEmbed['content'].numpy()[0]
 
             post1And3Dist = np.linalg.norm(post1EmbeddingArray - post3EmbeddingArray)**2
             post2And4Dist = np.linalg.norm(post2EmbeddingArray - post4EmbeddingArray)**2
@@ -221,7 +221,7 @@ def calculateNDCG(jsonCollect, model, isUSE):
             embeddedQuestion = embed([stackQuestion])
         else:
             embeddedQuestion = transformer.encode([stackQuestion])'''
-        embeddingQuestionArray = newEmbed['content']#.numpy()[0]
+        embeddingQuestionArray = newEmbed['content'].numpy()[0]
         voteOrder = []
         distanceOrder = []
         voteMap = {}
@@ -240,7 +240,7 @@ def calculateNDCG(jsonCollect, model, isUSE):
                     answerEmbed = embed([answer])
                 else:
                     answerEmbed = transformer.encode([answer])'''
-                answerArray = newEmbed[index]#.numpy()[0]
+                answerArray = newEmbed[index].numpy()[0]
                 dist = np.linalg.norm(answerArray - embeddingQuestionArray)**2
                 voteOrder.append((answerVotes, answer))
                 distanceOrder.append((dist, answer))
@@ -300,7 +300,7 @@ def calculateMRR(jsonCollect, model, isUSE):
         else:
             embeddedQuestion = transformer.encode([stackQuestion])
         embeddingVector = embeddedQuestion[0]'''
-        embeddingQuestionArray = newEmbed['content']#.numpy()[0]
+        embeddingQuestionArray = newEmbed['content'].numpy()[0]
         voteOrder = []
         distanceOrder = []
         i = 1
@@ -324,7 +324,7 @@ def calculateMRR(jsonCollect, model, isUSE):
                 else:
                     answerEmbed = transformer.encode([answer])
                 answerVector = answerEmbed[0]'''
-                answerArray = newEmbed[index]#.numpy()[0]
+                answerArray = newEmbed[index].numpy()[0]
                 dist = np.linalg.norm(answerArray - embeddingQuestionArray)**2
                 voteOrder.append((answerVotes, answer))
                 distanceOrder.append((dist, answer))
@@ -336,6 +336,55 @@ def calculateMRR(jsonCollect, model, isUSE):
         voteOrder.sort()
         voteOrder.reverse()
         distanceOrder.sort()
+
+        trueDict = {}
+        trueDict['item'] = []
+        trueDict['rating'] = []
+        trueDict['answer'] = []
+        trueDict['grouping'] = []
+        recommendDict = {}
+        recommendDict['item'] = []
+        recommendDict['answer'] = []
+        recommendDict['grouping'] = []
+
+        idDict = {}
+
+
+        t = 0
+        for entry in voteOrder:
+            idDict[entry[1]] = t
+            t += 1
+
+        t = 0
+        for entry in voteOrder:
+            trueDict['answer'].append(entry[1])
+            trueDict['rating'].append(entry[0])
+            trueDict['item'].append(idDict[entry[1]])
+            trueDict['grouping'].append('entry')
+            t += 1
+
+        t = 0
+        for entry in distanceOrder:
+            recommendDict['answer'].append(entry[1])
+            recommendDict['item'].append(idDict[entry[1]])
+            recommendDict['grouping'].append('entry')
+            t += 1
+
+        if len(voteOrder) != 1:
+            truthFrame = pandas.DataFrame(data=trueDict)
+            recommendFrame = pandas.DataFrame(data=recommendDict)
+            print(truthFrame)
+            print(recommendFrame)
+
+            analyze = metrics.RecListAnalysis(group_cols=['grouping'])
+            analyze.add_metric(metrics.recip_rank)
+            analyze.add_metric(metrics.ndcg)
+
+            result = analyze.compute(recommendFrame, truthFrame)
+
+            print(result)
+
+            input()
 
         if len(voteOrder) != 1:
             correctAnswer = voteOrder[0][1]
