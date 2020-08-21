@@ -18,10 +18,8 @@ def fetchEmbeddingDict(fileName, model):
     if model == 'https://tfhub.dev/google/universal-sentence-encoder/4':
         fullFile = '../../data/codeGraph/fullUSE/stackoverflow_embeddings/' + str(fileName)
     elif model == 'bert-base-nli-mean-tokens':
-        print("Yup this is the one.")
         fullFile = '../../data/codeGraph/fullBERT/stackoverflow_embeddings_bert2/' + str(fileName)
     else:
-        print("And this one.")
         fullFile = '../../data/codeGraph/fullBERT/stackoverflow_embeddings_roberta/' + str(fileName)
     try:
         openFile = open(fullFile, 'rb')
@@ -38,6 +36,8 @@ def beginAnalysis():
         jsonObjects = ijson.items(data, 'results.bindings.item')
         i = 0
         for jsonObject in jsonObjects:
+            if i == 8000:
+                break
             objectType = "Class"
             try:
                 objectType = jsonObject['class_func_type']['value'].replace('http://purl.org/twc/graph4code/ontology/', '')
@@ -81,6 +81,7 @@ def beginAnalysis():
 
 # function to calculate paired t test for linked posts
 def calculatePairedTTest(jsonCollect, model, isUSE):
+    random.seed(116)
     embed = None
     transformer = None
     coefficients = []

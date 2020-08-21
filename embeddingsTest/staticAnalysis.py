@@ -206,10 +206,11 @@ def evaluate_neighbors_docs(index, staticMap, docMessages, embeddingtolabelmap, 
             else:
                 encounteredClasses.add(classLabel)
             docText = jsonObject['class_docstring']
-            soup = BeautifulSoup(docText, 'html.parser')
-            for code in soup.find_all('code'): #probably don't need this
-                code.decompose()
-            docText = soup.get_text()
+            totaldocs += 1
+#            soup = BeautifulSoup(docText, 'html.parser')
+#            for code in soup.find_all('code'): #probably don't need this
+#                code.decompose()
+#            docText = soup.get_text()
 #            print('Class associated with docstring:', classLabel)
 #            print('Text of docstring:', docText)
 #             wholePattern = re.compile(classLabel.lower(), re.IGNORECASE)
@@ -225,6 +226,10 @@ def evaluate_neighbors_docs(index, staticMap, docMessages, embeddingtolabelmap, 
             D, I = index.search(embeddingArray, k+1)
             distances = D[0]
             indices = I[0]
+            notFoundSkipped = 0
+            smallSkipped = 0
+            largeSkipped = 0
+            unSkipped = 0
 #             print("Distances of related vectors:", distances)
 #             print("Indices of related vectors:", indices)
             if classLabel in staticMap:
@@ -232,16 +237,21 @@ def evaluate_neighbors_docs(index, staticMap, docMessages, embeddingtolabelmap, 
             else:
 #                print("Skipped due to not being in analysis file.")
 #                input()
+                notFoundSkipped += 0
                 continue
-            if len(viableClasses) < 2:
+            if len(viableClasses) < 1:
 #                print("Skipped due to analysis classes being too small")
 #                input()
+                smallSkipped += 1
                 continue
             if len(viableClasses) > 10:
 #                print("Skipped due to analysis classes being too large")
 #                input()
+                largeSkipped += 1
                 continue
 #            print("And statically analyzed similar classes are:", viableClasses)
+            unSkipped += 1
+            continue
             correctMatch = 0
             for p in range(1, k+1):#weird adjustments here to skip first result
                 properIndex = indices[p]
@@ -259,10 +269,14 @@ def evaluate_neighbors_docs(index, staticMap, docMessages, embeddingtolabelmap, 
                 if correctPercent > 1:
                     print("THIS IS NOT SUPPOSED TO HAPPEN") # technically this could if
                     # same class is present in statically analyzed classes
-            totaldocs += 1
+#            totaldocs += 1
             percents.append(correctPercent)
         print("Total number of unskipped docstrings", totaldocs)
-        print("Average correct percent matched:", sum(percents)/len(percents))
+        print("Total number of not found docstrings", notFoundSkipped)
+        print("Total number of small skipped", smallSkipped)
+        print("Total number of large skipped", largeSkipped)
+        print("Total number unskipped", unSkipped)
+#        print("Average correct percent matched:", sum(percents)/len(percents))
                     
 
         #sys.stdout=originalout

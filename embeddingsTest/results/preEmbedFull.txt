@@ -1,0 +1,6 @@
+Calculating MRR with model https://tfhub.dev/google/universal-sentence-encoder/4
+Mean reciprocal rank is: 0.6832712490645746
+Calculating NDCG with model https://tfhub.dev/google/universal-sentence-encoder/4
+Average NDCG: 0.890876816111824
+Calculating T statistic with model https://tfhub.dev/google/universal-sentence-encoder/4
+Result of T statistic calculation is: Ttest_relResult(statistic=245.70708665499455, pvalue=0.0)

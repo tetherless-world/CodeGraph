@@ -1,0 +1,12 @@
+Calculating MRR with model bert-base-nli-mean-tokens
+Mean reciprocal rank is: 0.6145818842437032
+Calculating NDCG with model bert-base-nli-mean-tokens
+Average NDCG: 0.8762967748506564
+Calculating T statistic with model bert-base-nli-mean-tokens
+Result of T statistic calculation is: Ttest_relResult(statistic=107.67476610931575, pvalue=0.0)
+Calculating MRR with model roberta-base-nli-mean-tokens
+Mean reciprocal rank is: 0.6145818842437032
+Calculating NDCG with model roberta-base-nli-mean-tokens
+Average NDCG: 0.8762967748506564
+Calculating T statistic with model roberta-base-nli-mean-tokens
+Result of T statistic calculation is: Ttest_relResult(statistic=109.0158139227144, pvalue=0.0)
