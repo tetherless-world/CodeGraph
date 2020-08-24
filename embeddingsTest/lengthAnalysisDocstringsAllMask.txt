@@ -6,17 +6,25 @@ doclabel pysnmp.smi.rfc1902.NotificationType
 2602
 doclabel pysnmp.hlapi.CommunityData
 3319
+doclabel paramiko.ssh_exception.SSHException
+84
 doclabel sympy.Symbol
 323
+doclabel sympy.matrices.matrices.MatrixBase
+30
 doclabel sympy.polys.Poly
 961
 doclabel sympy.MatrixSymbol
 422
+doclabel sympy.exp
+84
 doclabel itertools.product
 731
 doclabel sympy.polys.polytools.Poly
 doclabel sympy.core.numbers.Integer
 618
+doclabel sympy.MatMul
+258
 doclabel sympy.core.symbol.Symbol
 doclabel sympy.Basic
 483
@@ -24,6 +32,10 @@ doclabel sympy.Derivative
 5967
 doclabel sympy.Dummy
 407
+doclabel boto.glacier.layer2.Layer2
+84
+doclabel collections.OrderedDict
+41
 doclabel sqlalchemy.dialects.postgresql.JSON
 2572
 doclabel sqlalchemy.dialects.postgresql.JSONB
@@ -32,16 +44,32 @@ doclabel sqlalchemy.exc.StatementError
 374
 doclabel sqlalchemy.types.Unicode
 2276
+doclabel sqlalchemy.types.UnicodeText
+291
 doclabel sqlalchemy.engine.result.ResultProxy
 603
 doclabel sqlalchemy.engine.base.Engine
 379
 doclabel sqlalchemy.sql.elements.BinaryExpression
 344
+doclabel sqlalchemy.sql.expression.ClauseElement
+83
+doclabel plone.dexterity.content.Container
+35
+doclabel gensim.models.Phrases
+43
 doclabel gensim.models.Word2Vec
 1954
 doclabel gensim.models.phrases.Phraser
 362
+doclabel pyasn1.error.PyAsn1Error
+162
+doclabel OpenSSL.crypto.X509
+31
+doclabel OpenSSL.crypto.X509Extension
+44
+doclabel sqlalchemy.exc.ProgrammingError
+32
 doclabel sqlalchemy.types.Text
 362
 doclabel spacy.tokens.doc.Doc
@@ -59,47 +87,162 @@ doclabel pandas.ExcelWriter
 doclabel sklearn.tree.DecisionTreeClassifier
 9597
 doclabel pandas.DataFrame
+doclabel datetime.date
+38
+doclabel datetime.datetime
+222
+doclabel datetime.time
+199
+doclabel datetime.timezone
+47
+doclabel django.db.models.query.QuerySet
+65
+doclabel sqlalchemy.sql.visitors.Visitable
+84
+doclabel sqlalchemy.sql.sqltypes.NUMERIC
+21
 doclabel sqlalchemy.sql.visitors.VisitableType
 626
+doclabel sqlalchemy.types.NUMERIC
+doclabel contextlib.closing
+254
 doclabel matplotlib.axes.Axes
 797
 doclabel tables.exceptions.HDF5ExtError
 1303
 doclabel joblib.Parallel
 11116
+doclabel itertools.repeat
+154
 doclabel pandas.core.panel.Panel
 801
 doclabel sqlalchemy.types.String
 385
+doclabel sqlalchemy.exc.OperationalError
+32
+doclabel psycopg2.ProgrammingError
+71
 doclabel sqlalchemy.Table
 12946
 doclabel sqlalchemy.schema.MetaData
 765
+doclabel numpy.core.record
+69
 doclabel sqlalchemy.orm.query.Query
 844
 doclabel tables.Atom
 3305
 doclabel pymongo.MongoClient
 380
+doclabel pyspark.sql.types.DoubleType
+60
+doclabel pyspark.sql.types.StringType
+22
 doclabel zipfile.ZipFile
 1129
 doclabel pyarrow.parquet.ParquetWriter
 2440
+doclabel psycopg2.extensions.connection
+230
+doclabel pandas.core.generic.NDFrame
+221
+doclabel pandas.core.base.PandasObject
+36
+doclabel pandas.core.base.SelectionMixin
+137
+doclabel pandas.core.base.StringMixin
+81
 doclabel numpy.float64
 324
+doclabel psycopg2.DatabaseError
+37
+doclabel pandas.errors.EmptyDataError
+132
+doclabel pandas._libs.parsers.TextReader
+45
+doclabel sqlalchemy.sql.sqltypes.INTEGER
+28
 doclabel sqlalchemy.engine.Engine
 doclabel pathlib.Path
 417
+doclabel sqlalchemy.exc.DatabaseError
+29
+doclabel tensorflow.python.framework.errors_impl.InternalError
+205
 doclabel tensorflow.python.framework.errors_impl.InvalidArgumentError
 417
+doclabel traitlets.Any
+31
 doclabel ipywidgets.Dropdown
 1098
 doclabel ipywidgets.Output
 934
+doclabel ipywidgets.IntSlider
+75
+doclabel tkinter.Button
+14
+doclabel tkinter.IntVar
+35
+doclabel tkinter.Label
+48
+doclabel functools.partial
+114
+doclabel threading.Timer
+211
+doclabel tkinter.Misc
+82
+doclabel tkinter.Canvas
+63
+doclabel tkinter.Frame
+70
+doclabel tkinter.Menu
+80
+doclabel tkinter.PhotoImage
+61
+doclabel tkinter.Spinbox
+15
+doclabel tkinter.StringVar
+35
+doclabel tkinter.Text
+52
+doclabel tkinter.Toplevel
+34
+doclabel tkinter.ttk.Frame
+74
+doclabel tkinter.ttk.Scrollbar
+59
 doclabel tkinter.font.Font
 758
+doclabel tkinter.ttk.Button
+99
+doclabel tkinter.ttk.Checkbutton
+59
+doclabel tkinter.ttk.Entry
+101
+doclabel tkinter.ttk.Label
+55
+doclabel tkinter.ttk.Labelframe
+160
+doclabel tkinter.ttk.Radiobutton
+101
 doclabel tkinter.ttk.Progressbar
 310
+doclabel tkinter.ttk.Scale
+127
+doclabel tkinter.ttk.Sizegrip
+108
+doclabel tkinter.ttk.Treeview
+238
+doclabel tkinter.filedialog.Directory
+19
+doclabel tkinter.messagebox.Message
+13
+doclabel tkinter.simpledialog.Dialog
+90
+doclabel smtplib.SMTPException
+52
+doclabel email.mime.text.MIMEText
+48
 doclabel _io.TextIOWrapper
 1344
 doclabel optparse.Option
@@ -108,6 +251,8 @@ doclabel optparse.OptionParser
 3108
 doclabel bokeh.models.tools.HoverTool
 2054
+doclabel bokeh.models.Div
+232
 doclabel bokeh.models.HoverTool
 doclabel keras.optimizers.Adam
 661
@@ -129,6 +274,8 @@ doclabel mock.Mock
 2654
 doclabel tensorflow.python.framework.ops.Tensor
 1249
+doclabel django.db.migrations.operations.RunPython
+83
 doclabel sympy.functions.special.polynomials.assoc_legendre
 1580
 doclabel numpy.poly1d
@@ -141,10 +288,38 @@ doclabel sympy.functions.special.error_functions.erfinv
 1109
 doclabel sympy.core.numbers.Float
 4847
+doclabel tempfile.TemporaryDirectory
+299
+doclabel subprocess.CalledProcessError
+163
 doclabel keras.optimizers.RMSprop
 456
 doclabel keras.losses.MeanSquaredError
 560
+doclabel keras.metrics.MeanAbsoluteError
+242
+doclabel django.db.migrations.exceptions.InconsistentMigrationHistory
+62
+doclabel django.test.runner.DiscoverRunner
+56
+doclabel django.core.exceptions.ValidationError
+31
+doclabel psycopg2.OperationalError
+72
+doclabel psycopg2.IntegrityError
+36
+doclabel django.core.exceptions.FieldDoesNotExist
+40
+doclabel django.core.exceptions.FieldError
+40
+doclabel psycopg2._json.Json
+272
+doclabel psycopg2.DataError
+50
+doclabel pymysql.err.InternalError
+147
+doclabel django.middleware.csrf.CsrfViewMiddleware
+250
 doclabel sklearn.feature_extraction.text.CountVectorizer
 8217
 doclabel sklearn.preprocessing.OneHotEncoder
@@ -166,9 +341,19 @@ doclabel sklearn.feature_extraction.DictVectorizer
 2622
 doclabel scipy.sparse.csr_matrix
 3398
+doclabel numpy.float
+67
 doclabel scipy.sparse.csr.csr_matrix
+doclabel numpy.int8
+189
+doclabel h5py.File
+38
+doclabel numpy.float16
+240
 doclabel sklearn.linear_model.LinearRegression
 3279
+doclabel numpy.int32
+204
 doclabel pandas.Grouper
 1977
 doclabel sklearn.cluster.KMeans
@@ -185,32 +370,82 @@ doclabel scipy.sparse.csc_matrix
 2760
 doclabel werkzeug.datastructures.MultiDict
 1555
+doclabel sqlalchemy.exc.IntegrityError
+30
+doclabel eventlet.GreenPool
+52
 doclabel socketserver.TCPServer
 1075
+doclabel requests.exceptions.RequestException
+84
+doclabel requests.exceptions.HTTPError
+23
+doclabel requests.exceptions.ConnectionError
+28
+doclabel requests.exceptions.Timeout
+171
+doclabel logging.StreamHandler
+190
+doclabel logging.handlers.TimedRotatingFileHandler
+220
 doclabel logging.Formatter
 2268
+doclabel logging.FileHandler
+79
 doclabel jinja2.Environment
 5070
 doclabel jinja2.FileSystemLoader
 802
+doclabel celery.Task
+206
 doclabel twisted.internet.defer.Deferred
 1956
+doclabel scrapy.Field
+27
+doclabel scrapy.Spider
+81
 doclabel flask.Flask
 4993
+doclabel werkzeug.routing.BuildError
+95
 doclabel logging.Handler
 369
+doclabel werkzeug.datastructures.ImmutableMultiDict
+64
+doclabel itertools.takewhile
+101
 doclabel itertools.zip_longest
 503
 doclabel itertools.islice
 453
 doclabel sympy.ntheory.generate.Sieve
 454
+doclabel numpy.bool
+222
+doclabel itertools.compress
+164
+doclabel numpy.object
+173
+doclabel spacy.gold.GoldParse
+83
 doclabel keras.initializers.RandomNormal
 365
+doclabel pexpect.EOF
+82
+doclabel pexpect.spawn
+106
+doclabel pexpect.TIMEOUT
+45
 doclabel pexpect.searcher_re
 598
+doclabel asyncio.streams.FlowControlMixin
+297
+doclabel asyncio.streams.StreamWriter
+295
 doclabel subprocess.Popen
 1506
+doclabel io.TextIOBase
+208
 doclabel psutil.Process
 1063
 doclabel subprocess.CompletedProcess
@@ -219,52 +454,163 @@ doclabel telnetlib.Telnet
 1771
 doclabel select.epoll
 439
+doclabel subprocess.TimeoutExpired
+155
+doclabel pexpect.fdpexpect.fdspawn
+206
+doclabel pexpect.exceptions.EOF
+doclabel pexpect.exceptions.TIMEOUT
+doclabel pexpect.ExceptionPexpect
+57
+doclabel zmq.Context
+91
 doclabel pandas.core.groupby.GroupBy
 1692
+doclabel concurrent.futures.Executor
+67
 doclabel numpy.broadcast
 945
 doclabel twisted.web.server.Site
 572
+doclabel zmq.Stopwatch
+109
+doclabel ssl.SSLSocket
+182
+doclabel httplib2.Http
+160
+doclabel elasticsearch.transport.Transport
+215
+doclabel googleapiclient.discovery.Resource
+40
+doclabel django.contrib.staticfiles.finders.AppDirectoriesFinder
+117
+doclabel django.contrib.sessions.serializers.PickleSerializer
+89
+doclabel django.core.exceptions.AppRegistryNotReady
+45
+doclabel django.utils.log.AdminEmailHandler
+195
+doclabel django.views.generic.base.ContextMixin
+125
+doclabel django.contrib.sessions.serializers.JSONSerializer
+87
+doclabel django.middleware.gzip.GZipMiddleware
+199
+doclabel django.views.debug.SafeExceptionReporterFilter
+139
+doclabel django.core.cache.backends.memcached.MemcachedCache
+59
+doclabel celery.loaders.app.AppLoader
+45
+doclabel django.template.exceptions.TemplateSyntaxError
+75
+doclabel django.core.mail.backends.locmem.EmailBackend
+243
+doclabel pymysql.err.IntegrityError
+135
 doclabel cherrypy.HTTPError
 686
+doclabel cherrypy.Tool
+149
 doclabel alembic.operations.Operations
 1004
 doclabel sqlalchemy.orm.exc.StaleDataError
 865
+doclabel sqlalchemy.exc.NoForeignKeysError
+85
 doclabel flask_sqlalchemy.SignallingSession
 449
+doclabel sqlalchemy.exc.AmbiguousForeignKeysError
+104
+doclabel sqlalchemy.exc.ArgumentError
+147
 doclabel sqlalchemy.ext.declarative.declared_attr
 1606
 doclabel sqlalchemy.engine.RowProxy
 376
+doclabel sqlalchemy.ext.associationproxy.AssociationProxy
+68
+doclabel sqlalchemy.ext.hybrid.hybrid_method
+122
+doclabel sqlalchemy.schema.Column
+40
 doclabel sqlalchemy.util.KeyedTuple
 1026
 doclabel sqlalchemy.dialects.postgresql.base.UUID
 2470
+doclabel sqlalchemy.exc.CompileError
+50
 doclabel sqlalchemy.engine.url.URL
 856
 doclabel sqlalchemy.exc.DBAPIError
 1033
+doclabel sqlalchemy.orm.session.Session
+132
+doclabel sqlalchemy.sql.base.ColumnCollection
+180
+doclabel sqlalchemy.sql.base.Immutable
+64
 doclabel sqlalchemy.dialects.postgresql.json.JSON
 2330
+doclabel sqlalchemy.exc.UnsupportedCompilationError
+156
 doclabel sqlalchemy.engine.base.Connection
 1082
 doclabel sqlalchemy.pool._ConnectionFairy
 600
+doclabel sqlalchemy.exc.DataError
+25
+doclabel greenlet.greenlet
+206
 doclabel gevent.event.AsyncResult
 2020
 doclabel gevent.hub.LoopExit
 646
+doclabel sqlalchemy.util.queue.Empty
+52
 doclabel sqlalchemy.schema.Table
+doclabel psycopg2.InternalError
+43
+doclabel sqlalchemy.exc.InternalError
+29
+doclabel sqlalchemy.util._collections.Properties
+56
+doclabel scrapy.exceptions.DropItem
+32
+doclabel sqlalchemy.Integer
+28
 doclabel sqlalchemy.String
+doclabel sqlalchemy.sql.expression.Select
+40
 doclabel pymysql.err.OperationalError
 315
+doclabel sqlalchemy.exc.InvalidRequestError
+118
+doclabel sqlalchemy.exc.ResourceClosedError
+99
+doclabel sqlalchemy.orm.exc.DetachedInstanceError
+83
+doclabel sqlalchemy.orm.Session
+doclabel aiohttp.ClientConnectionError
+36
+doclabel aiohttp.ClientPayloadError
+23
+doclabel aiohttp.ClientSession
+47
+doclabel openstackclient.identity.client.IdentityClientv2
+56
 doclabel argparse.ArgumentParser
 942
 doclabel rdflib.Graph
 631
 doclabel theano.Mode
 593
+doclabel itertools.chain
+226
+doclabel itertools.combinations
+134
+doclabel itertools.permutations
+140
 doclabel sympy.ceiling
 758
 doclabel sympy.sin
@@ -274,23 +620,52 @@ doclabel pandas.MultiIndex
 2345
 doclabel typing.NamedTuple
 693
+doclabel types.SimpleNamespace
+62
 doclabel abc.ABCMeta
 656
+doclabel pyarrow.lib.Array
+54
+doclabel operator.itemgetter
+243
+doclabel pyspark.sql.utils.ParseException
+40
+doclabel urllib.error.HTTPError
+66
+doclabel matplotlib.collections.PatchCollection
+254
+doclabel matplotlib.patches.Circle
+25
 doclabel pyparsing.ParseException
 570
+doclabel pip._vendor.packaging.requirements.InvalidRequirement
+74
 doclabel pip._vendor.pyparsing.ParseException
+doclabel scipy.io.matlab.mio5_params.mat_struct
+221
 doclabel sqlalchemy.sql.operators.ColumnOperators
 1025
 doclabel sqlalchemy.sql.operators.Operators
 466
 doclabel requests.adapters.HTTPAdapter
 1158
+doclabel requests.Response
+94
 doclabel requests.Session
 348
+doclabel pip._vendor.requests.exceptions.HTTPError
+doclabel distutils.errors.CompileError
+50
+doclabel distutils.errors.DistutilsExecError
+96
+doclabel pip._internal.exceptions.InstallationError
+37
 doclabel numpy.ufunc
 2081
 doclabel pandas.core.resample.Resampler
 562
+doclabel tensorflow.python.framework.errors.NotFoundError
+243
 doclabel scipy.interpolate.RectBivariateSpline
 1079
 doclabel scipy.interpolate.SmoothBivariateSpline
@@ -299,29 +674,89 @@ doclabel scrapy.Selector
 1137
 doclabel selenium.webdriver.remote.webelement.WebElement
 471
+doclabel scrapy.pipelines.images.ImagesPipeline
+75
+doclabel scrapy.downloadermiddlewares.chunked.ChunkedTransferMiddleware
+142
+doclabel scrapy.downloadermiddlewares.cookies.CookiesMiddleware
+60
+doclabel scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware
+89
+doclabel scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware
+96
+doclabel scrapy.downloadermiddlewares.redirect.RedirectMiddleware
+96
+doclabel scrapy.downloadermiddlewares.useragent.UserAgentMiddleware
+57
+doclabel scrapy.extensions.logstats.LogStats
+37
+doclabel scrapy.spidermiddlewares.httperror.HttpError
+31
 doclabel twisted.python.failure.Failure
 748
+doclabel scrapy.spiders.Spider
+doclabel twisted.internet.error.DNSLookupError
+17
 doclabel scrapy.crawler.CrawlerProcess
 892
+doclabel bs4.element.Tag
+61
 doclabel bs4.BeautifulSoup
 773
 doclabel twisted.web._newclient.ResponseFailed
 387
+doclabel queue.LifoQueue
+66
 doclabel scrapy.pipelines.files.FilesPipeline
 646
 doclabel collections.defaultdict
 368
 doclabel twisted.web.http.PotentialDataLoss
 511
+doclabel twisted.internet.error.TimeoutError
+38
+doclabel twisted.internet.error.ConnectionDone
+29
 doclabel scrapy.settings.Settings
 411
+doclabel scrapy.squeues.FifoMemoryQueue
+55
+doclabel scrapy.downloadermiddlewares.ajaxcrawl.AjaxCrawlMiddleware
+172
 doclabel pycurl.Curl
 376
+doclabel pycurl.CurlMulti
+125
+doclabel twisted.internet.error.ConnectionLost
+60
+doclabel lxml.html.HTMLParser
+79
+doclabel scrapy.link.Link
+62
+doclabel scrapy.item.Field
 doclabel scrapy.selector.Selector
+doclabel csv.excel_tab
+69
+doclabel pyquery.PyQuery
+19
+doclabel scrapy.extensions.spiderstate.SpiderState
+49
 doclabel scrapy.core.scheduler.Scheduler
 1141
+doclabel scrapy.exceptions.IgnoreRequest
+54
 doclabel sre_constants.error
 361
+doclabel _io.BytesIO
+60
+doclabel scrapy.core.downloader.handlers.http11.TunnelError
+61
+doclabel OpenSSL.SSL.Error
+52
+doclabel boto.sqs.message.RawMessage
+263
+doclabel scrapy.exceptions.CloseSpider
+60
 doclabel lxml.etree.XPath
 572
 doclabel lxml.etree.XPathElementEvaluator
@@ -329,8 +764,22 @@ doclabel lxml.etree.XPathElementEvaluator
 doclabel sqlalchemy.sql.sqltypes.String
 doclabel sqlalchemy.types.UserDefinedType
 1554
+doclabel sqlalchemy.CLOB
+67
+doclabel sqlalchemy.TEXT
+18
+doclabel django.forms.BoundField
+17
+doclabel django.core.handlers.wsgi.LimitedStream
+66
+doclabel pymongo.errors.OperationFailure
+109
 doclabel cassandra.cluster.Cluster
 614
+doclabel cassandra.cluster.ControlConnection
+18
+doclabel cassandra.cluster.NoHostAvailable
+131
 doclabel collections.Counter
 1695
 doclabel pandas.core.indexes.multi.MultiIndex
@@ -344,6 +793,8 @@ doclabel pandas.DatetimeIndex
 3659
 doclabel numpy.vectorize
 5298
+doclabel matplotlib.lines.Line2D
+262
 doclabel numpy.ndarray
 4296
 doclabel statsmodels.tsa.arima_model.AR
@@ -355,6 +806,10 @@ doclabel pandas._libs.tslibs.timestamps.Timestamp
 doclabel pandas.Timestamp
 doclabel pandas.core.index.Index
 1243
+doclabel pandas.option_context
+284
+doclabel itertools.cycle
+95
 doclabel matplotlib.figure.Figure
 688
 doclabel pandas.core.groupby.groupby.Series
@@ -363,29 +818,53 @@ doclabel matplotlib.animation.FuncAnimation
 3274
 doclabel bokeh.core.properties.JSON
 926
+doclabel bokeh.models.sources.GeoJSONDataSource
+1
 doclabel numpy.memmap
 6562
+doclabel pandas.core.internals.SingleBlockManager
+28
+doclabel tweepy.Cursor
+23
+doclabel matplotlib.collections.LineCollection
+280
 doclabel pandas.Categorical
 3051
+doclabel PySide2.QtCore.QRegExp
+264
+doclabel distutils.errors.DistutilsError
+31
 doclabel dask.bag.core.Bag
 790
+doclabel datetime.timedelta
+246
 doclabel numpy.dtype
 1856
 doclabel matplotlib.axes._subplots.Axes
 doclabel matplotlib.widgets.RectangleSelector
 1306
+doclabel matplotlib.widgets.Rectangle
+117
 doclabel matplotlib.widgets.Button
 447
+doclabel matplotlib.transforms.Bbox
+33
 doclabel matplotlib.widgets.Cursor
 786
 doclabel matplotlib.widgets.Slider
 322
+doclabel threading.Thread
+263
 doclabel matplotlib.backend_bases.MouseEvent
 1031
 doclabel matplotlib.collections.Collection
 1822
 doclabel matplotlib.widgets.CheckButtons
 693
+doclabel matplotlib.backend_bases.FigureCanvasBase
+177
+doclabel threading.Event
+242
 doclabel matplotlib.path.Path
 2069
 doclabel matplotlib.widgets.Lasso
@@ -396,14 +875,33 @@ doclabel matplotlib.backend_bases.PickEvent
 938
 doclabel matplotlib.widgets.TextBox
 623
+doclabel matplotlib.patches.Rectangle
 doclabel matplotlib.container.StemContainer
 517
+doclabel tkinter.Entry
+49
 doclabel babel.Locale
 857
+doclabel tkinter.ttk.Notebook
+208
+doclabel tkinter.ttk.Style
+26
+doclabel tkinter.Tk
+122
+doclabel tkinter.LabelFrame
+18
 doclabel threading.Condition
 362
+doclabel pymysql.cursors.DictCursor
+46
+doclabel tkinter.Listbox
+51
 doclabel fabric.connection.Connection
 3116
+doclabel fabric.group.SerialGroup
+99
+doclabel fabric.group.ThreadingGroup
+103
 doclabel paramiko.ssh_exception.NoValidConnectionsError
 1018
 doclabel scipy.stats.gaussian_kde
@@ -414,10 +912,20 @@ doclabel _lsprof.Profiler
 349
 doclabel mtrand.RandomState
 1956
+doclabel socket.socket
+58
+doclabel numpy.float32
+273
 doclabel scipy.spatial.cKDTree
 3927
 doclabel sklearn.preprocessing.MinMaxScaler
 2852
+doclabel itertools.combinations_with_replacement
+188
+doclabel sklearn.exceptions.UndefinedMetricWarning
+106
+doclabel collections.deque
+114
 doclabel matplotlib.tri.Triangulation
 1252
 doclabel scipy.spatial.Delaunay
@@ -436,12 +944,16 @@ doclabel sklearn.feature_extraction.text.HashingVectorizer
 6861
 doclabel sklearn.feature_extraction.text.TfidfTransformer
 4586
+doclabel itertools.starmap
+126
 doclabel scipy.interpolate.interp2d
 3524
 doclabel numpy.linalg.linalg.LinAlgError
 778
 doclabel sklearn.preprocessing.Normalizer
 1927
+doclabel sklearn.linear_model.Log
+68
 doclabel sklearn.linear_model.LogisticRegression
 10942
 doclabel sklearn.linear_model.LogisticRegressionCV
@@ -457,8 +969,12 @@ doclabel pymc3.glm.GLM
 929
 doclabel warnings.catch_warnings
 655
+doclabel numpy.uint8
+201
 doclabel sklearn.decomposition.PCA
 8586
+doclabel matplotlib.mlab.PCA
+73
 doclabel scipy.spatial.Voronoi
 3271
 doclabel scipy.sparse.coo.coo_matrix
@@ -466,12 +982,24 @@ doclabel scipy.interpolate.interp1d
 3552
 doclabel PIL.Image.Image
 324
+doclabel matplotlib.patches.Wedge
+29
+doclabel matplotlib.patches.FancyArrow
+80
 doclabel sklearn.linear_model.SGDClassifier
 9444
 doclabel sklearn.cluster.AgglomerativeClustering
 4198
+doclabel tables.Float64Atom
+36
+doclabel matplotlib.patches.Ellipse
+31
+doclabel matplotlib.patches.Polygon
+34
 doclabel joblib.Memory
 1918
+doclabel gensim.models.word2vec.LineSentence
+143
 doclabel scipy.stats.kde.gaussian_kde
 doclabel scipy.interpolate.Rbf
 2911
@@ -486,6 +1014,8 @@ doclabel sympy.Point
 doclabel sympy.geometry.point.Point
 doclabel sympy.Line
 1685
+doclabel matplotlib.text.Text
+65
 doclabel sklearn.preprocessing.PolynomialFeatures
 2500
 doclabel numpy.ndindex
@@ -500,6 +1030,8 @@ doclabel scipy.sparse.dok_matrix
 1264
 doclabel sklearn.mixture.GaussianMixture
 6428
+doclabel pyspark.mllib.linalg.SparseVector
+133
 doclabel numpy.str
 421
 doclabel sklearn.neural_network.MLPClassifier
@@ -529,6 +1061,8 @@ doclabel keras.optimizers.SGD
 doclabel statsmodels.nonparametric.kernel_density.KDEMultivariate
 1962
 doclabel statsmodels.nonparametric.api.KDEMultivariate
+doclabel matplotlib.colors.LinearSegmentedColormap
+223
 doclabel sklearn.tree._tree.Tree
 2217
 doclabel matplotlib.backends.backend_pdf.PdfPages
@@ -539,41 +1073,110 @@ doclabel matplotlib.colors.Colormap
 475
 doclabel numpy.ma.MaskedArray
 2329
+doclabel collections.abc.Sequence
+138
 doclabel keras.layers.advanced_activations.LeakyReLU
 670
+doclabel tensorflow.contrib.learn.python.learn.monitors.NanLoss
+295
+doclabel numbers.Integral
+64
 doclabel matplotlib.colors.ListedColormap
 808
 doclabel scipy.interpolate.UnivariateSpline
 3685
+doclabel matplotlib.colors.Normalize
+95
+doclabel tensorflow.python.framework.errors_impl.ResourceExhaustedError
+180
 doclabel sklearn.neighbors.BallTree
 3897
+doclabel numpy.uint32
+209
+doclabel matplotlib.ticker.FuncFormatter
+211
+doclabel decimal.Decimal
+260
 doclabel dask.config.set
 927
+doclabel numpy.bool_
+101
+doclabel matplotlib.tri.UniformTriRefiner
+218
 doclabel numpy.complex64
 301
+doclabel numpy.complex
+138
 doclabel sklearn.preprocessing.LabelBinarizer
 2751
 doclabel scipy.spatial.ckdtree.cKDTree
 doclabel selenium.webdriver.chrome.webdriver.WebDriver
 701
+doclabel selenium.common.exceptions.WebDriverException
+35
+doclabel selenium.webdriver.support.expected_conditions.element_to_be_clickable
+94
+doclabel json.decoder.JSONDecodeError
+288
 doclabel selenium.common.exceptions.NoSuchElementException
 425
+doclabel selenium.common.exceptions.TimeoutException
+65
+doclabel selenium.webdriver.support.expected_conditions.staleness_of
+180
+doclabel selenium.common.exceptions.ElementNotVisibleException
+233
 doclabel selenium.webdriver.support.expected_conditions.visibility_of
 307
 doclabel selenium.webdriver.support.expected_conditions.visibility_of_element_located
 311
 doclabel selenium.webdriver.remote.webdriver.WebDriver
+doclabel selenium.webdriver.support.expected_conditions.presence_of_element_located
+231
+doclabel selenium.common.exceptions.NoSuchFrameException
+64
 doclabel operator.attrgetter
 361
+doclabel numpy.distutils.mingw32ccompiler.Mingw32CCompiler
+72
 doclabel numpy.recarray
 3821
+doclabel numpy.core.integer
+48
+doclabel numpy.core.number
+48
+doclabel numpy.core.complexfloating
+102
 doclabel numpy.core.float64
+doclabel numpy.core.float32
+doclabel numpy.core.inexact
+159
+doclabel numpy.core.object_
+47
+doclabel nose.result.TextTestResult
+196
+doclabel jinja2.exceptions.UndefinedError
+60
+doclabel wtforms.validators.Email
+297
+doclabel wtforms.validators.Required
+155
+doclabel wtforms.fields.core.RadioField
+223
+doclabel wtforms.fields.core.SelectMultipleField
+202
+doclabel wtforms.fields.simple.TextField
+63
 doclabel wtforms.fields.BooleanField
 427
+doclabel wtforms.widgets.CheckboxInput
+113
 doclabel xarray.DataArray
 1530
 doclabel xarray.Dataset
 501
+doclabel param.ClassSelector
+285
 doclabel param.Parameterized
 1914
 doclabel netCDF4.Dataset
@@ -581,8 +1184,14 @@ doclabel netCDF4.Dataset
 doclabel netCDF4._netCDF4.Variable
 2435
 doclabel netCDF4.Variable
+doclabel tensorflow.python.framework.errors_impl.FailedPreconditionError
+222
+doclabel cassandra.policies.DCAwareRoundRobinPolicy
+158
 doclabel cassandra.policies.TokenAwarePolicy
 703
+doclabel cassandra.policies.RoundRobinPolicy
+178
 doclabel cassandra.policies.WhiteListRoundRobinPolicy
 450
 doclabel cassandra.policies.HostFilterPolicy
@@ -593,35 +1202,80 @@ doclabel rdflib.ConjunctiveGraph
 444
 doclabel rdflib.Literal
 2756
+doclabel rdflib.URIRef
+84
 doclabel rdflib.Namespace
 384
 doclabel rdflib.graph.ConjunctiveGraph
+doclabel rdflib.query.Processor
+239
 doclabel rdflib.query.Result
 481
+doclabel unittest.loader.TestLoader
+129
 doclabel zmq.backend.Socket
 604
+doclabel zmq.backend.Context
+156
 doclabel nose.loader.TestLoader
 321
+doclabel nose.suite.ContextList
+196
+doclabel nose.plugins.deprecated.Deprecated
+101
+doclabel nose.plugins.logcapture.LogCapture
+262
+doclabel nose.plugins.skip.Skip
+290
+doclabel nose.plugins.xunit.Xunit
+67
 doclabel nose.suite.ContextSuite
 308
+doclabel _sre.SRE_Pattern
+35
 doclabel webtest.TestApp
 1585
 doclabel nose.config.Config
 1348
+doclabel pytest.File
+46
+doclabel pytest.Item
+118
 doclabel numpy.core.memmap
 doclabel sympy.core.expr.Expr
 346
+doclabel sympy.core.expr.AtomicExpr
+156
 doclabel sympy.core.numbers.Number
 972
 doclabel sympy.core.numbers.Rational
 1909
 doclabel sympy.core.basic.Basic
+doclabel sympy.core.basic.Atom
+195
+doclabel sympy.core.evalf.EvalfMixin
+37
+doclabel sympy.core.numbers.Zero
+292
+doclabel sympy.core.expr.Atom
 doclabel sympy.core.power.Pow
 5188
 doclabel gensim.models.ldamodel.LdaModel
 1005
+doclabel email.mime.application.MIMEApplication
+50
+doclabel oauth2client.file.Storage
+58
+doclabel email.mime.base.MIMEBase
+36
+doclabel email.generator.Generator
+138
+doclabel email.mime.multipart.MIMEMultipart
+46
 doclabel email.generator.BytesGenerator
 510
+doclabel gzip.GzipFile
+266
 doclabel sqlalchemy.sql.functions.FunctionElement
 378
 doclabel sqlalchemy.dialects.postgresql.array
@@ -630,28 +1284,75 @@ doclabel sqlalchemy.sql.functions.Function
 965
 doclabel sqlalchemy.types.Enum
 3156
+doclabel sqlalchemy.exc.ObjectNotExecutableError
+113
+doclabel sqlalchemy.sql.selectable.Exists
+37
 doclabel statsmodels.stats.weightstats.DescrStatsW
 1964
 doclabel tensorflow.python.training.server_lib.ClusterSpec
 1228
+doclabel psycopg2.extensions.cursor
+18
+doclabel django.db.models.sql.query.Query
+29
+doclabel django.db.models.fields.related.ForeignObject
+82
 doclabel logging.Filter
 502
+doclabel http.client.HTTPSConnection
+40
+doclabel logging.handlers.SysLogHandler
+279
 doclabel logging.NullHandler
 473
 doclabel sympy.geometry.ellipse.Ellipse
 1570
+doclabel tqdm.tqdm
+194
+doclabel tweepy.API
+11
+doclabel tweepy.OAuthHandler
+28
+doclabel _multiprocessing.SemLock
+20
+doclabel joblib.parallel.BatchedCalls
+67
+doclabel joblib.my_exceptions.TransportableException
+96
+doclabel zmq.sugar.context.Context
+doclabel zmq.Poller
+62
+doclabel concurrent.futures.Future
+53
 doclabel boto.s3.key.Key
 1347
+doclabel itertools.count
+205
+doclabel queue.Queue
+106
 doclabel threading.BoundedSemaphore
 681
+doclabel lxml.etree._ListErrorLog
+49
+doclabel queue.Full
+52
+doclabel zmq.eventloop.ioloop.DelayedCallback
+250
 doclabel joblib.externals.loky.process_executor.BrokenProcessPool
 306
+doclabel joblib.externals.loky.process_executor._RemoteTraceback
+65
 doclabel threading.Semaphore
 327
+doclabel lxml.etree._Element
+200
 doclabel joblib.parallel.BatchCompletionCallBack
 351
 doclabel tornado.web.Application
 3535
+doclabel tornado.web.RequestHandler
+147
 doclabel tornado.ioloop.IOLoop
 2023
 doclabel sympy.GreaterThan
@@ -665,6 +1366,8 @@ doclabel gensim.models.word2vec.Word2Vec
 doclabel gensim.models.doc2vec.Doc2Vec
 1961
 doclabel gensim.models.Doc2Vec
+doclabel graphene.Boolean
+65
 doclabel graphene.Field
 2097
 doclabel graphene.InputObjectType
@@ -673,14 +1376,24 @@ doclabel graphene.Int
 300
 doclabel graphene.List
 422
+doclabel graphene.String
+199
 doclabel graphene.ObjectType
 2814
 doclabel graphene.Schema
 1289
+doclabel graphene.relay.Node
+20
 doclabel graphene.Mutation
 1820
+doclabel graphene.Float
+172
 doclabel tensorflow.python.ops.variables.Variable
 4800
+doclabel rx.Observable
+119
+doclabel itertools.accumulate
+69
 doclabel pandas.Period
 447
 doclabel pandas.PeriodIndex
@@ -689,18 +1402,30 @@ doclabel pandas.DateOffset
 2748
 doclabel dateutil.relativedelta.relativedelta
 3584
+doclabel matplotlib.ticker.MaxNLocator
+60
 doclabel matplotlib.axis.Axis
 950
+doclabel xlwt.Workbook
+182
 doclabel sklearn.compose.ColumnTransformer
 6468
 doclabel sklearn.feature_selection.SelectKBest
 1982
+doclabel pymongo.ReturnDocument
+154
+doclabel msrest.exceptions.AuthenticationError
+38
+doclabel PyQt5.QtCore.QObject
+31
 doclabel tornado.httpserver.HTTPServer
 4251
 doclabel tornado.platform.asyncio.AsyncIOLoop
 662
 doclabel discord.Client
 2385
+doclabel zmq.eventloop.ioloop.ZMQIOLoop
+106
 doclabel socketserver.BaseRequestHandler
 677
 doclabel ftplib.FTP
@@ -709,18 +1434,48 @@ doclabel ctypes.CDLL
 444
 doclabel logging.Logger
 882
+doclabel logging.LoggerAdapter
+111
+doclabel concurrent.futures.TimeoutError
+42
+doclabel socketserver.ThreadingMixIn
+52
+doclabel socketserver.UDPServer
+17
+doclabel pygame.Rect
+152
 doclabel _thread.lock
 469
+doclabel redis.Redis
+294
+doclabel matplotlib.backends.backend_tkagg.NavigationToolbar2TkAgg
+93
 doclabel http.server.SimpleHTTPRequestHandler
 343
+doclabel requests.exceptions.ReadTimeout
+64
 doclabel tornado.platform.asyncio.AnyThreadEventLoopPolicy
 580
 doclabel http.server.BaseHTTPRequestHandler
 3580
+doclabel pygame.Color
+112
+doclabel _thread._local
+17
+doclabel IPython.display.DisplayHandle
+264
 doclabel werkzeug.local.LocalProxy
 1128
+doclabel pygame.Surface
+157
+doclabel threading.Barrier
+216
+doclabel ssl.SSLError
+44
 doclabel tornado.httpclient.AsyncHTTPClient
 1432
+doclabel tornado.ioloop.TimeoutError
+259
 doclabel tornado.testing.AsyncTestCase
 2025
 doclabel tornado.testing.AsyncHTTPTestCase
@@ -731,10 +1486,14 @@ doclabel tornado.websocket.WebSocketHandler
 3322
 doclabel tornado.concurrent.Future
 449
+doclabel tornado.httpclient.HTTPRequest
+27
 doclabel tornado.httpclient.HTTPResponse
 1872
 doclabel tornado.httputil.HTTPHeaders
 733
 doclabel tornado.platform.asyncio.AsyncIOMainLoop
 411
+doclabel importlib.abc.Loader
+39
 doclabel scipy.sparse.dok.dok_matrix
