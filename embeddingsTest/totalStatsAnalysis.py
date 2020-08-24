@@ -67,6 +67,7 @@ def beginAnalysis():
 
 # function to calculate paired t test for linked posts
 def calculatePairedTTest(jsonCollect, model, isUSE):
+    random.seed(116)
     embed = None
     transformer = None
     coefficients = []

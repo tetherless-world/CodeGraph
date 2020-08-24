@@ -14,9 +14,13 @@ import pickle
 # parse input data file and remove duplicates for analysis
 # also calls all necessary analysis functions
 
-def fetchEmbeddingDict(fileName):
-    fullFile = '../../data/codeGraph/fullUSE/stackoverflow_embeddings' + \
-    str(fileName)
+def fetchEmbeddingDict(fileName, model):
+    if model == 'https://tfhub.dev/google/universal-sentence-encoder/4':
+        fullFile = '../../data/codeGraph/fullUSE/stackoverflow_embeddings/' + str(fileName)
+    elif model == 'bert-base-nli-mean-tokens':
+        fullFile = '../../data/codeGraph/fullBERT/stackoverflow_embeddings_bert2/' + str(fileName)
+    else:
+        fullFile = '../../data/codeGraph/fullBERT/stackoverflow_embeddings_roberta/' + str(fileName)
     try:
         openFile = open(fullFile, 'rb')
     except FileNotFoundError as e:
@@ -32,6 +36,8 @@ def beginAnalysis():
         jsonObjects = ijson.items(data, 'results.bindings.item')
         i = 0
         for jsonObject in jsonObjects:
+            if i == 8000:
+                break
             objectType = "Class"
             try:
                 objectType = jsonObject['class_func_type']['value'].replace('http://purl.org/twc/graph4code/ontology/', '')
@@ -48,7 +54,7 @@ def beginAnalysis():
             i += 1
 
 
-        USEList = ['https://tfhub.dev/google/universal-sentence-encoder/4']
+        '''USEList = ['https://tfhub.dev/google/universal-sentence-encoder/4']
         for USE in USEList:
             print("Calculating MRR with model", USE)
             print("Calculating MRR with model", USE, file=sys.stderr)
@@ -58,15 +64,10 @@ def beginAnalysis():
             calculateNDCG(properJsonObjects, USE, True)
             print("Calculating T statistic with model", USE)
             print("Calculating T statistic with model", USE, file=sys.stderr)
-            calculatePairedTTest(properJsonObjects, USE, True)
+            calculatePairedTTest(properJsonObjects, USE, True)'''
 
 
-        '''modelList = ['bert-base-nli-mean-tokens', 'bert-large-nli-mean-tokens',
-        'roberta-base-nli-mean-tokens',
-        'roberta-large-nli-mean-tokens', 'distilbert-base-nli-mean-tokens',
-        'bert-base-nli-stsb-mean-tokens', 'bert-large-nli-stsb-mean-tokens',
-        'roberta-base-nli-stsb-mean-tokens', 'roberta-large-nli-stsb-mean-tokens',
-        'distilbert-base-nli-stsb-mean-tokens']
+        modelList = ['bert-base-nli-mean-tokens', 'roberta-base-nli-mean-tokens']
         for model in modelList:
             print("Calculating MRR with model", model)
             print("Calculating MRR with model", model, file=sys.stderr)
@@ -76,10 +77,11 @@ def beginAnalysis():
             calculateNDCG(properJsonObjects, model, False)
             print("Calculating T statistic with model", model)
             print("Calculating T statistic with model", model, file=sys.stderr)
-            calculatePairedTTest(properJsonObjects, model, False)'''
+            calculatePairedTTest(properJsonObjects, model, False)
 
 # function to calculate paired t test for linked posts
 def calculatePairedTTest(jsonCollect, model, isUSE):
+    random.seed(116)
     embed = None
     transformer = None
     coefficients = []
@@ -121,8 +123,8 @@ def calculatePairedTTest(jsonCollect, model, isUSE):
             adjustedPost1Url = qUrl.replace('https://stackoverflow.com/questions/', '')
             adjustedPost2Url = actualUrl.replace('https://stackoverflow.com/questions/', '')
 
-            post1NewEmbed = fetchEmbeddingDict(adjustedPost1Url)
-            post2NewEmbed = fetchEmbeddingDict(adjustedPost2Url)
+            post1NewEmbed = fetchEmbeddingDict(adjustedPost1Url, model)
+            post2NewEmbed = fetchEmbeddingDict(adjustedPost2Url, model)
 
             if post1NewEmbed == None or post2NewEmbed == None:
                 continue
@@ -140,8 +142,8 @@ def calculatePairedTTest(jsonCollect, model, isUSE):
             post1EmbeddingVector = post1Embedding[0]
             post2EmbeddingVector = post2Embedding[0]'''
 
-            post1EmbeddingArray = post1NewEmbed['content'].numpy()[0]
-            post2EmbeddingArray = post2NewEmbed['content'].numpy()[0]
+            post1EmbeddingArray = post1NewEmbed['content']#.numpy()[0]
+            post2EmbeddingArray = post2NewEmbed['content']#.numpy()[0]
             
             linkedDist = np.linalg.norm(post1EmbeddingArray - post2EmbeddingArray)**2
             if linkedDist <= .001:
@@ -159,8 +161,8 @@ def calculatePairedTTest(jsonCollect, model, isUSE):
             adjustedPost3Url = post3Url.replace('https://stackoverflow.com/questions/', '')
             adjustedPost4Url = post4Url.replace('https://stackoverflow.com/questions/', '')
 
-            post3NewEmbed = fetchEmbeddingDict(adjustedPost3Url)
-            post4NewEmbed = fetchEmbeddingDict(adjustedPost4Url)
+            post3NewEmbed = fetchEmbeddingDict(adjustedPost3Url, model)
+            post4NewEmbed = fetchEmbeddingDict(adjustedPost4Url, model)
 
             if post3NewEmbed == None or post4NewEmbed == None:
                 continue
@@ -181,8 +183,8 @@ def calculatePairedTTest(jsonCollect, model, isUSE):
             post3EmbeddingVector = post3Embedding[0]
             post4EmbeddingVector = post4Embedding[0]'''
 
-            post3EmbeddingArray = post3NewEmbed['content'].numpy()[0]
-            post4EmbeddingArray = post4NewEmbed['content'].numpy()[0]
+            post3EmbeddingArray = post3NewEmbed['content']#.numpy()[0]
+            post4EmbeddingArray = post4NewEmbed['content']#.numpy()[0]
 
             post1And3Dist = np.linalg.norm(post1EmbeddingArray - post3EmbeddingArray)**2
             post2And4Dist = np.linalg.norm(post2EmbeddingArray - post4EmbeddingArray)**2
@@ -213,14 +215,14 @@ def calculateNDCG(jsonCollect, model, isUSE):
     for jsonObject in jsonCollect:
         stackQuestion = jsonObject['content_wo_code']
         stackId = jsonObject['q']['value'].replace('https://stackoverflow.com/questions/', '')
-        newEmbed = fetchEmbeddingDict(stackId)
+        newEmbed = fetchEmbeddingDict(stackId, model)
         if newEmbed == None:
             continue
         '''if isUSE:
             embeddedQuestion = embed([stackQuestion])
         else:
             embeddedQuestion = transformer.encode([stackQuestion])'''
-        embeddingQuestionArray = newEmbed['content'].numpy()[0]
+        embeddingQuestionArray = newEmbed['content']#.numpy()[0]
         voteOrder = []
         distanceOrder = []
         voteMap = {}
@@ -239,7 +241,7 @@ def calculateNDCG(jsonCollect, model, isUSE):
                     answerEmbed = embed([answer])
                 else:
                     answerEmbed = transformer.encode([answer])'''
-                answerArray = newEmbed[index].numpy()[0]
+                answerArray = newEmbed[index]#.numpy()[0]
                 dist = np.linalg.norm(answerArray - embeddingQuestionArray)**2
                 voteOrder.append((answerVotes, answer))
                 distanceOrder.append((dist, answer))
@@ -289,7 +291,7 @@ def calculateMRR(jsonCollect, model, isUSE):
     for jsonObject in jsonCollect:
         stackQuestion = jsonObject['content_wo_code']
         stackId = jsonObject['q']['value'].replace('https://stackoverflow.com/questions/', '')
-        newEmbed = fetchEmbeddingDict(stackId)
+        newEmbed = fetchEmbeddingDict(stackId, model)
         if newEmbed == None:
             continue
         #template is newEmbed['(answer/content)'].numpy()[0]
@@ -299,7 +301,7 @@ def calculateMRR(jsonCollect, model, isUSE):
         else:
             embeddedQuestion = transformer.encode([stackQuestion])
         embeddingVector = embeddedQuestion[0]'''
-        embeddingQuestionArray = newEmbed['content'].numpy()[0]
+        embeddingQuestionArray = newEmbed['content']#.numpy()[0]
         voteOrder = []
         distanceOrder = []
         i = 1
@@ -323,7 +325,7 @@ def calculateMRR(jsonCollect, model, isUSE):
                 else:
                     answerEmbed = transformer.encode([answer])
                 answerVector = answerEmbed[0]'''
-                answerArray = newEmbed[index].numpy()[0]
+                answerArray = newEmbed[index]#.numpy()[0]
                 dist = np.linalg.norm(answerArray - embeddingQuestionArray)**2
                 voteOrder.append((answerVotes, answer))
                 distanceOrder.append((dist, answer))
