@@ -1,4 +1,13 @@
-
+## No masking: The Stackoverflow post is embedded as-is. One masking: The particular class associated with the stackoverflow post is masked and then embedded and evaluated for precision of predicting the closest docstrings(after embedding), for the models:  'bert-base-nli-stsb-mean-tokens', 'bert-large-nli-stsb-mean-tokens','roberta-base-nli-stsb-mean-tokens','roberta-large-nli-stsb-mean-tokens', 'distilbert-base-nli-stsb-mean-tokens', corresponding output in stackNewJson_NoOrOneMask_'+model_name+'_.txt
+##droppedClassWithLessLength  set can be used to adjust the length of the docstring characters to be dropped
+##embeddingtolabelmap is used to retrieve labels for finding information about the nearest neighbors
+## build_index() embeds Docstrings
+##embedCollect used to have unique embeddings for lookup
+##index contains FAISS indices
+##evaluate_neighbors() compute the nearest neighbors for string that is embedded
+##k number of neighbors to be computed
+##classToSuperClass is used for class, to super class relationship
+##for no masking and all masking, comment out the lines indicated below
 import ijson
 import tensorflow_hub as hub
 import faiss
@@ -118,7 +127,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
     originalout = sys.stdout
     transformer = SentenceTransformer(model)
-    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r') as data, open('./stackNewJsonAllMask_'+model+'_.txt', 'w') as outputFile:
+    with open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r') as data, open('./stackNewJson_NoOrOneMask_'+model+'_.txt', 'w') as outputFile:
         
         jsonCollect = ijson.items(data, 'results.bindings.item')
         sys.stdout = outputFile
@@ -151,8 +160,9 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
             for labelPart in splitLabel:
                     partPattern = re.compile(labelPart, re.IGNORECASE)
                     maskedText = partPattern.sub(' ', maskedText)#maskedText.replace(labelPart, ' ')
+            ##uncomment this line and replace with masked Text for one masking,  else stackText for no masking
 
-            embeddedText = transformer.encode([stackText]) #maskedText
+            embeddedText = transformer.encode([stackText]) #maskedText 
             D, I = index.search(  np.asarray(embeddedText, dtype=np.float32), k)
 
             distances = D[0]

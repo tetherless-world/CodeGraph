@@ -1,4 +1,13 @@
+## when all the relevant classes associated with the stackoverflow post (Across all rows) are masked and then embedded, and evaluated for precision of predicting the closest docstrings(after embedding), for the models:  'bert-base-nli-stsb-mean-tokens', 'bert-large-nli-stsb-mean-tokens','roberta-base-nli-stsb-mean-tokens','roberta-large-nli-stsb-mean-tokens', 'distilbert-base-nli-stsb-mean-tokens', corresponding output in stackNewJsonAllMask_'+model_name+'_.txt
 
+##droppedClassWithLessLength  set can be used to adjust the length of the docstring characters to be dropped
+##embeddingtolabelmap is used to retrieve labels for finding information about the nearest neighbors
+## build_index() embeds Docstrings
+##embedCollect used to have unique embeddings for lookup
+##index contains FAISS indices
+##evaluate_neighbors() compute the nearest neighbors for string that is embedded
+##k number of neighbors to be computed
+##classToSuperClass is used for class, to super class relationship
 import ijson
 import tensorflow_hub as hub
 import faiss

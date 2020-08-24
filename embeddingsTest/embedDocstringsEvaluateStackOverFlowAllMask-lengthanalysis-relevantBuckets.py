@@ -1,4 +1,13 @@
-import ijson
+## when all the relevant classes associated with the stackoverflow post (Across all rows) are masked and then embedded, and evaluated for precision of predicting the closest docstrings(after embedding), for the model USE by Sliding window technique,  each bucket/bag of the doclabel assigned  to a fixed number of sentences = bucket/bag size, with fixed nearest neighbors, since more than one vector created from the same doclabel, results can be misleading , so instead more neighbors are calculated and the first k nearest  unique neighbors are picked
+
+##droppedClassWithLessLength  set can be used to adjust the length of the docstring characters to be dropped
+##embeddingtolabelmap is used to retrieve labels for finding information about the nearest neighbors
+## build_index() embeds Docstrings
+##embedCollect used to have unique embeddings for lookup
+##index contains FAISS indices
+##evaluate_neighbors() compute the nearest neighbors for string that is embedded
+##k number of neighbors to be computed
+##classToSuperClass is used for class, to super class relationship
 import tensorflow_hub as hub
 import faiss
 import numpy as np

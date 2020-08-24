@@ -1,3 +1,14 @@
+## No masking: The Stackoverflow post is embedded as-is. One masking: The particular class associated with the stackoverflow post is masked and then embedded and evaluated for precision of predicting the closest docstrings(after embedding), for the model USE
+
+##droppedClassWithLessLength  set can be used to adjust the length of the docstring characters to be dropped
+##embeddingtolabelmap is used to retrieve labels for finding information about the nearest neighbors
+## build_index() embeds Docstrings
+##embedCollect used to have unique embeddings for lookup
+##index contains FAISS indices
+##evaluate_neighbors() compute the nearest neighbors for string that is embedded
+##k number of neighbors to be computed
+##classToSuperClass is used for class, to super class relationship
+##for no masking and all masking, comment out the lines indicated below
 
 import ijson
 import tensorflow_hub as hub
@@ -134,6 +145,8 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
             for labelPart in splitLabel:
                     partPattern = re.compile(labelPart, re.IGNORECASE)
                     maskedText = partPattern.sub(' ', maskedText)#maskedText.replace(labelPart, ' ')
+                    
+            ##uncomment this line and replace with masked Text for one masking, else stackText for no masking
 
             embeddedText = embed([maskedText])#[maskedText])
 

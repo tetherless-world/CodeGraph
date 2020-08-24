@@ -1,3 +1,17 @@
+##the file constructs mapping of class to superclass and distance corresponding to them, enables analysis--> output detailedMappingsOut
+##droppedClassWithLessLength  set can be used to adjust the length of the docstring characters to be dropped
+##embeddingtolabelmap is used to retrieve labels for finding information about the nearest neighbors
+## build_index() embeds Docstrings
+##embedCollect used to have unique embeddings for lookup
+##index contains FAISS indices
+##evaluate_neighbors() compute the nearest neighbors for string that is embedded
+##k number of neighbors to be computed
+##classToSuperClass is used for class, to super class relationship
+
+
+
+
+##required imports
 import ijson
 import tensorflow_hub as hub
 import faiss
@@ -146,7 +160,6 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
         
         ##if a class only has superclass of object and no subclasses then its eliminated
        
-                        
                         
 
                 
