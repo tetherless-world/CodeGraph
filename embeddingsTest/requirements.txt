@@ -68,7 +68,7 @@ tensorflow-hub==0.8.0
 termcolor==1.1.0
 threadpoolctl==2.1.0
 tokenizers==0.8.1rc1
-torch==1.5.1
+torch==1.2.0
 torchvision==0.4.0
 tqdm==4.47.0
 transformers==3.0.2
