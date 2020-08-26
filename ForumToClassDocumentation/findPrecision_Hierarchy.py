@@ -1,7 +1,10 @@
-##simple calculation for precision,given classes and their nearest neighbors computed with the help of embedDocstringsOnlyFlowDistantBasedHierarchy.py which is the data located at https://ia601401.us.archive.org/30/items/classes2superclass/class2top10neighbors_withScore.txt
+##simple calculation for precision,given classes and their nearest neighbors computed with the help of embedDocstringsOnlyFlowDistantBasedHierarchy.py 
+##which is the data located at https://ia601401.us.archive.org/30/items/classes2superclass/class2top10neighbors_withScore.txt
+
 
 ##Other data needed 
 ##https://archive.org/download/classes2superclass/classes2superclass.out
+##run it: python findPrecision_Hierarchy.py  ../../data/codeGraph/classes2superclass.out class2top10neighbors_withScore.txt
 import ijson
 import tensorflow_hub as hub
 import faiss
