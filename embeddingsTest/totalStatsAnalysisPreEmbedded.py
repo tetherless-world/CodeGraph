@@ -19,8 +19,10 @@ def fetchEmbeddingDict(fileName, model):
         fullFile = '../../data/codeGraph/fullUSE/stackoverflow_embeddings/' + str(fileName)
     elif model == 'bert-base-nli-mean-tokens':
         fullFile = '../../data/codeGraph/fullBERT/stackoverflow_embeddings_bert2/' + str(fileName)
+        print("bert full", fullFile)
     else:
         fullFile = '../../data/codeGraph/fullBERT/stackoverflow_embeddings_roberta/' + str(fileName)
+        print("robert full", fullFile)
     try:
         openFile = open(fullFile, 'rb')
     except FileNotFoundError as e:
@@ -36,7 +38,7 @@ def beginAnalysis():
         jsonObjects = ijson.items(data, 'results.bindings.item')
         i = 0
         for jsonObject in jsonObjects:
-            if i == 8000:
+            if i == 1:
                 break
             objectType = "Class"
             try:
@@ -54,7 +56,7 @@ def beginAnalysis():
             i += 1
 
 
-        '''USEList = ['https://tfhub.dev/google/universal-sentence-encoder/4']
+        USEList = ['https://tfhub.dev/google/universal-sentence-encoder/4']
         for USE in USEList:
             print("Calculating MRR with model", USE)
             print("Calculating MRR with model", USE, file=sys.stderr)
@@ -64,10 +66,10 @@ def beginAnalysis():
             calculateNDCG(properJsonObjects, USE, True)
             print("Calculating T statistic with model", USE)
             print("Calculating T statistic with model", USE, file=sys.stderr)
-            calculatePairedTTest(properJsonObjects, USE, True)'''
+            calculatePairedTTest(properJsonObjects, USE, True)
 
 
-        modelList = ['bert-base-nli-mean-tokens', 'roberta-base-nli-mean-tokens']
+        '''modelList = ['bert-base-nli-mean-tokens', 'roberta-base-nli-mean-tokens']
         for model in modelList:
             print("Calculating MRR with model", model)
             print("Calculating MRR with model", model, file=sys.stderr)
@@ -77,11 +79,12 @@ def beginAnalysis():
             calculateNDCG(properJsonObjects, model, False)
             print("Calculating T statistic with model", model)
             print("Calculating T statistic with model", model, file=sys.stderr)
-            calculatePairedTTest(properJsonObjects, model, False)
+            calculatePairedTTest(properJsonObjects, model, False)'''
 
 # function to calculate paired t test for linked posts
 def calculatePairedTTest(jsonCollect, model, isUSE):
     random.seed(116)
+    initialRand = random.getstate()
     embed = None
     transformer = None
     coefficients = []
@@ -199,6 +202,7 @@ def calculatePairedTTest(jsonCollect, model, isUSE):
             differences.append(difference)
 
     results = stat.ttest_rel(foreignDists, linkedDists)
+    random.setstate(initialRand)
     print('Result of T statistic calculation is:', results)
 
 
@@ -326,7 +330,13 @@ def calculateMRR(jsonCollect, model, isUSE):
                     answerEmbed = transformer.encode([answer])
                 answerVector = answerEmbed[0]'''
                 answerArray = newEmbed[index]#.numpy()[0]
+#                print('array is', answerArray)
+#                print('answer is', newEmbed['answer_1'])
+#                print('question is', newEmbed['content'])
+#                print(answerArray == embeddingQuestionArray)
+#                input()
                 dist = np.linalg.norm(answerArray - embeddingQuestionArray)**2
+#                input()
                 voteOrder.append((answerVotes, answer))
                 distanceOrder.append((dist, answer))
                 i += 1

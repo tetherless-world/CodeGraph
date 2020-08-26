@@ -1,0 +1,4 @@
+Please note that in the requirements.txt file that the version of torch
+said to be required is 1.5.1. While this should work fine, if any issues arise
+relating to torch, try installing torch version 1.2.0. This was done during experimentation
+because of issues relating to GPU usage with newer versions of torch.
