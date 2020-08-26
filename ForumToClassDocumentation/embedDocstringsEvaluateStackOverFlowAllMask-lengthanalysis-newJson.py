@@ -22,7 +22,7 @@
 
 ##where 5 is the number of nearest neighbors
 
-##output file output1.txt
+##output file output1.txt and output2.txt
 import ijson
 import tensorflow_hub as hub
 import faiss
