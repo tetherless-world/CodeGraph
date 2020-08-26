@@ -14,7 +14,7 @@
 
 
 ##provide input file path of the above json for example while running the code
-##for example, python embedDocstringsEvaluateStackOverFlow-relevantBuckets.py ../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json 5  T 4
+##for example, python embedDocstringsEvaluateStackOverFlow-relevantBuckets.py ../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json 5 T 4
 
 ##../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json 
 ##where 5 is the number of nearest neighbors
