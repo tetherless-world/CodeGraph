@@ -8,7 +8,6 @@
 ##evaluate_neighbors() compute the nearest neighbors for string that is embedded
 ##k number of neighbors to be computed
 ##classToSuperClass is used for class, to super class relationship
-##for no masking and all masking, comment out the lines indicated below
 
 ### dataset at https://ia801500.us.archive.org/24/items/stackoverflow_questions_per_class_func_3M_filtered_new/stackoverflow_questions_per_class_func_3M_filtered_new.json 
 
