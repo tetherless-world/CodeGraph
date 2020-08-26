@@ -40,6 +40,6 @@ for example, python allEmbedDocstringsEvaluateStackOverFlowAllMask.py ../../data
 ../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json 
 where 5 is the number of nearest neighbors
 
-output file output1.txt and  finalOut_'+model_name+'_.txt
+output files produced: output1.txt and  finalOut_'+model_name+'_.txt
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
