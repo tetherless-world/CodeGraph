@@ -89,4 +89,20 @@ Other data needed : https://archive.org/download/classes2superclass/classes2supe
 to run it: python findPrecision_Hierarchy.py  ../../data/codeGraph/classes2superclass.out class2top10neighbors_withScore.txt
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
+File name: embedDocstringsEvaluateStackOverFlow-lengthanalysis-newJson.py
+
+File description:
+No masking: The Stackoverflow post is embedded as-is. One masking: The particular class associated with the stackoverflow post is masked and then embedded and evaluated for precision of predicting the closest docstrings(after embedding), for the model USE ,
+
+ dataset at https://ia801500.us.archive.org/24/items/stackoverflow_questions_per_class_func_3M_filtered_new/stackoverflow_questions_per_class_func_3M_filtered_new.json 
+
+
+to run it: python embedDocstringsEvaluateStackOverFlow-lengthanalysis-newJson.py ../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json 5 T
+
+where 5 is the number of nearest neighbors
+T is one masked,F is no masked configuartion
+
+output file output1.txt and output2.txt
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
 
