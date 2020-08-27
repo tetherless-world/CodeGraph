@@ -161,7 +161,8 @@ def evaluate_neighbors_docs(index, staticMap, docMessages, embeddingtolabelmap, 
                         isRelevant = 1
                         break
                 if isRelevant == 1:
-                    precisions.append(correctMatch/k)
+                    pAtK = correctMatch/k
+                    precisions.append(pAtK)
                 else:
                     precisions.append(0.0)
             if correctMatch == 0:
