@@ -15,6 +15,9 @@ import pickle
 # also calls all necessary analysis functions
 
 def fetchEmbeddingDict(fileName, model):
+    # adjustments must be made here if paths to data need to be adjusted
+    # or new sources of data are to be used. This function is called in
+    # all of the analysis functions
     if model == 'https://tfhub.dev/google/universal-sentence-encoder/4':
         fullFile = '../../../data/codeGraph/fullUSE/stackoverflow_embeddings/' + str(fileName)
     elif model == 'bert-base-nli-mean-tokens':
@@ -64,7 +67,7 @@ def beginAnalysis(stackQandAPath):
             print("Calculating T statistic with model", USE, file=sys.stderr)
             calculatePairedTTest(properJsonObjects, USE, True)
 
-
+        # uncomment this if analyses are to be performed on BERT or ROBERTA embeddings
         '''modelList = ['bert-base-nli-mean-tokens', 'roberta-base-nli-mean-tokens']
         for model in modelList:
             print("Calculating MRR with model", model)
@@ -76,6 +79,10 @@ def beginAnalysis(stackQandAPath):
             print("Calculating T statistic with model", model)
             print("Calculating T statistic with model", model, file=sys.stderr)
             calculatePairedTTest(properJsonObjects, model, False)'''
+
+        # for other sources of data, add calls like the blocks above with the
+        # appropriate model name. Additionally, remember to make the requisite
+        # changes to fetchEmbeddingDict()
 
 # function to calculate paired t test for linked posts
 def calculatePairedTTest(jsonCollect, model, isUSE):

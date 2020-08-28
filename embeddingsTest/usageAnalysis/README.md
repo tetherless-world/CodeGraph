@@ -2,7 +2,7 @@
 
 The script in this directory, usageAnalysis.py, is used to run the usage analysis task.  
 
-The script takes in a variety of data sources that are downloadable from this project's content folder.  
+The script takes in a variety of data sources that are downloadable from this project's content folder on the internet archive.  
 
 Those files are:
 - classes.map (old to new class conversion)
