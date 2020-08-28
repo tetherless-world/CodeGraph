@@ -16,13 +16,11 @@ import pickle
 
 def fetchEmbeddingDict(fileName, model):
     if model == 'https://tfhub.dev/google/universal-sentence-encoder/4':
-        fullFile = '../../data/codeGraph/fullUSE/stackoverflow_embeddings/' + str(fileName)
+        fullFile = '../../../data/codeGraph/fullUSE/stackoverflow_embeddings/' + str(fileName)
     elif model == 'bert-base-nli-mean-tokens':
         fullFile = '../../data/codeGraph/fullBERT/stackoverflow_embeddings_bert2/' + str(fileName)
-        print("bert full", fullFile)
     else:
         fullFile = '../../data/codeGraph/fullBERT/stackoverflow_embeddings_roberta/' + str(fileName)
-        print("robert full", fullFile)
     try:
         openFile = open(fullFile, 'rb')
     except FileNotFoundError as e:
@@ -31,15 +29,13 @@ def fetchEmbeddingDict(fileName, model):
     openFile.close()
     return embeddingDict
 
-def beginAnalysis():
-    with open('../../data/codeGraph/stackoverflow_questions_with_answers_1000000.json', 'r') as data:
+def beginAnalysis(stackQandAPath):
+    with open(stackQandAPath, 'r') as data:
         properJsonObjects = []
         encounteredPosts = set()
         jsonObjects = ijson.items(data, 'results.bindings.item')
         i = 0
         for jsonObject in jsonObjects:
-            if i == 1:
-                break
             objectType = "Class"
             try:
                 objectType = jsonObject['class_func_type']['value'].replace('http://purl.org/twc/graph4code/ontology/', '')
@@ -89,12 +85,8 @@ def calculatePairedTTest(jsonCollect, model, isUSE):
     transformer = None
     coefficients = []
     rPattern = r'https:\/\/stackoverflow\.com\/questions\/\d+'
-    
-    if isUSE:
-        embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
-    else:
-        transformer = SentenceTransformer(model)
-    
+
+  
     urlMapping = {}
     urlList = []
 
@@ -132,21 +124,12 @@ def calculatePairedTTest(jsonCollect, model, isUSE):
             if post1NewEmbed == None or post2NewEmbed == None:
                 continue
 
-            '''post1Question = jsonObject['content_wo_code']
-            post2Question = post2Object['content_wo_code']
-
             if isUSE:
-                post1Embedding = embed([post1Question])
-                post2Embedding = embed([post2Question])
+                post1EmbeddingArray = post1NewEmbed['content'].numpy()[0]
+                post2EmbeddingArray = post2NewEmbed['content'].numpy()[0]
             else:
-                post1Embedding = transformer.encode([post1Question])
-                post2Embedding = transformer.encode([post2Question])
-
-            post1EmbeddingVector = post1Embedding[0]
-            post2EmbeddingVector = post2Embedding[0]'''
-
-            post1EmbeddingArray = post1NewEmbed['content']#.numpy()[0]
-            post2EmbeddingArray = post2NewEmbed['content']#.numpy()[0]
+                post1EmbeddingArray = post1NewEmbed['content']
+                post2EmbeddingArray = post2NewEmbed['content']
             
             linkedDist = np.linalg.norm(post1EmbeddingArray - post2EmbeddingArray)**2
             if linkedDist <= .001:
@@ -170,24 +153,12 @@ def calculatePairedTTest(jsonCollect, model, isUSE):
             if post3NewEmbed == None or post4NewEmbed == None:
                 continue
 
-            '''post3Object = urlMapping[post3Url]
-            post4Object = urlMapping[post4Url]
-
-            post3Question = post3Object['content_wo_code']
-            post4Question = post4Object['content_wo_code']
-
             if isUSE:
-                post3Embedding = embed([post3Question])
-                post4Embedding = embed([post4Question])
+                post3EmbeddingArray = post3NewEmbed['content'].numpy()[0]
+                post4EmbeddingArray = post4NewEmbed['content'].numpy()[0]
             else:
-                post3Embedding = transformer.encode([post3Question])
-                post4Embedding = transformer.encode([post4Question])
-
-            post3EmbeddingVector = post3Embedding[0]
-            post4EmbeddingVector = post4Embedding[0]'''
-
-            post3EmbeddingArray = post3NewEmbed['content']#.numpy()[0]
-            post4EmbeddingArray = post4NewEmbed['content']#.numpy()[0]
+                post3EmbeddingArray = post3NewEmbed['content']
+                post4EmbeddingArray = post4NewEmbed['content']
 
             post1And3Dist = np.linalg.norm(post1EmbeddingArray - post3EmbeddingArray)**2
             post2And4Dist = np.linalg.norm(post2EmbeddingArray - post4EmbeddingArray)**2
@@ -211,10 +182,6 @@ def calculateNDCG(jsonCollect, model, isUSE):
     embed = None
     transformer = None
     coefficients = []
-    if isUSE:
-        embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
-    else:
-        transformer = SentenceTransformer(model)
 
     for jsonObject in jsonCollect:
         stackQuestion = jsonObject['content_wo_code']
@@ -222,11 +189,10 @@ def calculateNDCG(jsonCollect, model, isUSE):
         newEmbed = fetchEmbeddingDict(stackId, model)
         if newEmbed == None:
             continue
-        '''if isUSE:
-            embeddedQuestion = embed([stackQuestion])
+        if isUSE:
+            embeddingQuestionArray = newEmbed['content'].numpy()[0]
         else:
-            embeddedQuestion = transformer.encode([stackQuestion])'''
-        embeddingQuestionArray = newEmbed['content']#.numpy()[0]
+            embeddingQuestionArray = newEmbed['content']
         voteOrder = []
         distanceOrder = []
         voteMap = {}
@@ -241,11 +207,10 @@ def calculateNDCG(jsonCollect, model, isUSE):
                     i += 1
                     continue
                 answerVotes = int(answerVotes)
-                '''if isUSE:
-                    answerEmbed = embed([answer])
+                if isUSE:
+                    answerArray = newEmbed[index].numpy()[0]
                 else:
-                    answerEmbed = transformer.encode([answer])'''
-                answerArray = newEmbed[index]#.numpy()[0]
+                    answerArray = newEmbed[index]
                 dist = np.linalg.norm(answerArray - embeddingQuestionArray)**2
                 voteOrder.append((answerVotes, answer))
                 distanceOrder.append((dist, answer))
@@ -286,11 +251,6 @@ def calculateMRR(jsonCollect, model, isUSE):
     embed = None
     transformer = None
     recipRanks = []
-    if isUSE:
-        pass
-        #embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
-    else:
-        transformer = SentenceTransformer(model)
 
     for jsonObject in jsonCollect:
         stackQuestion = jsonObject['content_wo_code']
@@ -298,14 +258,10 @@ def calculateMRR(jsonCollect, model, isUSE):
         newEmbed = fetchEmbeddingDict(stackId, model)
         if newEmbed == None:
             continue
-        #template is newEmbed['(answer/content)'].numpy()[0]
-        '''embeddedQuestion = None
         if isUSE:
-            embeddedQuestion = embed([stackQuestion])
+            embeddingQuestionArray = newEmbed['content'].numpy()[0]
         else:
-            embeddedQuestion = transformer.encode([stackQuestion])
-        embeddingVector = embeddedQuestion[0]'''
-        embeddingQuestionArray = newEmbed['content']#.numpy()[0]
+            embeddingQuestionArray = newEmbed['content']
         voteOrder = []
         distanceOrder = []
         i = 1
@@ -319,24 +275,11 @@ def calculateMRR(jsonCollect, model, isUSE):
                     i += 1
                     continue
                 answerVotes = int(answerVotes)
-                '''soup = BeautifulSoup(answer, 'html.parser')
-                for code in soup.find_all('code'):
-                    code.decompose()
-                answer = soup.get_text()
-                answerEmbed = None
                 if isUSE:
-                    answerEmbed = embed([answer])
+                    answerArray = newEmbed[index].numpy()[0]
                 else:
-                    answerEmbed = transformer.encode([answer])
-                answerVector = answerEmbed[0]'''
-                answerArray = newEmbed[index]#.numpy()[0]
-#                print('array is', answerArray)
-#                print('answer is', newEmbed['answer_1'])
-#                print('question is', newEmbed['content'])
-#                print(answerArray == embeddingQuestionArray)
-#                input()
+                    answerArray = newEmbed[index]
                 dist = np.linalg.norm(answerArray - embeddingQuestionArray)**2
-#                input()
                 voteOrder.append((answerVotes, answer))
                 distanceOrder.append((dist, answer))
                 i += 1
@@ -360,4 +303,5 @@ def calculateMRR(jsonCollect, model, isUSE):
     print("Mean reciprocal rank is:", meanRecipRank)
 
 if __name__ == "__main__":
-    beginAnalysis()
+    stackQandAPath = input("Please enter path to stackoverflow question and answer data")
+    beginAnalysis(stackQandAPath)

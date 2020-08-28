@@ -35,7 +35,7 @@ def build_index_docs(docPath):
                 continue
             label = jsonObject['klass']
             docLabel = label
-            docStringText = jsonObject['class_docstring']# + ' ' + str(i)
+            docStringText = jsonObject['class_docstring']
             soup = BeautifulSoup(docStringText, 'html.parser')
             for code in soup.find_all('code'):
                 code.decompose() # this whole block might be unnecessary
@@ -46,7 +46,7 @@ def build_index_docs(docPath):
                     
                 else:
                     duplicateClassDocString.add(docLabel)
-                    embeddedDocText = embed([docStringText])[0] #this whole section might also be unnecessary
+                    embeddedDocText = embed([docStringText])[0] 
                     embeddingtolabelmap[tuple(
                     embeddedDocText.numpy().tolist())].append(docLabel)
             else:
@@ -59,12 +59,8 @@ def build_index_docs(docPath):
                 index.add(newText)
                 embeddingtolabelmap[tuple(
                 embeddedDocText.numpy().tolist())] = [docLabel]
-#                 if  docLabel == 'pysnmp.smi.rfc1902.ObjectType':
-#                     print("text for pysnmp.smi.rfc1902.ObjectType' is")
-#                     print(docStringText)
-#            labeltotextmap[docLabel] = docStringText
             i += 1
-        return (index, docMessages, embeddingtolabelmap)#, labeltotextmap)
+        return (index, docMessages, embeddingtolabelmap)
 
 
 def build_static_map(usagePath):
@@ -119,24 +115,19 @@ def evaluate_neighbors_docs(index, staticMap, docMessages, embeddingtolabelmap, 
             if 'class_docstring' not in jsonObject:
                 continue
             classLabel = jsonObject['klass']
-            if classLabel in encounteredClasses: #this might not be what we want to do,
-            # the problem is that we have multiple classes for a given docstring
-            # so maybe we want to have the docstring text being identical as the condition?
-#                input()
+            if classLabel in encounteredClasses:
                 continue
             else:
                 encounteredClasses.add(classLabel)
             docText = jsonObject['class_docstring']
             totaldocs += 1
-            embeddedText = embed([docText])#[maskedText])
+            embeddedText = embed([docText])
             embeddingVector = embeddedText[0]
             embeddingArray = np.asarray(
                 embeddingVector, dtype=np.float32).reshape(1, -1)
             D, I = index.search(embeddingArray, k+1)
             distances = D[0]
             indices = I[0]
-#            print("Distances of related vectors:", distances)
-#            print("Indices of related vectors:", indices)
             adjustedLabel = classLabel
             if classLabel in classMap:
                 adjustedLabel = classMap[classLabel]
@@ -146,36 +137,26 @@ def evaluate_neighbors_docs(index, staticMap, docMessages, embeddingtolabelmap, 
             if adjustedLabel in staticMap:
                 viableClasses = staticMap[adjustedLabel]
             else:
-#                print("Skipped due to not being in analysis file.")
-#                input()
                 notFoundSkipped += 1
                 continue
             if len(viableClasses) < 1:
-#                print("Skipped due to analysis classes being too small")
-#                input()
                 smallSkipped += 1
                 continue
             if len(viableClasses) > 10:
-#                print("Skipped due to analysis classes being too large")
-#                input()
                 largeSkipped += 1
                 continue
-#            print("And statically analyzed similar classes are:", viableClasses)
             unSkipped += 1
-#            input()
             correctMatch = 0
             precisions = []
-            for p in range(1, k+1):#weird adjustments here to skip first result
+            for p in range(1, k+1):# adjustment here to skip first result
                 properIndex = indices[p]
                 embedding = docMessages[properIndex]
                 adjustedembedding = tuple(embedding)
                 labelList = embeddingtolabelmap[adjustedembedding]
-#                print("List of Labels related in", p, "position", labelList)
                 pAtK = 0
                 isRelevant = 0
                 for label in labelList:
                     if label in viableClasses:
-#                        print("And found in statically related classes")
                         correctMatch += 1
                         isRelevant = 1
                         break
@@ -199,13 +180,9 @@ def evaluate_neighbors_docs(index, staticMap, docMessages, embeddingtolabelmap, 
         print("Total number of small skipped", smallSkipped)
         print("Total number of large skipped", largeSkipped)
         print("Total number unskipped", unSkipped)
-#        print("Average correct percent matched:", sum(percents)/len(percents))
-                    
 
-        #sys.stdout=originalout
 
 def compareOverlap(mapTuple, staticMap):
-    # don't forget to possibly add class2ClassMapping
     childToParentMap = mapTuple[0]
     parentToChildMap = mapTuple[1]
     overlapPercents = []
@@ -227,17 +204,15 @@ def compareOverlap(mapTuple, staticMap):
                 classSiblingLL.append(parentToChildMap[parent])
         for usageClass in relatedClasses:
             if usageClass in classParents:
-#                print("Matched in parents")
                 overlapNumerator += 1
             elif usageClass in classChildren:
-#                print("Matched in children")
                 overlapNumerator += 1
             else:
                 for siblingList in classSiblingLL:
                     if usageClass in siblingList:
-#                        print("Matched in siblings")
                         overlapNumerator += 1
                         break
+        # below are some optional metrics that you can uncomment to enable
         '''print("For target class", targetClass, "we have these parents:", classParents)
         print("And these children:", classChildren)
         print("And these siblings:", classSiblingLL)
@@ -260,10 +235,9 @@ if __name__ == '__main__':
     classPath = input("Please enter path to old to new class conversion.")
     usagePath = input("Please enter path to usage data.")
     hierarchyMaps = build_sibling_maps(hierarchyPath)
-#    dataTuple = build_index_docs(docPath)#[0,0,0,0,0]
-#    print("Completed building index.")
+    dataTuple = build_index_docs(docPath)
     staticAnalysis = build_static_map(usagePath)
     compareOverlap(hierarchyMaps, staticAnalysis)
-#    classMap = build_class_mapping(classPath)
-#    evaluate_neighbors_docs(dataTuple[0], staticAnalysis, dataTuple[1], dataTuple[2], None, classMap, docPath)#dataTuple[3])
+    classMap = build_class_mapping(classPath)
+    evaluate_neighbors_docs(dataTuple[0], staticAnalysis, dataTuple[1], dataTuple[2], None, classMap, docPath)
 
