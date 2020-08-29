@@ -106,3 +106,15 @@ output file output1.txt and output2.txt
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 
+File name: allModelsembedDocstringsEvaluateStackOverFlow.py 
+
+ No masking:The Stackoverflow post is embedded as-is. One masking: The particular class associated with the stackoverflow post is masked and then embedded and evaluated for precision of predicting the closest docstrings(after embedding), for the models:  'bert-base-nli-stsb-mean-tokens', 'bert-large-nli-stsb-mean-tokens','roberta-base-nli-stsb-mean-tokens','roberta-large-nli-stsb-mean-tokens', 'distilbert-base-nli-stsb-mean-tokens', corresponding output in stackNewJson_NoOrOneMask_'+model_name+'_.txt
+##provide input file path of the above json for example ../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json
+
+dataset at https://ia801500.us.archive.org/24/items/stackoverflow_questions_per_class_func_3M_filtered_new/stackoverflow_questions_per_class_func_3M_filtered_new.json
+
+for example, python allEmbedDocstringsEvaluateStackOverFlowAllMask.py ../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json 5
+
+../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json where 5 is the number of nearest neighbors
+
+output file output1.txt and  stackNewJson_NoOrOneMask_'+model_name+'_.txt
