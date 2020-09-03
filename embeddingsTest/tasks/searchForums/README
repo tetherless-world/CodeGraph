@@ -1,0 +1,6 @@
+To run against any embedding dictionary, see run_all.sh
+
+Relevant embedding dictionaries are:
+stackoverflow_matches_codesearchnet_5k_USE.tar.gz
+stackoverflow_matches_codesearchnet_5k_bert_base.tar.gz
+tackoverflow_matches_codesearchnet_5k_roberta_base.tar.gz
