@@ -32,27 +32,35 @@ def fetchEmbeddingDict(fileName, model):
     openFile.close()
     return embeddingDict
 
-def beginAnalysis(stackQandAPath):
+def beginAnalysis(stackQandAPath, oldDataPath):
     with open(stackQandAPath, 'r') as data:
         properJsonObjects = []
         encounteredPosts = set()
-        jsonObjects = ijson.items(data, 'results.bindings.item')
+        jsonObjects = ijson.items(data, 'item')
         i = 0
         for jsonObject in jsonObjects:
-            objectType = "Class"
-            try:
-                objectType = jsonObject['class_func_type']['value'].replace('http://purl.org/twc/graph4code/ontology/', '')
-            except KeyError as e:
-                pass
-            if objectType != 'Class':
-                continue
-            stackUrl = jsonObject['q']['value']
+            stackUrl = jsonObject['url']
             if stackUrl in encounteredPosts:
                 continue
             else:
                 encounteredPosts.add(stackUrl)
             properJsonObjects.append(jsonObject)
             i += 1
+
+    with open(oldDataPath, 'r') as oldData:
+        adjustedJsonObjects = []
+        encounteredPosts = set()
+        jsonObjects = ijson.items(oldData, 'results.bindings.item')
+        i = 0
+        for jsonObject in jsonObjects:
+            stackUrl = jsonObject['q']['value']
+            if stackUrl in encounteredPosts:
+                continue
+            else:
+                encounteredPosts.add(stackUrl)
+            adjustedJsonObjects.append(jsonObject)
+            i += 1
+
 
 
         USEList = ['https://tfhub.dev/google/universal-sentence-encoder/4']
@@ -65,7 +73,7 @@ def beginAnalysis(stackQandAPath):
             calculateNDCG(properJsonObjects, USE, True)
             print("Calculating T statistic with model", USE)
             print("Calculating T statistic with model", USE, file=sys.stderr)
-            calculatePairedTTest(properJsonObjects, USE, True)
+            calculatePairedTTest(adjustedJsonObjects, USE, True)
 
         # uncomment this if analyses are to be performed on BERT or ROBERTA embeddings
         '''modelList = ['bert-base-nli-mean-tokens', 'roberta-base-nli-mean-tokens']
@@ -78,7 +86,7 @@ def beginAnalysis(stackQandAPath):
             calculateNDCG(properJsonObjects, model, False)
             print("Calculating T statistic with model", model)
             print("Calculating T statistic with model", model, file=sys.stderr)
-            calculatePairedTTest(properJsonObjects, model, False)'''
+            calculatePairedTTest(adjustedJsonObjects, model, False)'''
 
         # for other sources of data, add calls like the blocks above with the
         # appropriate model name. Additionally, remember to make the requisite
@@ -191,40 +199,25 @@ def calculateNDCG(jsonCollect, model, isUSE):
     coefficients = []
 
     for jsonObject in jsonCollect:
-        stackQuestion = jsonObject['content_wo_code']
-        stackId = jsonObject['q']['value'].replace('https://stackoverflow.com/questions/', '')
+        stackId = jsonObject['id']
         newEmbed = fetchEmbeddingDict(stackId, model)
         if newEmbed == None:
             continue
-        if isUSE:
-            embeddingQuestionArray = newEmbed['content'].numpy()[0]
-        else:
-            embeddingQuestionArray = newEmbed['content']
+        embeddingQuestionArray = newEmbed['content']
         voteOrder = []
         distanceOrder = []
         voteMap = {}
-        i = 1
-        valid = True
-        while valid:
-            try:
-                index = 'answer_' + str(i)
-                answer = jsonObject[index]['value']
-                answerVotes = jsonObject[index + '_votes']['value']
-                if answerVotes == '':
-                    i += 1
-                    continue
-                answerVotes = int(answerVotes)
-                if isUSE:
-                    answerArray = newEmbed[index].numpy()[0]
-                else:
-                    answerArray = newEmbed[index]
-                dist = np.linalg.norm(answerArray - embeddingQuestionArray)**2
-                voteOrder.append((answerVotes, answer))
-                distanceOrder.append((dist, answer))
-                voteMap[answer] = answerVotes
-                i += 1
-            except KeyError as e:
-                valid = False
+        answerCollection = jsonObject['answers']
+        for answer in answerCollection:
+            answerText = answer['text']
+            answerID = answer['id']
+            answerVotes = answer['votes']
+            answerArray = newEmbed[answerID]
+            dist = np.linalg.norm(answerArray-embeddingQuestionArray)**2
+            voteOrder.append((answerVotes, answerText))
+            distanceOrder.append((dist, answerText))
+            voteMap[answerText] = answerVotes
+
         if not voteOrder:
             continue
         voteOrder.sort()
@@ -260,38 +253,23 @@ def calculateMRR(jsonCollect, model, isUSE):
     recipRanks = []
 
     for jsonObject in jsonCollect:
-        stackQuestion = jsonObject['content_wo_code']
-        stackId = jsonObject['q']['value'].replace('https://stackoverflow.com/questions/', '')
+        stackId = jsonObject['id']
         newEmbed = fetchEmbeddingDict(stackId, model)
         if newEmbed == None:
             continue
-        if isUSE:
-            embeddingQuestionArray = newEmbed['content'].numpy()[0]
-        else:
-            embeddingQuestionArray = newEmbed['content']
+        embeddingQuestionArray = newEmbed['content']
         voteOrder = []
         distanceOrder = []
-        i = 1
         valid = True
-        while valid:
-            try:
-                index = 'answer_' + str(i)
-                answer = jsonObject[index]['value']
-                answerVotes = jsonObject[index + '_votes']['value']
-                if answerVotes == '':
-                    i += 1
-                    continue
-                answerVotes = int(answerVotes)
-                if isUSE:
-                    answerArray = newEmbed[index].numpy()[0]
-                else:
-                    answerArray = newEmbed[index]
-                dist = np.linalg.norm(answerArray - embeddingQuestionArray)**2
-                voteOrder.append((answerVotes, answer))
-                distanceOrder.append((dist, answer))
-                i += 1
-            except KeyError as e:
-                valid = False
+        answerCollection = jsonObject['answers']
+        for answer in answerCollection:
+            answerText = answer['text']
+            answerID = answer['id']
+            answerVotes = answer['votes']
+            answerArray = newEmbed[answerID]
+            dist = np.linalg.norm(answerArray-embeddingQuestionArray)**2
+            voteOrder.append((answerVotes, answerText))
+            distanceOrder.append((dist, answerText))
         if not voteOrder:
             continue
         voteOrder.sort()
@@ -311,4 +289,5 @@ def calculateMRR(jsonCollect, model, isUSE):
 
 if __name__ == "__main__":
     stackQandAPath = input("Please enter path to stackoverflow question and answer data")
-    beginAnalysis(stackQandAPath)
+    oldPath = input("Please enter path to legacy data for paired t test calculation.")
+    beginAnalysis(stackQandAPath, oldPath)
