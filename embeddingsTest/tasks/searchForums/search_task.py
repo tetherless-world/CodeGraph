@@ -11,9 +11,16 @@ import pickle
 from sentence_transformers import SentenceTransformer
 import tensorflow as tf
 import tensorflow_hub as hub
+import os
+import sys
 
+
+embed = None
 
 def get_model(embed_type):
+    global embed
+    if embed:
+        return embed
     if embed_type == 'USE':
         model_path = 'https://tfhub.dev/google/universal-sentence-encoder/4'
         embed = hub.load(model_path)
@@ -29,12 +36,12 @@ def get_model(embed_type):
     return embed
 
 
-def embed_questions(queries, embed_type):
+def embed_sentences(sentences, embed_type):
     embed = get_model(embed_type)
     if embed_type == 'USE':
-        sentence_embeddings = embed(queries)
+        sentence_embeddings = embed(sentences)
     else:
-        sentence_embeddings = embed.encode(queries)
+        sentence_embeddings = embed.encode(sentences)
     return sentence_embeddings
 
 
@@ -45,13 +52,12 @@ def run_analysis(top_k, search_file_name, embedding_dict, add_all, embed_type):
         data = json.load(f)
         queries = []
         embeddings = []
-        index = faiss.IndexFlatIP(512)
         all_matches = []
-        all_docs = []
         qids = {}
         for obj in data:
             query = obj['query']
             queries.append(query)
+            all_docs = []
             for match in obj['matches']:
                 qid = match['question_id']
                 # posts get repeated across queries sometimes - to avoid neural
@@ -60,18 +66,32 @@ def run_analysis(top_k, search_file_name, embedding_dict, add_all, embed_type):
                 if qid in qids:
                     continue
                 qids[match['question_id']] = 1
+                content = None
                 if add_all:
-                    all_docs.append(embedding_dict[qid]['all_content'])
+                    content = embedding_dict[qid]['all_content']
                 else:
-                    all_docs.append(embedding_dict[qid]['title'])
+                    content = embedding_dict[qid]['title']
+                # not performing this step seems to cause catastrophic
+                # issues in the np.asarray(embeddings) step further down
+                # suspect something is suboptimal about converting whatever
+                # tensorflow returns into np arrays
+                if embed_type == 'USE':
+                    content = np.asarray(content)
+                embeddings.append(content)
                 all_matches.append((query, match))
-        embeddings = np.asarray(all_docs)
 
+        print('ALL LOADED')
+        queries_embedding = np.asarray(embed_sentences(queries, embed_type))
+        print('queries embedded')
+        embeddings = np.asarray(embeddings)
+        print('numpy array created for main embeddings')
+        
         num_queries = len(queries_embedding)
-        queries_embedding = np.asarray(queries_embedding)
-        index.add(embeddings)
         faiss.normalize_L2(embeddings)
         faiss.normalize_L2(queries_embedding)
+        index = faiss.IndexFlatIP(len(embeddings[0]))
+
+        index.add(embeddings)
         query_distances, query_neighbors = index.search(queries_embedding, top_k)
 
         num_matches_to_text = 0
@@ -91,7 +111,7 @@ def run_analysis(top_k, search_file_name, embedding_dict, add_all, embed_type):
                     ranks.append(search_matches.index(all_matches[k][1]['question_id']))
         print('num of matches to text:' + str(num_matches_to_text))
         print('num queries:' + str(num_queries))
-        print('average overlap with search' + str(num_matches_to_text/(num_queries * top_k)))
+        print('average overlap with search:' + str(num_matches_to_text/(num_queries * top_k)))
         print('mean search rank')
         print(np.mean(np.asarray(ranks)))
 
@@ -102,7 +122,7 @@ if __name__ == '__main__':
                         help='file containing all queries to be run')
     parser.add_argument('--search_file_results', type=str,
                         help='file containing the corpus of search results we need to run on')
-    parser.add_argument('--embedding_dict_file', type=str,
+    parser.add_argument('--embedding_dict_dir', type=str,
                         help='a pickle file containing a dictionary of USE/BERT/ROBERTA embeddings')
     parser.add_argument('--add_all_content', type=str,
                         help='True/False')
@@ -110,9 +130,20 @@ if __name__ == '__main__':
                         help='USE or bert or roberta')
 
     args = parser.parse_args()
-    infile = open(args.embedding_dict, 'rb')
-    embedding_dict = pickle.load(infile)
-    infile.close()
+    embedding_dict = {}
+    """
+    if (args.embed_type == 'USE'):
+        for f in os.listdir(args.embedding_dict_dir):
+            with open(args.embedding_dict_dir + '/' + f, "rb") as x:
+                q_data = pickle.load(x)
+                embedding_dict[f] = q_data
+            x.close()        
+"""
+    for f in os.listdir(args.embedding_dict_dir):
+        with open(args.embedding_dict_dir + '/' + f, "rb") as x:
+            q_data = pickle.load(x)
+            embedding_dict[f] = q_data
+            x.close()        
 
     if args.add_all_content == "True":
         add_all = True
@@ -121,5 +152,5 @@ if __name__ == '__main__':
 
     assert args.embed_type == 'USE' or args.embed_type == 'bert' or args.embed_type == "roberta"
 
-    args = parser.parse_args(args.top_k, args.search_file_results, embedding_dict, add_all, args.embed_type)
+    run_analysis(args.top_k, args.search_file_results, embedding_dict, add_all, args.embed_type)
 
