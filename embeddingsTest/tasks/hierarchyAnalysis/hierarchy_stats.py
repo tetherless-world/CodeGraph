@@ -10,7 +10,7 @@ def build_graph(class2superclasses):
         for line in f:
             arr = line.split(',')
             clazz = arr[0]
-            superclazz = arr[1].substring(len('http://purl.org/twc/graph4code/python/'))
+            superclazz = arr[1][len('http://purl.org/twc/graph4code/python/')]
             if clazz not in classgraph.nodes():
                 classgraph.add_node(clazz)
             if superclazz not in classgraph.nodes():
@@ -25,7 +25,8 @@ def read_valid_classes(classmap, classfail):
     with open(classmap) as f:
         for line in f:
             arr = line.split()
-            realclasses.add(arr[1])
+            if len(arr) > 1:
+                realclasses.add(arr[1])
     with open(classfail) as f:
         for line in f:
             line = line.strip()
@@ -35,7 +36,7 @@ def read_valid_classes(classmap, classfail):
 def evaluate_neighbors(docstring_to_neighbors, docsToClasses, classGraph, real_classes):
     expected = []
     predicted = []
-    counter = []
+    counter = 0
     class2ids = {}
     for key in docstring_to_neighbors:
         if key not in docsToClasses:
@@ -47,7 +48,8 @@ def evaluate_neighbors(docstring_to_neighbors, docsToClasses, classGraph, real_c
         clazzes = docsToClasses[key]
         clazz = None
         for c in clazzes:
-            if c not in real_classes:
+            if c not in real_classes and c not in classGraph.nodes():
+                print('skipping:' + c)
                 continue
             if len(list(nx.neighbors(classGraph, c))) > 0:
                 clazz = c
@@ -106,11 +108,11 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    real_classes = read_valid_classes(args.classmap, args.classfail)
     index, docList, docsToClasses, embeddedDocText, classesToDocs = util.build_index_docs(args.docstrings_file)
     query_distances, query_neighbors = index.search(embeddedDocText, args.top_k)
     docstringsToDocstringNeighbors = util.compute_neighbor_docstrings(query_neighbors, docList)
     classGraph = build_graph(args.class2superclass_file)
-    real_classes = read_valid_classes(args.classmap, args.classfail)
     evaluate_neighbors(docstringsToDocstringNeighbors, docsToClasses, classGraph, real_classes)
 
 
