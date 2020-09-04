@@ -8,6 +8,8 @@ import sys
 import re
 import sys
 from metrics_eval import ranking_metrics
+from utils import util
+
 
 def build_class_mapping(mapPath):
     classMap = {}
@@ -19,48 +21,6 @@ def build_class_mapping(mapPath):
             else:
                 classMap[lineComponents[0]] = lineComponents[1]
     return classMap
-
-def build_index_docs(docPath):
-    embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
-    index = faiss.IndexFlatIP(512)
-    classesToDocs = {}
-    docsToClasses = {}
-    embedList = {}
-    
-    with open(docPath, 'r') as data:
-        jsonCollect = ijson.items(data, 'item')
-        i = 0
-        for jsonObject in jsonCollect:
-            if 'class_docstring' not in jsonObject:
-                continue
-            className = jsonObject['klass']
-            docStringText = jsonObject['class_docstring']
-
-            soup = BeautifulSoup(docStringText, 'html.parser')
-            for code in soup.find_all('code'):
-                code.decompose() # this whole block might be unnecessary
-            docStringText = soup.get_text()
-
-            if docStringText in docsToClasses:
-                docClasses = docsToClasses[ docStringText ]
-                
-                if className in docClasses:
-                    pass
-                    
-                else:
-                    docClasses.append(className)
-
-            else:
-                docsToClasses[ docStringText ] = [ className ]
-
-            classesToDocs[ className ] = docStringText
-            
-    docList = np.array(list(docsToClasses.keys()))
-    embeddedDocText = np.array(embed(docList))
-    faiss.normalize_L2(embeddedDocText)
-    index.add(embeddedDocText)
-    
-    return (index, docList, docsToClasses, embeddedDocText, classesToDocs)
 
 
 def build_static_map(usagePath, docsToClasses):
@@ -113,21 +73,6 @@ def compute_neighbor_docs(query_distances, query_neighbors, index, docList, docs
             classesToNeighbors[ klass ] = allNeighborClasses
 
     return classesToNeighbors
- 
-
-def compute_neighbor_docstrings(query_distances, query_neighbors, docList):
-    docstringsToNeighbors = {}
-    
-    for docStringIndex, embeddedDocStringNeighbors in enumerate(query_neighbors):
-        docString = docList[ docStringIndex ]
-
-        neighborDocstrings = []
-        for neighborDocStringIndex in embeddedDocStringNeighbors:
-            neighborDocstrings.append( docList[ neighborDocStringIndex ] )
-
-        docstringsToNeighbors[ docString ] = neighborDocstrings;
-        
-    return docstringsToNeighbors
 
 
 def compareOverlap(mapTuple, staticMap):
@@ -252,11 +197,11 @@ if __name__ == '__main__':
     classPath = sys.argv[3]
     usagePath = sys.argv[4]
 #    hierarchyMaps = build_sibling_maps(hierarchyPath)
-    (index, docList, docsToClasses, embeddedDocText, classesToDocs) = build_index_docs(docPath)
+    (index, docList, docsToClasses, embeddedDocText, classesToDocs) = util.build_index_docs(docPath)
     top_k = 10
     query_distances, query_neighbors = index.search(embeddedDocText, top_k)
     classesToDocstringNeighbors = compute_neighbor_docs(query_distances, query_neighbors, index, docList, docsToClasses, embeddedDocText)
-    docstringsToDocstringNeighbors = compute_neighbor_docstrings(query_distances, query_neighbors, docList)
+    docstringsToDocstringNeighbors = util.compute_neighbor_docstrings(query_neighbors, docList)
 #    print(str(classesToDocstringNeighbors))
 #    classesToUsageNeighbors = build_static_map(usagePath)
 #    compareOverlap(hierarchyMaps, staticAnalysis)
