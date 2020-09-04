@@ -205,24 +205,27 @@ def evaluate_static_analysis(classesToDocs, docstringsToDocstringNeighbors, usag
                         else:
                             outside = outside + 1
 
-                print(str(thisone) + " " + str(overlap) + " " + str(outside) + " " + str(count))
+                print(str(adjustedLine.group(1)) + " " + str(overlap) + " " + str(outside) + " " + str(count))
 
                 expectedIds = []
-                for n in myneighbors:
+                for n in otherDocstrings:
                     if n in ids:
                         expectedIds.append(ids[n])
                     else:
                         ids[n] = maxId
                         expectedIds.append(maxId)
                         maxId = maxId + 1
-                        
+
+                if len(expectedIds) == 0:
+                    continue
+                
                 if count in expected:
                     expected[count].append(np.array(expectedIds))
                 else:
                     expected[count] = [np.array(expectedIds)]
                     
                 predictedIds = []
-                for n in otherDocstrings:
+                for n in myneighbors:
                     if n in ids:
                         predictedIds.append(ids[n])
                     else:
@@ -241,9 +244,9 @@ def evaluate_static_analysis(classesToDocs, docstringsToDocstringNeighbors, usag
         if i in predicted:
             countExpected.extend(expected[i])
             countPredicted.extend(predicted[i])
+            print("size: " + str(len(countExpected)))
             print(str(i) + ": mrr: " + str(ranking_metrics.mrr(countExpected, countPredicted)))
             print(str(i) + ": map@10: " + str(ranking_metrics.map(countExpected, countPredicted, 10)))
-            print(str(zip(countExpected,countPredicted)))
 
             
 if __name__ == '__main__':
