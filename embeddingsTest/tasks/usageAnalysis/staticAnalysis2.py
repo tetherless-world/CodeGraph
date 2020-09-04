@@ -115,6 +115,21 @@ def compute_neighbor_docs(query_distances, query_neighbors, index, docList, docs
     return classesToNeighbors
  
 
+def compute_neighbor_docstrings(query_distances, query_neighbors, docList):
+    docstringsToNeighbors = {}
+    
+    for docStringIndex, embeddedDocStringNeighbors in enumerate(query_neighbors):
+        docString = docList[ docStringIndex ]
+
+        neighborDocstrings = []
+        for neighborDocStringIndex in embeddedDocStringNeighbors:
+            neighborDocstrings.append( docList[ neighborDocStringIndex ] )
+
+        docstringsToNeighbors[ docString ] = neighborDocstrings;
+        
+    return docstringsToNeighbors
+
+
 def compareOverlap(mapTuple, staticMap):
     childToParentMap = mapTuple[0]
     parentToChildMap = mapTuple[1]
@@ -157,7 +172,7 @@ def compareOverlap(mapTuple, staticMap):
         overlapPercents.append(overlapPercent)
     print("Average overlap is", sum(overlapPercents)/len(overlapPercents))
 
-def evaluate_static_analysis(classesToDocstringNeighbors, usagePath):
+def evaluate_static_analysis(classesToDocs, docstringsToDocstringNeighbors, usagePath):
     with open(usagePath, 'r') as staticData:
         maxCount = 0
         maxId = 0
@@ -174,19 +189,21 @@ def evaluate_static_analysis(classesToDocstringNeighbors, usagePath):
             count = int(adjustedLine.group(2))
             if count > maxCount:
                 maxCount = count
-                
-            thisone = adjustedLine.group(1)
-            if thisone in classesToDocstringNeighbors:
-                myneighbors = classesToDocstringNeighbors[ thisone ]
 
+            if adjustedLine.group(1) in classesToDocs:
+                otherDocstrings = set()
+                thisone = classesToDocs[ adjustedLine.group(1) ]
+                myneighbors = docstringsToDocstringNeighbors[ thisone ]
                 overlap = 0
                 outside = 0
                 otherClasses = adjustedLine.group(3).strip().split(', ')
                 for otherClass in otherClasses:
-                    if otherClass in myneighbors:
-                        overlap = overlap + 1
-                    else:
-                        outside = outside + 1
+                    if otherClass in classesToDocs:
+                        otherDocstrings.add(classesToDocs[otherClass])
+                        if classesToDocs[otherClass] in myneighbors:
+                            overlap = overlap + 1
+                        else:
+                            outside = outside + 1
 
                 print(str(thisone) + " " + str(overlap) + " " + str(outside) + " " + str(count))
 
@@ -205,7 +222,7 @@ def evaluate_static_analysis(classesToDocstringNeighbors, usagePath):
                     expected[count] = [np.array(expectedIds)]
                     
                 predictedIds = []
-                for n in otherClasses:
+                for n in otherDocstrings:
                     if n in ids:
                         predictedIds.append(ids[n])
                     else:
@@ -224,7 +241,9 @@ def evaluate_static_analysis(classesToDocstringNeighbors, usagePath):
         if i in predicted:
             countExpected.extend(expected[i])
             countPredicted.extend(predicted[i])
-            print(str(i) + ": " + str(ranking_metrics.mrr(countExpected, countPredicted)))
+            print(str(i) + ": mrr: " + str(ranking_metrics.mrr(countExpected, countPredicted)))
+            print(str(i) + ": map@10: " + str(ranking_metrics.map(countExpected, countPredicted, 10)))
+            print(str(zip(countExpected,countPredicted)))
 
             
 if __name__ == '__main__':
@@ -234,11 +253,13 @@ if __name__ == '__main__':
     usagePath = sys.argv[4]
 #    hierarchyMaps = build_sibling_maps(hierarchyPath)
     (index, docList, docsToClasses, embeddedDocText, classesToDocs) = build_index_docs(docPath)
-    top_k = 50
+    top_k = 10
     query_distances, query_neighbors = index.search(embeddedDocText, top_k)
     classesToDocstringNeighbors = compute_neighbor_docs(query_distances, query_neighbors, index, docList, docsToClasses, embeddedDocText)
+    docstringsToDocstringNeighbors = compute_neighbor_docstrings(query_distances, query_neighbors, docList)
+#    print(str(classesToDocstringNeighbors))
 #    classesToUsageNeighbors = build_static_map(usagePath)
 #    compareOverlap(hierarchyMaps, staticAnalysis)
 #    classMap = build_class_mapping(classPath)
-    evaluate_static_analysis(classesToDocstringNeighbors, usagePath);
+    evaluate_static_analysis(classesToDocs, docstringsToDocstringNeighbors, usagePath);
 
