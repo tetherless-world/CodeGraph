@@ -126,7 +126,8 @@ def calculatePairedTTest(jsonCollect, model, embed_dir):
         qUrl = jsonObject['url']
         urlMapping[qUrl] = jsonObject
         urlList.append(qUrl)
-
+    number_posts_with_stackOverflow_links = 0
+    num_stackOverflow_links = []
     for jsonObject in jsonCollect:
         qUrl = jsonObject['url']
         all_content = jsonObject['text:']
@@ -143,6 +144,9 @@ def calculatePairedTTest(jsonCollect, model, embed_dir):
         # q_urls = [url for url in urls if 'https://stackoverflow.com/questions/' in url]
         # urlContent = jsonObject['stackoverflow_urls']
         urlContent = list(filtered_urls)
+        if len(filtered_urls) > 0:
+            number_posts_with_stackOverflow_links += 1
+            num_stackOverflow_links.append(len(filtered_urls))
         for potentialUrl in urlContent:
             urlMatch = re.search(rPattern, potentialUrl)
             if urlMatch == None:
@@ -215,7 +219,8 @@ def calculatePairedTTest(jsonCollect, model, embed_dir):
     results = stat.ttest_rel(foreignDists, linkedDists)
     random.setstate(initialRand)
     print('Result of T statistic calculation is:', results)
-
+    print('Number of forum posts with stackoverflow links = ', number_posts_with_stackOverflow_links)
+    print('Average number of links per post: ', statistics.mean(num_stackOverflow_links))
 
 # function to calculate NDCG for question and answer rankings
 def calculateNDCG(jsonCollect, model, embed_dir):
