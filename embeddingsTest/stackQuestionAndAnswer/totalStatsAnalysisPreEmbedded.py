@@ -164,12 +164,12 @@ def calculatePairedTTest(jsonCollect, model, embed_dir):
             if post1NewEmbed == None or post2NewEmbed == None:
                 continue
 
-            if model == 'https://tfhub.dev/google/universal-sentence-encoder/4':
-                post1EmbeddingArray = post1NewEmbed['content'].numpy()[0]
-                post2EmbeddingArray = post2NewEmbed['content'].numpy()[0]
-            else:
-                post1EmbeddingArray = post1NewEmbed['content']
-                post2EmbeddingArray = post2NewEmbed['content']
+            # if model == 'https://tfhub.dev/google/universal-sentence-encoder/4':
+            #     post1EmbeddingArray = post1NewEmbed['content'] .numpy()[0]
+            #     post2EmbeddingArray = post2NewEmbed['content'].numpy()[0]
+            # else:
+            post1EmbeddingArray = post1NewEmbed['content']
+            post2EmbeddingArray = post2NewEmbed['content']
             
             linkedDist = np.linalg.norm(post1EmbeddingArray - post2EmbeddingArray)**2
             if linkedDist <= .001:
@@ -193,12 +193,12 @@ def calculatePairedTTest(jsonCollect, model, embed_dir):
             if post3NewEmbed == None or post4NewEmbed == None:
                 continue
 
-            if model == 'https://tfhub.dev/google/universal-sentence-encoder/4':
-                post3EmbeddingArray = post3NewEmbed['content'].numpy()[0]
-                post4EmbeddingArray = post4NewEmbed['content'].numpy()[0]
-            else:
-                post3EmbeddingArray = post3NewEmbed['content']
-                post4EmbeddingArray = post4NewEmbed['content']
+            # if model == 'https://tfhub.dev/google/universal-sentence-encoder/4':
+            #     post3EmbeddingArray = post3NewEmbed['content'].numpy()[0]
+            #     post4EmbeddingArray = post4NewEmbed['content'].numpy()[0]
+            # else:
+            post3EmbeddingArray = post3NewEmbed['content']
+            post4EmbeddingArray = post4NewEmbed['content']
 
             post1And3Dist = np.linalg.norm(post1EmbeddingArray - post3EmbeddingArray)**2
             post2And4Dist = np.linalg.norm(post2EmbeddingArray - post4EmbeddingArray)**2
