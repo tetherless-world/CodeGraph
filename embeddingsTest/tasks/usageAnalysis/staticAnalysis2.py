@@ -207,7 +207,7 @@ if __name__ == '__main__':
 #    hierarchyMaps = build_sibling_maps(hierarchyPath)
     (index, docList, docsToClasses, embeddedDocText, classesToDocs) = util.build_index_docs(docPath, embedType)
     top_k = 10
-    query_distances, query_neighbors = index.search(embeddedDocText, top_k)
+    query_distances, query_neighbors = index.search(embeddedDocText, top_k+1)
     classesToDocstringNeighbors = compute_neighbor_docs(query_distances, query_neighbors, index, docList, docsToClasses, embeddedDocText)
     docstringsToDocstringNeighbors = util.compute_neighbor_docstrings(query_neighbors, docList)
 #    print(str(classesToDocstringNeighbors))

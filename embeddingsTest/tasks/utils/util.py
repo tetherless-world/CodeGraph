@@ -83,10 +83,13 @@ def compute_neighbor_docstrings(query_neighbors, docList):
     for docStringIndex, embeddedDocStringNeighbors in enumerate(query_neighbors):
         docString = docList[docStringIndex]
 
+        i = 0
         neighborDocstrings = []
         for neighborDocStringIndex in embeddedDocStringNeighbors:
-            neighborDocstrings.append(docList[neighborDocStringIndex])
+            if i != 0:
+                neighborDocstrings.append(docList[neighborDocStringIndex])
+            i = i + 1
 
         docstringsToNeighbors[docString] = neighborDocstrings
-
+        
     return docstringsToNeighbors
