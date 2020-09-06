@@ -10,6 +10,7 @@ import sys
 from metrics_eval import ranking_metrics
 from utils import util
 
+embedType = 'USE'
 
 def build_class_mapping(mapPath):
     classMap = {}
@@ -195,12 +196,16 @@ def evaluate_static_analysis(classesToDocs, docstringsToDocstringNeighbors, usag
 
             
 if __name__ == '__main__':
+    if len(sys.argv) > 5:
+        embedType = sys.argv[5]
+        
+    util.get_model(embedType)
     hierarchyPath = sys.argv[1]
     docPath = sys.argv[2]
     classPath = sys.argv[3]
     usagePath = sys.argv[4]
 #    hierarchyMaps = build_sibling_maps(hierarchyPath)
-    (index, docList, docsToClasses, embeddedDocText, classesToDocs) = util.build_index_docs(docPath)
+    (index, docList, docsToClasses, embeddedDocText, classesToDocs) = util.build_index_docs(docPath, embedType)
     top_k = 10
     query_distances, query_neighbors = index.search(embeddedDocText, top_k)
     classesToDocstringNeighbors = compute_neighbor_docs(query_distances, query_neighbors, index, docList, docsToClasses, embeddedDocText)
