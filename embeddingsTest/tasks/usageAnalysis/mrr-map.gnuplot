@@ -1,5 +1,6 @@
 set terminal pdf
 set xlabel "minimum number of shared call sequences"
+set xrange [2:105]
 
 set key outside top
 
