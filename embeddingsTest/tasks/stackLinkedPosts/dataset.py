@@ -20,8 +20,8 @@ def process(post, postHtml):
     soup = BeautifulSoup(postHtml, 'html.parser')
     for a in soup.find_all('a'):
         link = a.get( 'href' )
-        if link.find("stackoverflow.com/questions") >= 0:
-            url = pattern.search(link)
+        url = pattern.search(link)
+        if url is not None:
             id = url.group(1)
             if (id in question_ids):
                 links.append(link)
