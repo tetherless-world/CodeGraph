@@ -19,7 +19,7 @@ def process(post, postHtml):
             
     soup = BeautifulSoup(postHtml, 'html.parser')
     for a in soup.find_all('a'):
-        if a is not None:
+        try:
             link = a.get( 'href' )
             url = pattern.search(link)
             if url is not None:
@@ -27,6 +27,8 @@ def process(post, postHtml):
                 if (id in question_ids):
                     links.append(link)
                     a.decompose()
+        except:
+            pass
             
     newPostHtml = soup.get_text()
             
