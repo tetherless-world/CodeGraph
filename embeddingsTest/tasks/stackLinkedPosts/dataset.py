@@ -19,13 +19,14 @@ def process(post, postHtml):
             
     soup = BeautifulSoup(postHtml, 'html.parser')
     for a in soup.find_all('a'):
-        link = a.get( 'href' )
-        url = pattern.search(link)
-        if url is not None:
-            id = url.group(1)
-            if (id in question_ids):
-                links.append(link)
-                a.decompose()
+        if a is not None:
+            link = a.get( 'href' )
+            url = pattern.search(link)
+            if url is not None:
+                id = url.group(1)
+                if (id in question_ids):
+                    links.append(link)
+                    a.decompose()
             
     newPostHtml = soup.get_text()
             
