@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import sys
 import json
 import re
+from random import randrange
 
 question_ids = set()
 linked_ids = set()
@@ -25,13 +26,18 @@ def process(post, postHtml):
             link = a.get( 'href' )
             url = pattern.search(link)
             if url is not None:
-                tid = url.group(1)
+                tid = int(url.group(1))
                 if (tid in question_ids):
                     links.append(link)
                     a.decompose()
-                    sid = post['id:']
+                    print("ADDING " + str(tid))
+                    if 'id:' in post:
+                        sid = int(post['id:'])
+                    else:
+                        sid = int(post['id'])
                     linked_ids.add(int(sid))
                     linked_ids.add(int(tid))
+                    print("ADDING " + str( (sid, tid, True) ))
                     test_set.append( (sid, tid, True) )
         except:
             pass
@@ -60,7 +66,12 @@ if __name__ == '__main__':
     dataset(sys.argv[1], get_ids)
     dataset(sys.argv[1], process)
 
+    print(linked_ids)
     unrelated = list(question_ids.difference(linked_ids))
     for id in linked_ids:
         test_set.append((id, unrelated[randrange(0, len(unrelated), 1)], False))
-        test_set.append((unrelated[randrange(0, len(unrelated), 1), id], False))
+        test_set.append((unrelated[randrange(0, len(unrelated), 1)], id, False))
+
+    print(test_set)
+    print(question_ids)
+    print(linked_ids)
