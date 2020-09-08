@@ -3,12 +3,14 @@ from bs4 import BeautifulSoup
 import sys
 import json
 import re
-from random import randrange
+from random import randrange, random
 
 question_ids = set()
 linked_ids = set()
 unlinked_ids = []
 test_set = []
+
+printed_ids = set()
 
 first = True
 
@@ -49,6 +51,8 @@ def process(post, postHtml, ds):
 
 
     if len(links) > 0:
+        printed_ids.add(sid)
+        
         newPostHtml = soup.get_text()
             
         out = { "id": sid, "text": newPostHtml, "related": links }
@@ -64,7 +68,7 @@ def process(post, postHtml, ds):
 def other_ids(post, postHtml, ds):
     global first
     id = get_id(post)
-    if (id in unlinked_ids):
+    if (id in unlinked_ids) or (id in linked_ids and not id in printed_ids):
             
         out = { "id": id, "text": postHtml, "related": [] }
 
@@ -91,16 +95,21 @@ if __name__ == '__main__':
         ds.write("[")
         dataset(sys.argv[1], get_ids)
         dataset(sys.argv[1], lambda x, y: process(x, y, ds))
-        
+
+        falses = []
         unrelated = list(question_ids.difference(linked_ids))
-        for id in linked_ids:
-            dst = unrelated[randrange(0, len(unrelated), 1)]
-            src = unrelated[randrange(0, len(unrelated), 1)]
-            test_set.append((id, dst, False))
-            test_set.append((src, id, False))
-            unlinked_ids.append(src)
-            unlinked_ids.append(dst)
-            
+        for x in test_set:
+            if random() > .5:
+                src = unrelated[randrange(0, len(unrelated), 1)]
+                falses.append((src, x[1], False))
+                unlinked_ids.append(src)
+            else:
+                dst = unrelated[randrange(0, len(unrelated), 1)]
+                falses.append((x[0], dst, False))
+                unlinked_ids.append(dst)
+
+        test_set.extend(falses)
+                            
         dataset(sys.argv[1], lambda x, y: other_ids(x, y, ds))
         ds.write("]")
 
