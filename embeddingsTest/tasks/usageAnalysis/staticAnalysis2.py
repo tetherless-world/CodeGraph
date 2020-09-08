@@ -9,6 +9,7 @@ import re
 import sys
 from metrics_eval import ranking_metrics
 from utils import util
+import scipy
 
 embedType = 'USE'
 
@@ -191,8 +192,15 @@ def evaluate_static_analysis(classesToDocs, docstringsToDocstringNeighbors, usag
             countExpected.extend(expected[i])
             countPredicted.extend(predicted[i])
             print("size: " + str(len(countExpected)))
-            print(str(i) + ": mrr: " + str(ranking_metrics.mrr(countExpected, countPredicted)))
-            print(str(i) + ": map@10: " + str(ranking_metrics.map(countExpected, countPredicted, 10)))
+            mrr_elts = []
+            map_elts = []
+            for i in range(0, len(countExpected)):
+                mrr_elts.append(ranking_metrics.mrr(countExpected[i], countPredicted[i]))
+                map_elts.append(ranking_metrics.map(countExpected[i], countPredicted[i], 10))
+            print(str(i) + ": mrr: " + str(np.array(mrr_elts).mean))
+            print(str(i) + ": map@10: " + str(np.array(mmap_elts).mean))
+            print(str(i) + ": mrrse: " + str(scipy.stats.sem(mrr_elts)))
+            print(str(i) + ": mapse: " + str(scipy.stats.sem(map_elts)))
 
             
 if __name__ == '__main__':
