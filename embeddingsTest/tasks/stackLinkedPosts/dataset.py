@@ -4,11 +4,13 @@ import sys
 import json
 import re
 
-question_ids = []
+question_ids = set()
+linked_ids = set()
+test_set = []
 
 def get_ids(post, postHtml):
     if ('id:' in post):
-        question_ids.append(post['id:'])
+        question_ids.add(int(post['id:']))
 
 
 matchString = 'stackoverflow[.]com[/]questions[/](\d+)[/]'
@@ -23,10 +25,14 @@ def process(post, postHtml):
             link = a.get( 'href' )
             url = pattern.search(link)
             if url is not None:
-                id = url.group(1)
-                if (id in question_ids):
+                tid = url.group(1)
+                if (tid in question_ids):
                     links.append(link)
                     a.decompose()
+                    sid = post['id:']
+                    linked_ids.add(int(sid))
+                    linked_ids.add(int(tid))
+                    test_set.append( (sid, tid, True) )
         except:
             pass
             
@@ -53,4 +59,8 @@ def dataset(postsPath, process):
 if __name__ == '__main__':
     dataset(sys.argv[1], get_ids)
     dataset(sys.argv[1], process)
-    print(question_ids)
+
+    unrelated = list(question_ids.difference(linked_ids))
+    for id in linked_ids:
+        test_set.append((id, unrelated[randrange(0, len(unrelated), 1)], False))
+        test_set.append((unrelated[randrange(0, len(unrelated), 1), id], False))
