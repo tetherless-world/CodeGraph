@@ -2,6 +2,7 @@ from utils import util
 import sys 
 import ijson
 import numpy as np
+import scipy
 
 embedType = 'USE'
 
