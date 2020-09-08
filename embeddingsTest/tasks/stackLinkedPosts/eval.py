@@ -3,6 +3,7 @@ import sys
 import ijson
 import numpy as np
 import scipy
+import json
 
 embedType = 'USE'
 
@@ -50,11 +51,19 @@ if __name__ == '__main__':
 
     dataSetPath = sys.argv[1]
     testSetPath = sys.argv[2]
-
+    embedType = sys.argv[3]
+    
     get_ids(testSetPath)
 
     (order, embeddings) = get_embeddings(dataSetPath)
 
     check(testSetPath, order, embeddings)
     
+    with open(sys.argv[4], 'w') as trueFile:
+        trueFile.write(json.dumps(trues, indent=2))
+
+    with open(sys.argv[5], 'w') as falseFile:
+        falseFile.write(json.dumps(falses, indent=2))
+
     print(scipy.stats.ttest_rel(trues, falses))
+
