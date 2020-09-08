@@ -39,6 +39,8 @@ def check(testSetPath, order, embeddings):
 
             
 if __name__ == '__main__':
+    embedType = sys.argv[3]
+
     dataSetPath = sys.argv[1]
     testSetPath = sys.argv[2]
 
