@@ -7,17 +7,27 @@ from random import randrange
 
 question_ids = set()
 linked_ids = set()
+unlinked_ids = []
 test_set = []
 
+first = True
+
+def get_id(post):
+  if 'id:' in post:
+      return int(post['id:'])
+  else:
+      return int(post['id'])
+
+  
 def get_ids(post, postHtml):
-    if ('id:' in post):
-        question_ids.add(int(post['id:']))
+    question_ids.add(get_id(post))
 
 
 matchString = 'stackoverflow[.]com[/]questions[/](\d+)[/]'
 pattern = re.compile(matchString)
 
-def process(post, postHtml):
+def process(post, postHtml, ds):
+    global first
     links = []
             
     soup = BeautifulSoup(postHtml, 'html.parser')
@@ -30,27 +40,42 @@ def process(post, postHtml):
                 if (tid in question_ids):
                     links.append(link)
                     a.decompose()
-                    print("ADDING " + str(tid))
-                    if 'id:' in post:
-                        sid = int(post['id:'])
-                    else:
-                        sid = int(post['id'])
+                    sid = get_id(post)
                     linked_ids.add(int(sid))
                     linked_ids.add(int(tid))
-                    print("ADDING " + str( (sid, tid, True) ))
                     test_set.append( (sid, tid, True) )
         except:
             pass
-            
-    newPostHtml = soup.get_text()
-            
-    out = { "text": newPostHtml, "related": links }
-    
-    print(json.dumps(out, sort_keys=True, indent=4))
 
+
+    if len(links) > 0:
+        newPostHtml = soup.get_text()
+            
+        out = { "id": sid, "text": newPostHtml, "related": links }
+
+        if first:
+            first = False
+        else:
+            ds.write(',')
+        ds.write(json.dumps(out, sort_keys=True, indent=4))
     
+
+
+def other_ids(post, postHtml, ds):
+    global first
+    id = get_id(post)
+    if (id in unlinked_ids):
+            
+        out = { "id": id, "text": postHtml, "related": [] }
+
+        if first:
+            first = False
+        else:
+            ds.write(',')
+        ds.write(json.dumps(out, sort_keys=True, indent=4))
+
+            
 def dataset(postsPath, process):
-    print("[")
     with open(postsPath, 'r') as posts:
         for post in ijson.items(posts, "item"):
             postHtml = post['text:']
@@ -60,18 +85,24 @@ def dataset(postsPath, process):
             for answer in post['answers']:
                 process(answer, answer['text'])
                 
-    print("]")
 
 if __name__ == '__main__':
-    dataset(sys.argv[1], get_ids)
-    dataset(sys.argv[1], process)
+    with open(sys.argv[2], 'w') as ds:
+        ds.write("[")
+        dataset(sys.argv[1], get_ids)
+        dataset(sys.argv[1], lambda x, y: process(x, y, ds))
+        
+        unrelated = list(question_ids.difference(linked_ids))
+        for id in linked_ids:
+            dst = unrelated[randrange(0, len(unrelated), 1)]
+            src = unrelated[randrange(0, len(unrelated), 1)]
+            test_set.append((id, dst, False))
+            test_set.append((src, id, False))
+            unlinked_ids.append(src)
+            unlinked_ids.append(dst)
+            
+        dataset(sys.argv[1], lambda x, y: other_ids(x, y, ds))
+        ds.write("]")
 
-    print(linked_ids)
-    unrelated = list(question_ids.difference(linked_ids))
-    for id in linked_ids:
-        test_set.append((id, unrelated[randrange(0, len(unrelated), 1)], False))
-        test_set.append((unrelated[randrange(0, len(unrelated), 1)], id, False))
-
-    print(test_set)
-    print(question_ids)
-    print(linked_ids)
+    with open(sys.argv[3], 'w') as ts:
+        ts.write(json.dumps(test_set, indent=4))
