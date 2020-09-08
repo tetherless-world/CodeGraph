@@ -3,24 +3,27 @@ import argparse
 import networkx as nx
 from metrics_eval import ranking_metrics
 import numpy as np
+import scipy
 
-def build_graph(class2superclasses):
+def build_graph(class2superclasses, valid_classes):
     classgraph = nx.Graph()
     with open(class2superclasses) as f:
         for line in f:
             arr = line.split(',')
-            clazz = arr[0]
+            clazz = arr[0].strip()
             if len(arr[1]) < len('http://purl.org/twc/graph4code/python/'):
                 continue
-            superclazz = arr[1][len('http://purl.org/twc/graph4code/python/'):]
+            superclazz = arr[1][len('http://purl.org/twc/graph4code/python/'):].strip()
+            if clazz not in valid_classes or superclazz not in valid_classes:
+                continue
             if clazz not in classgraph.nodes():
                 classgraph.add_node(clazz)
             if superclazz not in classgraph.nodes():
                 classgraph.add_node(superclazz)
-            superclazz = superclazz.strip()
             if superclazz != 'object':
                 classgraph.add_edge(clazz, superclazz)
                 #print('added edge:' + clazz + ' ->' + superclazz)
+    print('graph has nodes:' + str(len(list(classgraph.nodes()))))
     f.close()
     return classgraph
 
@@ -38,9 +41,8 @@ def read_valid_classes(classmap, classfail):
     return realclasses
 
 def evaluate_neighbors(docstring_to_neighbors, docsToClasses, classGraph, real_classes):
-    expected = []
-    expected_mrr_map = []
-    predicted = []
+    mrr = []
+    ndcg = []
     counter = 0
     class2ids = {}
     num_queries = 0
@@ -117,31 +119,37 @@ def evaluate_neighbors(docstring_to_neighbors, docsToClasses, classGraph, real_c
         if len(test_dist) == 0:
             no_related_classes_found += 1
             continue
+        
         e = p.copy()
         e.sort(key=lambda x:x[1], reverse=True)
-        e_mrr_map = []
-        for x in e:
-            if x[1] > 0:
-                e_mrr_map.append(x[0])
         p = [x[0] for x in p]
-        expected.append(e)
-        predicted.append(p)
-        expected_mrr_map.append(e_mrr_map)
-        
-    expected = np.array(expected)
-    predicted = np.array(predicted)
-    expected_mrr_map = np.array(expected_mrr_map)
+        e_mrr_map = [x[0] for x in e if x[1] > 0]
+        ndcg_ind = ranking_metrics.ndcg(np.array([e]), np.array([p]), 10)
+        print(e)
+        print(p)
+        print('ndcg:' + str(ndcg_ind))
+        ndcg.append(ndcg_ind)
+        print(e_mrr_map)
+        print(p)
+        mrr_ind = ranking_metrics.mrr(np.array([e_mrr_map]), np.array([p]))
+        print('mrr: ' + str(mrr_ind))
+        mrr.append(mrr_ind)
+
+    ndcg_avg = np.array(ndcg).mean()
+    mrr_avg = np.array(mrr).mean()
     """
     print('expected_ncdg')
     print(expected)
     print('expected')
     print(expected_mrr_map)
     print('predicted')
-    print(predicted) """
-    print('ndcg:' + str(ranking_metrics.ndcg(expected, predicted, 10)))
-    #print('mrr: ' + str(ranking_metrics.mrr(expected_mrr_map, predicted)))
-    #print('map@10: ' + str(ranking_metrics.map(expected_mrr_map, predicted, 10)))
+    print(predicted) """ 
+    print('ndcg:' + str(ndcg_avg))
+    print('mrr: ' + str(mrr_avg))
+    print('se_ndcg:' + str(scipy.stats.sem(ndcg)))
+    print('se_mrr:' + str(scipy.stats.sem(mrr)))
     print('total queries with some related class: ' + str(((num_queries - no_related_classes_found)/num_queries)))
+    print('total num queries:' + str(num_queries))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Hierarchy prediction based on embeddings')
@@ -161,9 +169,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     real_classes = read_valid_classes(args.classmap, args.classfail)
-    index, docList, docsToClasses, embeddedDocText, classesToDocs = util.build_index_docs(args.docstrings_file)
+    index, docList, docsToClasses, embeddedDocText, classesToDocs = util.build_index_docs(args.docstrings_file, args.embed_type, real_classes)
     query_distances, query_neighbors = index.search(embeddedDocText, args.top_k + 1)
     docstringsToDocstringNeighbors = util.compute_neighbor_docstrings(query_neighbors, docList)
-    classGraph = build_graph(args.class2superclass_file)
+    classGraph = build_graph(args.class2superclass_file, real_classes)
     evaluate_neighbors(docstringsToDocstringNeighbors, docsToClasses, classGraph, real_classes)
-
