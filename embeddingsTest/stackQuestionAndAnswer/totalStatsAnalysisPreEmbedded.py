@@ -4,7 +4,7 @@ import numpy as np
 from bs4 import BeautifulSoup
 import sys
 import re
-import math
+import math, scipy
 from sentence_transformers import SentenceTransformer
 import random
 import statistics
@@ -274,6 +274,7 @@ def calculateNDCG(jsonCollect, model, embed_dir):
                 nDCG = workingDCG/workingIDCG
                 coefficients.append(nDCG)
     fullNDCG = sum(coefficients)/len(coefficients)
+    print('NDCG: standard error of the mean ', stat.sem(coefficients))
     print("Average NDCG:", fullNDCG)
 
 
@@ -316,6 +317,7 @@ def calculateMRR(jsonCollect, model, embed_dir):
                     recipRanks.append(reciprocal)
                     break
     meanRecipRank = sum(recipRanks)/len(recipRanks)
+    print('MRR: standard error of the mean ', stat.sem(recipRanks))
     print("Mean reciprocal rank is:", meanRecipRank)
 
 if __name__ == "__main__":
