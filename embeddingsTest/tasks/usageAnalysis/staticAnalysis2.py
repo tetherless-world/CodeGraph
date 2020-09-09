@@ -194,14 +194,27 @@ def evaluate_static_analysis(classesToDocs, docstringsToDocstringNeighbors, usag
             print("size: " + str(len(countExpected)))
             mrr_elts = []
             map_elts = []
+            mrr_elts_some = []
+            map_elts_some = []
+            empty = 0
             for i in range(0, len(countExpected)):
+                if len(list(set(countExpected[i]) & set(countPredicted[i]))) == 0:
+                    empty = empty + 1
+                else:
+                    mrr_elts_some.append(ranking_metrics.mrr(countExpected[i], countPredicted[i]))
+                    map_elts_some.append(ranking_metrics.map(countExpected[i], countPredicted[i], 10))
                 mrr_elts.append(ranking_metrics.mrr(countExpected[i], countPredicted[i]))
                 map_elts.append(ranking_metrics.map(countExpected[i], countPredicted[i], 10))
-            print(str(i) + ": mrr: " + str(np.array(mrr_elts).mean))
-            print(str(i) + ": map@10: " + str(np.array(mmap_elts).mean))
+            print(str(i) + ": mrr: " + str(np.array(mrr_elts).mean()))
+            print(str(i) + ": map@10: " + str(np.array(mmap_elts).mean()))
             print(str(i) + ": mrrse: " + str(scipy.stats.sem(mrr_elts)))
             print(str(i) + ": mapse: " + str(scipy.stats.sem(map_elts)))
-
+            print(str(i) + ": mrr_some: " + str(np.array(mrr_elts_some).mean()))
+            print(str(i) + ": map@10_some: " + str(np.array(mmap_elts_some).mean()))
+            print(str(i) + ": mrrse_some: " + str(scipy.stats.sem(mrr_elts_some)))
+            print(str(i) + ": mapse_some: " + str(scipy.stats.sem(map_elts_some)))
+            print(str(i) + ": empty " + str(empty))
+            
             
 if __name__ == '__main__':
     if len(sys.argv) > 5:
