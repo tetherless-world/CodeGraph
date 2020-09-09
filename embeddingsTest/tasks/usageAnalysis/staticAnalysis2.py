@@ -194,11 +194,11 @@ def evaluate_static_analysis(classesToDocs, docstringsToDocstringNeighbors, usag
             print("size: " + str(len(countExpected)))
             mrr_elts = []
             map_elts = []
-            for i in range(0, len(countExpected)):
-                mrr_elts.append(ranking_metrics.mrr(countExpected[i], countPredicted[i]))
-                map_elts.append(ranking_metrics.map(countExpected[i], countPredicted[i], 10))
-            print(str(i) + ": mrr: " + str(np.array(mrr_elts).mean))
-            print(str(i) + ": map@10: " + str(np.array(mmap_elts).mean))
+            for j in range(0, len(countExpected)):
+                mrr_elts.append(ranking_metrics.mrr(countExpected[j], countPredicted[j]))
+                map_elts.append(ranking_metrics.map(countExpected[j], countPredicted[j], 10))
+            print(str(i) + ": mrr: " + str(np.array(mrr_elts).mean()))
+            print(str(i) + ": map@10: " + str(np.array(map_elts).mean()))
             print(str(i) + ": mrrse: " + str(scipy.stats.sem(mrr_elts)))
             print(str(i) + ": mapse: " + str(scipy.stats.sem(map_elts)))
 
