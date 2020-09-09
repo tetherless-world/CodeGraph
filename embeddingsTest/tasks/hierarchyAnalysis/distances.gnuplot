@@ -4,7 +4,7 @@ set logscale y
 
 set border 3
 
-set ylabel "Number of post pairs"
+set ylabel "Number of docstring pairs"
 set xlabel "Distance by USE embeddings"
 
 # Add a vertical dotted line at x=0 to show centre (mean) of distribution.
