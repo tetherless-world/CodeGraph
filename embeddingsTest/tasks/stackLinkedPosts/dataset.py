@@ -7,7 +7,7 @@ from random import randrange, random
 
 question_ids = set()
 linked_ids = set()
-unlinked_ids = []
+unlinked_ids = set()
 test_set = []
 
 printed_ids = set()
@@ -102,11 +102,11 @@ if __name__ == '__main__':
             if random() > .5:
                 src = unrelated[randrange(0, len(unrelated), 1)]
                 falses.append((src, x[1], False))
-                unlinked_ids.append(src)
+                unlinked_ids.add(src)
             else:
                 dst = unrelated[randrange(0, len(unrelated), 1)]
                 falses.append((x[0], dst, False))
-                unlinked_ids.append(dst)
+                unlinked_ids.add(dst)
 
         test_set.extend(falses)
                             
