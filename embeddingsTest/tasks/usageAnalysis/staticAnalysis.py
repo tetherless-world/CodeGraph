@@ -6,7 +6,7 @@ import numpy as np
 from bs4 import BeautifulSoup
 import sys
 import re
-
+import sys
 
 def build_class_mapping(mapPath):
     classMap = {}
@@ -63,7 +63,7 @@ def build_index_docs(docPath):
         return (index, docMessages, embeddingtolabelmap)
 
 
-def build_static_map(usagePath):
+def build_static_map(usageData):
     staticMap = {}
     with open(usageData, 'r') as staticData:
         matchString = '(.+) (\d+) \[(.+)\]'
@@ -230,10 +230,10 @@ def compareOverlap(mapTuple, staticMap):
 
 
 if __name__ == '__main__':
-    hierarchyPath = input("Please enter path to class hierarchy data.")
-    docPath = input("Please enter path to docstrings dataset.")
-    classPath = input("Please enter path to old to new class conversion.")
-    usagePath = input("Please enter path to usage data.")
+    hierarchyPath = sys.argv[1]
+    docPath = sys.argv[2]
+    classPath = sys.argv[3]
+    usagePath = sys.argv[4]
     hierarchyMaps = build_sibling_maps(hierarchyPath)
     dataTuple = build_index_docs(docPath)
     staticAnalysis = build_static_map(usagePath)

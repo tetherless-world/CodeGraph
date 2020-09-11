@@ -85,6 +85,7 @@ if __name__ == '__main__':
     distances = []
     lengths = []
     for length in len_related_classes:
+        len_distance = []
         for path in len_related_classes[length]:
             source = path[0]
             target = path[1]
@@ -97,6 +98,12 @@ if __name__ == '__main__':
             dist = scipy.spatial.distance.cdist(source_embedding, target_embedding, metric='cosine')
             lengths.append(length)
             distances.append(dist[0][0])
+            len_distance.append(dist[0][0])
+        with open(str(length) + '_distance.txt', 'w') as f:
+            for x in len_distance:
+                f.write(str(x) + '\n')
+            f.close()
+
     print('sample size')
     print(len(distances))
     corr, p_value = scipy.stats.pearsonr(lengths, distances)
