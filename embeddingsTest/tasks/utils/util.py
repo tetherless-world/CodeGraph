@@ -35,7 +35,7 @@ def embed_sentences(sentences, embed_type):
     return sentence_embeddings
 
 
-def build_index_docs(docPath, embedType):
+def build_index_docs(docPath, embedType, valid_classes=None, generate_dict=False):
     classesToDocs = {}
     docsToClasses = {}
     embedList = {}
@@ -47,6 +47,8 @@ def build_index_docs(docPath, embedType):
             if 'class_docstring' not in jsonObject:
                 continue
             className = jsonObject['klass']
+            if valid_classes and className not in valid_classes:
+                continue
             docStringText = jsonObject['class_docstring']
 
             soup = BeautifulSoup(docStringText, 'html.parser')
@@ -65,7 +67,7 @@ def build_index_docs(docPath, embedType):
 
             else:
                 docsToClasses[docStringText] = [className]
-
+                
             classesToDocs[className] = docStringText
 
     docList = np.array(list(docsToClasses.keys()))
@@ -74,7 +76,13 @@ def build_index_docs(docPath, embedType):
     index = faiss.IndexFlatIP(len(embeddedDocText[0]))
     index.add(embeddedDocText)
 
-    return (index, docList, docsToClasses, embeddedDocText, classesToDocs)
+    if generate_dict:
+        doc2embedding = {}
+        for index, doc in enumerate(docList):
+            doc2embedding[doc] = embeddedDocText[index]
+        return (index, docList, docsToClasses, embeddedDocText, classesToDocs, doc2embedding)
+    else:
+        return (index, docList, docsToClasses, embeddedDocText, classesToDocs)
 
 
 def compute_neighbor_docstrings(query_neighbors, docList):

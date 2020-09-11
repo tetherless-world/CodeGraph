@@ -43,6 +43,8 @@ def read_valid_classes(classmap, classfail):
 def evaluate_neighbors(docstring_to_neighbors, docsToClasses, classGraph, real_classes):
     mrr = []
     ndcg = []
+    all_mrr = []
+    all_ndcg = []
     counter = 0
     class2ids = {}
     num_queries = 0
@@ -101,7 +103,7 @@ def evaluate_neighbors(docstring_to_neighbors, docsToClasses, classGraph, real_c
                 try:
                     pathdist = min(len(nx.shortest_path(classGraph, clazz, c)), max_dist)
                     min_class = c
-                    #print(c + '->' + clazz + ' has distance:' + str(pathdist))
+                    print(c + '->' + clazz + ' has distance:' + str(pathdist))
                 except:
                     pass
 
@@ -118,6 +120,8 @@ def evaluate_neighbors(docstring_to_neighbors, docsToClasses, classGraph, real_c
         num_queries += 1
         if len(test_dist) == 0:
             no_related_classes_found += 1
+            all_ndcg.append(0.0)
+            all_mrr.append(0.0)
             continue
         
         e = p.copy()
@@ -134,9 +138,14 @@ def evaluate_neighbors(docstring_to_neighbors, docsToClasses, classGraph, real_c
         mrr_ind = ranking_metrics.mrr(np.array([e_mrr_map]), np.array([p]))
         print('mrr: ' + str(mrr_ind))
         mrr.append(mrr_ind)
+        all_ndcg.append(ndcg_ind)
+        all_mrr.append(mrr_ind)
 
     ndcg_avg = np.array(ndcg).mean()
     mrr_avg = np.array(mrr).mean()
+    all_ndcg_avg = np.array(all_ndcg).mean()
+    all_mrr_avg = np.array(all_mrr).mean()
+    
     """
     print('expected_ncdg')
     print(expected)
@@ -148,6 +157,11 @@ def evaluate_neighbors(docstring_to_neighbors, docsToClasses, classGraph, real_c
     print('mrr: ' + str(mrr_avg))
     print('se_ndcg:' + str(scipy.stats.sem(ndcg)))
     print('se_mrr:' + str(scipy.stats.sem(mrr)))
+    print('all_ndcg:' + str(all_ndcg_avg))
+    print('all_mrr: ' + str(all_mrr_avg))
+    print('se__all_ndcg:' + str(scipy.stats.sem(all_ndcg)))
+    print('se_all_mrr:' + str(scipy.stats.sem(all_mrr)))
+
     print('total queries with some related class: ' + str(((num_queries - no_related_classes_found)/num_queries)))
     print('total num queries:' + str(num_queries))
 
