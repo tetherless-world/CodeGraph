@@ -31,3 +31,8 @@ else
     PYTHONPATH=.. python eval.py /tmp/dataset.json /tmp/testset.json roberta /tmp/true_roberta.json /tmp/false_roberta.json > /tmp/roberta_links.out 
 fi
 
+awk '/[0-9.]+/ { match($0, /([0-9.]+)/, a); print(a[1]); }' /tmp/true_use.json > true.dat
+
+awk '/[0-9.]+/ { match($0, /([0-9.]+)/, a); print(a[1]); }' /tmp/false_use.json > false.dat
+
+gnuplot distances.gnuplot
