@@ -4,7 +4,7 @@ if [ -f stackoverflow_data_ranking.json ]; then
     echo "using stackoverflow_data_ranking.json"
 else
     wget https://archive.org/download/merge-15-22.2.format/stackoverflow_data_ranking.json.tar.gz
-    tar xzf https://archive.org/download/merge-15-22.2.format/stackoverflow_data_ranking.json.tar.gz
+    tar xzf stackoverflow_data_ranking.json.tar.gz
 fi
 
 if [ -f /tmp/dataset.json ]; then
