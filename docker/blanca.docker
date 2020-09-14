@@ -54,6 +54,10 @@ RUN pip3 install sentence_transformers
 # copy code from context ('tasks' must be the root)
 #
 
+run mkdir utils
+COPY utils/util.py utils/
+COPY utils/__init__.py utils
+
 run mkdir usage_analysis
 COPY usageAnalysis/README.md usage_analysis/
 COPY usageAnalysis/run.sh usage_analysis/
