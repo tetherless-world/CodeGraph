@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ME=$0
-DIR=`diname $ME`
+DIR=`dirname $ME`
 
 if [[ -f classes2superclass.out ]]; then
     echo "using classes2superclass.out"
