@@ -1,0 +1,35 @@
+FROM ubuntu:latest
+MAINTAINER Julian Dolby
+
+###############################
+# utf 8
+#
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+
+
+###############################
+# update system
+#
+
+# update
+RUN apt update
+RUN yes | apt upgrade
+
+
+###############################
+# Python 38
+#
+
+RUN yes | apt-get install python3.8
+
+RUN yes | apt-get install python3-pip
+
+
+###############################
+# Python modules
+#
+
+RUN pip3 install ijson
+RUN pip3 install bs4
+
