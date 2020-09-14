@@ -18,12 +18,21 @@ RUN yes | apt upgrade
 
 
 ###############################
+# tools
+#
+RUN DEBIAN_FRONTEND=noninteractive apt-get -yq install gnuplot
+RUN DEBIAN_FRONTEND=noninteractive apt-get -yq install wget
+
+
+###############################
 # Python 38
 #
 
 RUN yes | apt-get install python3.8
 
 RUN yes | apt-get install python3-pip
+
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
 
 ###############################
@@ -40,3 +49,21 @@ RUN pip3 install metrics_eval
 RUN pip3 install numba
 RUN pip3 install sentence_transformers
 
+
+###############################
+# copy code from context ('tasks' must be the root)
+#
+
+run mkdir usage_analysis
+COPY usageAnalysis/README.md usage_analysis/
+COPY usageAnalysis/run.sh usage_analysis/
+COPY usageAnalysis/staticAnalysis2.py usage_analysis/
+COPY usageAnalysis/mrr-map.awk usage_analysis/
+COPY usageAnalysis/mrr-map.gnuplot usage_analysis/
+
+RUN mkdir stack_linked
+COPY stackLinkedPosts/dataset.py stack_linked/
+COPY stackLinkedPosts/eval.py stack_linked/
+COPY stackLinkedPosts/distances.awk stack_linked/
+COPY stackLinkedPosts/distances.gnuplot stack_linked/
+COPY stackLinkedPosts/run.sh stack_linked/
