@@ -10,7 +10,7 @@ fi
 if [ -f /tmp/dataset.json ]; then
     echo "using /tmp/dataset.json"
 else
-    python dataset.py /data/stackoverflow_dump/pickled/stackoverflow_data_ranking.json /tmp/dataset.json /tmp/testset.json
+    python dataset.py stackoverflow_data_ranking.json /tmp/dataset.json /tmp/testset.json
 fi
 
 if [ -f /tmp/use_links.out ]; then
