@@ -1,5 +1,4 @@
 FROM ubuntu:latest
-MAINTAINER Julian Dolby
 
 ###############################
 # utf 8
