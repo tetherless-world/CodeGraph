@@ -32,4 +32,11 @@ RUN yes | apt-get install python3-pip
 
 RUN pip3 install ijson
 RUN pip3 install bs4
+RUN pip3 install tensorflow_hub
+RUN pip3 install absl-py
+RUN pip3 install tensorflow
+RUN pip3 install faiss-cpu
+RUN pip3 install metrics_eval
+RUN pip3 install numba
+RUN pip3 install sentence_transformers
 
