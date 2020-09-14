@@ -23,6 +23,24 @@ else
 fi
 
 
+################  usage task  ############################
+
+if [[ -f usage.txt ]]; then
+    echo "using usage.txt"
+else
+    wget https://archive.org/download/merge-15-22.2.format/usage.txt
+fi
+
+
+################stack link task###########################
+
+if [ -f stackoverflow_data_ranking.json ]; then
+    echo "using stackoverflow_data_ranking.json"
+else
+    wget -O - https://archive.org/download/merge-15-22.2.format/stackoverflow_data_ranking.json.tar.gz | tar xzf -
+fi
+
+
 ################hierarchy task############################
 
 if [ -f classes.fail ]; then
