@@ -49,7 +49,7 @@ RUN pip3 install faiss-cpu
 RUN pip3 install metrics_eval
 RUN pip3 install numba
 RUN pip3 install sentence_transformers
-
+RUN pip3 install networkx
 
 ###############################
 # copy code from context ('tasks' must be the root)

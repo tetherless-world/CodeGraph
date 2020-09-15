@@ -1,0 +1,12 @@
+#!/bin/sh
+
+wget -nc https://ia801500.us.archive.org/24/items/stackoverflow_questions_per_class_func_3M_filtered_new/stackoverflow_questions_per_class_func_3M_filtered_new.json
+wget -nc https://archive.org/download/classes2superclass/classes2superclass.out
+
+python embedDocstringsEvaluateStackOverFlow-relevantBuckets.py stackoverflow_questions_per_class_func_3M_filtered_new.json 5 T 4
+python allEmbedDocstringsEvaluateStackOverFlowAllMask.py stackoverflow_questions_per_class_func_3M_filtered_new.json 5
+python embedDocstringsEvaluateStackOverFlowAllMask-lengthanalysis-newJson.py stackoverflow_questions_per_class_func_3M_filtered_new.json 5 
+python embedDocstringsOnlyFlowDistantBasedHierarchy.py stackoverflow_questions_per_class_func_3M_filtered_new.json classes2superclass.out
+python findPrecision_Hierarchy.py classes2superclass.out class2top10neighbors_withScore.txt
+python embedDocstringsEvaluateStackOverFlow-lengthanalysis-newJson.py stackoverflow_questions_per_class_func_3M_filtered_new.json 5 T
+python allEmbedDocstringsEvaluateStackOverFlowAllMask.py ../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json 5

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export PYTHONPATH=../:.
+
 # run ranking task
 sh run_ranking_task.sh
 
