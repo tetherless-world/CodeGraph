@@ -2,11 +2,11 @@
 
 DATA=$1
 
-bash dataset.py $DATA
+bash dataset.sh $DATA
 
 bash eval_use.sh
 
-bash eval_bert.sh
+xdbash eval_bert.sh
 
 bash eval_roberta.sh
 

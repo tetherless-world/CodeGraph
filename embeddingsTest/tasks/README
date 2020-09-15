@@ -6,7 +6,7 @@ Running the code with Docker:
 
   docker build -f docker/blanca.docker -t blanca . 
 
-3) run and mount DATA:
+3) run and mount DATA (data will be in /data in the container):
 
   docker run -it -v DATA:/data blanca:latest /bin/bash
 

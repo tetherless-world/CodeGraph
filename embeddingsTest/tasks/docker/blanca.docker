@@ -19,7 +19,7 @@ RUN yes | apt upgrade
 ###############################
 # tools
 #
-RUN DEBIAN_FRONTEND=noninteractive apt-get -yq install gnuplot
+RUN DEBIAN_FRONTEND=noninteractive apt-get -yq install gnuplot-nox
 RUN DEBIAN_FRONTEND=noninteractive apt-get -yq install wget
 RUN DEBIAN_FRONTEND=noninteractive apt-get -yq install gawk
 
