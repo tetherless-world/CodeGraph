@@ -1,13 +1,2 @@
-1.  To run a search using embeddings against any embedding dictionary, use run_all.sh
-`sh run_all.sh`.
-2.  To compare text search for all content relevant to a post against text search for title alone, run_evaluate.sh
-`sh run_evaluate.sh`.
+1.  Assuming `bash download.sh` data has been run, run: `sh run_all.sh`.
 
-Relevant embedding dictionaries are:
-stackoverflow_matches_codesearchnet_5k_USE.tar.gz
-stackoverflow_matches_codesearchnet_5k_bert_base.tar.gz
-tackoverflow_matches_codesearchnet_5k_roberta_base.tar.gz
-
-Relevant data for text search are:
-stackoverflow_matches_codesearchnet_5k.json (title only)
-stackoverflow_matches_codesearchnet_5k_content.json (content + title)
