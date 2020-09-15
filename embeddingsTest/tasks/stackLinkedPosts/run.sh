@@ -6,8 +6,8 @@ bash dataset.sh $DATA
 
 bash eval_use.sh
 
-xdbash eval_bert.sh
+bash eval_bert.sh
 
 bash eval_roberta.sh
 
-bash plot.sh
+bash plot.sh use
