@@ -55,7 +55,9 @@ fi
 if [ -f stackoverflow_matches_codesearchnet_5k.json ]; then
     echo "using stackoverflow_matches_codesearchnet_5k.json"
 else
-    wget -O - https://archive.org/download/merge-15-22.2.format/stackoverflow_matches_codesearchnet_5k.json.zip | unzip -
+    wget https://archive.org/download/merge-15-22.2.format/stackoverflow_matches_codesearchnet_5k.json.zip
+    unzip stackoverflow_matches_codesearchnet_5k.json.zip
+    rm stackoverflow_matches_codesearchnet_5k.json.zip
 fi
 
 # get precomputed embeddings for search, for USE
