@@ -20,7 +20,7 @@
 
 ##T is one masked,F is no masked configuartion
 ##4 is the bucket_size
-##output1.txt and output2.txt files are produced
+##output1.txt and outputwithbucketsize4.txt files are produced
 
 import ijson
 import tensorflow_hub as hub
@@ -149,7 +149,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
     totaldocs=0
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
     originalout = sys.stdout
-    with open(input_path, 'r') as data, open('./output2.txt', 'w') as outputFile:
+    with open(input_path, 'r') as data, open('./outputwithbucketsize'+str(bucket_size)+'.txt', 'w') as outputFile:
         
         jsonCollect = ijson.items(data, 'results.bindings.item')
         sys.stdout = outputFile
