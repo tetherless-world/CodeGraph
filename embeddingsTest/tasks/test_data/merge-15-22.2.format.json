@@ -1,0 +1,4604 @@
+[
+  {
+    "module": "httpretty",
+    "function": "httpretty.httprettified",
+    "param_names": [
+      "test",
+      "allow_net_connect"
+    ],
+    "function_docstring": "\ndecorator for test functions\n\n.. tip:: Also available under the alias :py:func:`httpretty.activate`\n"
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.has_request",
+    "function_docstring": "\n:returns: bool - whether any request has been made"
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.last_request",
+    "function_docstring": "\n:returns: the last :py:class:`~httpretty.core.HTTPrettyRequest`"
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.latest_requests",
+    "function_docstring": "\nreturns the history of made requests"
+  },
+  {
+    "class_docstring": "A dict subclass used as internal representation of empty request\n    headers\n    ",
+    "klass": "httpretty.core.EmptyRequestHeaders",
+    "module": "httpretty",
+    "base_classes": [
+      "dict"
+    ]
+  },
+  {
+    "class_docstring": "A dict subclass used as internal representation of empty request\n    headers\n    ",
+    "klass": "httpretty.EmptyRequestHeaders",
+    "module": "httpretty",
+    "base_classes": [
+      "dict"
+    ]
+  },
+  {
+    "class_docstring": "Created by :py:meth:`~httpretty.core.httpretty.register_uri` and\n    stored in memory as internal representation of a HTTP\n    request/response definition.\n\n    :param method: string\n    :param uri: string\n    :param body: string\n    :param adding_headers: dict - headers to be added to the response\n    :param forcing_headers: dict - headers to be forcefully set in the response\n    :param status: an integer (e.g.: ``status=200``)\n    :param streaming: bool - whether to stream the response\n    :param headers: keyword-args with headers to be added to the response\n\n    .. warning:: When using the ``forcing_headers`` option make sure to add the header ``Content-Length`` otherwise calls using :py:mod:`requests` will try to load the response endlessly.\n    ",
+    "klass": "httpretty.core.Entry",
+    "module": "httpretty",
+    "base_classes": [
+      "httpretty.compat.BaseClass"
+    ]
+  },
+  {
+    "class_docstring": "Created by :py:meth:`~httpretty.core.httpretty.register_uri` and\n    stored in memory as internal representation of a HTTP\n    request/response definition.\n\n    :param method: string\n    :param uri: string\n    :param body: string\n    :param adding_headers: dict - headers to be added to the response\n    :param forcing_headers: dict - headers to be forcefully set in the response\n    :param status: an integer (e.g.: ``status=200``)\n    :param streaming: bool - whether to stream the response\n    :param headers: keyword-args with headers to be added to the response\n\n    .. warning:: When using the ``forcing_headers`` option make sure to add the header ``Content-Length`` otherwise calls using :py:mod:`requests` will try to load the response endlessly.\n    ",
+    "klass": "httpretty.Entry",
+    "module": "httpretty",
+    "base_classes": [
+      "httpretty.compat.BaseClass"
+    ]
+  },
+  {
+    "klass": "httpretty.core.Entry",
+    "module": "httpretty",
+    "function": "__init__",
+    "param_names": [
+      "method",
+      "uri",
+      "body",
+      "adding_headers",
+      "forcing_headers",
+      "status",
+      "streaming",
+      "headers"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "httpretty.Entry",
+    "module": "httpretty",
+    "function": "__init__",
+    "param_names": [
+      "method",
+      "uri",
+      "body",
+      "adding_headers",
+      "forcing_headers",
+      "status",
+      "streaming",
+      "headers"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "httpretty.core.Entry",
+    "module": "httpretty",
+    "function": "__repr__",
+    "function_docstring": "\nReturn repr(self)."
+  },
+  {
+    "klass": "httpretty.Entry",
+    "module": "httpretty",
+    "function": "__repr__",
+    "function_docstring": "\nReturn repr(self)."
+  },
+  {
+    "klass": "httpretty.core.Entry",
+    "module": "httpretty",
+    "function": "__str__",
+    "function_docstring": "\nReturn str(self)."
+  },
+  {
+    "klass": "httpretty.Entry",
+    "module": "httpretty",
+    "function": "__str__",
+    "function_docstring": "\nReturn str(self)."
+  },
+  {
+    "klass": "httpretty.core.Entry",
+    "module": "httpretty",
+    "function": "fill_filekind",
+    "param_names": [
+      "fk"
+    ],
+    "function_docstring": "\nwrites HTTP Response data to a file descriptor\n\n:parm fk: a file-like object\n\n.. warning:: **side-effect:** this method moves the cursor of the given file object to zero"
+  },
+  {
+    "klass": "httpretty.Entry",
+    "module": "httpretty",
+    "function": "fill_filekind",
+    "param_names": [
+      "fk"
+    ],
+    "function_docstring": "\nwrites HTTP Response data to a file descriptor\n\n:parm fk: a file-like object\n\n.. warning:: **side-effect:** this method moves the cursor of the given file object to zero"
+  },
+  {
+    "param_map": {
+      "headers": {
+        "name": "headers",
+        "param_doc": " dict\n"
+      }
+    },
+    "klass": "httpretty.core.Entry",
+    "module": "httpretty",
+    "function": "normalize_headers",
+    "param_names": [
+      "headers"
+    ],
+    "function_docstring": "\nNormalize keys in header names so that ``COntent-tyPe`` becomes ``content-type``\n"
+  },
+  {
+    "param_map": {
+      "headers": {
+        "name": "headers",
+        "param_doc": " dict\n"
+      }
+    },
+    "klass": "httpretty.Entry",
+    "module": "httpretty",
+    "function": "normalize_headers",
+    "param_names": [
+      "headers"
+    ],
+    "function_docstring": "\nNormalize keys in header names so that ``COntent-tyPe`` becomes ``content-type``\n"
+  },
+  {
+    "klass": "httpretty.core.Entry",
+    "module": "httpretty",
+    "function": "validate",
+    "function_docstring": "\nvalidates the body size with the value of the ``Content-Length``\nheader"
+  },
+  {
+    "klass": "httpretty.Entry",
+    "module": "httpretty",
+    "function": "validate",
+    "function_docstring": "\nvalidates the body size with the value of the ``Content-Length``\nheader"
+  },
+  {
+    "class_docstring": "manages HTTPretty's internal request/response registry and request matching.\n    ",
+    "klass": "httpretty.core.httpretty",
+    "module": "httpretty",
+    "base_classes": [
+      "httpretty.http.HttpBaseClass"
+    ]
+  },
+  {
+    "class_docstring": "manages HTTPretty's internal request/response registry and request matching.\n    ",
+    "klass": "httpretty.httpretty",
+    "module": "httpretty",
+    "base_classes": [
+      "httpretty.http.HttpBaseClass"
+    ]
+  },
+  {
+    "klass": "httpretty.core.httpretty",
+    "module": "httpretty",
+    "function": "__repr__",
+    "function_docstring": "\nReturn repr(self)."
+  },
+  {
+    "klass": "httpretty.httpretty",
+    "module": "httpretty",
+    "function": "__repr__",
+    "function_docstring": "\nReturn repr(self)."
+  },
+  {
+    "klass": "httpretty.core.httpretty",
+    "module": "httpretty",
+    "function": "__str__",
+    "function_docstring": "\nReturn str(self)."
+  },
+  {
+    "klass": "httpretty.httpretty",
+    "module": "httpretty",
+    "function": "__str__",
+    "function_docstring": "\nReturn str(self)."
+  },
+  {
+    "param_map": {
+      "adding_headers": {
+        "name": "adding_headers",
+        "param_doc": ""
+      },
+      "forcing_headers": {
+        "name": "forcing_headers",
+        "param_doc": ""
+      },
+      "streaming": {
+        "name": "streaming",
+        "param_doc": " defaults to **False**"
+      },
+      "method": {
+        "name": "method",
+        "param_doc": " one of ``httpretty.GET``, ``httpretty.PUT``, ``httpretty.POST``, ``httpretty.DELETE``, ``httpretty.HEAD``, ``httpretty.PATCH``, ``httpretty.OPTIONS``, ``httpretty.CONNECT``"
+      },
+      "kw: keyword-arguments passed onto the :py:class": {
+        "name": "kw: keyword-arguments passed onto the :py:class",
+        "param_doc": " keyword-arguments passed onto the :py:class:`~httpretty.core.Entry`"
+      },
+      "body": {
+        "name": "body",
+        "param_doc": ""
+      },
+      "uri": {
+        "name": "uri",
+        "param_doc": ""
+      },
+      "status": {
+        "name": "status",
+        "param_doc": " defaults to **200**"
+      }
+    },
+    "klass": "httpretty.core.httpretty",
+    "module": "httpretty",
+    "function": "Response",
+    "param_names": [
+      "body",
+      "method",
+      "uri",
+      "adding_headers",
+      "forcing_headers",
+      "status",
+      "streaming",
+      "kw"
+    ],
+    "function_docstring": "\nshortcut to create an :py:class:`~httpretty.core.Entry` that takes the body as first positional argument\n\n.. seealso:: the parameters of this function match those of the :py:class:`~httpretty.core.Entry` constructor"
+  },
+  {
+    "param_map": {
+      "adding_headers": {
+        "name": "adding_headers",
+        "param_doc": ""
+      },
+      "forcing_headers": {
+        "name": "forcing_headers",
+        "param_doc": ""
+      },
+      "streaming": {
+        "name": "streaming",
+        "param_doc": " defaults to **False**"
+      },
+      "method": {
+        "name": "method",
+        "param_doc": " one of ``httpretty.GET``, ``httpretty.PUT``, ``httpretty.POST``, ``httpretty.DELETE``, ``httpretty.HEAD``, ``httpretty.PATCH``, ``httpretty.OPTIONS``, ``httpretty.CONNECT``"
+      },
+      "kw: keyword-arguments passed onto the :py:class": {
+        "name": "kw: keyword-arguments passed onto the :py:class",
+        "param_doc": " keyword-arguments passed onto the :py:class:`~httpretty.core.Entry`"
+      },
+      "body": {
+        "name": "body",
+        "param_doc": ""
+      },
+      "uri": {
+        "name": "uri",
+        "param_doc": ""
+      },
+      "status": {
+        "name": "status",
+        "param_doc": " defaults to **200**"
+      }
+    },
+    "klass": "httpretty.httpretty",
+    "module": "httpretty",
+    "function": "Response",
+    "param_names": [
+      "body",
+      "method",
+      "uri",
+      "adding_headers",
+      "forcing_headers",
+      "status",
+      "streaming",
+      "kw"
+    ],
+    "function_docstring": "\nshortcut to create an :py:class:`~httpretty.core.Entry` that takes the body as first positional argument\n\n.. seealso:: the parameters of this function match those of the :py:class:`~httpretty.core.Entry` constructor"
+  },
+  {
+    "klass": "httpretty.core.httpretty",
+    "module": "httpretty",
+    "function": "disable",
+    "function_docstring": "\nDisables HTTPretty entirely, putting the original :py:mod:`socket`\nmodule back in its place.\n\n\n.. code::\n\n   import re, json\n   import httpretty\n\n   httpretty.enable()\n   # request passes through fake socket\n   response = requests.get('https://httpbin.org')\n\n   httpretty.disable()\n   # request uses real python socket module\n   response = requests.get('https://httpbin.org')\n\n.. note:: This method does not call :py:meth:`httpretty.core.reset` automatically."
+  },
+  {
+    "klass": "httpretty.httpretty",
+    "module": "httpretty",
+    "function": "disable",
+    "function_docstring": "\nDisables HTTPretty entirely, putting the original :py:mod:`socket`\nmodule back in its place.\n\n\n.. code::\n\n   import re, json\n   import httpretty\n\n   httpretty.enable()\n   # request passes through fake socket\n   response = requests.get('https://httpbin.org')\n\n   httpretty.disable()\n   # request uses real python socket module\n   response = requests.get('https://httpbin.org')\n\n.. note:: This method does not call :py:meth:`httpretty.core.reset` automatically."
+  },
+  {
+    "klass": "httpretty.core.httpretty",
+    "module": "httpretty",
+    "function": "enable",
+    "param_names": [
+      "allow_net_connect"
+    ],
+    "function_docstring": "\nEnables HTTPretty.\nWhen ``allow_net_connect`` is ``False`` any connection to an unregistered uri will throw :py:class:`httpretty.errors.UnmockedError`.\n\n.. testcode::\n\n   import re, json\n   import httpretty\n\n   httpretty.enable()\n\n   httpretty.register_uri(\n       httpretty.GET,\n       re.compile(r'http://.*'),\n       body=json.dumps({'man': 'in', 'the': 'middle'})\n   )\n\n   response = requests.get('https://foo.bar/foo/bar')\n\n   response.json().should.equal({\n       \"man\": \"in\",\n       \"the\": \"middle\",\n   })\n\n.. warning:: after calling this method the original :py:mod:`socket` is replaced with :py:class:`httpretty.core.fakesock`. Make sure to call :py:meth:`~httpretty.disable` after done with your tests or use the :py:class:`httpretty.enabled` as decorator or `context-manager <https://docs.python.org/3/reference/datamodel.html#context-managers>`_"
+  },
+  {
+    "klass": "httpretty.httpretty",
+    "module": "httpretty",
+    "function": "enable",
+    "param_names": [
+      "allow_net_connect"
+    ],
+    "function_docstring": "\nEnables HTTPretty.\nWhen ``allow_net_connect`` is ``False`` any connection to an unregistered uri will throw :py:class:`httpretty.errors.UnmockedError`.\n\n.. testcode::\n\n   import re, json\n   import httpretty\n\n   httpretty.enable()\n\n   httpretty.register_uri(\n       httpretty.GET,\n       re.compile(r'http://.*'),\n       body=json.dumps({'man': 'in', 'the': 'middle'})\n   )\n\n   response = requests.get('https://foo.bar/foo/bar')\n\n   response.json().should.equal({\n       \"man\": \"in\",\n       \"the\": \"middle\",\n   })\n\n.. warning:: after calling this method the original :py:mod:`socket` is replaced with :py:class:`httpretty.core.fakesock`. Make sure to call :py:meth:`~httpretty.disable` after done with your tests or use the :py:class:`httpretty.enabled` as decorator or `context-manager <https://docs.python.org/3/reference/datamodel.html#context-managers>`_"
+  },
+  {
+    "klass": "httpretty.core.httpretty",
+    "module": "httpretty",
+    "function": "historify_request",
+    "param_names": [
+      "headers",
+      "body",
+      "append"
+    ],
+    "function_docstring": "\nappends request to a list for later retrieval\n\n.. testcode::\n\n   import httpretty\n\n   httpretty.register_uri(httpretty.GET, 'https://httpbin.org/ip', body='')\n   with httpretty.enabled():\n       requests.get('https://httpbin.org/ip')\n\n   assert httpretty.latest_requests[-1].url == 'https://httpbin.org/ip'"
+  },
+  {
+    "klass": "httpretty.httpretty",
+    "module": "httpretty",
+    "function": "historify_request",
+    "param_names": [
+      "headers",
+      "body",
+      "append"
+    ],
+    "function_docstring": "\nappends request to a list for later retrieval\n\n.. testcode::\n\n   import httpretty\n\n   httpretty.register_uri(httpretty.GET, 'https://httpbin.org/ip', body='')\n   with httpretty.enabled():\n       requests.get('https://httpbin.org/ip')\n\n   assert httpretty.latest_requests[-1].url == 'https://httpbin.org/ip'"
+  },
+  {
+    "klass": "httpretty.core.httpretty",
+    "module": "httpretty",
+    "function": "is_enabled",
+    "function_docstring": "\nCheck if HTTPretty is enabled\n\n:returns: bool\n\n.. testcode::\n\n   import httpretty\n\n   httpretty.enable()\n   assert httpretty.is_enabled() == True\n\n   httpretty.disable()\n   assert httpretty.is_enabled() == False"
+  },
+  {
+    "klass": "httpretty.httpretty",
+    "module": "httpretty",
+    "function": "is_enabled",
+    "function_docstring": "\nCheck if HTTPretty is enabled\n\n:returns: bool\n\n.. testcode::\n\n   import httpretty\n\n   httpretty.enable()\n   assert httpretty.is_enabled() == True\n\n   httpretty.disable()\n   assert httpretty.is_enabled() == False"
+  },
+  {
+    "param_map": {
+      "hostname": {
+        "name": "hostname",
+        "param_doc": " a string"
+      },
+      "port": {
+        "name": "port",
+        "param_doc": " an integer"
+      }
+    },
+    "klass": "httpretty.core.httpretty",
+    "module": "httpretty",
+    "function": "match_http_address",
+    "param_names": [
+      "hostname",
+      "port"
+    ],
+    "function_docstring": ""
+  },
+  {
+    "param_map": {
+      "hostname": {
+        "name": "hostname",
+        "param_doc": " a string"
+      },
+      "port": {
+        "name": "port",
+        "param_doc": " an integer"
+      }
+    },
+    "klass": "httpretty.httpretty",
+    "module": "httpretty",
+    "function": "match_http_address",
+    "param_names": [
+      "hostname",
+      "port"
+    ],
+    "function_docstring": ""
+  },
+  {
+    "param_map": {
+      "hostname": {
+        "name": "hostname",
+        "param_doc": " a string"
+      }
+    },
+    "klass": "httpretty.core.httpretty",
+    "module": "httpretty",
+    "function": "match_https_hostname",
+    "param_names": [
+      "hostname"
+    ],
+    "function_docstring": ""
+  },
+  {
+    "param_map": {
+      "hostname": {
+        "name": "hostname",
+        "param_doc": " a string"
+      }
+    },
+    "klass": "httpretty.httpretty",
+    "module": "httpretty",
+    "function": "match_https_hostname",
+    "param_names": [
+      "hostname"
+    ],
+    "function_docstring": ""
+  },
+  {
+    "param_map": {
+      "info: an :py:class": {
+        "name": "info: an :py:class",
+        "param_doc": " an :py:class:`~httpretty.core.URIInfo`"
+      }
+    },
+    "klass": "httpretty.core.httpretty",
+    "module": "httpretty",
+    "function": "match_uriinfo",
+    "param_names": [
+      "info"
+    ],
+    "function_docstring": ""
+  },
+  {
+    "param_map": {
+      "info: an :py:class": {
+        "name": "info: an :py:class",
+        "param_doc": " an :py:class:`~httpretty.core.URIInfo`"
+      }
+    },
+    "klass": "httpretty.httpretty",
+    "module": "httpretty",
+    "function": "match_uriinfo",
+    "param_names": [
+      "info"
+    ],
+    "function_docstring": ""
+  },
+  {
+    "param_map": {
+      "filename": {
+        "name": "filename",
+        "param_doc": " a string"
+      }
+    },
+    "klass": "httpretty.core.httpretty",
+    "module": "httpretty",
+    "function": "playback",
+    "param_names": [
+      "filename"
+    ],
+    "function_docstring": "\n.. testcode::\n\n   import io\n   import json\n   import requests\n   import httpretty\n\n   with httpretty.record('/tmp/ip.json'):\n       data = requests.get('https://httpbin.org/ip').json()\n\n   with io.open('/tmp/ip.json') as fd:\n       assert data == json.load(fd)\n"
+  },
+  {
+    "param_map": {
+      "filename": {
+        "name": "filename",
+        "param_doc": " a string"
+      }
+    },
+    "klass": "httpretty.httpretty",
+    "module": "httpretty",
+    "function": "playback",
+    "param_names": [
+      "filename"
+    ],
+    "function_docstring": "\n.. testcode::\n\n   import io\n   import json\n   import requests\n   import httpretty\n\n   with httpretty.record('/tmp/ip.json'):\n       data = requests.get('https://httpbin.org/ip').json()\n\n   with io.open('/tmp/ip.json') as fd:\n       assert data == json.load(fd)\n"
+  },
+  {
+    "param_map": {
+      "filename": {
+        "name": "filename",
+        "param_doc": " a string"
+      },
+      "indentation": {
+        "name": "indentation",
+        "param_doc": " an integer, defaults to **4**"
+      },
+      "encoding": {
+        "name": "encoding",
+        "param_doc": " a string, defaults to **\"utf-8\"**\n"
+      }
+    },
+    "klass": "httpretty.core.httpretty",
+    "module": "httpretty",
+    "function": "record",
+    "param_names": [
+      "filename",
+      "indentation",
+      "encoding"
+    ],
+    "function_docstring": "\n.. testcode::\n\n   import io\n   import json\n   import requests\n   import httpretty\n\n   with httpretty.record('/tmp/ip.json'):\n       data = requests.get('https://httpbin.org/ip').json()\n\n   with io.open('/tmp/ip.json') as fd:\n       assert data == json.load(fd)\n"
+  },
+  {
+    "param_map": {
+      "filename": {
+        "name": "filename",
+        "param_doc": " a string"
+      },
+      "indentation": {
+        "name": "indentation",
+        "param_doc": " an integer, defaults to **4**"
+      },
+      "encoding": {
+        "name": "encoding",
+        "param_doc": " a string, defaults to **\"utf-8\"**\n"
+      }
+    },
+    "klass": "httpretty.httpretty",
+    "module": "httpretty",
+    "function": "record",
+    "param_names": [
+      "filename",
+      "indentation",
+      "encoding"
+    ],
+    "function_docstring": "\n.. testcode::\n\n   import io\n   import json\n   import requests\n   import httpretty\n\n   with httpretty.record('/tmp/ip.json'):\n       data = requests.get('https://httpbin.org/ip').json()\n\n   with io.open('/tmp/ip.json') as fd:\n       assert data == json.load(fd)\n"
+  },
+  {
+    "param_map": {
+      "adding_headers": {
+        "name": "adding_headers",
+        "param_doc": " dict - headers to be added to the response"
+      },
+      "forcing_headers": {
+        "name": "forcing_headers",
+        "param_doc": " dict - headers to be forcefully set in the response"
+      },
+      "responses: a list of entries, ideally each created with :py:meth": {
+        "name": "responses: a list of entries, ideally each created with :py:meth",
+        "param_doc": " a list of entries, ideally each created with :py:meth:`~httpretty.core.httpretty.Response`"
+      },
+      "body: a string, defaults to ``{\"message\": \"HTTPretty": {
+        "name": "body: a string, defaults to ``{\"message\": \"HTTPretty",
+        "param_doc": " a string, defaults to ``{\"message\": \"HTTPretty :)\"}``"
+      },
+      "method": {
+        "name": "method",
+        "param_doc": " one of ``httpretty.GET``, ``httpretty.PUT``, ``httpretty.POST``, ``httpretty.DELETE``, ``httpretty.HEAD``, ``httpretty.PATCH``, ``httpretty.OPTIONS``, ``httpretty.CONNECT``"
+      },
+      "uri: a string (e.g.: **\"https": {
+        "name": "uri: a string (e.g.: **\"https",
+        "param_doc": " a string (e.g.: **\"https://httpbin.org/ip\"**)"
+      },
+      "priority": {
+        "name": "priority",
+        "param_doc": " an integer, useful for setting higher priority over previously registered urls. defaults to zero"
+      },
+      "match_querystring": {
+        "name": "match_querystring",
+        "param_doc": " bool - whether to take the querystring into account when matching an URL"
+      },
+      "status": {
+        "name": "status",
+        "param_doc": " an integer, defaults to **200**"
+      }
+    },
+    "klass": "httpretty.core.httpretty",
+    "module": "httpretty",
+    "function": "register_uri",
+    "param_names": [
+      "method",
+      "uri",
+      "body",
+      "adding_headers",
+      "forcing_headers",
+      "status",
+      "responses",
+      "match_querystring",
+      "priority",
+      "headers"
+    ],
+    "function_docstring": "\n.. testcode::\n\n   import httpretty\n\n\n   def request_callback(request, uri, response_headers):\n       content_type = request.headers.get('Content-Type')\n       assert request.body == '{\"nothing\": \"here\"}', 'unexpected body: {}'.format(request.body)\n       assert content_type == 'application/json', 'expected application/json but received Content-Type: {}'.format(content_type)\n       return [200, response_headers, json.dumps({\"hello\": \"world\"})]\n\n   httpretty.register_uri(\n       HTTPretty.POST, \"https://httpretty.example.com/api\",\n       body=request_callback)\n\n\n   with httpretty.enabled():\n       requests.post('https://httpretty.example.com/api', data='{\"nothing\": \"here\"}', headers={'Content-Type': 'application/json'})\n\n   assert httpretty.latest_requests[-1].url == 'https://httpbin.org/ip'\n\n"
+  },
+  {
+    "param_map": {
+      "adding_headers": {
+        "name": "adding_headers",
+        "param_doc": " dict - headers to be added to the response"
+      },
+      "forcing_headers": {
+        "name": "forcing_headers",
+        "param_doc": " dict - headers to be forcefully set in the response"
+      },
+      "responses: a list of entries, ideally each created with :py:meth": {
+        "name": "responses: a list of entries, ideally each created with :py:meth",
+        "param_doc": " a list of entries, ideally each created with :py:meth:`~httpretty.core.httpretty.Response`"
+      },
+      "body: a string, defaults to ``{\"message\": \"HTTPretty": {
+        "name": "body: a string, defaults to ``{\"message\": \"HTTPretty",
+        "param_doc": " a string, defaults to ``{\"message\": \"HTTPretty :)\"}``"
+      },
+      "method": {
+        "name": "method",
+        "param_doc": " one of ``httpretty.GET``, ``httpretty.PUT``, ``httpretty.POST``, ``httpretty.DELETE``, ``httpretty.HEAD``, ``httpretty.PATCH``, ``httpretty.OPTIONS``, ``httpretty.CONNECT``"
+      },
+      "uri: a string (e.g.: **\"https": {
+        "name": "uri: a string (e.g.: **\"https",
+        "param_doc": " a string (e.g.: **\"https://httpbin.org/ip\"**)"
+      },
+      "priority": {
+        "name": "priority",
+        "param_doc": " an integer, useful for setting higher priority over previously registered urls. defaults to zero"
+      },
+      "match_querystring": {
+        "name": "match_querystring",
+        "param_doc": " bool - whether to take the querystring into account when matching an URL"
+      },
+      "status": {
+        "name": "status",
+        "param_doc": " an integer, defaults to **200**"
+      }
+    },
+    "klass": "httpretty.httpretty",
+    "module": "httpretty",
+    "function": "register_uri",
+    "param_names": [
+      "method",
+      "uri",
+      "body",
+      "adding_headers",
+      "forcing_headers",
+      "status",
+      "responses",
+      "match_querystring",
+      "priority",
+      "headers"
+    ],
+    "function_docstring": "\n.. testcode::\n\n   import httpretty\n\n\n   def request_callback(request, uri, response_headers):\n       content_type = request.headers.get('Content-Type')\n       assert request.body == '{\"nothing\": \"here\"}', 'unexpected body: {}'.format(request.body)\n       assert content_type == 'application/json', 'expected application/json but received Content-Type: {}'.format(content_type)\n       return [200, response_headers, json.dumps({\"hello\": \"world\"})]\n\n   httpretty.register_uri(\n       HTTPretty.POST, \"https://httpretty.example.com/api\",\n       body=request_callback)\n\n\n   with httpretty.enabled():\n       requests.post('https://httpretty.example.com/api', data='{\"nothing\": \"here\"}', headers={'Content-Type': 'application/json'})\n\n   assert httpretty.latest_requests[-1].url == 'https://httpbin.org/ip'\n\n"
+  },
+  {
+    "klass": "httpretty.core.httpretty",
+    "module": "httpretty",
+    "function": "reset",
+    "function_docstring": "\nresets the internal state of HTTPretty, unregistering all URLs\n"
+  },
+  {
+    "klass": "httpretty.httpretty",
+    "module": "httpretty",
+    "function": "reset",
+    "function_docstring": "\nresets the internal state of HTTPretty, unregistering all URLs\n"
+  },
+  {
+    "klass": "httpretty.errors.HTTPrettyError",
+    "module": "httpretty",
+    "base_classes": [
+      "Exception"
+    ]
+  },
+  {
+    "klass": "httpretty.HTTPrettyError",
+    "module": "httpretty",
+    "base_classes": [
+      "Exception"
+    ]
+  },
+  {
+    "class_docstring": "Represents an empty :py:class:`~httpretty.core.HTTPrettyRequest`\n    where all its properties are somehow empty or ``None``\n    ",
+    "klass": "httpretty.core.HTTPrettyRequestEmpty",
+    "module": "httpretty",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "class_docstring": "Represents an empty :py:class:`~httpretty.core.HTTPrettyRequest`\n    where all its properties are somehow empty or ``None``\n    ",
+    "klass": "httpretty.HTTPrettyRequestEmpty",
+    "module": "httpretty",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "class_docstring": "Internal representation of `URIs <https://en.wikipedia.org/wiki/Uniform_Resource_Identifier>`_\n\n    .. tip:: all arguments are optional\n\n    :param username:\n    :param password:\n    :param hostname:\n    :param port:\n    :param path:\n    :param query:\n    :param fragment:\n    :param scheme:\n    :param last_request:\n    ",
+    "klass": "httpretty.core.URIInfo",
+    "module": "httpretty",
+    "base_classes": [
+      "httpretty.compat.BaseClass"
+    ]
+  },
+  {
+    "class_docstring": "Internal representation of `URIs <https://en.wikipedia.org/wiki/Uniform_Resource_Identifier>`_\n\n    .. tip:: all arguments are optional\n\n    :param username:\n    :param password:\n    :param hostname:\n    :param port:\n    :param path:\n    :param query:\n    :param fragment:\n    :param scheme:\n    :param last_request:\n    ",
+    "klass": "httpretty.URIInfo",
+    "module": "httpretty",
+    "base_classes": [
+      "httpretty.compat.BaseClass"
+    ]
+  },
+  {
+    "klass": "httpretty.core.URIInfo",
+    "module": "httpretty",
+    "function": "__eq__",
+    "param_names": [
+      "other"
+    ],
+    "function_docstring": "\nReturn self==value."
+  },
+  {
+    "klass": "httpretty.URIInfo",
+    "module": "httpretty",
+    "function": "__eq__",
+    "param_names": [
+      "other"
+    ],
+    "function_docstring": "\nReturn self==value."
+  },
+  {
+    "klass": "httpretty.core.URIInfo",
+    "module": "httpretty",
+    "function": "__hash__",
+    "function_docstring": "\nReturn hash(self)."
+  },
+  {
+    "klass": "httpretty.URIInfo",
+    "module": "httpretty",
+    "function": "__hash__",
+    "function_docstring": "\nReturn hash(self)."
+  },
+  {
+    "klass": "httpretty.core.URIInfo",
+    "module": "httpretty",
+    "function": "__init__",
+    "param_names": [
+      "username",
+      "password",
+      "hostname",
+      "port",
+      "path",
+      "query",
+      "fragment",
+      "scheme",
+      "last_request"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "httpretty.URIInfo",
+    "module": "httpretty",
+    "function": "__init__",
+    "param_names": [
+      "username",
+      "password",
+      "hostname",
+      "port",
+      "path",
+      "query",
+      "fragment",
+      "scheme",
+      "last_request"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "httpretty.core.URIInfo",
+    "module": "httpretty",
+    "function": "__repr__",
+    "function_docstring": "\nReturn repr(self)."
+  },
+  {
+    "klass": "httpretty.URIInfo",
+    "module": "httpretty",
+    "function": "__repr__",
+    "function_docstring": "\nReturn repr(self)."
+  },
+  {
+    "klass": "httpretty.core.URIInfo",
+    "module": "httpretty",
+    "function": "__str__",
+    "function_docstring": "\nReturn str(self)."
+  },
+  {
+    "klass": "httpretty.URIInfo",
+    "module": "httpretty",
+    "function": "__str__",
+    "function_docstring": "\nReturn str(self)."
+  },
+  {
+    "param_map": {
+      "use_querystring": {
+        "name": "use_querystring",
+        "param_doc": " bool"
+      }
+    },
+    "klass": "httpretty.core.URIInfo",
+    "module": "httpretty",
+    "function": "full_url",
+    "param_names": [
+      "use_querystring"
+    ],
+    "function_docstring": ""
+  },
+  {
+    "param_map": {
+      "use_querystring": {
+        "name": "use_querystring",
+        "param_doc": " bool"
+      }
+    },
+    "klass": "httpretty.URIInfo",
+    "module": "httpretty",
+    "function": "full_url",
+    "param_names": [
+      "use_querystring"
+    ],
+    "function_docstring": ""
+  },
+  {
+    "klass": "httpretty.core.URIInfo",
+    "module": "httpretty",
+    "function": "get_full_domain",
+    "function_docstring": "\n:returns: a string in the form ``{domain}:{port}`` or just the domain if the port is 80 or 443"
+  },
+  {
+    "klass": "httpretty.URIInfo",
+    "module": "httpretty",
+    "function": "get_full_domain",
+    "function_docstring": "\n:returns: a string in the form ``{domain}:{port}`` or just the domain if the port is 80 or 443"
+  },
+  {
+    "klass": "httpretty.core.URIInfo",
+    "module": "httpretty",
+    "function": "str_with_query",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.URIInfo",
+    "module": "httpretty",
+    "function": "str_with_query",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.URIInfo",
+    "module": "httpretty",
+    "function": "to_str",
+    "param_names": [
+      "attrs"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.URIInfo",
+    "module": "httpretty",
+    "function": "to_str",
+    "param_names": [
+      "attrs"
+    ],
+    "function_docstring": null
+  },
+  {
+    "param_map": {
+      "uri": {
+        "name": "uri",
+        "param_doc": " string"
+      }
+    },
+    "klass": "httpretty.core.URIInfo",
+    "module": "httpretty",
+    "function": "from_uri",
+    "param_names": [
+      "uri",
+      "entry"
+    ],
+    "function_docstring": ""
+  },
+  {
+    "param_map": {
+      "uri": {
+        "name": "uri",
+        "param_doc": " string"
+      }
+    },
+    "klass": "httpretty.URIInfo",
+    "module": "httpretty",
+    "function": "from_uri",
+    "param_names": [
+      "uri",
+      "entry"
+    ],
+    "function_docstring": ""
+  },
+  {
+    "klass": "httpretty.core.URIMatcher",
+    "module": "httpretty",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "klass": "httpretty.URIMatcher",
+    "module": "httpretty",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "klass": "httpretty.core.URIMatcher",
+    "module": "httpretty",
+    "function": "__eq__",
+    "param_names": [
+      "other"
+    ],
+    "function_docstring": "\nReturn self==value."
+  },
+  {
+    "klass": "httpretty.URIMatcher",
+    "module": "httpretty",
+    "function": "__eq__",
+    "param_names": [
+      "other"
+    ],
+    "function_docstring": "\nReturn self==value."
+  },
+  {
+    "klass": "httpretty.core.URIMatcher",
+    "module": "httpretty",
+    "function": "__hash__",
+    "function_docstring": "\nReturn hash(self)."
+  },
+  {
+    "klass": "httpretty.URIMatcher",
+    "module": "httpretty",
+    "function": "__hash__",
+    "function_docstring": "\nReturn hash(self)."
+  },
+  {
+    "klass": "httpretty.core.URIMatcher",
+    "module": "httpretty",
+    "function": "__init__",
+    "param_names": [
+      "uri",
+      "entries",
+      "match_querystring",
+      "priority"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "httpretty.URIMatcher",
+    "module": "httpretty",
+    "function": "__init__",
+    "param_names": [
+      "uri",
+      "entries",
+      "match_querystring",
+      "priority"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "httpretty.core.URIMatcher",
+    "module": "httpretty",
+    "function": "__str__",
+    "function_docstring": "\nReturn str(self)."
+  },
+  {
+    "klass": "httpretty.URIMatcher",
+    "module": "httpretty",
+    "function": "__str__",
+    "function_docstring": "\nReturn str(self)."
+  },
+  {
+    "klass": "httpretty.core.URIMatcher",
+    "module": "httpretty",
+    "function": "get_next_entry",
+    "param_names": [
+      "method",
+      "info",
+      "request"
+    ],
+    "function_docstring": "\nCycle through available responses, but only once.\nAny subsequent requests will receive the last response"
+  },
+  {
+    "klass": "httpretty.URIMatcher",
+    "module": "httpretty",
+    "function": "get_next_entry",
+    "param_names": [
+      "method",
+      "info",
+      "request"
+    ],
+    "function_docstring": "\nCycle through available responses, but only once.\nAny subsequent requests will receive the last response"
+  },
+  {
+    "klass": "httpretty.core.URIMatcher",
+    "module": "httpretty",
+    "function": "matches",
+    "param_names": [
+      "info"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.URIMatcher",
+    "module": "httpretty",
+    "function": "matches",
+    "param_names": [
+      "info"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.errors.UnmockedError",
+    "module": "httpretty",
+    "base_classes": [
+      "httpretty.errors.HTTPrettyError"
+    ]
+  },
+  {
+    "klass": "httpretty.UnmockedError",
+    "module": "httpretty",
+    "base_classes": [
+      "httpretty.errors.HTTPrettyError"
+    ]
+  },
+  {
+    "klass": "httpretty.errors.UnmockedError",
+    "module": "httpretty",
+    "function": "__init__",
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "httpretty.UnmockedError",
+    "module": "httpretty",
+    "function": "__init__",
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "class_docstring": "`context-manager <https://docs.python.org/3/reference/datamodel.html#context-managers>`_ for enabling HTTPretty.\n\n    .. testcode::\n\n       import json\n       import httpretty\n\n       httpretty.register_uri(httpretty.GET, 'https://httpbin.org/ip', body=json.dumps({'origin': '42.42.42.42'}))\n       with httpretty.enabled():\n           response = requests.get('https://httpbin.org/ip')\n\n       assert httpretty.latest_requests[-1].url == 'https://httpbin.org/ip'\n       assert response.json() == {'origin': '42.42.42.42'}\n    ",
+    "klass": "httpretty.core.httprettized",
+    "module": "httpretty",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "class_docstring": "`context-manager <https://docs.python.org/3/reference/datamodel.html#context-managers>`_ for enabling HTTPretty.\n\n    .. testcode::\n\n       import json\n       import httpretty\n\n       httpretty.register_uri(httpretty.GET, 'https://httpbin.org/ip', body=json.dumps({'origin': '42.42.42.42'}))\n       with httpretty.enabled():\n           response = requests.get('https://httpbin.org/ip')\n\n       assert httpretty.latest_requests[-1].url == 'https://httpbin.org/ip'\n       assert response.json() == {'origin': '42.42.42.42'}\n    ",
+    "klass": "httpretty.httprettized",
+    "module": "httpretty",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "klass": "httpretty.core.httprettized",
+    "module": "httpretty",
+    "function": "__enter__",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.httprettized",
+    "module": "httpretty",
+    "function": "__enter__",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.httprettized",
+    "module": "httpretty",
+    "function": "__exit__",
+    "param_names": [
+      "exc_type",
+      "exc_value",
+      "traceback"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.httprettized",
+    "module": "httpretty",
+    "function": "__exit__",
+    "param_names": [
+      "exc_type",
+      "exc_value",
+      "traceback"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.httprettized",
+    "module": "httpretty",
+    "function": "__init__",
+    "param_names": [
+      "allow_net_connect"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "httpretty.httprettized",
+    "module": "httpretty",
+    "function": "__init__",
+    "param_names": [
+      "allow_net_connect"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.compat.encode_obj",
+    "param_names": [
+      "in_obj"
+    ],
+    "function_docstring": null
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.compat.parse_qs",
+    "param_names": [
+      "qs",
+      "keep_blank_values",
+      "strict_parsing",
+      "encoding",
+      "errors",
+      "max_num_fields"
+    ],
+    "function_docstring": "\nParse a query given as a string argument.\n\nArguments:\n\nqs: percent-encoded query string to be parsed\n\nkeep_blank_values: flag indicating whether blank values in\n    percent-encoded queries should be treated as blank strings.\n    A true value indicates that blanks should be retained as\n    blank strings.  The default false value indicates that\n    blank values are to be ignored and treated as if they were\n    not included.\n\nstrict_parsing: flag indicating what to do with parsing errors.\n    If false (the default), errors are silently ignored.\n    If true, errors raise a ValueError exception.\n\nencoding and errors: specify how to decode percent-encoded sequences\n    into Unicode characters, as accepted by the bytes.decode() method.\n\nmax_num_fields: int. If set, then throws a ValueError if there\n    are more than n fields read by parse_qsl().\n\nReturns a dictionary."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.compat.quote",
+    "param_names": [
+      "string",
+      "safe",
+      "encoding",
+      "errors"
+    ],
+    "function_docstring": "\nquote('abc def') -> 'abc%20def'\n\nEach part of a URL, e.g. the path info, the query, etc., has a\ndifferent set of reserved characters that must be quoted. The\nquote function offers a cautious (not minimal) way to quote a\nstring for most of these parts.\n\nRFC 3986 Uniform Resource Identifier (URI): Generic Syntax lists\nthe following (un)reserved characters.\n\nunreserved    = ALPHA / DIGIT / \"-\" / \".\" / \"_\" / \"~\"\nreserved      = gen-delims / sub-delims\ngen-delims    = \":\" / \"/\" / \"?\" / \"#\" / \"[\" / \"]\" / \"@\"\nsub-delims    = \"!\" / \"$\" / \"&\" / \"'\" / \"(\" / \")\"\n              / \"*\" / \"+\" / \",\" / \";\" / \"=\"\n\nEach of the reserved characters is reserved in some component of a URL,\nbut not necessarily in all of them.\n\nThe quote function %-escapes all characters that are neither in the\nunreserved chars (\"always safe\") nor the additional chars set via the\nsafe arg.\n\nThe default for the safe arg is '/'. The character is reserved, but in\ntypical usage the quote function is being called on a path where the\nexisting slash characters are to be preserved.\n\nPython 3.7 updates from using RFC 2396 to RFC 3986 to quote URL strings.\nNow, \"~\" is included in the set of unreserved characters.\n\nstring and safe may be either str or bytes objects. encoding and errors\nmust not be specified if string is a bytes object.\n\nThe optional encoding and errors parameters specify how to deal with\nnon-ASCII characters, as accepted by the str.encode method.\nBy default, encoding='utf-8' (characters are encoded with UTF-8), and\nerrors='strict' (unsupported characters raise a UnicodeEncodeError)."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.compat.quote_plus",
+    "param_names": [
+      "string",
+      "safe",
+      "encoding",
+      "errors"
+    ],
+    "function_docstring": "\nLike quote(), but also replace ' ' with '+', as required for quoting\nHTML form values. Plus signs in the original string are escaped unless\nthey are included in safe. It also does not have safe default to '/'."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.compat.unquote",
+    "param_names": [
+      "string",
+      "encoding",
+      "errors"
+    ],
+    "function_docstring": "\nReplace %xx escapes by their single-character equivalent. The optional\nencoding and errors parameters specify how to decode percent-encoded\nsequences into Unicode characters, as accepted by the bytes.decode()\nmethod.\nBy default, percent-encoded sequences are decoded with UTF-8, and invalid\nsequences are replaced by a placeholder character.\n\nunquote('abc%20def') -> 'abc def'."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.compat.urlencode",
+    "param_names": [
+      "query",
+      "doseq",
+      "safe",
+      "encoding",
+      "errors",
+      "quote_via"
+    ],
+    "function_docstring": "\nEncode a dict or sequence of two-element tuples into a URL query string.\n\nIf any values in the query arg are sequences and doseq is true, each\nsequence element is converted to a separate parameter.\n\nIf the query arg is a sequence of two-element tuples, the order of the\nparameters in the output will match the order of parameters in the\ninput.\n\nThe components of a query arg may each be either a string or a bytes type.\n\nThe safe, encoding, and errors parameters are passed down to the function\nspecified by quote_via (encoding and errors only if a component is a str)."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.compat.urlsplit",
+    "param_names": [
+      "url",
+      "scheme",
+      "allow_fragments"
+    ],
+    "function_docstring": "\nParse a URL into 5 components:\n<scheme>://<netloc>/<path>?<query>#<fragment>\nReturn a 5-tuple: (scheme, netloc, path, query, fragment).\nNote that we don't break the components up in smaller bits\n(e.g. netloc is a single string) and we don't expand % escapes."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.compat.urlunsplit",
+    "param_names": [
+      "components"
+    ],
+    "function_docstring": "\nCombine the elements of a tuple as returned by urlsplit() into a\ncomplete URL as a string. The data argument can be any five-item iterable.\nThis may result in a slightly different, but equivalent URL, if the URL that\nwas parsed originally had unnecessary delimiters (for example, a ? with an\nempty query; the RFC states that these are equivalent)."
+  },
+  {
+    "klass": "httpretty.compat.BaseClass",
+    "module": "httpretty",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "klass": "httpretty.compat.BaseClass",
+    "module": "httpretty",
+    "function": "__repr__",
+    "function_docstring": "\nReturn repr(self)."
+  },
+  {
+    "class_docstring": "HTTP request handler base class.\n\n    The following explanation of HTTP serves to guide you through the\n    code as well as to expose any misunderstandings I may have about\n    HTTP (so you don't need to read the code to figure out I'm wrong\n    :-).\n\n    HTTP (HyperText Transfer Protocol) is an extensible protocol on\n    top of a reliable stream transport (e.g. TCP/IP).  The protocol\n    recognizes three parts to a request:\n\n    1. One line identifying the request type and path\n    2. An optional set of RFC-822-style headers\n    3. An optional data part\n\n    The headers and data are separated by a blank line.\n\n    The first line of the request has the form\n\n    <command> <path> <version>\n\n    where <command> is a (case-sensitive) keyword such as GET or POST,\n    <path> is a string containing path information for the request,\n    and <version> should be the string \"HTTP/1.0\" or \"HTTP/1.1\".\n    <path> is encoded using the URL encoding scheme (using %xx to signify\n    the ASCII character with hex code xx).\n\n    The specification specifies that lines are separated by CRLF but\n    for compatibility with the widest range of clients recommends\n    servers also handle LF.  Similarly, whitespace in the request line\n    is treated sensibly (allowing multiple spaces between components\n    and allowing trailing whitespace).\n\n    Similarly, for output, lines ought to be separated by CRLF pairs\n    but most clients grok LF characters just fine.\n\n    If the first line of the request has the form\n\n    <command> <path>\n\n    (i.e. <version> is left out) then this is assumed to be an HTTP\n    0.9 request; this form has no optional headers and data part and\n    the reply consists of just the data.\n\n    The reply form of the HTTP 1.x protocol again has three parts:\n\n    1. One line giving the response code\n    2. An optional set of RFC-822-style headers\n    3. The data\n\n    Again, the headers and data are separated by a blank line.\n\n    The response code line has the form\n\n    <version> <responsecode> <responsestring>\n\n    where <version> is the protocol version (\"HTTP/1.0\" or \"HTTP/1.1\"),\n    <responsecode> is a 3-digit response code indicating success or\n    failure of the request, and <responsestring> is an optional\n    human-readable string explaining what the response code means.\n\n    This server parses the request and the headers, and then calls a\n    function specific to the request type (<command>).  Specifically,\n    a request SPAM will be handled by a method do_SPAM().  If no\n    such method exists the server sends an error response to the\n    client.  If it exists, it is called with no arguments:\n\n    do_SPAM()\n\n    Note that the request name is case sensitive (i.e. SPAM and spam\n    are different requests).\n\n    The various request details are stored in instance variables:\n\n    - client_address is the client IP address in the form (host,\n    port);\n\n    - command, path and version are the broken-down request line;\n\n    - headers is an instance of email.message.Message (or a derived\n    class) containing the header information;\n\n    - rfile is a file object open for reading positioned at the\n    start of the optional input data part;\n\n    - wfile is a file object open for writing.\n\n    IT IS IMPORTANT TO ADHERE TO THE PROTOCOL FOR WRITING!\n\n    The first thing to be written must be the response line.  Then\n    follow 0 or more header lines, then a blank line, and then the\n    actual data (if any).  The meaning of the header lines depends on\n    the command executed by the server; in most cases, when data is\n    returned, there should be at least one header line of the form\n\n    Content-type: <type>/<subtype>\n\n    where <type> and <subtype> should be registered MIME types,\n    e.g. \"text/html\" or \"text/plain\".\n\n    ",
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "base_classes": [
+      "socketserver.StreamRequestHandler"
+    ]
+  },
+  {
+    "class_docstring": "HTTP request handler base class.\n\n    The following explanation of HTTP serves to guide you through the\n    code as well as to expose any misunderstandings I may have about\n    HTTP (so you don't need to read the code to figure out I'm wrong\n    :-).\n\n    HTTP (HyperText Transfer Protocol) is an extensible protocol on\n    top of a reliable stream transport (e.g. TCP/IP).  The protocol\n    recognizes three parts to a request:\n\n    1. One line identifying the request type and path\n    2. An optional set of RFC-822-style headers\n    3. An optional data part\n\n    The headers and data are separated by a blank line.\n\n    The first line of the request has the form\n\n    <command> <path> <version>\n\n    where <command> is a (case-sensitive) keyword such as GET or POST,\n    <path> is a string containing path information for the request,\n    and <version> should be the string \"HTTP/1.0\" or \"HTTP/1.1\".\n    <path> is encoded using the URL encoding scheme (using %xx to signify\n    the ASCII character with hex code xx).\n\n    The specification specifies that lines are separated by CRLF but\n    for compatibility with the widest range of clients recommends\n    servers also handle LF.  Similarly, whitespace in the request line\n    is treated sensibly (allowing multiple spaces between components\n    and allowing trailing whitespace).\n\n    Similarly, for output, lines ought to be separated by CRLF pairs\n    but most clients grok LF characters just fine.\n\n    If the first line of the request has the form\n\n    <command> <path>\n\n    (i.e. <version> is left out) then this is assumed to be an HTTP\n    0.9 request; this form has no optional headers and data part and\n    the reply consists of just the data.\n\n    The reply form of the HTTP 1.x protocol again has three parts:\n\n    1. One line giving the response code\n    2. An optional set of RFC-822-style headers\n    3. The data\n\n    Again, the headers and data are separated by a blank line.\n\n    The response code line has the form\n\n    <version> <responsecode> <responsestring>\n\n    where <version> is the protocol version (\"HTTP/1.0\" or \"HTTP/1.1\"),\n    <responsecode> is a 3-digit response code indicating success or\n    failure of the request, and <responsestring> is an optional\n    human-readable string explaining what the response code means.\n\n    This server parses the request and the headers, and then calls a\n    function specific to the request type (<command>).  Specifically,\n    a request SPAM will be handled by a method do_SPAM().  If no\n    such method exists the server sends an error response to the\n    client.  If it exists, it is called with no arguments:\n\n    do_SPAM()\n\n    Note that the request name is case sensitive (i.e. SPAM and spam\n    are different requests).\n\n    The various request details are stored in instance variables:\n\n    - client_address is the client IP address in the form (host,\n    port);\n\n    - command, path and version are the broken-down request line;\n\n    - headers is an instance of email.message.Message (or a derived\n    class) containing the header information;\n\n    - rfile is a file object open for reading positioned at the\n    start of the optional input data part;\n\n    - wfile is a file object open for writing.\n\n    IT IS IMPORTANT TO ADHERE TO THE PROTOCOL FOR WRITING!\n\n    The first thing to be written must be the response line.  Then\n    follow 0 or more header lines, then a blank line, and then the\n    actual data (if any).  The meaning of the header lines depends on\n    the command executed by the server; in most cases, when data is\n    returned, there should be at least one header line of the form\n\n    Content-type: <type>/<subtype>\n\n    where <type> and <subtype> should be registered MIME types,\n    e.g. \"text/html\" or \"text/plain\".\n\n    ",
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "base_classes": [
+      "socketserver.StreamRequestHandler"
+    ]
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "__init__",
+    "param_names": [
+      "request",
+      "client_address",
+      "server"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "__init__",
+    "param_names": [
+      "request",
+      "client_address",
+      "server"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "address_string",
+    "function_docstring": "\nReturn the client address."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "address_string",
+    "function_docstring": "\nReturn the client address."
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "date_time_string",
+    "param_names": [
+      "timestamp"
+    ],
+    "function_docstring": "\nReturn the current date and time formatted for a message header."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "date_time_string",
+    "param_names": [
+      "timestamp"
+    ],
+    "function_docstring": "\nReturn the current date and time formatted for a message header."
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "end_headers",
+    "function_docstring": "\nSend the blank line ending the MIME headers."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "end_headers",
+    "function_docstring": "\nSend the blank line ending the MIME headers."
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "finish",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "finish",
+    "function_docstring": null
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "flush_headers",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "flush_headers",
+    "function_docstring": null
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "handle",
+    "function_docstring": "\nHandle multiple requests if necessary."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "handle",
+    "function_docstring": "\nHandle multiple requests if necessary."
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "handle_expect_100",
+    "function_docstring": "\nDecide what to do with an \"Expect: 100-continue\" header.\n\nIf the client is expecting a 100 Continue response, we must\nrespond with either a 100 Continue or a final response before\nwaiting for the request body. The default is to always respond\nwith a 100 Continue. You can behave differently (for example,\nreject unauthorized requests) by overriding this method.\n\nThis method should either return True (possibly after sending\na 100 Continue response) or send an error response and return\nFalse."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "handle_expect_100",
+    "function_docstring": "\nDecide what to do with an \"Expect: 100-continue\" header.\n\nIf the client is expecting a 100 Continue response, we must\nrespond with either a 100 Continue or a final response before\nwaiting for the request body. The default is to always respond\nwith a 100 Continue. You can behave differently (for example,\nreject unauthorized requests) by overriding this method.\n\nThis method should either return True (possibly after sending\na 100 Continue response) or send an error response and return\nFalse."
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "handle_one_request",
+    "function_docstring": "\nHandle a single HTTP request.\n\nYou normally don't need to override this method; see the class\n__doc__ string for information on how to handle specific HTTP\ncommands such as GET and POST."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "handle_one_request",
+    "function_docstring": "\nHandle a single HTTP request.\n\nYou normally don't need to override this method; see the class\n__doc__ string for information on how to handle specific HTTP\ncommands such as GET and POST."
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "log_date_time_string",
+    "function_docstring": "\nReturn the current time formatted for logging."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "log_date_time_string",
+    "function_docstring": "\nReturn the current time formatted for logging."
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "log_error",
+    "param_names": [
+      "format",
+      "args"
+    ],
+    "function_docstring": "\nLog an error.\n\nThis is called when a request cannot be fulfilled.  By\ndefault it passes the message on to log_message().\n\nArguments are the same as for log_message().\n\nXXX This should go to the separate error log."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "log_error",
+    "param_names": [
+      "format",
+      "args"
+    ],
+    "function_docstring": "\nLog an error.\n\nThis is called when a request cannot be fulfilled.  By\ndefault it passes the message on to log_message().\n\nArguments are the same as for log_message().\n\nXXX This should go to the separate error log."
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "log_message",
+    "param_names": [
+      "format",
+      "args"
+    ],
+    "function_docstring": "\nLog an arbitrary message.\n\nThis is used by all other logging functions.  Override\nit if you have specific logging wishes.\n\nThe first argument, FORMAT, is a format string for the\nmessage to be logged.  If the format string contains\nany % escapes requiring parameters, they should be\nspecified as subsequent arguments (it's just like\nprintf!).\n\nThe client ip and current date/time are prefixed to\nevery message."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "log_message",
+    "param_names": [
+      "format",
+      "args"
+    ],
+    "function_docstring": "\nLog an arbitrary message.\n\nThis is used by all other logging functions.  Override\nit if you have specific logging wishes.\n\nThe first argument, FORMAT, is a format string for the\nmessage to be logged.  If the format string contains\nany % escapes requiring parameters, they should be\nspecified as subsequent arguments (it's just like\nprintf!).\n\nThe client ip and current date/time are prefixed to\nevery message."
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "log_request",
+    "param_names": [
+      "code",
+      "size"
+    ],
+    "function_docstring": "\nLog an accepted request.\n\nThis is called by send_response()."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "log_request",
+    "param_names": [
+      "code",
+      "size"
+    ],
+    "function_docstring": "\nLog an accepted request.\n\nThis is called by send_response()."
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "parse_request",
+    "function_docstring": "\nParse a request (internal).\n\nThe request should be stored in self.raw_requestline; the results\nare in self.command, self.path, self.request_version and\nself.headers.\n\nReturn True for success, False for failure; on failure, any relevant\nerror response has already been sent back."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "parse_request",
+    "function_docstring": "\nParse a request (internal).\n\nThe request should be stored in self.raw_requestline; the results\nare in self.command, self.path, self.request_version and\nself.headers.\n\nReturn True for success, False for failure; on failure, any relevant\nerror response has already been sent back."
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "send_error",
+    "param_names": [
+      "code",
+      "message",
+      "explain"
+    ],
+    "function_docstring": "\nSend and log an error reply.\n\nArguments are\n* code:    an HTTP error code\n           3 digits\n* message: a simple optional 1 line reason phrase.\n           *( HTAB / SP / VCHAR / %x80-FF )\n           defaults to short entry matching the response code\n* explain: a detailed message defaults to the long entry\n           matching the response code.\n\nThis sends an error response (so it must be called before any\noutput has been generated), logs the error, and finally sends\na piece of HTML explaining the error to the user."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "send_error",
+    "param_names": [
+      "code",
+      "message",
+      "explain"
+    ],
+    "function_docstring": "\nSend and log an error reply.\n\nArguments are\n* code:    an HTTP error code\n           3 digits\n* message: a simple optional 1 line reason phrase.\n           *( HTAB / SP / VCHAR / %x80-FF )\n           defaults to short entry matching the response code\n* explain: a detailed message defaults to the long entry\n           matching the response code.\n\nThis sends an error response (so it must be called before any\noutput has been generated), logs the error, and finally sends\na piece of HTML explaining the error to the user."
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "send_header",
+    "param_names": [
+      "keyword",
+      "value"
+    ],
+    "function_docstring": "\nSend a MIME header to the headers buffer."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "send_header",
+    "param_names": [
+      "keyword",
+      "value"
+    ],
+    "function_docstring": "\nSend a MIME header to the headers buffer."
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "send_response",
+    "param_names": [
+      "code",
+      "message"
+    ],
+    "function_docstring": "\nAdd the response header to the headers buffer and log the\nresponse code.\n\nAlso send two standard headers with the server software\nversion and the current date."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "send_response",
+    "param_names": [
+      "code",
+      "message"
+    ],
+    "function_docstring": "\nAdd the response header to the headers buffer and log the\nresponse code.\n\nAlso send two standard headers with the server software\nversion and the current date."
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "send_response_only",
+    "param_names": [
+      "code",
+      "message"
+    ],
+    "function_docstring": "\nSend the response header only."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "send_response_only",
+    "param_names": [
+      "code",
+      "message"
+    ],
+    "function_docstring": "\nSend the response header only."
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "setup",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "setup",
+    "function_docstring": null
+  },
+  {
+    "klass": "http.server.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "version_string",
+    "function_docstring": "\nReturn the server software version string."
+  },
+  {
+    "klass": "httpretty.compat.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "version_string",
+    "function_docstring": "\nReturn the server software version string."
+  },
+  {
+    "class_docstring": "Buffered I/O implementation using an in-memory bytes buffer.",
+    "klass": "_io.BytesIO",
+    "module": "_io",
+    "base_classes": [
+      "_io._BufferedIOBase"
+    ]
+  },
+  {
+    "class_docstring": "Buffered I/O implementation using an in-memory bytes buffer.",
+    "klass": "httpretty.compat.BytesIO",
+    "module": "_io",
+    "base_classes": [
+      "_io._BufferedIOBase"
+    ]
+  },
+  {
+    "class_docstring": "bytes(iterable_of_ints) -> bytes\nbytes(string, encoding[, errors]) -> bytes\nbytes(bytes_or_buffer) -> immutable copy of bytes_or_buffer\nbytes(int) -> bytes object of size given by the parameter initialized with null bytes\nbytes() -> empty bytes object\n\nConstruct an immutable array of bytes from:\n  - an iterable yielding integers in range(256)\n  - a text string encoded using the specified encoding\n  - any object implementing the buffer API.\n  - an integer",
+    "klass": "bytes",
+    "module": "bytes",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "class_docstring": "bytes(iterable_of_ints) -> bytes\nbytes(string, encoding[, errors]) -> bytes\nbytes(bytes_or_buffer) -> immutable copy of bytes_or_buffer\nbytes(int) -> bytes object of size given by the parameter initialized with null bytes\nbytes() -> empty bytes object\n\nConstruct an immutable array of bytes from:\n  - an iterable yielding integers in range(256)\n  - a text string encoded using the specified encoding\n  - any object implementing the buffer API.\n  - an integer",
+    "klass": "httpretty.compat.bytes",
+    "module": "bytes",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "class_docstring": "str(object='') -> str\nstr(bytes_or_buffer[, encoding[, errors]]) -> str\n\nCreate a new string object from the given object. If encoding or\nerrors is specified, then the object must expose a data buffer\nthat will be decoded using the given encoding and error handler.\nOtherwise, returns the result of object.__str__() (if defined)\nor repr(object).\nencoding defaults to sys.getdefaultencoding().\nerrors defaults to 'strict'.",
+    "klass": "str",
+    "module": "str",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "class_docstring": "str(object='') -> str\nstr(bytes_or_buffer[, encoding[, errors]]) -> str\n\nCreate a new string object from the given object. If encoding or\nerrors is specified, then the object must expose a data buffer\nthat will be decoded using the given encoding and error handler.\nOtherwise, returns the result of object.__str__() (if defined)\nor repr(object).\nencoding defaults to sys.getdefaultencoding().\nerrors defaults to 'strict'.",
+    "klass": "httpretty.compat.str",
+    "module": "str",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.FALLBACK_FUNCTION",
+    "param_names": [
+      "x"
+    ],
+    "function_docstring": null
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.create_fake_connection",
+    "param_names": [
+      "address",
+      "timeout",
+      "source_address"
+    ],
+    "function_docstring": "\ndrop-in replacement for :py:func:`socket.create_connection`"
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.decode_utf8",
+    "param_names": [
+      "s"
+    ],
+    "function_docstring": null
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.encode_obj",
+    "param_names": [
+      "in_obj"
+    ],
+    "function_docstring": null
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.fake_getaddrinfo",
+    "param_names": [
+      "host",
+      "port",
+      "family",
+      "socktype",
+      "proto",
+      "flags"
+    ],
+    "function_docstring": "\ndrop-in replacement for :py:func:`socket.getaddrinfo`"
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.fake_gethostbyname",
+    "param_names": [
+      "host"
+    ],
+    "function_docstring": "\ndrop-in replacement for :py:func:`socket.gethostbyname`"
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.fake_gethostname",
+    "function_docstring": "\ndrop-in replacement for :py:func:`socket.gethostname`"
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.fake_wrap_socket",
+    "param_names": [
+      "orig_wrap_socket_fn",
+      "args",
+      "kw"
+    ],
+    "function_docstring": "\ndrop-in replacement for py:func:`ssl.wrap_socket`\n"
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.httprettified",
+    "param_names": [
+      "test",
+      "allow_net_connect"
+    ],
+    "function_docstring": "\ndecorator for test functions\n\n.. tip:: Also available under the alias :py:func:`httpretty.activate`\n"
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.last_requestline",
+    "param_names": [
+      "sent_data"
+    ],
+    "function_docstring": "\nFind the last line in sent_data that can be parsed with parse_requestline"
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.create_connection",
+    "param_names": [
+      "address",
+      "timeout",
+      "source_address"
+    ],
+    "function_docstring": "\nConnect to *address* and return the socket object.\n\nConvenience function.  Connect to *address* (a 2-tuple ``(host,\nport)``) and return the socket object.  Passing the optional\n*timeout* parameter will set the timeout on the socket instance\nbefore attempting to connect.  If no *timeout* is supplied, the\nglobal default timeout setting returned by :func:`getdefaulttimeout`\nis used.  If *source_address* is set it must be a tuple of (host, port)\nfor the socket to bind as a source address before making the connection.\nA host of '' or port 0 tells the OS to use the default."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.getaddrinfo",
+    "param_names": [
+      "host",
+      "port",
+      "family",
+      "type",
+      "proto",
+      "flags"
+    ],
+    "function_docstring": "\nResolve host and port into list of address info entries.\n\nTranslate the host/port argument into a sequence of 5-tuples that contain\nall the necessary arguments for creating a socket connected to that service.\nhost is a domain name, a string representation of an IPv4/v6 address or\nNone. port is a string service name such as 'http', a numeric port number or\nNone. By passing None as the value of host and port, you can pass NULL to\nthe underlying C API.\n\nThe family, type and proto arguments can be optionally specified in order to\nnarrow the list of addresses returned. Passing zero as a value for each of\nthese arguments selects the full range of results."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.wrap_socket",
+    "param_names": [
+      "sock",
+      "keyfile",
+      "certfile",
+      "server_side",
+      "cert_reqs",
+      "ssl_version",
+      "ca_certs",
+      "do_handshake_on_connect",
+      "suppress_ragged_eofs",
+      "ciphers"
+    ],
+    "function_docstring": null
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.parse_qs",
+    "param_names": [
+      "qs",
+      "keep_blank_values",
+      "strict_parsing",
+      "encoding",
+      "errors",
+      "max_num_fields"
+    ],
+    "function_docstring": "\nParse a query given as a string argument.\n\nArguments:\n\nqs: percent-encoded query string to be parsed\n\nkeep_blank_values: flag indicating whether blank values in\n    percent-encoded queries should be treated as blank strings.\n    A true value indicates that blanks should be retained as\n    blank strings.  The default false value indicates that\n    blank values are to be ignored and treated as if they were\n    not included.\n\nstrict_parsing: flag indicating what to do with parsing errors.\n    If false (the default), errors are silently ignored.\n    If true, errors raise a ValueError exception.\n\nencoding and errors: specify how to decode percent-encoded sequences\n    into Unicode characters, as accepted by the bytes.decode() method.\n\nmax_num_fields: int. If set, then throws a ValueError if there\n    are more than n fields read by parse_qsl().\n\nReturns a dictionary."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.parse_requestline",
+    "param_names": [
+      "s"
+    ],
+    "function_docstring": "\nhttp://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html#sec5\n\n>>> parse_requestline('GET / HTTP/1.0')\n('GET', '/', '1.0')\n>>> parse_requestline('post /testurl htTP/1.1')\n('POST', '/testurl', '1.1')\n>>> parse_requestline('Im not a RequestLine')\nTraceback (most recent call last):\n    ...\nValueError: Not a Request-Line"
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.quote",
+    "param_names": [
+      "string",
+      "safe",
+      "encoding",
+      "errors"
+    ],
+    "function_docstring": "\nquote('abc def') -> 'abc%20def'\n\nEach part of a URL, e.g. the path info, the query, etc., has a\ndifferent set of reserved characters that must be quoted. The\nquote function offers a cautious (not minimal) way to quote a\nstring for most of these parts.\n\nRFC 3986 Uniform Resource Identifier (URI): Generic Syntax lists\nthe following (un)reserved characters.\n\nunreserved    = ALPHA / DIGIT / \"-\" / \".\" / \"_\" / \"~\"\nreserved      = gen-delims / sub-delims\ngen-delims    = \":\" / \"/\" / \"?\" / \"#\" / \"[\" / \"]\" / \"@\"\nsub-delims    = \"!\" / \"$\" / \"&\" / \"'\" / \"(\" / \")\"\n              / \"*\" / \"+\" / \",\" / \";\" / \"=\"\n\nEach of the reserved characters is reserved in some component of a URL,\nbut not necessarily in all of them.\n\nThe quote function %-escapes all characters that are neither in the\nunreserved chars (\"always safe\") nor the additional chars set via the\nsafe arg.\n\nThe default for the safe arg is '/'. The character is reserved, but in\ntypical usage the quote function is being called on a path where the\nexisting slash characters are to be preserved.\n\nPython 3.7 updates from using RFC 2396 to RFC 3986 to quote URL strings.\nNow, \"~\" is included in the set of unreserved characters.\n\nstring and safe may be either str or bytes objects. encoding and errors\nmust not be specified if string is a bytes object.\n\nThe optional encoding and errors parameters specify how to deal with\nnon-ASCII characters, as accepted by the str.encode method.\nBy default, encoding='utf-8' (characters are encoded with UTF-8), and\nerrors='strict' (unsupported characters raise a UnicodeEncodeError)."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.quote_plus",
+    "param_names": [
+      "string",
+      "safe",
+      "encoding",
+      "errors"
+    ],
+    "function_docstring": "\nLike quote(), but also replace ' ' with '+', as required for quoting\nHTML form values. Plus signs in the original string are escaped unless\nthey are included in safe. It also does not have safe default to '/'."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.unquote",
+    "param_names": [
+      "string",
+      "encoding",
+      "errors"
+    ],
+    "function_docstring": "\nReplace %xx escapes by their single-character equivalent. The optional\nencoding and errors parameters specify how to decode percent-encoded\nsequences into Unicode characters, as accepted by the bytes.decode()\nmethod.\nBy default, percent-encoded sequences are decoded with UTF-8, and invalid\nsequences are replaced by a placeholder character.\n\nunquote('abc%20def') -> 'abc def'."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.url_fix",
+    "param_names": [
+      "s",
+      "charset"
+    ],
+    "function_docstring": "\nescapes special characters\n"
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.urlencode",
+    "param_names": [
+      "query",
+      "doseq",
+      "safe",
+      "encoding",
+      "errors",
+      "quote_via"
+    ],
+    "function_docstring": "\nEncode a dict or sequence of two-element tuples into a URL query string.\n\nIf any values in the query arg are sequences and doseq is true, each\nsequence element is converted to a separate parameter.\n\nIf the query arg is a sequence of two-element tuples, the order of the\nparameters in the output will match the order of parameters in the\ninput.\n\nThe components of a query arg may each be either a string or a bytes type.\n\nThe safe, encoding, and errors parameters are passed down to the function\nspecified by quote_via (encoding and errors only if a component is a str)."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.urlsplit",
+    "param_names": [
+      "url",
+      "scheme",
+      "allow_fragments"
+    ],
+    "function_docstring": "\nParse a URL into 5 components:\n<scheme>://<netloc>/<path>?<query>#<fragment>\nReturn a 5-tuple: (scheme, netloc, path, query, fragment).\nNote that we don't break the components up in smaller bits\n(e.g. netloc is a single string) and we don't expand % escapes."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.urlunsplit",
+    "param_names": [
+      "components"
+    ],
+    "function_docstring": "\nCombine the elements of a tuple as returned by urlsplit() into a\ncomplete URL as a string. The data argument can be any five-item iterable.\nThis may result in a slightly different, but equivalent URL, if the URL that\nwas parsed originally had unnecessary delimiters (for example, a ? with an\nempty query; the RFC states that these are equivalent)."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.core.utf8",
+    "param_names": [
+      "s"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.BaseClass",
+    "module": "httpretty",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "klass": "httpretty.core.BaseClass",
+    "module": "httpretty",
+    "function": "__repr__",
+    "function_docstring": "\nReturn repr(self)."
+  },
+  {
+    "class_docstring": "HTTP request handler base class.\n\n    The following explanation of HTTP serves to guide you through the\n    code as well as to expose any misunderstandings I may have about\n    HTTP (so you don't need to read the code to figure out I'm wrong\n    :-).\n\n    HTTP (HyperText Transfer Protocol) is an extensible protocol on\n    top of a reliable stream transport (e.g. TCP/IP).  The protocol\n    recognizes three parts to a request:\n\n    1. One line identifying the request type and path\n    2. An optional set of RFC-822-style headers\n    3. An optional data part\n\n    The headers and data are separated by a blank line.\n\n    The first line of the request has the form\n\n    <command> <path> <version>\n\n    where <command> is a (case-sensitive) keyword such as GET or POST,\n    <path> is a string containing path information for the request,\n    and <version> should be the string \"HTTP/1.0\" or \"HTTP/1.1\".\n    <path> is encoded using the URL encoding scheme (using %xx to signify\n    the ASCII character with hex code xx).\n\n    The specification specifies that lines are separated by CRLF but\n    for compatibility with the widest range of clients recommends\n    servers also handle LF.  Similarly, whitespace in the request line\n    is treated sensibly (allowing multiple spaces between components\n    and allowing trailing whitespace).\n\n    Similarly, for output, lines ought to be separated by CRLF pairs\n    but most clients grok LF characters just fine.\n\n    If the first line of the request has the form\n\n    <command> <path>\n\n    (i.e. <version> is left out) then this is assumed to be an HTTP\n    0.9 request; this form has no optional headers and data part and\n    the reply consists of just the data.\n\n    The reply form of the HTTP 1.x protocol again has three parts:\n\n    1. One line giving the response code\n    2. An optional set of RFC-822-style headers\n    3. The data\n\n    Again, the headers and data are separated by a blank line.\n\n    The response code line has the form\n\n    <version> <responsecode> <responsestring>\n\n    where <version> is the protocol version (\"HTTP/1.0\" or \"HTTP/1.1\"),\n    <responsecode> is a 3-digit response code indicating success or\n    failure of the request, and <responsestring> is an optional\n    human-readable string explaining what the response code means.\n\n    This server parses the request and the headers, and then calls a\n    function specific to the request type (<command>).  Specifically,\n    a request SPAM will be handled by a method do_SPAM().  If no\n    such method exists the server sends an error response to the\n    client.  If it exists, it is called with no arguments:\n\n    do_SPAM()\n\n    Note that the request name is case sensitive (i.e. SPAM and spam\n    are different requests).\n\n    The various request details are stored in instance variables:\n\n    - client_address is the client IP address in the form (host,\n    port);\n\n    - command, path and version are the broken-down request line;\n\n    - headers is an instance of email.message.Message (or a derived\n    class) containing the header information;\n\n    - rfile is a file object open for reading positioned at the\n    start of the optional input data part;\n\n    - wfile is a file object open for writing.\n\n    IT IS IMPORTANT TO ADHERE TO THE PROTOCOL FOR WRITING!\n\n    The first thing to be written must be the response line.  Then\n    follow 0 or more header lines, then a blank line, and then the\n    actual data (if any).  The meaning of the header lines depends on\n    the command executed by the server; in most cases, when data is\n    returned, there should be at least one header line of the form\n\n    Content-type: <type>/<subtype>\n\n    where <type> and <subtype> should be registered MIME types,\n    e.g. \"text/html\" or \"text/plain\".\n\n    ",
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "base_classes": [
+      "socketserver.StreamRequestHandler"
+    ]
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "__init__",
+    "param_names": [
+      "request",
+      "client_address",
+      "server"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "address_string",
+    "function_docstring": "\nReturn the client address."
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "date_time_string",
+    "param_names": [
+      "timestamp"
+    ],
+    "function_docstring": "\nReturn the current date and time formatted for a message header."
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "end_headers",
+    "function_docstring": "\nSend the blank line ending the MIME headers."
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "finish",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "flush_headers",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "handle",
+    "function_docstring": "\nHandle multiple requests if necessary."
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "handle_expect_100",
+    "function_docstring": "\nDecide what to do with an \"Expect: 100-continue\" header.\n\nIf the client is expecting a 100 Continue response, we must\nrespond with either a 100 Continue or a final response before\nwaiting for the request body. The default is to always respond\nwith a 100 Continue. You can behave differently (for example,\nreject unauthorized requests) by overriding this method.\n\nThis method should either return True (possibly after sending\na 100 Continue response) or send an error response and return\nFalse."
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "handle_one_request",
+    "function_docstring": "\nHandle a single HTTP request.\n\nYou normally don't need to override this method; see the class\n__doc__ string for information on how to handle specific HTTP\ncommands such as GET and POST."
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "log_date_time_string",
+    "function_docstring": "\nReturn the current time formatted for logging."
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "log_error",
+    "param_names": [
+      "format",
+      "args"
+    ],
+    "function_docstring": "\nLog an error.\n\nThis is called when a request cannot be fulfilled.  By\ndefault it passes the message on to log_message().\n\nArguments are the same as for log_message().\n\nXXX This should go to the separate error log."
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "log_message",
+    "param_names": [
+      "format",
+      "args"
+    ],
+    "function_docstring": "\nLog an arbitrary message.\n\nThis is used by all other logging functions.  Override\nit if you have specific logging wishes.\n\nThe first argument, FORMAT, is a format string for the\nmessage to be logged.  If the format string contains\nany % escapes requiring parameters, they should be\nspecified as subsequent arguments (it's just like\nprintf!).\n\nThe client ip and current date/time are prefixed to\nevery message."
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "log_request",
+    "param_names": [
+      "code",
+      "size"
+    ],
+    "function_docstring": "\nLog an accepted request.\n\nThis is called by send_response()."
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "parse_request",
+    "function_docstring": "\nParse a request (internal).\n\nThe request should be stored in self.raw_requestline; the results\nare in self.command, self.path, self.request_version and\nself.headers.\n\nReturn True for success, False for failure; on failure, any relevant\nerror response has already been sent back."
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "send_error",
+    "param_names": [
+      "code",
+      "message",
+      "explain"
+    ],
+    "function_docstring": "\nSend and log an error reply.\n\nArguments are\n* code:    an HTTP error code\n           3 digits\n* message: a simple optional 1 line reason phrase.\n           *( HTAB / SP / VCHAR / %x80-FF )\n           defaults to short entry matching the response code\n* explain: a detailed message defaults to the long entry\n           matching the response code.\n\nThis sends an error response (so it must be called before any\noutput has been generated), logs the error, and finally sends\na piece of HTML explaining the error to the user."
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "send_header",
+    "param_names": [
+      "keyword",
+      "value"
+    ],
+    "function_docstring": "\nSend a MIME header to the headers buffer."
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "send_response",
+    "param_names": [
+      "code",
+      "message"
+    ],
+    "function_docstring": "\nAdd the response header to the headers buffer and log the\nresponse code.\n\nAlso send two standard headers with the server software\nversion and the current date."
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "send_response_only",
+    "param_names": [
+      "code",
+      "message"
+    ],
+    "function_docstring": "\nSend the response header only."
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "setup",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.BaseHTTPRequestHandler",
+    "module": "http",
+    "function": "version_string",
+    "function_docstring": "\nReturn the server software version string."
+  },
+  {
+    "class_docstring": "Shorthand for :py:class:`~httpretty.core.fakesock`\n    ",
+    "klass": "httpretty.core.FakeSSLSocket",
+    "module": "httpretty",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "klass": "httpretty.core.FakeSSLSocket",
+    "module": "httpretty",
+    "function": "__getattr__",
+    "param_names": [
+      "attr"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.FakeSSLSocket",
+    "module": "httpretty",
+    "function": "__init__",
+    "param_names": [
+      "sock",
+      "args",
+      "kw"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "class_docstring": "Fake socket file descriptor. Under the hood all data is written in\n    a temporary file, giving it a real file descriptor number.\n\n    ",
+    "klass": "httpretty.core.FakeSockFile",
+    "module": "httpretty",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "klass": "httpretty.core.FakeSockFile",
+    "module": "httpretty",
+    "function": "__getattr__",
+    "param_names": [
+      "name"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.FakeSockFile",
+    "module": "httpretty",
+    "function": "__init__",
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "httpretty.core.FakeSockFile",
+    "module": "httpretty",
+    "function": "close",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.FakeSockFile",
+    "module": "httpretty",
+    "function": "fileno",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.FakeSockFile",
+    "module": "httpretty",
+    "function": "getvalue",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyError",
+    "module": "httpretty",
+    "base_classes": [
+      "Exception"
+    ]
+  },
+  {
+    "class_docstring": "\n    Represents a HTTP request. It takes a valid multi-line,\n    ``\\r\\n`` separated string with HTTP headers and parse them out using\n    the internal `parse_request` method.\n\n    It also replaces the `rfile` and `wfile` attributes with StringIO\n    instances so that we guarantee that it won't make any I/O, neighter\n    for writing nor reading.\n\n    It has some convenience attributes:\n\n    ``headers`` -> a mimetype object that can be cast into a dictionary,\n    contains all the request headers\n\n    ``method`` -> the HTTP method used in this request\n\n    ``querystring`` -> a dictionary containing lists with the\n    attributes. Please notice that if you need a single value from a\n    query string you will need to get it manually like:\n\n    ``body`` -> the request body as a string\n\n    ``parsed_body`` -> the request body parsed by ``parse_request_body``\n\n    .. testcode::\n\n      >>> request.querystring\n      {'name': ['Gabriel Falcao']}\n      >>> print request.querystring['name'][0]\n\n\n\n    ",
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "base_classes": [
+      "http.server.BaseHTTPRequestHandler",
+      "httpretty.compat.BaseClass"
+    ]
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "__init__",
+    "param_names": [
+      "headers",
+      "body"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "__nonzero__",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "__repr__",
+    "function_docstring": "\nReturn repr(self)."
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "__str__",
+    "function_docstring": "\nReturn str(self)."
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "address_string",
+    "function_docstring": "\nReturn the client address."
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "date_time_string",
+    "param_names": [
+      "timestamp"
+    ],
+    "function_docstring": "\nReturn the current date and time formatted for a message header."
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "end_headers",
+    "function_docstring": "\nSend the blank line ending the MIME headers."
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "finish",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "flush_headers",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "handle",
+    "function_docstring": "\nHandle multiple requests if necessary."
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "handle_expect_100",
+    "function_docstring": "\nDecide what to do with an \"Expect: 100-continue\" header.\n\nIf the client is expecting a 100 Continue response, we must\nrespond with either a 100 Continue or a final response before\nwaiting for the request body. The default is to always respond\nwith a 100 Continue. You can behave differently (for example,\nreject unauthorized requests) by overriding this method.\n\nThis method should either return True (possibly after sending\na 100 Continue response) or send an error response and return\nFalse."
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "handle_one_request",
+    "function_docstring": "\nHandle a single HTTP request.\n\nYou normally don't need to override this method; see the class\n__doc__ string for information on how to handle specific HTTP\ncommands such as GET and POST."
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "log_date_time_string",
+    "function_docstring": "\nReturn the current time formatted for logging."
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "log_error",
+    "param_names": [
+      "format",
+      "args"
+    ],
+    "function_docstring": "\nLog an error.\n\nThis is called when a request cannot be fulfilled.  By\ndefault it passes the message on to log_message().\n\nArguments are the same as for log_message().\n\nXXX This should go to the separate error log."
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "log_message",
+    "param_names": [
+      "format",
+      "args"
+    ],
+    "function_docstring": "\nLog an arbitrary message.\n\nThis is used by all other logging functions.  Override\nit if you have specific logging wishes.\n\nThe first argument, FORMAT, is a format string for the\nmessage to be logged.  If the format string contains\nany % escapes requiring parameters, they should be\nspecified as subsequent arguments (it's just like\nprintf!).\n\nThe client ip and current date/time are prefixed to\nevery message."
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "log_request",
+    "param_names": [
+      "code",
+      "size"
+    ],
+    "function_docstring": "\nLog an accepted request.\n\nThis is called by send_response()."
+  },
+  {
+    "param_map": {
+      "qs": {
+        "name": "qs",
+        "param_doc": " a querystring"
+      }
+    },
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "parse_querystring",
+    "param_names": [
+      "qs"
+    ],
+    "function_docstring": "\nparses an UTF-8 encoded query string into a dict of string lists\n"
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "parse_request",
+    "function_docstring": "\nParse a request (internal).\n\nThe request should be stored in self.raw_requestline; the results\nare in self.command, self.path, self.request_version and\nself.headers.\n\nReturn True for success, False for failure; on failure, any relevant\nerror response has already been sent back."
+  },
+  {
+    "param_map": {
+      "body": {
+        "name": "body",
+        "param_doc": " string"
+      }
+    },
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "parse_request_body",
+    "param_names": [
+      "body"
+    ],
+    "function_docstring": "\nAttempt to parse the post based on the content-type passed.\nReturn the regular body if not\n"
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "send_error",
+    "param_names": [
+      "code",
+      "message",
+      "explain"
+    ],
+    "function_docstring": "\nSend and log an error reply.\n\nArguments are\n* code:    an HTTP error code\n           3 digits\n* message: a simple optional 1 line reason phrase.\n           *( HTAB / SP / VCHAR / %x80-FF )\n           defaults to short entry matching the response code\n* explain: a detailed message defaults to the long entry\n           matching the response code.\n\nThis sends an error response (so it must be called before any\noutput has been generated), logs the error, and finally sends\na piece of HTML explaining the error to the user."
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "send_header",
+    "param_names": [
+      "keyword",
+      "value"
+    ],
+    "function_docstring": "\nSend a MIME header to the headers buffer."
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "send_response",
+    "param_names": [
+      "code",
+      "message"
+    ],
+    "function_docstring": "\nAdd the response header to the headers buffer and log the\nresponse code.\n\nAlso send two standard headers with the server software\nversion and the current date."
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "send_response_only",
+    "param_names": [
+      "code",
+      "message"
+    ],
+    "function_docstring": "\nSend the response header only."
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "setup",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.HTTPrettyRequest",
+    "module": "httpretty",
+    "function": "version_string",
+    "function_docstring": "\nReturn the server software version string."
+  },
+  {
+    "klass": "httpretty.http.HttpBaseClass",
+    "module": "httpretty",
+    "base_classes": [
+      "httpretty.compat.BaseClass"
+    ]
+  },
+  {
+    "klass": "httpretty.core.HttpBaseClass",
+    "module": "httpretty",
+    "base_classes": [
+      "httpretty.compat.BaseClass"
+    ]
+  },
+  {
+    "klass": "httpretty.http.HttpBaseClass",
+    "module": "httpretty",
+    "function": "__repr__",
+    "function_docstring": "\nReturn repr(self)."
+  },
+  {
+    "klass": "httpretty.core.HttpBaseClass",
+    "module": "httpretty",
+    "function": "__repr__",
+    "function_docstring": null
+  },
+  {
+    "class_docstring": "Buffered I/O implementation using an in-memory bytes buffer.",
+    "klass": "httpretty.core.BytesIO",
+    "module": "_io",
+    "base_classes": [
+      "_io._BufferedIOBase"
+    ]
+  },
+  {
+    "klass": "httpretty.core.UnmockedError",
+    "module": "httpretty",
+    "base_classes": [
+      "httpretty.errors.HTTPrettyError"
+    ]
+  },
+  {
+    "klass": "httpretty.core.UnmockedError",
+    "module": "httpretty",
+    "function": "__init__",
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "class_docstring": "bytes(iterable_of_ints) -> bytes\nbytes(string, encoding[, errors]) -> bytes\nbytes(bytes_or_buffer) -> immutable copy of bytes_or_buffer\nbytes(int) -> bytes object of size given by the parameter initialized with null bytes\nbytes() -> empty bytes object\n\nConstruct an immutable array of bytes from:\n  - an iterable yielding integers in range(256)\n  - a text string encoded using the specified encoding\n  - any object implementing the buffer API.\n  - an integer",
+    "klass": "httpretty.core.bytes",
+    "module": "bytes",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "class_docstring": "datetime(year, month, day[, hour[, minute[, second[, microsecond[,tzinfo]]]]])\n\nThe year, month and day arguments are required. tzinfo may be None, or an\ninstance of a tzinfo subclass. The remaining arguments may be ints.\n",
+    "klass": "datetime.datetime",
+    "module": "datetime",
+    "base_classes": [
+      "datetime.date"
+    ]
+  },
+  {
+    "class_docstring": "datetime(year, month, day[, hour[, minute[, second[, microsecond[,tzinfo]]]]])\n\nThe year, month and day arguments are required. tzinfo may be None, or an\ninstance of a tzinfo subclass. The remaining arguments may be ints.\n",
+    "klass": "httpretty.core.datetime",
+    "module": "datetime",
+    "base_classes": [
+      "datetime.date"
+    ]
+  },
+  {
+    "class_docstring": "\n    fake :py:mod:`socket`\n    ",
+    "klass": "httpretty.core.fakesock",
+    "module": "httpretty",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "class_docstring": "socket(family=AF_INET, type=SOCK_STREAM, proto=0) -> socket object\nsocket(family=-1, type=-1, proto=-1, fileno=None) -> socket object\n\nOpen a socket of the given type.  The family argument specifies the\naddress family; it defaults to AF_INET.  The type argument specifies\nwhether this is a stream (SOCK_STREAM, this is the default)\nor datagram (SOCK_DGRAM) socket.  The protocol argument defaults to 0,\nspecifying the default protocol.  Keyword arguments are accepted.\nThe socket is created as non-inheritable.\n\nWhen a fileno is passed in, family, type and proto are auto-detected,\nunless they are explicitly set.\n\nA socket object represents one endpoint of a network connection.\n\nMethods of socket objects (keyword arguments not allowed):\n\n_accept() -- accept connection, returning new socket fd and client address\nbind(addr) -- bind the socket to a local address\nclose() -- close the socket\nconnect(addr) -- connect the socket to a remote address\nconnect_ex(addr) -- connect, return an error code instead of an exception\ndup() -- return a new socket fd duplicated from fileno()\nfileno() -- return underlying file descriptor\ngetpeername() -- return remote address [*]\ngetsockname() -- return local address\ngetsockopt(level, optname[, buflen]) -- get socket options\ngettimeout() -- return timeout or None\nlisten([n]) -- start listening for incoming connections\nrecv(buflen[, flags]) -- receive data\nrecv_into(buffer[, nbytes[, flags]]) -- receive data (into a buffer)\nrecvfrom(buflen[, flags]) -- receive data and sender's address\nrecvfrom_into(buffer[, nbytes, [, flags])\n  -- receive data and sender's address (into a buffer)\nsendall(data[, flags]) -- send all data\nsend(data[, flags]) -- send data, may not send all of it\nsendto(data[, flags], addr) -- send data to a given address\nsetblocking(0 | 1) -- set or clear the blocking I/O flag\ngetblocking() -- return True if socket is blocking, False if non-blocking\nsetsockopt(level, optname, value[, optlen]) -- set socket options\nsettimeout(None | float) -- set or clear the timeout\nshutdown(how) -- shut down traffic in one or both directions\nif_nameindex() -- return all network interface indices and names\nif_nametoindex(name) -- return the corresponding interface index\nif_indextoname(index) -- return the corresponding interface name\n\n [*] not available on all platforms!",
+    "klass": "_socket.socket",
+    "module": "_socket",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "class_docstring": "socket(family=AF_INET, type=SOCK_STREAM, proto=0) -> socket object\nsocket(family=-1, type=-1, proto=-1, fileno=None) -> socket object\n\nOpen a socket of the given type.  The family argument specifies the\naddress family; it defaults to AF_INET.  The type argument specifies\nwhether this is a stream (SOCK_STREAM, this is the default)\nor datagram (SOCK_DGRAM) socket.  The protocol argument defaults to 0,\nspecifying the default protocol.  Keyword arguments are accepted.\nThe socket is created as non-inheritable.\n\nWhen a fileno is passed in, family, type and proto are auto-detected,\nunless they are explicitly set.\n\nA socket object represents one endpoint of a network connection.\n\nMethods of socket objects (keyword arguments not allowed):\n\n_accept() -- accept connection, returning new socket fd and client address\nbind(addr) -- bind the socket to a local address\nclose() -- close the socket\nconnect(addr) -- connect the socket to a remote address\nconnect_ex(addr) -- connect, return an error code instead of an exception\ndup() -- return a new socket fd duplicated from fileno()\nfileno() -- return underlying file descriptor\ngetpeername() -- return remote address [*]\ngetsockname() -- return local address\ngetsockopt(level, optname[, buflen]) -- get socket options\ngettimeout() -- return timeout or None\nlisten([n]) -- start listening for incoming connections\nrecv(buflen[, flags]) -- receive data\nrecv_into(buffer[, nbytes[, flags]]) -- receive data (into a buffer)\nrecvfrom(buflen[, flags]) -- receive data and sender's address\nrecvfrom_into(buffer[, nbytes, [, flags])\n  -- receive data and sender's address (into a buffer)\nsendall(data[, flags]) -- send all data\nsend(data[, flags]) -- send data, may not send all of it\nsendto(data[, flags], addr) -- send data to a given address\nsetblocking(0 | 1) -- set or clear the blocking I/O flag\ngetblocking() -- return True if socket is blocking, False if non-blocking\nsetsockopt(level, optname, value[, optlen]) -- set socket options\nsettimeout(None | float) -- set or clear the timeout\nshutdown(how) -- shut down traffic in one or both directions\nif_nameindex() -- return all network interface indices and names\nif_nametoindex(name) -- return the corresponding interface index\nif_indextoname(index) -- return the corresponding interface name\n\n [*] not available on all platforms!",
+    "klass": "httpretty.core.socket",
+    "module": "_socket",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "class_docstring": "A subclass of _socket.socket adding the makefile() method.",
+    "klass": "socket.socket",
+    "module": "socket",
+    "base_classes": [
+      "_socket.socket"
+    ]
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "__enter__",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "__enter__",
+    "function_docstring": null
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "__exit__",
+    "param_names": [
+      "args"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "__exit__",
+    "param_names": [
+      "args"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "__getstate__",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "__getstate__",
+    "function_docstring": null
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "__init__",
+    "param_names": [
+      "family",
+      "type",
+      "proto",
+      "fileno"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "__init__",
+    "param_names": [
+      "family",
+      "type",
+      "proto",
+      "fileno"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "__repr__",
+    "function_docstring": "\nWrap __repr__() to reveal the real class name and socket\naddress(es)."
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "__repr__",
+    "function_docstring": "\nWrap __repr__() to reveal the real class name and socket\naddress(es)."
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "_check_sendfile_params",
+    "param_names": [
+      "file",
+      "offset",
+      "count"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "_check_sendfile_params",
+    "param_names": [
+      "file",
+      "offset",
+      "count"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "_decref_socketios",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "_decref_socketios",
+    "function_docstring": null
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "_real_close",
+    "param_names": [
+      "_ss"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "_real_close",
+    "param_names": [
+      "_ss"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "_sendfile_use_send",
+    "param_names": [
+      "file",
+      "offset",
+      "count"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "_sendfile_use_send",
+    "param_names": [
+      "file",
+      "offset",
+      "count"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "_sendfile_use_sendfile",
+    "param_names": [
+      "file",
+      "offset",
+      "count"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "_sendfile_use_sendfile",
+    "param_names": [
+      "file",
+      "offset",
+      "count"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "accept",
+    "function_docstring": "\naccept() -> (socket object, address info)\n\nWait for an incoming connection.  Return a new socket\nrepresenting the connection, and the address of the client.\nFor IP sockets, the address info is a pair (hostaddr, port)."
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "accept",
+    "function_docstring": "\naccept() -> (socket object, address info)\n\nWait for an incoming connection.  Return a new socket\nrepresenting the connection, and the address of the client.\nFor IP sockets, the address info is a pair (hostaddr, port)."
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "close",
+    "function_docstring": "\nclose()\n\nClose the socket.  It cannot be used after this call."
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "close",
+    "function_docstring": "\nclose()\n\nClose the socket.  It cannot be used after this call."
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "detach",
+    "function_docstring": "\ndetach() -> file descriptor\n\nClose the socket object without closing the underlying file descriptor.\nThe object cannot be used after this call, but the file descriptor\ncan be reused for other purposes.  The file descriptor is returned."
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "detach",
+    "function_docstring": "\ndetach() -> file descriptor\n\nClose the socket object without closing the underlying file descriptor.\nThe object cannot be used after this call, but the file descriptor\ncan be reused for other purposes.  The file descriptor is returned."
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "dup",
+    "function_docstring": "\ndup() -> socket object\n\nDuplicate the socket. Return a new socket object connected to the same\nsystem resource. The new socket is non-inheritable."
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "dup",
+    "function_docstring": "\ndup() -> socket object\n\nDuplicate the socket. Return a new socket object connected to the same\nsystem resource. The new socket is non-inheritable."
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "get_inheritable",
+    "function_docstring": "\nGet the inheritable flag of the socket"
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "get_inheritable",
+    "function_docstring": "\nGet the inheritable flag of the socket"
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "makefile",
+    "param_names": [
+      "mode",
+      "buffering",
+      "encoding",
+      "errors",
+      "newline"
+    ],
+    "function_docstring": "\nmakefile(...) -> an I/O stream connected to the socket\n\nThe arguments are as for io.open() after the filename, except the only\nsupported mode values are 'r' (default), 'w' and 'b'."
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "makefile",
+    "param_names": [
+      "mode",
+      "buffering",
+      "encoding",
+      "errors",
+      "newline"
+    ],
+    "function_docstring": "\nmakefile(...) -> an I/O stream connected to the socket\n\nThe arguments are as for io.open() after the filename, except the only\nsupported mode values are 'r' (default), 'w' and 'b'."
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "sendfile",
+    "param_names": [
+      "file",
+      "offset",
+      "count"
+    ],
+    "function_docstring": "\nsendfile(file[, offset[, count]]) -> sent\n\nSend a file until EOF is reached by using high-performance\nos.sendfile() and return the total number of bytes which\nwere sent.\n*file* must be a regular file object opened in binary mode.\nIf os.sendfile() is not available (e.g. Windows) or file is\nnot a regular file socket.send() will be used instead.\n*offset* tells from where to start reading the file.\nIf specified, *count* is the total number of bytes to transmit\nas opposed to sending the file until EOF is reached.\nFile position is updated on return or also in case of error in\nwhich case file.tell() can be used to figure out the number of\nbytes which were sent.\nThe socket must be of SOCK_STREAM type.\nNon-blocking sockets are not supported."
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "sendfile",
+    "param_names": [
+      "file",
+      "offset",
+      "count"
+    ],
+    "function_docstring": "\nsendfile(file[, offset[, count]]) -> sent\n\nSend a file until EOF is reached by using high-performance\nos.sendfile() and return the total number of bytes which\nwere sent.\n*file* must be a regular file object opened in binary mode.\nIf os.sendfile() is not available (e.g. Windows) or file is\nnot a regular file socket.send() will be used instead.\n*offset* tells from where to start reading the file.\nIf specified, *count* is the total number of bytes to transmit\nas opposed to sending the file until EOF is reached.\nFile position is updated on return or also in case of error in\nwhich case file.tell() can be used to figure out the number of\nbytes which were sent.\nThe socket must be of SOCK_STREAM type.\nNon-blocking sockets are not supported."
+  },
+  {
+    "klass": "socket.socket",
+    "module": "socket",
+    "function": "set_inheritable",
+    "param_names": [
+      "inheritable"
+    ],
+    "function_docstring": "\nSet the inheritable flag of the socket"
+  },
+  {
+    "klass": "httpretty.core.socket",
+    "module": "socket",
+    "function": "set_inheritable",
+    "param_names": [
+      "inheritable"
+    ],
+    "function_docstring": "\nSet the inheritable flag of the socket"
+  },
+  {
+    "class_docstring": "This class implements a subtype of socket.socket that wraps\n    the underlying OS socket in an SSL context when necessary, and\n    provides read and write methods over that channel. ",
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "base_classes": [
+      "socket.socket"
+    ]
+  },
+  {
+    "class_docstring": "This class implements a subtype of socket.socket that wraps\n    the underlying OS socket in an SSL context when necessary, and\n    provides read and write methods over that channel. ",
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "base_classes": [
+      "socket.socket"
+    ]
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "__enter__",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "__enter__",
+    "function_docstring": null
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "__exit__",
+    "param_names": [
+      "args"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "__exit__",
+    "param_names": [
+      "args"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "__getstate__",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "__getstate__",
+    "function_docstring": null
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "__init__",
+    "param_names": [
+      "args",
+      "kwargs"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "__init__",
+    "param_names": [
+      "args",
+      "kwargs"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "__repr__",
+    "function_docstring": "\nWrap __repr__() to reveal the real class name and socket\naddress(es)."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "__repr__",
+    "function_docstring": "\nWrap __repr__() to reveal the real class name and socket\naddress(es)."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "_checkClosed",
+    "param_names": [
+      "msg"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "_checkClosed",
+    "param_names": [
+      "msg"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "_check_connected",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "_check_connected",
+    "function_docstring": null
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "_check_sendfile_params",
+    "param_names": [
+      "file",
+      "offset",
+      "count"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "_check_sendfile_params",
+    "param_names": [
+      "file",
+      "offset",
+      "count"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "_decref_socketios",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "_decref_socketios",
+    "function_docstring": null
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "_real_close",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "_real_close",
+    "function_docstring": null
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "_real_connect",
+    "param_names": [
+      "addr",
+      "connect_ex"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "_real_connect",
+    "param_names": [
+      "addr",
+      "connect_ex"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "_sendfile_use_send",
+    "param_names": [
+      "file",
+      "offset",
+      "count"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "_sendfile_use_send",
+    "param_names": [
+      "file",
+      "offset",
+      "count"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "_sendfile_use_sendfile",
+    "param_names": [
+      "file",
+      "offset",
+      "count"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "_sendfile_use_sendfile",
+    "param_names": [
+      "file",
+      "offset",
+      "count"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "accept",
+    "function_docstring": "\nAccepts a new connection from a remote client, and returns\na tuple containing that new connection wrapped with a server-side\nSSL channel, and the address of the remote client."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "accept",
+    "function_docstring": "\nAccepts a new connection from a remote client, and returns\na tuple containing that new connection wrapped with a server-side\nSSL channel, and the address of the remote client."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "cipher",
+    "function_docstring": "\nReturn the currently selected cipher as a 3-tuple ``(name,\nssl_version, secret_bits)``."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "cipher",
+    "function_docstring": "\nReturn the currently selected cipher as a 3-tuple ``(name,\nssl_version, secret_bits)``."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "close",
+    "function_docstring": "\nclose()\n\nClose the socket.  It cannot be used after this call."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "close",
+    "function_docstring": "\nclose()\n\nClose the socket.  It cannot be used after this call."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "compression",
+    "function_docstring": "\nReturn the current compression algorithm in use, or ``None`` if\ncompression was not negotiated or not supported by one of the peers."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "compression",
+    "function_docstring": "\nReturn the current compression algorithm in use, or ``None`` if\ncompression was not negotiated or not supported by one of the peers."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "connect",
+    "param_names": [
+      "addr"
+    ],
+    "function_docstring": "\nConnects to remote ADDR, and then wraps the connection in\nan SSL channel."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "connect",
+    "param_names": [
+      "addr"
+    ],
+    "function_docstring": "\nConnects to remote ADDR, and then wraps the connection in\nan SSL channel."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "connect_ex",
+    "param_names": [
+      "addr"
+    ],
+    "function_docstring": "\nConnects to remote ADDR, and then wraps the connection in\nan SSL channel."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "connect_ex",
+    "param_names": [
+      "addr"
+    ],
+    "function_docstring": "\nConnects to remote ADDR, and then wraps the connection in\nan SSL channel."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "detach",
+    "function_docstring": "\ndetach() -> file descriptor\n\nClose the socket object without closing the underlying file descriptor.\nThe object cannot be used after this call, but the file descriptor\ncan be reused for other purposes.  The file descriptor is returned."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "detach",
+    "function_docstring": "\ndetach() -> file descriptor\n\nClose the socket object without closing the underlying file descriptor.\nThe object cannot be used after this call, but the file descriptor\ncan be reused for other purposes.  The file descriptor is returned."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "do_handshake",
+    "param_names": [
+      "block"
+    ],
+    "function_docstring": "\nStart the SSL/TLS handshake."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "do_handshake",
+    "param_names": [
+      "block"
+    ],
+    "function_docstring": "\nStart the SSL/TLS handshake."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "dup",
+    "function_docstring": "\ndup() -> socket object\n\nDuplicate the socket. Return a new socket object connected to the same\nsystem resource. The new socket is non-inheritable."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "dup",
+    "function_docstring": "\ndup() -> socket object\n\nDuplicate the socket. Return a new socket object connected to the same\nsystem resource. The new socket is non-inheritable."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "get_channel_binding",
+    "param_names": [
+      "cb_type"
+    ],
+    "function_docstring": "\nGet channel binding data for current connection.  Raise ValueError\nif the requested `cb_type` is not supported.  Return bytes of the data\nor None if the data is not available (e.g. before the handshake)."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "get_channel_binding",
+    "param_names": [
+      "cb_type"
+    ],
+    "function_docstring": "\nGet channel binding data for current connection.  Raise ValueError\nif the requested `cb_type` is not supported.  Return bytes of the data\nor None if the data is not available (e.g. before the handshake)."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "get_inheritable",
+    "function_docstring": "\nGet the inheritable flag of the socket"
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "get_inheritable",
+    "function_docstring": "\nGet the inheritable flag of the socket"
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "getpeercert",
+    "param_names": [
+      "binary_form"
+    ],
+    "function_docstring": "\nReturns a formatted version of the data in the certificate provided\nby the other end of the SSL channel.\n\nReturn None if no certificate was provided, {} if a certificate was\nprovided, but not validated."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "getpeercert",
+    "param_names": [
+      "binary_form"
+    ],
+    "function_docstring": "\nReturns a formatted version of the data in the certificate provided\nby the other end of the SSL channel.\n\nReturn None if no certificate was provided, {} if a certificate was\nprovided, but not validated."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "makefile",
+    "param_names": [
+      "mode",
+      "buffering",
+      "encoding",
+      "errors",
+      "newline"
+    ],
+    "function_docstring": "\nmakefile(...) -> an I/O stream connected to the socket\n\nThe arguments are as for io.open() after the filename, except the only\nsupported mode values are 'r' (default), 'w' and 'b'."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "makefile",
+    "param_names": [
+      "mode",
+      "buffering",
+      "encoding",
+      "errors",
+      "newline"
+    ],
+    "function_docstring": "\nmakefile(...) -> an I/O stream connected to the socket\n\nThe arguments are as for io.open() after the filename, except the only\nsupported mode values are 'r' (default), 'w' and 'b'."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "pending",
+    "function_docstring": "\nReturn the number of bytes that can be read immediately."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "pending",
+    "function_docstring": "\nReturn the number of bytes that can be read immediately."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "read",
+    "param_names": [
+      "len",
+      "buffer"
+    ],
+    "function_docstring": "\nRead up to LEN bytes and return them.\nReturn zero-length string on EOF."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "read",
+    "param_names": [
+      "len",
+      "buffer"
+    ],
+    "function_docstring": "\nRead up to LEN bytes and return them.\nReturn zero-length string on EOF."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "recv",
+    "param_names": [
+      "buflen",
+      "flags"
+    ],
+    "function_docstring": "\nrecv(buffersize[, flags]) -> data\n\nReceive up to buffersize bytes from the socket.  For the optional flags\nargument, see the Unix manual.  When no data is available, block until\nat least one byte is available or until the remote end is closed.  When\nthe remote end is closed and all data is read, return the empty string."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "recv",
+    "param_names": [
+      "buflen",
+      "flags"
+    ],
+    "function_docstring": "\nrecv(buffersize[, flags]) -> data\n\nReceive up to buffersize bytes from the socket.  For the optional flags\nargument, see the Unix manual.  When no data is available, block until\nat least one byte is available or until the remote end is closed.  When\nthe remote end is closed and all data is read, return the empty string."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "recv_into",
+    "param_names": [
+      "buffer",
+      "nbytes",
+      "flags"
+    ],
+    "function_docstring": "\nrecv_into(buffer, [nbytes[, flags]]) -> nbytes_read\n\nA version of recv() that stores its data into a buffer rather than creating\na new string.  Receive up to buffersize bytes from the socket.  If buffersize\nis not specified (or 0), receive up to the size available in the given buffer.\n\nSee recv() for documentation about the flags."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "recv_into",
+    "param_names": [
+      "buffer",
+      "nbytes",
+      "flags"
+    ],
+    "function_docstring": "\nrecv_into(buffer, [nbytes[, flags]]) -> nbytes_read\n\nA version of recv() that stores its data into a buffer rather than creating\na new string.  Receive up to buffersize bytes from the socket.  If buffersize\nis not specified (or 0), receive up to the size available in the given buffer.\n\nSee recv() for documentation about the flags."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "recvfrom",
+    "param_names": [
+      "buflen",
+      "flags"
+    ],
+    "function_docstring": "\nrecvfrom(buffersize[, flags]) -> (data, address info)\n\nLike recv(buffersize, flags) but also return the sender's address info."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "recvfrom",
+    "param_names": [
+      "buflen",
+      "flags"
+    ],
+    "function_docstring": "\nrecvfrom(buffersize[, flags]) -> (data, address info)\n\nLike recv(buffersize, flags) but also return the sender's address info."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "recvfrom_into",
+    "param_names": [
+      "buffer",
+      "nbytes",
+      "flags"
+    ],
+    "function_docstring": "\nrecvfrom_into(buffer[, nbytes[, flags]]) -> (nbytes, address info)\n\nLike recv_into(buffer[, nbytes[, flags]]) but also return the sender's address info."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "recvfrom_into",
+    "param_names": [
+      "buffer",
+      "nbytes",
+      "flags"
+    ],
+    "function_docstring": "\nrecvfrom_into(buffer[, nbytes[, flags]]) -> (nbytes, address info)\n\nLike recv_into(buffer[, nbytes[, flags]]) but also return the sender's address info."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "recvmsg",
+    "param_names": [
+      "args",
+      "kwargs"
+    ],
+    "function_docstring": "\nrecvmsg(bufsize[, ancbufsize[, flags]]) -> (data, ancdata, msg_flags, address)\n\nReceive normal data (up to bufsize bytes) and ancillary data from the\nsocket.  The ancbufsize argument sets the size in bytes of the\ninternal buffer used to receive the ancillary data; it defaults to 0,\nmeaning that no ancillary data will be received.  Appropriate buffer\nsizes for ancillary data can be calculated using CMSG_SPACE() or\nCMSG_LEN(), and items which do not fit into the buffer might be\ntruncated or discarded.  The flags argument defaults to 0 and has the\nsame meaning as for recv().\n\nThe return value is a 4-tuple: (data, ancdata, msg_flags, address).\nThe data item is a bytes object holding the non-ancillary data\nreceived.  The ancdata item is a list of zero or more tuples\n(cmsg_level, cmsg_type, cmsg_data) representing the ancillary data\n(control messages) received: cmsg_level and cmsg_type are integers\nspecifying the protocol level and protocol-specific type respectively,\nand cmsg_data is a bytes object holding the associated data.  The\nmsg_flags item is the bitwise OR of various flags indicating\nconditions on the received message; see your system documentation for\ndetails.  If the receiving socket is unconnected, address is the\naddress of the sending socket, if available; otherwise, its value is\nunspecified.\n\nIf recvmsg() raises an exception after the system call returns, it\nwill first attempt to close any file descriptors received via the\nSCM_RIGHTS mechanism."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "recvmsg",
+    "param_names": [
+      "args",
+      "kwargs"
+    ],
+    "function_docstring": "\nrecvmsg(bufsize[, ancbufsize[, flags]]) -> (data, ancdata, msg_flags, address)\n\nReceive normal data (up to bufsize bytes) and ancillary data from the\nsocket.  The ancbufsize argument sets the size in bytes of the\ninternal buffer used to receive the ancillary data; it defaults to 0,\nmeaning that no ancillary data will be received.  Appropriate buffer\nsizes for ancillary data can be calculated using CMSG_SPACE() or\nCMSG_LEN(), and items which do not fit into the buffer might be\ntruncated or discarded.  The flags argument defaults to 0 and has the\nsame meaning as for recv().\n\nThe return value is a 4-tuple: (data, ancdata, msg_flags, address).\nThe data item is a bytes object holding the non-ancillary data\nreceived.  The ancdata item is a list of zero or more tuples\n(cmsg_level, cmsg_type, cmsg_data) representing the ancillary data\n(control messages) received: cmsg_level and cmsg_type are integers\nspecifying the protocol level and protocol-specific type respectively,\nand cmsg_data is a bytes object holding the associated data.  The\nmsg_flags item is the bitwise OR of various flags indicating\nconditions on the received message; see your system documentation for\ndetails.  If the receiving socket is unconnected, address is the\naddress of the sending socket, if available; otherwise, its value is\nunspecified.\n\nIf recvmsg() raises an exception after the system call returns, it\nwill first attempt to close any file descriptors received via the\nSCM_RIGHTS mechanism."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "recvmsg_into",
+    "param_names": [
+      "args",
+      "kwargs"
+    ],
+    "function_docstring": "\nrecvmsg_into(buffers[, ancbufsize[, flags]]) -> (nbytes, ancdata, msg_flags, address)\n\nReceive normal data and ancillary data from the socket, scattering the\nnon-ancillary data into a series of buffers.  The buffers argument\nmust be an iterable of objects that export writable buffers\n(e.g. bytearray objects); these will be filled with successive chunks\nof the non-ancillary data until it has all been written or there are\nno more buffers.  The ancbufsize argument sets the size in bytes of\nthe internal buffer used to receive the ancillary data; it defaults to\n0, meaning that no ancillary data will be received.  Appropriate\nbuffer sizes for ancillary data can be calculated using CMSG_SPACE()\nor CMSG_LEN(), and items which do not fit into the buffer might be\ntruncated or discarded.  The flags argument defaults to 0 and has the\nsame meaning as for recv().\n\nThe return value is a 4-tuple: (nbytes, ancdata, msg_flags, address).\nThe nbytes item is the total number of bytes of non-ancillary data\nwritten into the buffers.  The ancdata item is a list of zero or more\ntuples (cmsg_level, cmsg_type, cmsg_data) representing the ancillary\ndata (control messages) received: cmsg_level and cmsg_type are\nintegers specifying the protocol level and protocol-specific type\nrespectively, and cmsg_data is a bytes object holding the associated\ndata.  The msg_flags item is the bitwise OR of various flags\nindicating conditions on the received message; see your system\ndocumentation for details.  If the receiving socket is unconnected,\naddress is the address of the sending socket, if available; otherwise,\nits value is unspecified.\n\nIf recvmsg_into() raises an exception after the system call returns,\nit will first attempt to close any file descriptors received via the\nSCM_RIGHTS mechanism."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "recvmsg_into",
+    "param_names": [
+      "args",
+      "kwargs"
+    ],
+    "function_docstring": "\nrecvmsg_into(buffers[, ancbufsize[, flags]]) -> (nbytes, ancdata, msg_flags, address)\n\nReceive normal data and ancillary data from the socket, scattering the\nnon-ancillary data into a series of buffers.  The buffers argument\nmust be an iterable of objects that export writable buffers\n(e.g. bytearray objects); these will be filled with successive chunks\nof the non-ancillary data until it has all been written or there are\nno more buffers.  The ancbufsize argument sets the size in bytes of\nthe internal buffer used to receive the ancillary data; it defaults to\n0, meaning that no ancillary data will be received.  Appropriate\nbuffer sizes for ancillary data can be calculated using CMSG_SPACE()\nor CMSG_LEN(), and items which do not fit into the buffer might be\ntruncated or discarded.  The flags argument defaults to 0 and has the\nsame meaning as for recv().\n\nThe return value is a 4-tuple: (nbytes, ancdata, msg_flags, address).\nThe nbytes item is the total number of bytes of non-ancillary data\nwritten into the buffers.  The ancdata item is a list of zero or more\ntuples (cmsg_level, cmsg_type, cmsg_data) representing the ancillary\ndata (control messages) received: cmsg_level and cmsg_type are\nintegers specifying the protocol level and protocol-specific type\nrespectively, and cmsg_data is a bytes object holding the associated\ndata.  The msg_flags item is the bitwise OR of various flags\nindicating conditions on the received message; see your system\ndocumentation for details.  If the receiving socket is unconnected,\naddress is the address of the sending socket, if available; otherwise,\nits value is unspecified.\n\nIf recvmsg_into() raises an exception after the system call returns,\nit will first attempt to close any file descriptors received via the\nSCM_RIGHTS mechanism."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "selected_alpn_protocol",
+    "function_docstring": "\nReturn the currently selected ALPN protocol as a string, or ``None``\nif a next protocol was not negotiated or if ALPN is not supported by one\nof the peers."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "selected_alpn_protocol",
+    "function_docstring": "\nReturn the currently selected ALPN protocol as a string, or ``None``\nif a next protocol was not negotiated or if ALPN is not supported by one\nof the peers."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "selected_npn_protocol",
+    "function_docstring": "\nReturn the currently selected NPN protocol as a string, or ``None``\nif a next protocol was not negotiated or if NPN is not supported by one\nof the peers."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "selected_npn_protocol",
+    "function_docstring": "\nReturn the currently selected NPN protocol as a string, or ``None``\nif a next protocol was not negotiated or if NPN is not supported by one\nof the peers."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "send",
+    "param_names": [
+      "data",
+      "flags"
+    ],
+    "function_docstring": "\nsend(data[, flags]) -> count\n\nSend a data string to the socket.  For the optional flags\nargument, see the Unix manual.  Return the number of bytes\nsent; this may be less than len(data) if the network is busy."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "send",
+    "param_names": [
+      "data",
+      "flags"
+    ],
+    "function_docstring": "\nsend(data[, flags]) -> count\n\nSend a data string to the socket.  For the optional flags\nargument, see the Unix manual.  Return the number of bytes\nsent; this may be less than len(data) if the network is busy."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "sendall",
+    "param_names": [
+      "data",
+      "flags"
+    ],
+    "function_docstring": "\nsendall(data[, flags])\n\nSend a data string to the socket.  For the optional flags\nargument, see the Unix manual.  This calls send() repeatedly\nuntil all data is sent.  If an error occurs, it's impossible\nto tell how much data has been sent."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "sendall",
+    "param_names": [
+      "data",
+      "flags"
+    ],
+    "function_docstring": "\nsendall(data[, flags])\n\nSend a data string to the socket.  For the optional flags\nargument, see the Unix manual.  This calls send() repeatedly\nuntil all data is sent.  If an error occurs, it's impossible\nto tell how much data has been sent."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "sendfile",
+    "param_names": [
+      "file",
+      "offset",
+      "count"
+    ],
+    "function_docstring": "\nSend a file, possibly by using os.sendfile() if this is a\nclear-text socket.  Return the total number of bytes sent."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "sendfile",
+    "param_names": [
+      "file",
+      "offset",
+      "count"
+    ],
+    "function_docstring": "\nSend a file, possibly by using os.sendfile() if this is a\nclear-text socket.  Return the total number of bytes sent."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "sendmsg",
+    "param_names": [
+      "args",
+      "kwargs"
+    ],
+    "function_docstring": "\nsendmsg(buffers[, ancdata[, flags[, address]]]) -> count\n\nSend normal and ancillary data to the socket, gathering the\nnon-ancillary data from a series of buffers and concatenating it into\na single message.  The buffers argument specifies the non-ancillary\ndata as an iterable of bytes-like objects (e.g. bytes objects).\nThe ancdata argument specifies the ancillary data (control messages)\nas an iterable of zero or more tuples (cmsg_level, cmsg_type,\ncmsg_data), where cmsg_level and cmsg_type are integers specifying the\nprotocol level and protocol-specific type respectively, and cmsg_data\nis a bytes-like object holding the associated data.  The flags\nargument defaults to 0 and has the same meaning as for send().  If\naddress is supplied and not None, it sets a destination address for\nthe message.  The return value is the number of bytes of non-ancillary\ndata sent."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "sendmsg",
+    "param_names": [
+      "args",
+      "kwargs"
+    ],
+    "function_docstring": "\nsendmsg(buffers[, ancdata[, flags[, address]]]) -> count\n\nSend normal and ancillary data to the socket, gathering the\nnon-ancillary data from a series of buffers and concatenating it into\na single message.  The buffers argument specifies the non-ancillary\ndata as an iterable of bytes-like objects (e.g. bytes objects).\nThe ancdata argument specifies the ancillary data (control messages)\nas an iterable of zero or more tuples (cmsg_level, cmsg_type,\ncmsg_data), where cmsg_level and cmsg_type are integers specifying the\nprotocol level and protocol-specific type respectively, and cmsg_data\nis a bytes-like object holding the associated data.  The flags\nargument defaults to 0 and has the same meaning as for send().  If\naddress is supplied and not None, it sets a destination address for\nthe message.  The return value is the number of bytes of non-ancillary\ndata sent."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "sendto",
+    "param_names": [
+      "data",
+      "flags_or_addr",
+      "addr"
+    ],
+    "function_docstring": "\nsendto(data[, flags], address) -> count\n\nLike send(data, flags) but allows specifying the destination address.\nFor IP sockets, the address is a pair (hostaddr, port)."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "sendto",
+    "param_names": [
+      "data",
+      "flags_or_addr",
+      "addr"
+    ],
+    "function_docstring": "\nsendto(data[, flags], address) -> count\n\nLike send(data, flags) but allows specifying the destination address.\nFor IP sockets, the address is a pair (hostaddr, port)."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "set_inheritable",
+    "param_names": [
+      "inheritable"
+    ],
+    "function_docstring": "\nSet the inheritable flag of the socket"
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "set_inheritable",
+    "param_names": [
+      "inheritable"
+    ],
+    "function_docstring": "\nSet the inheritable flag of the socket"
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "shared_ciphers",
+    "function_docstring": "\nReturn a list of ciphers shared by the client during the handshake or\nNone if this is not a valid server connection."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "shared_ciphers",
+    "function_docstring": "\nReturn a list of ciphers shared by the client during the handshake or\nNone if this is not a valid server connection."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "shutdown",
+    "param_names": [
+      "how"
+    ],
+    "function_docstring": "\nshutdown(flag)\n\nShut down the reading side of the socket (flag == SHUT_RD), the writing side\nof the socket (flag == SHUT_WR), or both ends (flag == SHUT_RDWR)."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "shutdown",
+    "param_names": [
+      "how"
+    ],
+    "function_docstring": "\nshutdown(flag)\n\nShut down the reading side of the socket (flag == SHUT_RD), the writing side\nof the socket (flag == SHUT_WR), or both ends (flag == SHUT_RDWR)."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "unwrap",
+    "function_docstring": "\nStart the SSL shutdown handshake."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "unwrap",
+    "function_docstring": "\nStart the SSL shutdown handshake."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "verify_client_post_handshake",
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "verify_client_post_handshake",
+    "function_docstring": null
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "version",
+    "function_docstring": "\nReturn a string identifying the protocol version used by the\ncurrent SSL channel."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "version",
+    "function_docstring": "\nReturn a string identifying the protocol version used by the\ncurrent SSL channel."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "write",
+    "param_names": [
+      "data"
+    ],
+    "function_docstring": "\nWrite DATA to the underlying SSL channel.  Returns\nnumber of bytes of DATA actually transmitted."
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "write",
+    "param_names": [
+      "data"
+    ],
+    "function_docstring": "\nWrite DATA to the underlying SSL channel.  Returns\nnumber of bytes of DATA actually transmitted."
+  },
+  {
+    "klass": "ssl.SSLSocket",
+    "module": "ssl",
+    "function": "_create",
+    "param_names": [
+      "sock",
+      "server_side",
+      "do_handshake_on_connect",
+      "suppress_ragged_eofs",
+      "server_hostname",
+      "context",
+      "session"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "httpretty.core.SSLSocket",
+    "module": "ssl",
+    "function": "_create",
+    "param_names": [
+      "sock",
+      "server_side",
+      "do_handshake_on_connect",
+      "suppress_ragged_eofs",
+      "server_hostname",
+      "context",
+      "session"
+    ],
+    "function_docstring": null
+  },
+  {
+    "class_docstring": "partial(func, *args, **keywords) - new function with partial application\n    of the given arguments and keywords.\n",
+    "klass": "functools.partial",
+    "module": "functools",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "class_docstring": "partial(func, *args, **keywords) - new function with partial application\n    of the given arguments and keywords.\n",
+    "klass": "httpretty.core.partial",
+    "module": "functools",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "class_docstring": "str(object='') -> str\nstr(bytes_or_buffer[, encoding[, errors]]) -> str\n\nCreate a new string object from the given object. If encoding or\nerrors is specified, then the object must expose a data buffer\nthat will be decoded using the given encoding and error handler.\nOtherwise, returns the result of object.__str__() (if defined)\nor repr(object).\nencoding defaults to sys.getdefaultencoding().\nerrors defaults to 'strict'.",
+    "klass": "httpretty.core.str",
+    "module": "str",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "class_docstring": "Difference between two datetime values.\n\ntimedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)\n\nAll arguments are optional and default to 0.\nArguments may be integers or floats, and may be positive or negative.",
+    "klass": "datetime.timedelta",
+    "module": "datetime",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "class_docstring": "Difference between two datetime values.\n\ntimedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)\n\nAll arguments are optional and default to 0.\nArguments may be integers or floats, and may be positive or negative.",
+    "klass": "httpretty.core.timedelta",
+    "module": "datetime",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.http.decode_utf8",
+    "param_names": [
+      "s"
+    ],
+    "function_docstring": null
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.http.last_requestline",
+    "param_names": [
+      "sent_data"
+    ],
+    "function_docstring": "\nFind the last line in sent_data that can be parsed with parse_requestline"
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.http.parse_requestline",
+    "param_names": [
+      "s"
+    ],
+    "function_docstring": "\nhttp://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html#sec5\n\n>>> parse_requestline('GET / HTTP/1.0')\n('GET', '/', '1.0')\n>>> parse_requestline('post /testurl htTP/1.1')\n('POST', '/testurl', '1.1')\n>>> parse_requestline('Im not a RequestLine')\nTraceback (most recent call last):\n    ...\nValueError: Not a Request-Line"
+  },
+  {
+    "klass": "httpretty.http.BaseClass",
+    "module": "httpretty",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "klass": "httpretty.http.BaseClass",
+    "module": "httpretty",
+    "function": "__repr__",
+    "function_docstring": "\nReturn repr(self)."
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.utils.decode_utf8",
+    "param_names": [
+      "s"
+    ],
+    "function_docstring": null
+  },
+  {
+    "module": "httpretty",
+    "function": "httpretty.utils.utf8",
+    "param_names": [
+      "s"
+    ],
+    "function_docstring": null
+  },
+  {
+    "class_docstring": "bytes(iterable_of_ints) -> bytes\nbytes(string, encoding[, errors]) -> bytes\nbytes(bytes_or_buffer) -> immutable copy of bytes_or_buffer\nbytes(int) -> bytes object of size given by the parameter initialized with null bytes\nbytes() -> empty bytes object\n\nConstruct an immutable array of bytes from:\n  - an iterable yielding integers in range(256)\n  - a text string encoded using the specified encoding\n  - any object implementing the buffer API.\n  - an integer",
+    "klass": "httpretty.utils.bytes",
+    "module": "bytes",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "class_docstring": "str(object='') -> str\nstr(bytes_or_buffer[, encoding[, errors]]) -> str\n\nCreate a new string object from the given object. If encoding or\nerrors is specified, then the object must expose a data buffer\nthat will be decoded using the given encoding and error handler.\nOtherwise, returns the result of object.__str__() (if defined)\nor repr(object).\nencoding defaults to sys.getdefaultencoding().\nerrors defaults to 'strict'.",
+    "klass": "httpretty.utils.str",
+    "module": "str",
+    "base_classes": [
+      "object"
+    ]
+  },
+  {
+    "docstring": "A loader that creates a module which defers loading until attribute access.",
+    "klass": "importlib.util.LazyLoader",
+    "module": "importlib.util"
+  },
+  {
+    "klass": "importlib.util.LazyLoader",
+    "module": null,
+    "function": "__check_eager_loader",
+    "param_names": [
+      "loader"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "importlib.util.LazyLoader",
+    "module": null,
+    "function": "__init__",
+    "param_names": [
+      "loader"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "importlib.util.LazyLoader",
+    "module": null,
+    "function": "create_module",
+    "param_names": [
+      "spec"
+    ],
+    "function_docstring": "\nReturn a module to initialize and into which to load.\n\nThis method should raise ImportError if anything prevents it\nfrom creating a new module.  It may return None to indicate\nthat the spec should create the new module."
+  },
+  {
+    "klass": "importlib.util.LazyLoader",
+    "module": null,
+    "function": "exec_module",
+    "param_names": [
+      "module"
+    ],
+    "function_docstring": "\nMake the module load lazily."
+  },
+  {
+    "klass": "importlib.util.LazyLoader",
+    "module": null,
+    "function": "factory",
+    "param_names": [
+      "loader"
+    ],
+    "function_docstring": "\nConstruct a callable which returns the eager loader made lazy."
+  },
+  {
+    "klass": "importlib.util.LazyLoader",
+    "module": null,
+    "function": "load_module",
+    "param_names": [
+      "fullname"
+    ],
+    "function_docstring": "\nReturn the loaded module.\n\nThe module must be added to sys.modules and have import-related\nattributes set properly.  The fullname is a str.\n\nImportError is raised on failure.\n\nThis method is deprecated in favor of loader.exec_module(). If\nexec_module() exists then it is used to provide a backwards-compatible\nfunctionality for this method."
+  },
+  {
+    "klass": "importlib.util.LazyLoader",
+    "module": null,
+    "function": "module_repr",
+    "param_names": [
+      "module"
+    ],
+    "function_docstring": "\nReturn a module's repr.\n\nUsed by the module type when the method does not raise\nNotImplementedError.\n\nThis method is deprecated."
+  },
+  {
+    "docstring": "A subclass of the module type which triggers loading upon attribute access.",
+    "klass": "importlib.util._LazyModule",
+    "module": "importlib.util"
+  },
+  {
+    "klass": "importlib.util._LazyModule",
+    "module": null,
+    "function": "__delattr__",
+    "param_names": [
+      "attr"
+    ],
+    "function_docstring": "\nTrigger the load and then perform the deletion."
+  },
+  {
+    "klass": "importlib.util._LazyModule",
+    "module": null,
+    "function": "__getattribute__",
+    "param_names": [
+      "attr"
+    ],
+    "function_docstring": "\nTrigger the load of the module and return the attribute."
+  },
+  {
+    "module": null,
+    "function": "_find_spec",
+    "param_names": [
+      "name",
+      "path",
+      "target"
+    ],
+    "function_docstring": "\nFind a module's spec."
+  },
+  {
+    "module": null,
+    "function": "_find_spec_from_path",
+    "param_names": [
+      "name",
+      "path"
+    ],
+    "function_docstring": "\nReturn the spec for the specified module.\n\nFirst, sys.modules is checked to see if the module was already imported. If\nso, then sys.modules[name].__spec__ is returned. If that happens to be\nset to None, then ValueError is raised. If the module is not in\nsys.modules, then sys.meta_path is searched for a suitable spec with the\nvalue of 'path' given to the finders. None is returned if no spec could\nbe found.\n\nDotted names do not have their parent packages implicitly imported. You will\nmost likely need to explicitly import all parent packages in the proper\norder for a submodule to get the correct spec."
+  },
+  {
+    "module": null,
+    "function": "_module_to_load",
+    "param_names": [
+      "name"
+    ],
+    "function_docstring": null
+  },
+  {
+    "module": null,
+    "function": "_resolve_name",
+    "param_names": [
+      "name",
+      "package",
+      "level"
+    ],
+    "function_docstring": "\nResolve a relative module name to an absolute one."
+  },
+  {
+    "module": null,
+    "function": "cache_from_source",
+    "param_names": [
+      "path",
+      "debug_override"
+    ],
+    "function_docstring": "\n**DEPRECATED**\n\nGiven the path to a .py file, return the path to its .pyc file.\n\nThe .py file does not need to exist; this simply returns the path to the\n.pyc file calculated as if the .py file were imported.\n\nIf debug_override is not None, then it must be a boolean and is used in\nplace of sys.flags.optimize.\n\nIf sys.implementation.cache_tag is None then NotImplementedError is raised."
+  },
+  {
+    "module": null,
+    "function": "contextmanager",
+    "param_names": [
+      "func"
+    ],
+    "function_docstring": "\n@contextmanager decorator.\n\nTypical usage:\n\n    @contextmanager\n    def some_generator(<arguments>):\n        <setup>\n        try:\n            yield <value>\n        finally:\n            <cleanup>\n\nThis makes this:\n\n    with some_generator(<arguments>) as <variable>:\n        <body>\n\nequivalent to this:\n\n    <setup>\n    try:\n        <variable> = <value>\n        <body>\n    finally:\n        <cleanup>"
+  },
+  {
+    "module": null,
+    "function": "decode_source",
+    "param_names": [
+      "source_bytes"
+    ],
+    "function_docstring": "\nDecode bytes representing source code and return the string.\n\nUniversal newline support is used in the decoding."
+  },
+  {
+    "module": null,
+    "function": "find_spec",
+    "param_names": [
+      "name",
+      "package"
+    ],
+    "function_docstring": "\nReturn the spec for the specified module.\n\nFirst, sys.modules is checked to see if the module was already imported. If\nso, then sys.modules[name].__spec__ is returned. If that happens to be\nset to None, then ValueError is raised. If the module is not in\nsys.modules, then sys.meta_path is searched for a suitable spec with the\nvalue of 'path' given to the finders. None is returned if no spec could\nbe found.\n\nIf the name is for submodule (contains a dot), the parent module is\nautomatically imported.\n\nThe name and package arguments work the same as importlib.import_module().\nIn other words, relative module names (with leading dots) work."
+  },
+  {
+    "module": null,
+    "function": "module_for_loader",
+    "param_names": [
+      "fxn"
+    ],
+    "function_docstring": "\nDecorator to handle selecting the proper module for loaders.\n\nThe decorated function is passed the module to use instead of the module\nname. The module passed in to the function is either from sys.modules if\nit already exists or is a new module. If the module is new, then __name__\nis set the first argument to the method, __loader__ is set to self, and\n__package__ is set accordingly (if self.is_package() is defined) will be set\nbefore it is passed to the decorated function (if self.is_package() does\nnot work for the module it will be set post-load).\n\nIf an exception is raised and the decorator created the module it is\nsubsequently removed from sys.modules.\n\nThe decorator assumes that the decorated function takes the module name as\nthe second argument."
+  },
+  {
+    "module": null,
+    "function": "module_from_spec",
+    "param_names": [
+      "spec"
+    ],
+    "function_docstring": "\nCreate a module based on the provided spec."
+  },
+  {
+    "module": null,
+    "function": "resolve_name",
+    "param_names": [
+      "name",
+      "package"
+    ],
+    "function_docstring": "\nResolve a relative module name to an absolute one."
+  },
+  {
+    "module": null,
+    "function": "set_loader",
+    "param_names": [
+      "fxn"
+    ],
+    "function_docstring": "\nSet __loader__ on the returned module.\n\nThis function is deprecated."
+  },
+  {
+    "module": null,
+    "function": "set_package",
+    "param_names": [
+      "fxn"
+    ],
+    "function_docstring": "\nSet __package__ on the returned module.\n\nThis function is deprecated."
+  },
+  {
+    "module": null,
+    "function": "source_from_cache",
+    "param_names": [
+      "path"
+    ],
+    "function_docstring": "\n**DEPRECATED**\n\nGiven the path to a .pyc. file, return the path to its .py file.\n\nThe .pyc file does not need to exist; this simply returns the path to\nthe .py file calculated to correspond to the .pyc file.  If path does\nnot conform to PEP 3147 format, ValueError will be raised. If\nsys.implementation.cache_tag is None then NotImplementedError is raised."
+  },
+  {
+    "module": null,
+    "function": "source_hash",
+    "param_names": [
+      "source_bytes"
+    ],
+    "function_docstring": "\nReturn the hash of *source_bytes* as used in hash-based pyc files."
+  },
+  {
+    "module": null,
+    "function": "spec_from_file_location",
+    "param_names": [
+      "name",
+      "location",
+      "loader",
+      "submodule_search_locations"
+    ],
+    "function_docstring": "\nReturn a module spec based on a file location.\n\nTo indicate that the module is a package, set\nsubmodule_search_locations to a list of directory paths.  An\nempty list is sufficient, though its not otherwise useful to the\nimport system.\n\nThe loader must take a spec as its only __init__() arg."
+  },
+  {
+    "module": null,
+    "function": "spec_from_loader",
+    "param_names": [
+      "name",
+      "loader",
+      "origin",
+      "is_package"
+    ],
+    "function_docstring": "\nReturn a module spec based on various loader methods."
+  },
+  {
+    "param_map": {
+      "bytes content": {
+        "name": "bytes content",
+        "param_doc": " A byte string to return upon a successful match."
+      },
+      "int status_code": {
+        "name": "int status_code",
+        "param_doc": " The status code to return upon a successful\n    match. Defaults to 200."
+      },
+      "io.IOBase body": {
+        "name": "io.IOBase body",
+        "param_doc": " An IO object with a read() method that can\n    return a body on successful match."
+      },
+      "dict headers": {
+        "name": "dict headers",
+        "param_doc": " A dictionary object containing headers that are\n    returned upon a successful match."
+      },
+      "object json": {
+        "name": "object json",
+        "param_doc": " A python object to be converted to a JSON string\n    and returned upon a successful match."
+      },
+      "HTTPResponse raw": {
+        "name": "HTTPResponse raw",
+        "param_doc": " A HTTPResponse object to return upon a\n    successful match."
+      },
+      "unicode text": {
+        "name": "unicode text",
+        "param_doc": " A text string to return upon a successful match."
+      }
+    },
+    "module": "requests_mock",
+    "function": "requests_mock.create_response",
+    "param_names": [
+      "request",
+      "kwargs"
+    ],
+    "function_docstring": ""
+  },
+  {
+    "class_docstring": "A fake adapter than can return predefined responses.\n\n    ",
+    "klass": "requests_mock.adapter.Adapter",
+    "module": "requests_mock",
+    "base_classes": [
+      "requests.adapters.BaseAdapter",
+      "requests_mock.adapter._RequestHistoryTracker"
+    ]
+  },
+  {
+    "class_docstring": "A fake adapter than can return predefined responses.\n\n    ",
+    "klass": "requests_mock.Adapter",
+    "module": "requests_mock",
+    "base_classes": [
+      "requests.adapters.BaseAdapter",
+      "requests_mock.adapter._RequestHistoryTracker"
+    ]
+  },
+  {
+    "klass": "requests_mock.adapter.Adapter",
+    "module": "requests_mock",
+    "function": "__init__",
+    "param_names": [
+      "case_sensitive"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "requests_mock.Adapter",
+    "module": "requests_mock",
+    "function": "__init__",
+    "param_names": [
+      "case_sensitive"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "requests_mock.adapter.Adapter",
+    "module": "requests_mock",
+    "function": "_add_to_history",
+    "param_names": [
+      "request"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "requests_mock.Adapter",
+    "module": "requests_mock",
+    "function": "_add_to_history",
+    "param_names": [
+      "request"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "requests_mock.adapter.Adapter",
+    "module": "requests_mock",
+    "function": "add_matcher",
+    "param_names": [
+      "matcher"
+    ],
+    "function_docstring": "\nRegister a custom matcher.\n\nA matcher is a callable that takes a `requests.Request` and returns a\n`requests.Response` if it matches or None if not.\n"
+  },
+  {
+    "klass": "requests_mock.Adapter",
+    "module": "requests_mock",
+    "function": "add_matcher",
+    "param_names": [
+      "matcher"
+    ],
+    "function_docstring": "\nRegister a custom matcher.\n\nA matcher is a callable that takes a `requests.Request` and returns a\n`requests.Response` if it matches or None if not.\n"
+  },
+  {
+    "klass": "requests_mock.adapter.Adapter",
+    "module": "requests_mock",
+    "function": "close",
+    "function_docstring": "\nCleans up adapter specific items."
+  },
+  {
+    "klass": "requests_mock.Adapter",
+    "module": "requests_mock",
+    "function": "close",
+    "function_docstring": "\nCleans up adapter specific items."
+  },
+  {
+    "param_map": {
+      "str method": {
+        "name": "str method",
+        "param_doc": " The HTTP method to match."
+      }
+    },
+    "klass": "requests_mock.adapter.Adapter",
+    "module": "requests_mock",
+    "function": "register_uri",
+    "param_names": [
+      "method",
+      "url",
+      "response_list",
+      "kwargs"
+    ],
+    "function_docstring": "\nRegister a new URI match and fake response.\n"
+  },
+  {
+    "param_map": {
+      "str method": {
+        "name": "str method",
+        "param_doc": " The HTTP method to match."
+      }
+    },
+    "klass": "requests_mock.Adapter",
+    "module": "requests_mock",
+    "function": "register_uri",
+    "param_names": [
+      "method",
+      "url",
+      "response_list",
+      "kwargs"
+    ],
+    "function_docstring": "\nRegister a new URI match and fake response.\n"
+  },
+  {
+    "param_map": {
+      "stream": {
+        "name": "stream",
+        "param_doc": " (optional) Whether to stream the request content."
+      },
+      "verify": {
+        "name": "verify",
+        "param_doc": " (optional) Either a boolean, in which case it controls whether we verify\n    the server's TLS certificate, or a string, in which case it must be a path\n    to a CA bundle to use"
+      },
+      "cert": {
+        "name": "cert",
+        "param_doc": " (optional) Any user-provided SSL certificate to be trusted."
+      },
+      "timeout": {
+        "name": "timeout",
+        "type": " float or tuple",
+        "param_doc": " (optional) How long to wait for the server to send\n    data before giving up, as a float, or a :ref:`(connect timeout,\n    read timeout) <timeouts>` tuple."
+      },
+      "request: The :class": {
+        "name": "request: The :class",
+        "param_doc": " The :class:`PreparedRequest <PreparedRequest>` being sent."
+      }
+    },
+    "klass": "requests_mock.adapter.Adapter",
+    "module": "requests_mock",
+    "function": "send",
+    "param_names": [
+      "request",
+      "kwargs"
+    ],
+    "function_docstring": "\nSends PreparedRequest object. Returns Response object.\n"
+  },
+  {
+    "param_map": {
+      "stream": {
+        "name": "stream",
+        "param_doc": " (optional) Whether to stream the request content."
+      },
+      "verify": {
+        "name": "verify",
+        "param_doc": " (optional) Either a boolean, in which case it controls whether we verify\n    the server's TLS certificate, or a string, in which case it must be a path\n    to a CA bundle to use"
+      },
+      "cert": {
+        "name": "cert",
+        "param_doc": " (optional) Any user-provided SSL certificate to be trusted."
+      },
+      "timeout": {
+        "name": "timeout",
+        "type": " float or tuple",
+        "param_doc": " (optional) How long to wait for the server to send\n    data before giving up, as a float, or a :ref:`(connect timeout,\n    read timeout) <timeouts>` tuple."
+      },
+      "request: The :class": {
+        "name": "request: The :class",
+        "param_doc": " The :class:`PreparedRequest <PreparedRequest>` being sent."
+      }
+    },
+    "klass": "requests_mock.Adapter",
+    "module": "requests_mock",
+    "function": "send",
+    "param_names": [
+      "request",
+      "kwargs"
+    ],
+    "function_docstring": "\nSends PreparedRequest object. Returns Response object.\n"
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "base_classes": [
+      "requests.cookies.RequestsCookieJar"
+    ]
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "base_classes": [
+      "requests.cookies.RequestsCookieJar"
+    ]
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "__contains__",
+    "param_names": [
+      "name"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "__contains__",
+    "param_names": [
+      "name"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "__delitem__",
+    "param_names": [
+      "name"
+    ],
+    "function_docstring": "\nDeletes a cookie given a name. Wraps ``cookielib.CookieJar``'s\n``remove_cookie_by_name()``."
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "__delitem__",
+    "param_names": [
+      "name"
+    ],
+    "function_docstring": "\nDeletes a cookie given a name. Wraps ``cookielib.CookieJar``'s\n``remove_cookie_by_name()``."
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "__eq__",
+    "param_names": [
+      "other"
+    ],
+    "function_docstring": "\nReturn self==value."
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "__eq__",
+    "param_names": [
+      "other"
+    ],
+    "function_docstring": "\nReturn self==value."
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "__getitem__",
+    "param_names": [
+      "name"
+    ],
+    "function_docstring": "\nDict-like __getitem__() for compatibility with client code. Throws\nexception if there are more than one cookie with name. In that case,\nuse the more explicit get() method instead.\n\n.. warning:: operation is O(n), not O(1)."
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "__getitem__",
+    "param_names": [
+      "name"
+    ],
+    "function_docstring": "\nDict-like __getitem__() for compatibility with client code. Throws\nexception if there are more than one cookie with name. In that case,\nuse the more explicit get() method instead.\n\n.. warning:: operation is O(n), not O(1)."
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "__getstate__",
+    "function_docstring": "\nUnlike a normal CookieJar, this class is pickleable."
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "__getstate__",
+    "function_docstring": "\nUnlike a normal CookieJar, this class is pickleable."
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "__init__",
+    "param_names": [
+      "policy"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "__init__",
+    "param_names": [
+      "policy"
+    ],
+    "function_docstring": "\nInitialize self.  See help(type(self)) for accurate signature."
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "__iter__",
+    "function_docstring": null
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "__iter__",
+    "function_docstring": null
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "__len__",
+    "function_docstring": "\nReturn number of contained cookies."
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "__len__",
+    "function_docstring": "\nReturn number of contained cookies."
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "__repr__",
+    "function_docstring": "\nReturn repr(self)."
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "__repr__",
+    "function_docstring": "\nReturn repr(self)."
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "__setitem__",
+    "param_names": [
+      "name",
+      "value"
+    ],
+    "function_docstring": "\nDict-like __setitem__ for compatibility with client code. Throws\nexception if there is already a cookie of that name in the jar. In that\ncase, use the more explicit set() method instead."
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "__setitem__",
+    "param_names": [
+      "name",
+      "value"
+    ],
+    "function_docstring": "\nDict-like __setitem__ for compatibility with client code. Throws\nexception if there is already a cookie of that name in the jar. In that\ncase, use the more explicit set() method instead."
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "__setstate__",
+    "param_names": [
+      "state"
+    ],
+    "function_docstring": "\nUnlike a normal CookieJar, this class is pickleable."
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "__setstate__",
+    "param_names": [
+      "state"
+    ],
+    "function_docstring": "\nUnlike a normal CookieJar, this class is pickleable."
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "__str__",
+    "function_docstring": "\nReturn str(self)."
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "__str__",
+    "function_docstring": "\nReturn str(self)."
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "_cookie_attrs",
+    "param_names": [
+      "cookies"
+    ],
+    "function_docstring": "\nReturn a list of cookie-attributes to be returned to server.\n\nlike ['foo=\"bar\"; $Path=\"/\"', ...]\n\nThe $Version attribute is also added when appropriate (currently only\nonce per request)."
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "_cookie_attrs",
+    "param_names": [
+      "cookies"
+    ],
+    "function_docstring": "\nReturn a list of cookie-attributes to be returned to server.\n\nlike ['foo=\"bar\"; $Path=\"/\"', ...]\n\nThe $Version attribute is also added when appropriate (currently only\nonce per request)."
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "_cookie_from_cookie_tuple",
+    "param_names": [
+      "tup",
+      "request"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "_cookie_from_cookie_tuple",
+    "param_names": [
+      "tup",
+      "request"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "_cookies_for_domain",
+    "param_names": [
+      "domain",
+      "request"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "_cookies_for_domain",
+    "param_names": [
+      "domain",
+      "request"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "_cookies_for_request",
+    "param_names": [
+      "request"
+    ],
+    "function_docstring": "\nReturn a list of cookies to be returned to server."
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "_cookies_for_request",
+    "param_names": [
+      "request"
+    ],
+    "function_docstring": "\nReturn a list of cookies to be returned to server."
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "_cookies_from_attrs_set",
+    "param_names": [
+      "attrs_set",
+      "request"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "_cookies_from_attrs_set",
+    "param_names": [
+      "attrs_set",
+      "request"
+    ],
+    "function_docstring": null
+  },
+  {
+    "param_map": {
+      "domain": {
+        "name": "domain",
+        "param_doc": " (optional) string containing domain of cookie"
+      },
+      "name": {
+        "name": "name",
+        "param_doc": " a string containing name of cookie"
+      }
+    },
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "_find",
+    "param_names": [
+      "name",
+      "domain",
+      "path"
+    ],
+    "function_docstring": "\nRequests uses this method internally to get cookie values.\n\nIf there are conflicting cookies, _find arbitrarily chooses one.\nSee _find_no_duplicates if you want an exception thrown if there are\nconflicting cookies.\n"
+  },
+  {
+    "param_map": {
+      "domain": {
+        "name": "domain",
+        "param_doc": " (optional) string containing domain of cookie"
+      },
+      "name": {
+        "name": "name",
+        "param_doc": " a string containing name of cookie"
+      }
+    },
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "_find",
+    "param_names": [
+      "name",
+      "domain",
+      "path"
+    ],
+    "function_docstring": "\nRequests uses this method internally to get cookie values.\n\nIf there are conflicting cookies, _find arbitrarily chooses one.\nSee _find_no_duplicates if you want an exception thrown if there are\nconflicting cookies.\n"
+  },
+  {
+    "param_map": {
+      "domain": {
+        "name": "domain",
+        "param_doc": " (optional) string containing domain of cookie"
+      },
+      "name": {
+        "name": "name",
+        "param_doc": " a string containing name of cookie"
+      }
+    },
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "_find_no_duplicates",
+    "param_names": [
+      "name",
+      "domain",
+      "path"
+    ],
+    "function_docstring": "\nBoth ``__get_item__`` and ``get`` call this function: it's never\nused elsewhere in Requests.\n"
+  },
+  {
+    "param_map": {
+      "domain": {
+        "name": "domain",
+        "param_doc": " (optional) string containing domain of cookie"
+      },
+      "name": {
+        "name": "name",
+        "param_doc": " a string containing name of cookie"
+      }
+    },
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "_find_no_duplicates",
+    "param_names": [
+      "name",
+      "domain",
+      "path"
+    ],
+    "function_docstring": "\nBoth ``__get_item__`` and ``get`` call this function: it's never\nused elsewhere in Requests.\n"
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "_normalized_cookie_tuples",
+    "param_names": [
+      "attrs_set"
+    ],
+    "function_docstring": "\nReturn list of tuples containing normalised cookie information.\n\nattrs_set is the list of lists of key,value pairs extracted from\nthe Set-Cookie or Set-Cookie2 headers.\n\nTuples are name, value, standard, rest, where name and value are the\ncookie name and value, standard is a dictionary containing the standard\ncookie-attributes (discard, secure, version, expires or max-age,\ndomain, path and port) and rest is a dictionary containing the rest of\nthe cookie-attributes."
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "_normalized_cookie_tuples",
+    "param_names": [
+      "attrs_set"
+    ],
+    "function_docstring": "\nReturn list of tuples containing normalised cookie information.\n\nattrs_set is the list of lists of key,value pairs extracted from\nthe Set-Cookie or Set-Cookie2 headers.\n\nTuples are name, value, standard, rest, where name and value are the\ncookie name and value, standard is a dictionary containing the standard\ncookie-attributes (discard, secure, version, expires or max-age,\ndomain, path and port) and rest is a dictionary containing the rest of\nthe cookie-attributes."
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "_process_rfc2109_cookies",
+    "param_names": [
+      "cookies"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "_process_rfc2109_cookies",
+    "param_names": [
+      "cookies"
+    ],
+    "function_docstring": null
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "add_cookie_header",
+    "param_names": [
+      "request"
+    ],
+    "function_docstring": "\nAdd correct Cookie: header to request (urllib.request.Request object).\n\nThe Cookie2 header is also added unless policy.hide_cookie2 is true."
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "add_cookie_header",
+    "param_names": [
+      "request"
+    ],
+    "function_docstring": "\nAdd correct Cookie: header to request (urllib.request.Request object).\n\nThe Cookie2 header is also added unless policy.hide_cookie2 is true."
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "clear",
+    "param_names": [
+      "domain",
+      "path",
+      "name"
+    ],
+    "function_docstring": "\nClear some cookies.\n\nInvoking this method without arguments will clear all cookies.  If\ngiven a single argument, only cookies belonging to that domain will be\nremoved.  If given two arguments, cookies belonging to the specified\npath within that domain are removed.  If given three arguments, then\nthe cookie with the specified name, path and domain is removed.\n\nRaises KeyError if no matching cookie exists."
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "clear",
+    "param_names": [
+      "domain",
+      "path",
+      "name"
+    ],
+    "function_docstring": "\nClear some cookies.\n\nInvoking this method without arguments will clear all cookies.  If\ngiven a single argument, only cookies belonging to that domain will be\nremoved.  If given two arguments, cookies belonging to the specified\npath within that domain are removed.  If given three arguments, then\nthe cookie with the specified name, path and domain is removed.\n\nRaises KeyError if no matching cookie exists."
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "clear_expired_cookies",
+    "function_docstring": "\nDiscard all expired cookies.\n\nYou probably don't need to call this method: expired cookies are never\nsent back to the server (provided you're using DefaultCookiePolicy),\nthis method is called by CookieJar itself every so often, and the\n.save() method won't save expired cookies anyway (unless you ask\notherwise by passing a true ignore_expires argument)."
+  },
+  {
+    "klass": "requests_mock.CookieJar",
+    "module": "requests_mock",
+    "function": "clear_expired_cookies",
+    "function_docstring": "\nDiscard all expired cookies.\n\nYou probably don't need to call this method: expired cookies are never\nsent back to the server (provided you're using DefaultCookiePolicy),\nthis method is called by CookieJar itself every so often, and the\n.save() method won't save expired cookies anyway (unless you ask\notherwise by passing a true ignore_expires argument)."
+  },
+  {
+    "klass": "requests_mock.response.CookieJar",
+    "module": "requests_mock",
+    "function": "clear_session_cookies",
+    "function_docstring": "\nDiscard all session cookies.\n\nNote that the .save() method won't save session cookies anyway, unless\nyou ask otherwise by passing a true ignore_discard argument."
+  }
+]
