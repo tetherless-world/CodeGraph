@@ -1,5 +1,7 @@
 #!/bin/bash
 
+DATA=$1
+cd $DATA
 if [ -f stackoverflow_data_ranking.json.tar.gz ]; then
     echo "stackoverflow_data_ranking.json.tar.gz"
 else

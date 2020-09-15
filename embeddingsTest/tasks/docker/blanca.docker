@@ -97,3 +97,7 @@ COPY searchForums/run_specific_embedding.sh searchForums/
 COPY searchForums/search_task.py searchForums/
 COPY searchForums/evaluate_search_content.py searchForums/
 
+RUN mkdir stack_answer_pred
+COPY stackQuestionAndAnswer/rank_answers.py stack_answer_pred/
+COPY stackQuestionAndAnswer/run.sh stack_answer_pred/
+
