@@ -1,30 +1,25 @@
 ## Stack Overflow Question and Answer Analysis
 
-The script in this directory, totalStatsAnalysisPreEmbedded.py, is used to perform a few different analyses on Stack Overflow Question and Answer data using pre-computed embeddings.   
+The script in this directory, rank_answers.py, is used to perform a few different analyses on Stack Overflow Question and Answer data using pre-computed embeddings.   
 
-The script takes in a couple data sources that are downloadable from this project's content folder on the internet archive: https://archive.org/details/merge-15-22.2.format.  
-
-Those files are:
+The script takes in the following dataset files (available at internet archive: https://archive.org/details/merge-15-22.2.format).  
 - stackoverflow_data_ranking.json (a 500K dataset with stack overflow question and its corresonding answer data)
 - Pre-computed embeddings for the above dataset. In particular, we pre-computed embeddings using BERT, RoBERTa and USE. 
 
-```
-wget https://archive.org/download/merge-15-22.2.format/stackoverflow_data_ranking_title_all_USE.tar.gz
-wget https://archive.org/download/merge-15-22.2.format/stackoverflow_data_ranking_title_all_bert_base.tar.gz
-wget https://archive.org/download/merge-15-22.2.format/stackoverflow_data_ranking_title_all_roberta_base.tar.gz
+
+The script `run.sh` downloads all required data files (if necessary) and run the answer ranking task. It can be invoked as follows;
+ ```
+chmod +x ./run.sh 
+./run.sh
 ```
 
+It downloads a 500K questions dataset with its answers as well as pre-computed embeddings using BERT, RoBERTa and USE language models. 
+Then, it calls `rank_answers.py` to rank the answers based on the each embedding type and report the standard ranking metrics MRR and NDCG. 
+`
 
-By default, the script will perform MRR, NDCG, and paired T test analyses given the pre-computed USE embedding above.
-
-To run this task:
+For example, the following shows how this task is run using BERT embeddings:
 ```
-python totalStatsAnalysisPreEmbedded.py <path_to_stackoverflow_data_ranking.json> <language_model_name> <pre_computed_embeddings>
-```
-
-For example, to evaluate this task using BERT, one can use:
-```
-python totalStatsAnalysisPreEmbedded.py ./stackoverflow_data_ranking.json bert-base-nli-mean-tokens ./stackoverflow_data_ranking_title_all_bert_base/ 
+python rank_answers.py ./stackoverflow_data_ranking.json bert-base-nli-mean-tokens ./stackoverflow_data_ranking_title_all_bert_base/ 
 ```
 
 This should produce:
