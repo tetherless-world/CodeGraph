@@ -54,6 +54,8 @@ RUN pip3 install sentence_transformers
 # copy code from context ('tasks' must be the root)
 #
 
+COPY download.sh download.sh
+
 run mkdir utils
 COPY utils/util.py utils/
 COPY utils/__init__.py utils
@@ -61,13 +63,22 @@ COPY utils/__init__.py utils
 run mkdir usage_analysis
 COPY usageAnalysis/README.md usage_analysis/
 COPY usageAnalysis/run.sh usage_analysis/
+COPY usageAnalysis/run_use.sh usage_analysis/
+COPY usageAnalysis/run_bert.sh usage_analysis/
+COPY usageAnalysis/run_roberta.sh usage_analysis/
+COPY usageAnalysis/plot.sh usage_analysis/
 COPY usageAnalysis/staticAnalysis2.py usage_analysis/
 COPY usageAnalysis/mrr-map.awk usage_analysis/
 COPY usageAnalysis/mrr-map.gnuplot usage_analysis/
 
 RUN mkdir stack_linked
 COPY stackLinkedPosts/dataset.py stack_linked/
+COPY stackLinkedPosts/dataset.sh stack_linked/
 COPY stackLinkedPosts/eval.py stack_linked/
+COPY stackLinkedPosts/eval_use.sh stack_linked/
+COPY stackLinkedPosts/eval_bert.sh stack_linked/
+COPY stackLinkedPosts/eval_roberta.sh stack_linked/
 COPY stackLinkedPosts/distances.awk stack_linked/
 COPY stackLinkedPosts/distances.gnuplot stack_linked/
 COPY stackLinkedPosts/run.sh stack_linked/
+COPY stackLinkedPosts/plot.sh stack_linked/
