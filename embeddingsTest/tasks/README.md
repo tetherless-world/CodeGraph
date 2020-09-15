@@ -1,6 +1,6 @@
 Running the code with Docker:
 
-1) Choose a place to hold the data (~20GB), called `/data` here
+1) Choose a place to hold the data (~20GB), called DATA here.  From `tasks` run `bash download.sh DATA`.
 
 2) Build the docker container;  in this directory, run the following:
 
