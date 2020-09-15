@@ -82,3 +82,7 @@ COPY stackLinkedPosts/distances.awk stack_linked/
 COPY stackLinkedPosts/distances.gnuplot stack_linked/
 COPY stackLinkedPosts/run.sh stack_linked/
 COPY stackLinkedPosts/plot.sh stack_linked/
+
+RUN mkdir stack_answer_pred
+COPY stackQuestionAndAnswer/rank_answers.py stack_answer_pred/
+COPY stackQuestionAndAnswer/run.sh stack_answer_pred/
