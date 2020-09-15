@@ -7,9 +7,9 @@ The script takes in the following dataset files (available at internet archive: 
 - Pre-computed embeddings for the above dataset. In particular, we pre-computed embeddings using BERT, RoBERTa and USE. 
 
 
-The script `run.sh` downloads all required data files (if necessary) and run the answer ranking task. It can be invoked as follows;
+The script `run.sh` downloads all required data files (if necessary) and run the answer ranking task. It takes as input the location where data will be downloaded; `/tmp` in the following example:
  ```
-chmod +x ./run.sh 
+chmod +x ./run.sh /tmp/
 ./run.sh
 ```
 
