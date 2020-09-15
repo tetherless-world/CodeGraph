@@ -18,6 +18,7 @@ Running the code with Docker:
     cd usage_analysis
     bash run.sh /data
     ```
+    
  - Linked Stackoverflow Posts:
         
         ```
@@ -25,10 +26,23 @@ Running the code with Docker:
         bash run.sh /data
          ```
 
- - Answer Prediction
+ - Answer Prediction:
  
          ```
         cd stack_answer_pred
         bash run.sh /data
          ```
+ - Hierarchy Analysis:
 
+     ```
+    cd hierarchyAnalysis
+    bash run_all.sh 
+    ```
+
+ - Search:
+ 
+    ```
+    cd searchForums
+    bash run_all.sh 
+    ```
+ 
