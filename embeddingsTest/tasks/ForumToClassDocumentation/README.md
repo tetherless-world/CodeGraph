@@ -125,7 +125,9 @@ File name: allModelsMRR.py
 MRR computation with hits and mean  for the models:  'bert-base-nli-stsb-mean-tokens','roberta-base-nli-stsb-mean-tokens' 
 
 for example, python allModelsMRR.py ../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 T
-T is one masked,F is no masked configuartion
+
+
+where T is one masked,F is no masked configuartion
 ../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json where 10 is the number of nearest neighbors
 
 output file output1.txt and  stackNewJson_NoOrOneMask_'+model_name+'_MRR.txt produced
@@ -140,3 +142,7 @@ dataset at https://ia801500.us.archive.org/24/items/stackoverflow_questions_per_
 
 
 Example usage: python useMRR.py ../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 T
+
+where 10 is the number of nearest neighbors, T is one masked,F is no masked configuartion
+
+output files output1.txt and USEMRR.txt are prodcued
