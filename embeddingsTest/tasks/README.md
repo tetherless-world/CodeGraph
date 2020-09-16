@@ -1,6 +1,6 @@
 Running the code with Docker:
 
-1) Choose a place to hold the data (~20GB), called DATA here.  From `tasks` run `bash download.sh DATA`.
+1) Choose a place to hold the data (~20GB), called DATA here.  From `tasks` run `bash download.sh DATA`.  Warning this step takes a lot of data.  If you want to try a small sample instead, use test-data for the next step instead which has miniature datasets just to ensure the code and environment is set up properly.  None of the results are what is reported in the paper though.  For that one does need to get data by running download.sh.
 
 2) Build the docker container;  in this directory, run the following:
 
