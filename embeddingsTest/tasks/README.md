@@ -45,4 +45,10 @@ Running the code with Docker:
     cd searchForums
     bash run_all.sh 
     ```
+    
+ - Forum posts to docstrings:
+     ```
+    cd ForumToClassDocumentation
+     bash run_all.sh /data
+    ```
  
