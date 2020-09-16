@@ -55,51 +55,55 @@ RUN pip3 install networkx
 # copy code from context ('tasks' must be the root)
 #
 
-COPY download.sh download.sh
+RUN adduser blanca
+USER blanca
+WORKDIR /home/blanca
+
+COPY --chown=blanca download.sh download.sh
 
 run mkdir utils
-COPY utils/util.py utils/
-COPY utils/filter_docs.py utils/
-COPY utils/__init__.py utils
+COPY --chown=blanca utils/util.py utils/
+COPY --chown=blanca utils/filter_docs.py utils/
+COPY --chown=blanca utils/__init__.py utils
 
 run mkdir usage_analysis
-COPY usageAnalysis/README.md usage_analysis/
-COPY usageAnalysis/run.sh usage_analysis/
-COPY usageAnalysis/run_use.sh usage_analysis/
-COPY usageAnalysis/run_bert.sh usage_analysis/
-COPY usageAnalysis/run_roberta.sh usage_analysis/
-COPY usageAnalysis/plot.sh usage_analysis/
-COPY usageAnalysis/staticAnalysis2.py usage_analysis/
-COPY usageAnalysis/mrr-map.awk usage_analysis/
-COPY usageAnalysis/mrr-map.gnuplot usage_analysis/
+COPY --chown=blanca usageAnalysis/README.md usage_analysis/
+COPY --chown=blanca usageAnalysis/run.sh usage_analysis/
+COPY --chown=blanca usageAnalysis/run_use.sh usage_analysis/
+COPY --chown=blanca usageAnalysis/run_bert.sh usage_analysis/
+COPY --chown=blanca usageAnalysis/run_roberta.sh usage_analysis/
+COPY --chown=blanca usageAnalysis/plot.sh usage_analysis/
+COPY --chown=blanca usageAnalysis/staticAnalysis2.py usage_analysis/
+COPY --chown=blanca usageAnalysis/mrr-map.awk usage_analysis/
+COPY --chown=blanca usageAnalysis/mrr-map.gnuplot usage_analysis/
 
 RUN mkdir stack_linked
-COPY stackLinkedPosts/dataset.py stack_linked/
-COPY stackLinkedPosts/dataset.sh stack_linked/
-COPY stackLinkedPosts/eval.py stack_linked/
-COPY stackLinkedPosts/eval_use.sh stack_linked/
-COPY stackLinkedPosts/eval_bert.sh stack_linked/
-COPY stackLinkedPosts/eval_roberta.sh stack_linked/
-COPY stackLinkedPosts/distances.awk stack_linked/
-COPY stackLinkedPosts/distances.gnuplot stack_linked/
-COPY stackLinkedPosts/run.sh stack_linked/
-COPY stackLinkedPosts/plot.sh stack_linked/
+COPY --chown=blanca stackLinkedPosts/dataset.py stack_linked/
+COPY --chown=blanca stackLinkedPosts/dataset.sh stack_linked/
+COPY --chown=blanca stackLinkedPosts/eval.py stack_linked/
+COPY --chown=blanca stackLinkedPosts/eval_use.sh stack_linked/
+COPY --chown=blanca stackLinkedPosts/eval_bert.sh stack_linked/
+COPY --chown=blanca stackLinkedPosts/eval_roberta.sh stack_linked/
+COPY --chown=blanca stackLinkedPosts/distances.awk stack_linked/
+COPY --chown=blanca stackLinkedPosts/distances.gnuplot stack_linked/
+COPY --chown=blanca stackLinkedPosts/run.sh stack_linked/
+COPY --chown=blanca stackLinkedPosts/plot.sh stack_linked/
 
 RUN mkdir hierarchyAnalysis
-COPY hierarchyAnalysis/correlation_eval.py hierarchyAnalysis/
-COPY hierarchyAnalysis/hierarchy_stats.py hierarchyAnalysis/
-COPY hierarchyAnalysis/run_all.sh hierarchyAnalysis/
-COPY hierarchyAnalysis/run_correlation_task.sh hierarchyAnalysis/
-COPY hierarchyAnalysis/find_distribution_of_distances.py hierarchyAnalysis/
-COPY hierarchyAnalysis/run_ranking_task.sh hierarchyAnalysis/
+COPY --chown=blanca hierarchyAnalysis/correlation_eval.py hierarchyAnalysis/
+COPY --chown=blanca hierarchyAnalysis/hierarchy_stats.py hierarchyAnalysis/
+COPY --chown=blanca hierarchyAnalysis/run_all.sh hierarchyAnalysis/
+COPY --chown=blanca hierarchyAnalysis/run_correlation_task.sh hierarchyAnalysis/
+COPY --chown=blanca hierarchyAnalysis/find_distribution_of_distances.py hierarchyAnalysis/
+COPY --chown=blanca hierarchyAnalysis/run_ranking_task.sh hierarchyAnalysis/
 
 RUN mkdir searchForums
-COPY searchForums/run_all.sh searchForums/
-COPY searchForums/run_specific_embedding.sh searchForums/
-COPY searchForums/search_task.py searchForums/
-COPY searchForums/evaluate_search_content.py searchForums/
+COPY --chown=blanca searchForums/run_all.sh searchForums/
+COPY --chown=blanca searchForums/run_specific_embedding.sh searchForums/
+COPY --chown=blanca searchForums/search_task.py searchForums/
+COPY --chown=blanca searchForums/evaluate_search_content.py searchForums/
 
 RUN mkdir stack_answer_pred
-COPY stackQuestionAndAnswer/rank_answers.py stack_answer_pred/
-COPY stackQuestionAndAnswer/run.sh stack_answer_pred/
+COPY --chown=blanca stackQuestionAndAnswer/rank_answers.py stack_answer_pred/
+COPY --chown=blanca stackQuestionAndAnswer/run.sh stack_answer_pred/
 
