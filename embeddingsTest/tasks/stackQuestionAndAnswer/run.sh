@@ -5,7 +5,7 @@ cd $DATA
 if [ -f stackoverflow_data_ranking.json ]; then
     echo "stackoverflow_data_ranking.json"
 else
-    wget -O - https://archive.org/download/merge-15-22.2.format/stackoverflow_data_ranking.json.tar.gz
+    wget https://archive.org/download/merge-15-22.2.format/stackoverflow_data_ranking.json.tar.gz
     tar -xzf stackoverflow_data_ranking.json.tar.gz
 fi
 
