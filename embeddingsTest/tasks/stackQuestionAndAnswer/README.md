@@ -9,8 +9,8 @@ The script takes in the following dataset files (available at internet archive: 
 
 The script `run.sh` downloads all required data files (if necessary) and run the answer ranking task. It takes as input the location where data will be downloaded; `/tmp` in the following example:
  ```
-chmod +x ./run.sh /tmp/
-./run.sh
+chmod +x ./run.sh 
+./run.sh /tmp/
 ```
 
 It downloads a 500K questions dataset with its answers as well as pre-computed embeddings using BERT, RoBERTa and USE language models. 
