@@ -61,7 +61,7 @@ def build_index(model,input_file):
     docStringLength_avg=[]
     docLabelToTextForSentenceTokenizationAndAnalysis= {}
 
-    with open(input_file, 'r') as data,open('./output1.txt', 'w') as outputFile:
+    with open(input_file, 'r') as data,open('output1.txt', 'w') as outputFile:
         jsonCollect = ijson.items(data, 'results.bindings.item')
         i = 0
         transformer = SentenceTransformer(model)
@@ -145,7 +145,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
     originalout = sys.stdout
     transformer = SentenceTransformer(model)
-    with open(input_file, 'r') as data, open('./finalOut_'+model+'_ALLMASK_.txt', 'w') as outputFile:
+    with open(input_file, 'r') as data, open('finalOut_'+model+'_ALLMASK_.txt', 'w') as outputFile:
 
         firstJsonCollect = ijson.items(data, 'results.bindings.item') 
         postMap = {}
