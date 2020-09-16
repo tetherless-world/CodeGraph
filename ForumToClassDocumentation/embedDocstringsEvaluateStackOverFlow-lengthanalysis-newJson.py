@@ -19,7 +19,7 @@
 ##where 5 is the number of nearest neighbors
 ##T is one masked,F is no masked configuartion
 
-##output file output1.txt and output2.txt
+##output file output1.txt and embedoneornomaskT.txt
 
 import ijson
 import tensorflow_hub as hub
@@ -123,7 +123,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
     totaldocs=0
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
     originalout = sys.stdout
-    with open(input1, 'r') as data, open('output2.txt', 'w') as outputFile:
+    with open(input1, 'r') as data, open('embedoneornomask'+mask, 'w') as outputFile:
         
         jsonCollect = ijson.items(data, 'results.bindings.item')
         sys.stdout = outputFile
