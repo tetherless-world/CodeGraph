@@ -165,6 +165,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
             else:
                 postMap[stackText] = [classLabel]
         data.close()
+        newData=open(input_file, 'r')
         jsonCollect = ijson.items(newData, 'results.bindings.item')
         sys.stdout = outputFile
         for jsonObject in jsonCollect:
