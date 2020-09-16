@@ -149,7 +149,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
     totaldocs=0
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
     originalout = sys.stdout
-    with open(input_path, 'r') as data, open('./outputwithbucketsize'+str(bucket_size)+'.txt', 'w') as outputFile:
+    with open(input_path, 'r') as data, open('./outputwithbucketsize'+str(bucket_size)+mask+'.txt', 'w') as outputFile:
         
         jsonCollect = ijson.items(data, 'results.bindings.item')
         sys.stdout = outputFile
