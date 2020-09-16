@@ -50,6 +50,7 @@ RUN pip3 install metrics_eval
 RUN pip3 install numba
 RUN pip3 install sentence_transformers
 RUN pip3 install networkx
+RUN pip3 install ijson
 
 ###############################
 # copy code from context ('tasks' must be the root)
@@ -106,4 +107,15 @@ COPY --chown=blanca searchForums/evaluate_search_content.py searchForums/
 RUN mkdir stack_answer_pred
 COPY --chown=blanca stackQuestionAndAnswer/rank_answers.py stack_answer_pred/
 COPY --chown=blanca stackQuestionAndAnswer/run.sh stack_answer_pred/
+
+RUN mkdir ForumToClassDocumentation
+COPY --chown=blanca ForumToClassDocumentation/allEmbedDocstringsEvaluateStackOverFlowAllMask.py ForumToClassDocumentation/
+COPY --chown=blanca ForumToClassDocumentation/allModelsMRR.py ForumToClassDocumentation/
+COPY --chown=blanca ForumToClassDocumentation/allModelsembedDocstringsEvaluateStackOverFlow.py ForumToClassDocumentation/
+COPY --chown=blanca ForumToClassDocumentation/embedDocstringsEvaluateStackOverFlow-lengthanalysis-newJson.py ForumToClassDocumentation/
+COPY --chown=blanca ForumToClassDocumentation/embedDocstringsEvaluateStackOverFlow-relevantBuckets.py ForumToClassDocumentation/
+COPY --chown=blanca ForumToClassDocumentation/embedDocstringsEvaluateStackOverFlowAllMask-lengthanalysis-newJson.py ForumToClassDocumentation/
+COPY --chown=blanca ForumToClassDocumentation/useMRR.py ForumToClassDocumentation/
+COPY --chown=blanca ForumToClassDocumentation/run_all.sh ForumToClassDocumentation/
+
 

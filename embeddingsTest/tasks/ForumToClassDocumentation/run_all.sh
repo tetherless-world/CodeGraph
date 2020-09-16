@@ -19,7 +19,8 @@ python embedDocstringsEvaluateStackOverFlowAllMask-lengthanalysis-newJson.py $1/
 #precision of predicting the closest docstrings(after embedding), for the model USE
 
 python allModelsembedDocstringsEvaluateStackOverFlow.py $1/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 T
-No masking:The Stackoverflow post is embedded as-is. One masking: The particular class associated with the stackoverflow post is masked and then embedded and evaluated for precision of predicting the closest docstrings(after embedding), for the models: 'bert-base-nli-stsb-mean-tokens', 'bert-large-nli-stsb-mean-tokens','roberta-base-nli-stsb-mean-tokens','roberta-large-nli-stsb-mean-tokens', 'distilbert-base-nli-stsb-mean-tokens', corresponding output in stackNewJson_NoOrOneMask_'+model_name+'_.txt ##provide input file path of the above json for example ../../data/codeGraph/$1/stackoverflow_questions_per_class_func_3M_filtered_new.json
+
+#No masking:The Stackoverflow post is embedded as-is. One masking: The particular class associated with the stackoverflow post is masked and then embedded and evaluated for precision of predicting the closest docstrings(after embedding), for the models: 'bert-base-nli-stsb-mean-tokens', 'bert-large-nli-stsb-mean-tokens','roberta-base-nli-stsb-mean-tokens','roberta-large-nli-stsb-mean-tokens', 'distilbert-base-nli-stsb-mean-tokens', corresponding output in stackNewJson_NoOrOneMask_'+model_name+'_.txt ##provide input file path of the above json for example ../../data/codeGraph/$1/stackoverflow_questions_per_class_func_3M_filtered_new.json
 python embedDocstringsEvaluateStackOverFlow-lengthanalysis-newJson.py $1/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 T
  #The Stackoverflow One masked: The particular class associated with the stackoverflow post is masked and then embedded and evaluated for 
  #precision of predicting the closest docstrings(after embedding), for the model USE 
