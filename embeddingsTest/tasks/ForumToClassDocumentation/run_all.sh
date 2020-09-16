@@ -52,6 +52,15 @@ python allModelsembedDocstringsEvaluateStackOverFlow.py $1/stackoverflow_questio
 
  #The Stackoverflow is embedded and evaluated for 
  #precision of predicting the closest docstrings(after embedding), for the model USE 
+ 
+
+python useMRR.py $1/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 T
+##MRR computation with hits and mean for the model USE
+
+
+
+python allModelsMRR.py $1/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 T
+#MRR computation with hits and mean for the models: 'bert-base-nli-stsb-mean-tokens','roberta-base-nli-stsb-mean-tokens'
 
 
 
