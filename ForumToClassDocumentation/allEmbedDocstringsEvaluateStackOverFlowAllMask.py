@@ -165,7 +165,6 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
             else:
                 postMap[stackText] = [classLabel]
         data.close()
-        newData = open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r')
         jsonCollect = ijson.items(newData, 'results.bindings.item')
         sys.stdout = outputFile
         for jsonObject in jsonCollect:
