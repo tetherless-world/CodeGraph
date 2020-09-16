@@ -22,7 +22,7 @@
 ##../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json 
 ##where 5 is the number of nearest neighbors
 
-##output file output1.txt and  stackNewJson_NoOrOneMask_'+model_name+'_.txt
+##output file output1.txt and  stackNewJson_NoOrOneMask_T'+model_name+'_.txt
 
 import ijson
 import tensorflow_hub as hub
@@ -59,7 +59,7 @@ def build_index(model,input_file):
     docStringLength_avg=[]
     docLabelToTextForSentenceTokenizationAndAnalysis= {}
 
-    with open(input_file, 'r') as data,open('./output1.txt', 'w') as outputFile:
+    with open(input_file, 'r') as data,open('output1.txt', 'w') as outputFile:
         jsonCollect = ijson.items(data, 'results.bindings.item')
         i = 0
         transformer = SentenceTransformer(model)
@@ -143,7 +143,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
     originalout = sys.stdout
     transformer = SentenceTransformer(model)
-    with open(input_file, 'r') as data, open('./stackNewJson_NoOrOneMask_'+model+'_.txt', 'w') as outputFile:
+    with open(input_file, 'r') as data, open('stackNewJson_NoOrOneMask_'+mask+model+'_.txt', 'w') as outputFile:
         
         jsonCollect = ijson.items(data, 'results.bindings.item')
         sys.stdout = outputFile

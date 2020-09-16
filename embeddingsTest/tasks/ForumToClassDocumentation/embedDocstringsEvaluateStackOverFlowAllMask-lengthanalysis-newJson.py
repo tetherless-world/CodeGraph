@@ -22,7 +22,7 @@
 
 ##where 5 is the number of nearest neighbors
 
-##output file output1.txt and output2.txt
+##output file output1.txt and allMaskOutput.txt
 import ijson
 import tensorflow_hub as hub
 import faiss
@@ -120,7 +120,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
     totaldocs=0
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
    
-    with open(input_file, 'r') as data, open('output2.txt', 'w') as outputFile:
+    with open(input_file, 'r') as data, open('allMaskOutput.txt', 'w') as outputFile:
         originalout = sys.stdout
         sys.stdout= outputFile
         firstJsonCollect = ijson.items(data, 'results.bindings.item') 
@@ -141,7 +141,7 @@ def evaluate_neighbors(index, docMessages, embeddingtolabelmap,docStringLength_a
             else:
                 postMap[stackText] = [classLabel]
         data.close()
-        newData = open('../../data/codeGraph/stackoverflow_questions_per_class_func_3M_filtered_new.json', 'r')
+        newData = open(input_file, 'r')
         jsonCollect = ijson.items(newData, 'results.bindings.item')
         sys.stdout = outputFile
         for jsonObject in jsonCollect:
