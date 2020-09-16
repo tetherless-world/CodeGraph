@@ -110,3 +110,10 @@ if [ -f stackoverflow_data_ranking_title_all_USE.tar.gz ]; then
 else
     wget https://archive.org/download/merge-15-22.2.format/stackoverflow_data_ranking_title_all_USE.tar.gz
 fi
+
+# get file for forum to classes tasks
+if [ -f stackoverflow_questions_per_class_func_3M_filtered_new.json ]; then
+    echo "using stackoverflow_questions_per_class_func_3M_filtered_new.json"
+else
+    wget https://archive.org/download/merge-15-22.2.format/stackoverflow_questions_per_class_func_3M_filtered_new.json
+fi
