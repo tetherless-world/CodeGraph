@@ -129,7 +129,9 @@ def calculatePairedTTest(jsonCollect, model, embed_type, sample = False):
         urlList.append(qUrl)
     number_posts_with_stackOverflow_links = 0
     num_stackOverflow_links = []
-    for jsonObject in jsonCollect:
+    for idx, jsonObject in enumerate(jsonCollect):
+        if idx % 1000 == 0:
+            print(f'calculatePairedTTest: finished {idx} out of {len(jsonCollect)}')
         qUrl = jsonObject['url']
         all_content = jsonObject['text:']
         answerCollection = jsonObject['answers']
@@ -237,7 +239,9 @@ def calculateNDCG(jsonCollect, model, embed_type, sample = False):
     coefficients = []
     if sample:
         jsonCollect = jsonCollect[:100]
-    for jsonObject in jsonCollect:
+    for idx, jsonObject in enumerate(jsonCollect):
+        if idx % 1000 == 0:
+            print(f'calculateNDCG: finished {idx} out of {len(jsonCollect)}')
         stackId = jsonObject['id:']
         # newEmbed = fetchEmbeddingDict(stackId, model, embed_dir)
         # if newEmbed == None:
@@ -302,7 +306,9 @@ def calculateMRR(jsonCollect, model, embed_type, sample=False):
     recipRanks = []
     if sample:
         jsonCollect = jsonCollect[:100]
-    for jsonObject in jsonCollect:
+    for idx, jsonObject in enumerate(jsonCollect):
+        if idx % 1000 == 0:
+            print(f'calculateMRR: finished {idx} out of {len(jsonCollect)}')
         stackId = jsonObject['id:']
         # newEmbed = fetchEmbeddingDict(stackId, model, embed_dir)
         # if newEmbed == None:
