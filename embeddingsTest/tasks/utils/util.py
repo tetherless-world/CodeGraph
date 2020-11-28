@@ -7,7 +7,7 @@ from sentence_transformers import SentenceTransformer, models
 
 embed = None
 
-def get_model(embed_type):
+def get_model(embed_type, local_model_path='/data/BERTOverflow'):
     global embed
     if embed:
         return embed
@@ -15,8 +15,7 @@ def get_model(embed_type):
         model_path = 'https://tfhub.dev/google/universal-sentence-encoder/4'
         embed = hub.load(model_path)
     elif embed_type == 'bertoverflow':
-        model_path = '/data/BERTOverflow'
-        word_embedding_model = models.Transformer(model_path, max_seq_length=256)
+        word_embedding_model = models.Transformer(local_model_path, max_seq_length=256)
         pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension())
         embed = SentenceTransformer(modules=[word_embedding_model, pooling_model])
     elif embed_type == 'bert':
