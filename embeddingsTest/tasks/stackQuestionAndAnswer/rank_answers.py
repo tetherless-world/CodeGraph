@@ -10,7 +10,7 @@ import random
 import statistics
 from scipy import stats as stat
 import pickle
-
+from utils.util import get_model
 # parse input data file and remove duplicates for analysis
 # also calls all necessary analysis functions
 
@@ -34,7 +34,7 @@ def fetchEmbeddingDict(fileName, model, embed_dir):
     openFile.close()
     return embeddingDict
 
-def beginAnalysis(stackQandAPath, model, embed_dir):
+def beginAnalysis(stackQandAPath, model, embed_type):
     adjustedJsonObjects = []
     with open(stackQandAPath, 'r') as data:
         properJsonObjects = []
@@ -65,15 +65,15 @@ def beginAnalysis(stackQandAPath, model, embed_dir):
     #         adjustedJsonObjects.append(jsonObject)
     #         i += 1
 
-        print("Calculating MRR with model", model)
-        print("Calculating MRR with model", model, file=sys.stderr)
-        calculateMRR(properJsonObjects, model, embed_dir)
-        print("Calculating NDCG with model", model)
-        print("Calculating NDCG with model", model, file=sys.stderr)
-        calculateNDCG(properJsonObjects, model, embed_dir)
-        print("Calculating T statistic with model", model)
-        print("Calculating T statistic with model", model, file=sys.stderr)
-        calculatePairedTTest(adjustedJsonObjects, model, embed_dir)
+        print("Calculating MRR with model", embed_type)
+        print("Calculating MRR with model", embed_type, file=sys.stderr)
+        calculateMRR(properJsonObjects, model, embed_type)
+        print("Calculating NDCG with model", embed_type)
+        print("Calculating NDCG with model", embed_type, file=sys.stderr)
+        calculateNDCG(properJsonObjects, model, embed_type)
+        print("Calculating T statistic with model", embed_type)
+        print("Calculating T statistic with model", embed_type, file=sys.stderr)
+        calculatePairedTTest(adjustedJsonObjects, model, embed_type)
 
         # USEList = ['https://tfhub.dev/google/universal-sentence-encoder/4']
         # for USE in USEList:
@@ -105,14 +105,15 @@ def beginAnalysis(stackQandAPath, model, embed_dir):
         # changes to fetchEmbeddingDict()
 
 # function to calculate paired t test for linked posts
-def calculatePairedTTest(jsonCollect, model, embed_dir):
+def calculatePairedTTest(jsonCollect, model, embed_type, sample = False):
     random.seed(116)
     initialRand = random.getstate()
     embed = None
     transformer = None
     coefficients = []
     rPattern = r'https:\/\/stackoverflow\.com\/questions\/\d+'
-
+    if sample:
+        jsonCollect = jsonCollect[:100]
   
     urlMapping = {}
     urlList = []
@@ -159,22 +160,24 @@ def calculatePairedTTest(jsonCollect, model, embed_dir):
             post1Url = qUrl
             post2Url = actualUrl
 
-            adjustedPost1Url = qUrl.replace('https://stackoverflow.com/questions/', '')
-            adjustedPost2Url = actualUrl.replace('https://stackoverflow.com/questions/', '')
+            # adjustedPost1Url = qUrl.replace('https://stackoverflow.com/questions/', '')
+            # adjustedPost2Url = actualUrl.replace('https://stackoverflow.com/questions/', '')
 
-            post1NewEmbed = fetchEmbeddingDict(adjustedPost1Url, model, embed_dir)
-            post2NewEmbed = fetchEmbeddingDict(adjustedPost2Url, model, embed_dir)
-
-            if post1NewEmbed == None or post2NewEmbed == None:
-                continue
+            # post1NewEmbed = fetchEmbeddingDict(adjustedPost1Url, model, embed_dir)
+            # post2NewEmbed = fetchEmbeddingDict(adjustedPost2Url, model, embed_dir)
+            #
+            # if post1NewEmbed == None or post2NewEmbed == None:
+            #     continue
 
             # if model == 'https://tfhub.dev/google/universal-sentence-encoder/4':
             #     post1EmbeddingArray = post1NewEmbed['content'] .numpy()[0]
             #     post2EmbeddingArray = post2NewEmbed['content'].numpy()[0]
             # else:
-            post1EmbeddingArray = post1NewEmbed['content']
-            post2EmbeddingArray = post2NewEmbed['content']
-            
+            # post1EmbeddingArray = post1NewEmbed['content']
+            # post2EmbeddingArray = post2NewEmbed['content']
+            post1EmbeddingArray = embed_sentences(jsonObject["title"] + '  ' + jsonObject['text:'], model, embed_type)
+            post2EmbeddingArray = embed_sentences(post2Object["title"] + '  ' + post2Object['text:'], model, embed_type)
+
             linkedDist = np.linalg.norm(post1EmbeddingArray - post2EmbeddingArray)**2
             if linkedDist <= .001:
                 continue
@@ -188,21 +191,26 @@ def calculatePairedTTest(jsonCollect, model, embed_dir):
             while post4Url == post2Url or post4Url == post1Url:
                 post4Url = random.choice(urlList)
 
-            adjustedPost3Url = post3Url.replace('https://stackoverflow.com/questions/', '')
-            adjustedPost4Url = post4Url.replace('https://stackoverflow.com/questions/', '')
+            # adjustedPost3Url = post3Url.replace('https://stackoverflow.com/questions/', '')
+            # adjustedPost4Url = post4Url.replace('https://stackoverflow.com/questions/', '')
+            #
+            # post3NewEmbed = fetchEmbeddingDict(adjustedPost3Url, model, embed_dir)
+            # post4NewEmbed = fetchEmbeddingDict(adjustedPost4Url, model, embed_dir)
+            #
+            # if post3NewEmbed == None or post4NewEmbed == None:
+            #     continue
+            #
+            # # if model == 'https://tfhub.dev/google/universal-sentence-encoder/4':
+            # #     post3EmbeddingArray = post3NewEmbed['content'].numpy()[0]
+            # #     post4EmbeddingArray = post4NewEmbed['content'].numpy()[0]
+            # # else:
+            # post3EmbeddingArray = post3NewEmbed['content']
+            # post4EmbeddingArray = post4NewEmbed['content']
 
-            post3NewEmbed = fetchEmbeddingDict(adjustedPost3Url, model, embed_dir)
-            post4NewEmbed = fetchEmbeddingDict(adjustedPost4Url, model, embed_dir)
-
-            if post3NewEmbed == None or post4NewEmbed == None:
-                continue
-
-            # if model == 'https://tfhub.dev/google/universal-sentence-encoder/4':
-            #     post3EmbeddingArray = post3NewEmbed['content'].numpy()[0]
-            #     post4EmbeddingArray = post4NewEmbed['content'].numpy()[0]
-            # else:
-            post3EmbeddingArray = post3NewEmbed['content']
-            post4EmbeddingArray = post4NewEmbed['content']
+            # post3EmbeddingArray = post3NewEmbed['content']
+            # post4EmbeddingArray = post4NewEmbed['content']
+            post3EmbeddingArray = embed_sentences(urlMapping[post3Url]["title"] + '  ' + urlMapping[post3Url]['text:'], model, embed_type)
+            post4EmbeddingArray = embed_sentences(urlMapping[post4Url]["title"] + '  ' + urlMapping[post4Url]['text:'], model, embed_type)
 
             post1And3Dist = np.linalg.norm(post1EmbeddingArray - post3EmbeddingArray)**2
             post2And4Dist = np.linalg.norm(post2EmbeddingArray - post4EmbeddingArray)**2
@@ -223,17 +231,19 @@ def calculatePairedTTest(jsonCollect, model, embed_dir):
     print('Average number of links per post: ', statistics.mean(num_stackOverflow_links))
 
 # function to calculate NDCG for question and answer rankings
-def calculateNDCG(jsonCollect, model, embed_dir):
+def calculateNDCG(jsonCollect, model, embed_type, sample = False):
     embed = None
     transformer = None
     coefficients = []
-
+    if sample:
+        jsonCollect = jsonCollect[:100]
     for jsonObject in jsonCollect:
         stackId = jsonObject['id:']
-        newEmbed = fetchEmbeddingDict(stackId, model, embed_dir)
-        if newEmbed == None:
-            continue
-        embeddingQuestionArray = newEmbed['content']
+        # newEmbed = fetchEmbeddingDict(stackId, model, embed_dir)
+        # if newEmbed == None:
+        #     continue
+        # embeddingQuestionArray = newEmbed['content']
+        embeddingQuestionArray = embed_sentences(jsonObject["title"] +'  '+ jsonObject['text:'], model, embed_type )
         voteOrder = []
         distanceOrder = []
         voteMap = {}
@@ -242,7 +252,8 @@ def calculateNDCG(jsonCollect, model, embed_dir):
             answerText = answer['text']
             answerID = answer['id']
             answerVotes = int(answer['votes']) if answer['votes'] != '' else 0
-            answerArray = newEmbed[answerID]
+            # answerArray = newEmbed[answerID]
+            answerArray = embed_sentences(answer["text"], model, embed_type)
             dist = np.linalg.norm(answerArray-embeddingQuestionArray)**2
             voteOrder.append((answerVotes, answerText))
             distanceOrder.append((dist, answerText))
@@ -277,19 +288,27 @@ def calculateNDCG(jsonCollect, model, embed_dir):
     print('NDCG: standard error of the mean ', stat.sem(coefficients))
     print("Average NDCG:", fullNDCG)
 
+def embed_sentences(sentences, model, embed_type ):
+    if embed_type == 'USE':
+        sentence_embeddings = model(sentences)
+    else:
+        sentence_embeddings = model.encode(sentences)
+    return sentence_embeddings
 
 # function to calculate MRR for question and answer rankings            
-def calculateMRR(jsonCollect, model, embed_dir):
+def calculateMRR(jsonCollect, model, embed_type, sample=False):
     embed = None
     transformer = None
     recipRanks = []
-
+    if sample:
+        jsonCollect = jsonCollect[:100]
     for jsonObject in jsonCollect:
         stackId = jsonObject['id:']
-        newEmbed = fetchEmbeddingDict(stackId, model, embed_dir)
-        if newEmbed == None:
-            continue
-        embeddingQuestionArray = newEmbed['content']
+        # newEmbed = fetchEmbeddingDict(stackId, model, embed_dir)
+        # if newEmbed == None:
+        #     continue
+        embeddingQuestionArray = embed_sentences(jsonObject["title"] +'  '+ jsonObject['text:'], model, embed_type )
+        # embeddingQuestionArray = newEmbed['content']
         voteOrder = []
         distanceOrder = []
         valid = True
@@ -298,7 +317,8 @@ def calculateMRR(jsonCollect, model, embed_dir):
             answerText = answer['text']
             answerID = answer['id']
             answerVotes = int(answer['votes']) if answer['votes'] != '' else 0
-            answerArray = newEmbed[answerID]
+            # answerArray = newEmbed[answerID]
+            answerArray = embed_sentences(answer["text"], model, embed_type)
             dist = np.linalg.norm(answerArray-embeddingQuestionArray)**2
             voteOrder.append((answerVotes, answerText))
             distanceOrder.append((dist, answerText))
@@ -327,6 +347,7 @@ if __name__ == "__main__":
     # model =  ''
     # embed_dir = ''
     stackQandAPath = sys.argv[1]
-    model =  sys.argv[2]
-    embed_dir = sys.argv[3]
-    beginAnalysis(stackQandAPath, model, embed_dir)
+    embed_type = sys.argv[2]
+    model_path = sys.argv[3]
+    model = get_model(embed_type, model_path)
+    beginAnalysis(stackQandAPath, model, embed_type)
