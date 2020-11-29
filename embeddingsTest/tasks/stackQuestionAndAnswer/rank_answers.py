@@ -13,7 +13,11 @@ import pickle
 from utils.util import get_model
 # parse input data file and remove duplicates for analysis
 # also calls all necessary analysis functions
+import os
+from pathlib import Path
 
+
+sample = True
 def fetchEmbeddingDict(fileName, model, embed_dir):
     # adjustments must be made here if paths to data need to be adjusted
     # or new sources of data are to be used. This function is called in
@@ -64,13 +68,14 @@ def beginAnalysis(stackQandAPath, model, embed_type):
     #             encounteredPosts.add(stackUrl)
     #         adjustedJsonObjects.append(jsonObject)
     #         i += 1
-
+        folder_name = '/tmp/stackoverflow_embed_'+embed_type
+        os.makedirs(folder_name)
         print("Calculating MRR with model", embed_type)
         print("Calculating MRR with model", embed_type, file=sys.stderr)
-        calculateMRR(properJsonObjects, model, embed_type)
+        calculateMRR(properJsonObjects, model, embed_type, folder_name)
         print("Calculating NDCG with model", embed_type)
         print("Calculating NDCG with model", embed_type, file=sys.stderr)
-        calculateNDCG(properJsonObjects, model, embed_type)
+        calculateNDCG(properJsonObjects, model, embed_type, folder_name)
         print("Calculating T statistic with model", embed_type)
         print("Calculating T statistic with model", embed_type, file=sys.stderr)
         calculatePairedTTest(adjustedJsonObjects, model, embed_type)
@@ -105,7 +110,7 @@ def beginAnalysis(stackQandAPath, model, embed_type):
         # changes to fetchEmbeddingDict()
 
 # function to calculate paired t test for linked posts
-def calculatePairedTTest(jsonCollect, model, embed_type, sample = False):
+def calculatePairedTTest(jsonCollect, model, embed_type):
     random.seed(116)
     initialRand = random.getstate()
     embed = None
@@ -233,7 +238,7 @@ def calculatePairedTTest(jsonCollect, model, embed_type, sample = False):
     print('Average number of links per post: ', statistics.mean(num_stackOverflow_links))
 
 # function to calculate NDCG for question and answer rankings
-def calculateNDCG(jsonCollect, model, embed_type, sample = False):
+def calculateNDCG(jsonCollect, model, embed_type, folder_name):
     embed = None
     transformer = None
     coefficients = []
@@ -243,11 +248,20 @@ def calculateNDCG(jsonCollect, model, embed_type, sample = False):
         if idx % 1000 == 0:
             print(f'calculateNDCG: finished {idx} out of {len(jsonCollect)}')
         stackId = jsonObject['id:']
+        file_path = folder_name + "/q_" + stackId
+        embed_dic = {}
+        if Path(file_path).is_file():
+            with open(file_path, 'rb') as handle:
+                embed_dic = pickle.load(handle)
         # newEmbed = fetchEmbeddingDict(stackId, model, embed_dir)
         # if newEmbed == None:
         #     continue
         # embeddingQuestionArray = newEmbed['content']
-        embeddingQuestionArray = embed_sentences(jsonObject["title"] +'  '+ jsonObject['text:'], model, embed_type )
+        if 'content' in embed_dic:
+            embeddingQuestionArray = embed_dic['content']
+        else:
+            embeddingQuestionArray = embed_sentences(jsonObject["title"] +'  '+ jsonObject['text:'], model, embed_type )
+            embed_dic['content'] = embeddingQuestionArray
         voteOrder = []
         distanceOrder = []
         voteMap = {}
@@ -257,7 +271,11 @@ def calculateNDCG(jsonCollect, model, embed_type, sample = False):
             answerID = answer['id']
             answerVotes = int(answer['votes']) if answer['votes'] != '' else 0
             # answerArray = newEmbed[answerID]
-            answerArray = embed_sentences(answer["text"], model, embed_type)
+            if answerID in embed_dic:
+                answerArray = embed_dic[answerID]
+            else:
+                answerArray = embed_sentences(answer["text"], model, embed_type)
+                embed_dic[answerID] = answerArray
             dist = np.linalg.norm(answerArray-embeddingQuestionArray)**2
             voteOrder.append((answerVotes, answerText))
             distanceOrder.append((dist, answerText))
@@ -288,6 +306,8 @@ def calculateNDCG(jsonCollect, model, embed_type, sample = False):
             if workingIDCG != 0:
                 nDCG = workingDCG/workingIDCG
                 coefficients.append(nDCG)
+        with open(file_path, 'wb') as handle:
+            pickle.dump(embed_dic, handle, protocol=pickle.HIGHEST_PROTOCOL)
     fullNDCG = sum(coefficients)/len(coefficients)
     print('NDCG: standard error of the mean ', stat.sem(coefficients))
     print("Average NDCG:", fullNDCG)
@@ -300,7 +320,7 @@ def embed_sentences(sentences, model, embed_type ):
     return sentence_embeddings
 
 # function to calculate MRR for question and answer rankings            
-def calculateMRR(jsonCollect, model, embed_type, sample=False):
+def calculateMRR(jsonCollect, model, embed_type, folder_name):
     embed = None
     transformer = None
     recipRanks = []
@@ -310,10 +330,19 @@ def calculateMRR(jsonCollect, model, embed_type, sample=False):
         if idx % 1000 == 0:
             print(f'calculateMRR: finished {idx} out of {len(jsonCollect)}')
         stackId = jsonObject['id:']
+        file_path = folder_name + "/q_"+stackId
+        embed_dic = {}
+        if Path(file_path).is_file():
+            with open(file_path, 'rb') as handle:
+                embed_dic = pickle.load(handle)
         # newEmbed = fetchEmbeddingDict(stackId, model, embed_dir)
         # if newEmbed == None:
         #     continue
-        embeddingQuestionArray = embed_sentences(jsonObject["title"] +'  '+ jsonObject['text:'], model, embed_type )
+        if 'content' in embed_dic:
+            embeddingQuestionArray = embed_dic['content']
+        else:
+            embeddingQuestionArray = embed_sentences(jsonObject["title"] +'  '+ jsonObject['text:'], model, embed_type )
+            embed_dic['content'] = embeddingQuestionArray
         # embeddingQuestionArray = newEmbed['content']
         voteOrder = []
         distanceOrder = []
@@ -324,7 +353,11 @@ def calculateMRR(jsonCollect, model, embed_type, sample=False):
             answerID = answer['id']
             answerVotes = int(answer['votes']) if answer['votes'] != '' else 0
             # answerArray = newEmbed[answerID]
-            answerArray = embed_sentences(answer["text"], model, embed_type)
+            if answerID in embed_dic:
+                answerArray = embed_dic[answerID]
+            else:
+                answerArray = embed_sentences(answer["text"], model, embed_type)
+                embed_dic[answerID] = answerArray
             dist = np.linalg.norm(answerArray-embeddingQuestionArray)**2
             voteOrder.append((answerVotes, answerText))
             distanceOrder.append((dist, answerText))
@@ -342,6 +375,11 @@ def calculateMRR(jsonCollect, model, embed_type, sample=False):
                 if distanceOrder[x][1] == correctAnswer:
                     recipRanks.append(reciprocal)
                     break
+
+        # if len(embed_dic)!=0:
+        with open(file_path, 'wb') as handle:
+            pickle.dump(embed_dic, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
     meanRecipRank = sum(recipRanks)/len(recipRanks)
     print('MRR: standard error of the mean ', stat.sem(recipRanks))
     print("Mean reciprocal rank is:", meanRecipRank)
