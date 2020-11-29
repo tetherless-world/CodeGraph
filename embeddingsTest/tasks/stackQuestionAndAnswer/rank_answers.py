@@ -17,7 +17,7 @@ import os
 from pathlib import Path
 
 
-sample = True
+sample = False
 def fetchEmbeddingDict(fileName, model, embed_dir):
     # adjustments must be made here if paths to data need to be adjusted
     # or new sources of data are to be used. This function is called in
