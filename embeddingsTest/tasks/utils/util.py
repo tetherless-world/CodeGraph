@@ -4,7 +4,7 @@ import faiss
 import numpy as np
 from bs4 import BeautifulSoup
 from sentence_transformers import SentenceTransformer, models
-
+import torch
 embed = None
 
 def get_model(embed_type, local_model_path='/data/BERTOverflow'):
@@ -14,7 +14,8 @@ def get_model(embed_type, local_model_path='/data/BERTOverflow'):
     if embed_type == 'USE':
         model_path = 'https://tfhub.dev/google/universal-sentence-encoder/4'
         embed = hub.load(model_path)
-    elif embed_type == 'bertoverflow':
+    elif embed_type == 'bertoverflow' or embed_type == 'finetuned':
+        print('Loading model from: ', local_model_path)
         word_embedding_model = models.Transformer(local_model_path, max_seq_length=256)
         pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension())
         embed = SentenceTransformer(modules=[word_embedding_model, pooling_model])
@@ -27,6 +28,8 @@ def get_model(embed_type, local_model_path='/data/BERTOverflow'):
     elif embed_type == 'distilbert':
         model_path = 'distilbert-base-nli-stsb-wkpooling'
         embed = SentenceTransformer(model_path)
+    if torch.cuda.is_available():
+        embed = embed.to('cuda')
     return embed
 
 
@@ -35,7 +38,8 @@ def embed_sentences(sentences, embed_type):
     if embed_type == 'USE':
         sentence_embeddings = embed(sentences)
     else:
-        sentence_embeddings = embed.encode(sentences)
+        with torch.no_grad:
+            sentence_embeddings = embed.encode(sentences)
     return sentence_embeddings
 
 
