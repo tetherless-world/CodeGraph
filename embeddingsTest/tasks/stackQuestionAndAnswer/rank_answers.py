@@ -69,7 +69,8 @@ def beginAnalysis(stackQandAPath, model, embed_type):
     #         adjustedJsonObjects.append(jsonObject)
     #         i += 1
         folder_name = '/tmp/stackoverflow_embed_'+embed_type
-        os.makedirs(folder_name)
+        if not os.path.isdir(folder_name):
+            os.makedirs(folder_name)
         print("Calculating MRR with model", embed_type)
         print("Calculating MRR with model", embed_type, file=sys.stderr)
         calculateMRR(properJsonObjects, model, embed_type, folder_name)
