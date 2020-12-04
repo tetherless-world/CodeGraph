@@ -4,6 +4,7 @@ import ijson
 import numpy as np
 import scipy
 import json
+import collections
 
 embedType = 'USE'
 
@@ -26,7 +27,15 @@ def get_embeddings(dataSetPath):
               posts.append(post['text'])
               order[int(post['id'])] = i
               i = i + 1
-
+        print('read posts')
+        if len(posts) != len(set(posts)):
+            print("dups found")
+            post2counts = collections.Counter(posts)
+            for post, count in post2counts.items():
+                if count > 1:
+                    print('--------------')
+                    print(post)
+            
     return order, util.embed_sentences(np.array(posts), embedType)
 
 trues = []
@@ -52,7 +61,8 @@ if __name__ == '__main__':
     dataSetPath = sys.argv[1]
     testSetPath = sys.argv[2]
     embedType = sys.argv[3]
-    
+
+    print('calling get ids')
     get_ids(testSetPath)
 
     (order, embeddings) = get_embeddings(dataSetPath)

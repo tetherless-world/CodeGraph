@@ -9,6 +9,7 @@ question_ids = set()
 linked_ids = set()
 unlinked_ids = set()
 test_set = []
+all_text = set([])
 
 printed_ids = set()
 
@@ -30,9 +31,13 @@ pattern = re.compile(matchString)
 
 def process(post, postHtml, ds):
     global first
+    global all_text
+    
     links = []
             
     soup = BeautifulSoup(postHtml, 'html.parser')
+    tmp_linked_ids = set()
+    tmp_test_set = []
     for a in soup.find_all('a'):
         try:
             link = a.get( 'href' )
@@ -43,17 +48,22 @@ def process(post, postHtml, ds):
                     links.append(link)
                     a.decompose()
                     sid = get_id(post)
-                    linked_ids.add(int(sid))
-                    linked_ids.add(int(tid))
-                    test_set.append( (sid, tid, True) )
+                    tmp_linked_ids.add(int(sid))
+                    tmp_linked_ids.add(int(tid))
+                    tmp_test_set.append( (sid, tid, True) )
         except:
             pass
 
-
+    newPostHtml = soup.get_text()
+    if newPostHtml in all_text:
+      return
+    all_text.add(newPostHtml)
+    linked_ids.update(tmp_linked_ids)
+    test_set.extend(tmp_test_set)
+    
     if len(links) > 0:
         printed_ids.add(sid)
         
-        newPostHtml = soup.get_text()
             
         out = { "id": sid, "text": newPostHtml, "related": links }
 
@@ -63,7 +73,6 @@ def process(post, postHtml, ds):
             ds.write(',')
         ds.write(json.dumps(out, sort_keys=True, indent=4))
     
-
 
 def other_ids(post, postHtml, ds):
     global first
@@ -81,9 +90,8 @@ def other_ids(post, postHtml, ds):
             
 def dataset(postsPath, process):
     with open(postsPath, 'r') as posts:
-        for post in ijson.items(posts, "item"):
+        for i, post in enumerate(ijson.items(posts, "item")):
             postHtml = post['text:']
-
             process(post, postHtml)
 
             for answer in post['answers']:
