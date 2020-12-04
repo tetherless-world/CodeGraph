@@ -38,7 +38,10 @@ def embed_sentences(sentences, embed_type):
     if embed_type == 'USE':
         sentence_embeddings = embed(sentences)
     else:
-        with torch.no_grad:
+        if torch.cuda.is_available():
+            with torch.no_grad:
+                sentence_embeddings = embed.encode(sentences)
+        else:
             sentence_embeddings = embed.encode(sentences)
     return sentence_embeddings
 
