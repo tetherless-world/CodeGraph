@@ -194,8 +194,8 @@ def extract_links(postHtml):
 
 
 if __name__ == "__main__":
-    base_dir = '/Users/ibrahimabdelaziz/ibm/github/CodeGraph/embeddingsTest/tasks/test_data/'
-    # base_dir = '/data/blanca/'
+    # base_dir = '/Users/ibrahimabdelaziz/ibm/github/CodeGraph/embeddingsTest/tasks/test_data/'
+    base_dir = '/data/blanca/'
     # sample_SO_qa(base_dir + 'stackoverflow_data_ranking.json',
     #              base_dir, 'stackoverflow_data_ranking')
 
