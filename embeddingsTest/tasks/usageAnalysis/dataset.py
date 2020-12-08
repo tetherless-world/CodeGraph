@@ -2,14 +2,22 @@ import sys
 import re
 import math
 import random
+import json
+import numpy as np
 
 def histedges_equalN(x, nbins):
-    data_sorted = sorted(x, key=lambda y: y[1])
+    data_sorted = sorted(x, key=lambda y: y[0])
     step = math.ceil(len(data_sorted)//nbins+1)
     binned_data = []
     for i in range(0,len(data_sorted),step):
         binned_data.append(data_sorted[i:i+step])
     return binned_data
+
+def capture_characteristics(sample_t):
+    all_distance = np.asarray([i['distance'] for i in sample_t])
+    print('mean distance:' + str(np.mean(all_distance)))
+    print('min distance:' + str(np.amin(all_distance)))
+    print('max distance:' + str(np.amax(all_distance)))
 
 with open(sys.argv[1]) as f:
     staticData = f.readlines()
@@ -18,9 +26,9 @@ with open(sys.argv[1]) as f:
     added_pairs = set()
 
     all_pairs = []
-    all_counts = []
-    all_sizes = []
     idx = 0
+    min_size = 500000
+    max_shared_calls = 0
     for line in staticData:
         pattern = re.compile(matchString)
         adjustedLine = pattern.match(line)
@@ -28,9 +36,13 @@ with open(sys.argv[1]) as f:
             print("Found violation.")
             print(line)
         count = int(adjustedLine.group(2))
+        if count > max_shared_calls:
+            max_shared_calls = count
         klass = adjustedLine.group(1)
         otherClasses = adjustedLine.group(3).strip().split(', ')
         size = len(otherClasses)
+        if size < min_size:
+            min_size = size
         for c in otherClasses:
             p = [c, klass]
             p.sort()
@@ -39,48 +51,38 @@ with open(sys.argv[1]) as f:
                 continue
             added_pairs.add(key)
             idx += 1
-            all_counts.append((count, idx))
-            all_sizes.append((size, idx))
             all_pairs.append((p[0], p[1], count, size))
-            
-    all_in_count_sample = []
-    print("total counts")
-    bins = histedges_equalN(all_counts, 10)
-    for bin in bins:
-        n = math.ceil(len(bin)/20)
-        sample = random.sample(bin, n)
-        print(sample)
-        for i in sample:
-            print(i)
-            print(all_pairs[i[1]])
-            all_in_count_sample.append(all_pairs[i[1]])
-    print(len(all_in_count_sample))
 
-    all_in_size_sample = []
-    print("all sizes")
-    bins = histedges_equalN(all_sizes, 10)
-    for bin in bins:
-        n = math.ceil(len(bin)/20)
-        sample = random.sample(bin, n)
-        print(sample)
-        for i in sample:
-            print(i)
-            print(all_pairs[i[1]])
-            all_in_size_sample.append(all_pairs[i[1]])
-    print(len(all_in_size_sample))
-    print(len(all_in_count_sample))
-    print(len(set(all_in_size_sample).intersection(set(all_in_count_sample))))
-
-    test_sample = set()
-    test_sample.update(all_in_count_sample)
-    test_sample.update(all_in_size_sample)
+    # for every pair in all pairs, create a vector of count, size, and find euclidean distance from the
+    # 'ideal' pair, which is the pair with the best shared call counts and the smallest size of other classes
+    # it shares the call sequence with
+    all_vector_distances = []
+    base = np.asarray([max_shared_calls, min_size])
+    new_all_pairs = []
+    for idx, i in enumerate(all_pairs):
+        a = np.asarray([i[2], i[3]])
+        d = np.linalg.norm(a-base)
+        all_vector_distances.append((d, idx))
+        new_all_pairs.append({'id': idx, 'class1' : i[0], 'class2' : i[1], 'distance': d}) 
+    all_in_test_sample = []
     
-    train_sample = set(all_pairs) - set(test_sample)
+    bins = histedges_equalN(all_vector_distances, 10)
+    test_idxs = []
+    for bin in bins:
+        n = math.ceil(len(bin)/10)
+        sample = random.sample(bin, n)
+        for i in sample:
+            all_in_test_sample.append(new_all_pairs[i[1]])
+            test_idxs.append(new_all_pairs[i[1]]['id'])
+
+    print('test characteristics')    
+    capture_characteristics(all_in_test_sample)
+    print('train characteristics')
+    train_sample = [i for i in new_all_pairs if i['id'] not in test_idxs]
+    capture_characteristics(train_sample)
     
     with open(sys.argv[2], 'w') as f:
-        for i in train_sample:
-            f.write(i[0] + " " + i[1] + " " + str(i[2]) + " " + str(i[3]) + "\n")
+        json.dump(train_sample, f, indent=4)
 
     with open(sys.argv[3], 'w') as f:
-        for i in test_sample:
-            f.write(i[0] + " " + i[1] + " " + str(i[2]) + " " + str(i[3]) + "\n")
+        json.dump(all_in_test_sample, f, indent=4)
