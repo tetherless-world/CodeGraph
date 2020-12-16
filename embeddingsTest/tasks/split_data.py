@@ -1,8 +1,9 @@
 
-import json, re
+import json, re, sys
 from shutil import copyfile
 import random
 from bs4 import BeautifulSoup
+from elasticsearch import Elasticsearch
 
 
 def prepare_ranking_data(all_qs):
@@ -192,15 +193,86 @@ def extract_links(postHtml):
     return links
 
 
+def do_boolean_and_query(key_terms=None):
+    must_clauses = []
+
+    for term in key_terms.split(' '):
+        must_clauses.append({"match": {"content": term}})
+    query = {
+        "from": 0, "size": 50,
+        "query": {
+            "bool": {
+                "must": []
+            }
+        }
+    }
+    query['query']['bool']['must'] = must_clauses
+    # query = {
+    #     "from": 0, "size": 100,
+    #     "query": {
+    #         "query_string": {
+    #             "query": "FixedLenFeature",
+    #             "default_field": "content"
+    #         }
+    #     }
+    # }
+
+    return query
+
+def extract_class_mentions(output_dir, classes_map_file):
+    file = open(classes_map_file, 'r')
+    class_list = {}
+    for line in file:
+        if 'sklearn' not in line and not 'Classifer':
+            continue
+        names = line.strip().split(' ')
+        parts = names[0].split('.')
+        key = parts[0] + ' ' + parts[-1]
+        class_list[key] = [names]
+    matches = []
+    es = Elasticsearch([{'host': 'localhost','port': 9200}])
+    for class_name in class_list:
+        # res = es.search(index=sys.argv[1], body=get_pure_class_or_function_query(sys.argv[2]))
+        query = do_boolean_and_query(class_name.split(' ')[-1])
+        res = es.search(index='stackoverflow', body=query)
+        # stack_answers = []
+        for qa in res['hits']['hits']:
+            stack_answer = {}
+            stack_answer['id'] = qa['_source']['question_id:']
+            stack_answer['title'] = qa['_source']['title']
+            stack_answer['text'] = qa['_source']['question_text:']
+            answers = []
+            for ans in qa['_source']['answers']:
+                # aId, aPostTypeId, aParentId, aAcceptedAnswerId, answerTitle, answerBody, aTags, avotes = answer
+                answer = {}
+                answer['answer_id'] = ans[0]
+                answer['answer_text'] = ans[5]
+                answer['answer_votes'] = ans[7]
+                answers.append(answer)
+
+            stack_answer['answers'] = answers
+
+            for short_class_name, full_names in class_list.items():
+                parts = short_class_name.split(' ')
+                package, class_name = parts[0], parts[1]
+                if class_name in qa['_source']['title'] or (package in qa['_source']['content'] and class_name in qa['_source']['content']):
+                    q_info_cp = dict(stack_answer)
+                    q_info_cp['relevant_class'] = class_name
+                    q_info_cp['relevant_class_alias'] = full_names
+                    matches.append(q_info_cp)
+            # stack_answers.append(stack_answer)
+
+    with open(output_dir + 'class_matches_in_stackoverflow.json', 'w', encoding='utf-8') as output_file:
+        json.dump(matches, output_file, indent=2)
 
 if __name__ == "__main__":
     # base_dir = '/Users/ibrahimabdelaziz/ibm/github/CodeGraph/embeddingsTest/tasks/test_data/'
-    base_dir = '/data/blanca/'
+    # base_dir = '/data/blanca/'
     # sample_SO_qa(base_dir + 'stackoverflow_data_ranking.json',
     #              base_dir, 'stackoverflow_data_ranking')
 
-    sample_linked_qa(base_dir + 'stackoverflow_data_ranking.json',
-                 base_dir, 'stackoverflow_data_linkedposts_')
+    # sample_linked_qa(base_dir + 'stackoverflow_data_ranking.json',
+    #              base_dir, 'stackoverflow_data_linkedposts_')
 
     # # sample_LinkedPost_qa('$DATA/stackoverflow_data_ranking.json', '')
     # sample_SO_qa(base_dir + 'stackoverflow_matches_codesearchnet_5k.json',
@@ -208,3 +280,7 @@ if __name__ == "__main__":
     # #
     # sample_SO_qa(base_dir + 'stackoverflow_matches_codesearchnet_5k_content.json',
     #              base_dir, 'stackoverflow_matches_codesearchnet_5k_content', search_task=True)
+
+    output_dir = './test_data/'
+    classes_map_file = './test_data/classes.map'
+    extract_class_mentions(output_dir, classes_map_file)
