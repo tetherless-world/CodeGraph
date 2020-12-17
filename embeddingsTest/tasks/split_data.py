@@ -1,5 +1,5 @@
 
-import json, re, sys
+import json, re, sys, time
 from shutil import copyfile
 import random
 from bs4 import BeautifulSoup
@@ -231,11 +231,17 @@ def extract_class_mentions(output_dir, classes_map_file):
         class_list[key] = [names]
     matches = []
     es = Elasticsearch([{'host': 'localhost','port': 9200}])
-    for class_name in class_list:
+    for idx, short_class_name in enumerate(class_list):
+        parts = short_class_name.split(' ')
+        package, class_name = parts[0], parts[1]
         # res = es.search(index=sys.argv[1], body=get_pure_class_or_function_query(sys.argv[2]))
-        query = do_boolean_and_query(class_name.split(' ')[-1])
-        res = es.search(index='stackoverflow', body=query)
+        query = do_boolean_and_query(class_name)
+        start = time.time()
+        res = es.search(index='stackoverflow3', body=query)
+        print('Search for class: ', short_class_name, '({} out of {}'.format(idx, len(class_list)),
+              ', num of results = ', len(res['hits']['hits']), ', took ', (time.time()-start), 'sec')
         # stack_answers = []
+        num_matches = 0
         for qa in res['hits']['hits']:
             stack_answer = {}
             stack_answer['id'] = qa['_source']['question_id:']
@@ -252,17 +258,22 @@ def extract_class_mentions(output_dir, classes_map_file):
 
             stack_answer['answers'] = answers
 
-            for short_class_name, full_names in class_list.items():
-                parts = short_class_name.split(' ')
-                package, class_name = parts[0], parts[1]
-                if class_name in qa['_source']['title'] or (package in qa['_source']['content'] and class_name in qa['_source']['content']):
-                    q_info_cp = dict(stack_answer)
-                    q_info_cp['relevant_class'] = class_name
-                    q_info_cp['relevant_class_alias'] = full_names
-                    matches.append(q_info_cp)
-            # stack_answers.append(stack_answer)
-
-    with open(output_dir + 'class_matches_in_stackoverflow.json', 'w', encoding='utf-8') as output_file:
+            # for short_class_name, full_names in class_list.items():
+            #     parts = short_class_name.split(' ')
+            if class_name in qa['_source']['title'] or (package in qa['_source']['content'] and class_name in qa['_source']['content']):
+                q_info_cp = dict(stack_answer)
+                q_info_cp['relevant_class'] = class_name
+                q_info_cp['relevant_class_alias'] = class_list[short_class_name]
+                matches.append(q_info_cp)
+                num_matches += 1
+        print('# of matches after filtering: ', num_matches)
+        # stack_answers.append(stack_answer)
+        if len(matches) % 1000 == 0:
+            print('Saving intermediate matches, len = ', len(matches))
+            with open(output_dir + 'class_matches_in_stackoverflow3.json', 'w', encoding='utf-8') as output_file:
+                json.dump(matches, output_file, indent=2)
+        print('Total time filtering: ', time.time() - start)
+    with open(output_dir + 'class_matches_in_stackoverflow3.json', 'w', encoding='utf-8') as output_file:
         json.dump(matches, output_file, indent=2)
 
 if __name__ == "__main__":
