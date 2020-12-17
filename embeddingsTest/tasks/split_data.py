@@ -223,8 +223,8 @@ def extract_class_mentions(output_dir, classes_map_file):
     file = open(classes_map_file, 'r')
     class_list = {}
     for line in file:
-        if 'sklearn' not in line and not 'Classifer':
-            continue
+        # if 'RandomForestClassifier' not in line:  #debug
+        #     continue
         names = line.strip().split(' ')
         parts = names[0].split('.')
         key = parts[0] + ' ' + parts[-1]
@@ -248,19 +248,48 @@ def extract_class_mentions(output_dir, classes_map_file):
             stack_answer['title'] = qa['_source']['title']
             stack_answer['text'] = qa['_source']['question_text:']
             answers = []
+            answers_text = ''
             for ans in qa['_source']['answers']:
                 # aId, aPostTypeId, aParentId, aAcceptedAnswerId, answerTitle, answerBody, aTags, avotes = answer
                 answer = {}
                 answer['answer_id'] = ans[0]
                 answer['answer_text'] = ans[5]
+                answers_text += ans[5] + ' '
                 answer['answer_votes'] = ans[7]
                 answers.append(answer)
 
             stack_answer['answers'] = answers
 
+            submodule_names = set([])
+            for aliases in class_list[short_class_name]:
+                for alias in aliases:
+                    parts = alias.split('.')[:-1]
+                    submodule_names.update(parts)
+            cond1_submodule_in_text = False
+            for submodule in submodule_names:
+                regex_submodule_name = r"(\b{}\b)".format(submodule)
+                if re.search(regex_submodule_name, qa['_source']['content']):
+                    cond1_submodule_in_text = True
+                    break
+            cond2_package_in_q_a = False
+
+            regex_class_name = r"(\b{}\b)".format(class_name)
+            # matches = re.finditer(regex_class_name, qa['_source']['question_text:'])
+            # for matchNum, match in enumerate(matches, start=1):
+            #     print("Match {matchNum} was found at {start}-{end}: {match}".format(matchNum=matchNum,
+            #                                                                         start=match.start(),
+            #                                                                         end=match.end(),
+            #                                                                         match=match.group()))
+
+
+            if re.search(regex_class_name, qa['_source']['question_text:']) and re.search(regex_class_name, answers_text):
+                cond2_package_in_q_a = True
             # for short_class_name, full_names in class_list.items():
             #     parts = short_class_name.split(' ')
-            if class_name in qa['_source']['title'] or (package in qa['_source']['content'] and class_name in qa['_source']['content']):
+            # if re.search(r'\b'+class_name+'\b', qa['_source']['title']) or \
+            #         ( re.search(r'\b'+package+'\b', qa['_source']['content']) and re.search(r'\b'+class_name+'\b', qa['_source']['content'])):
+            # # if class_name in qa['_source']['title'] or (package in qa['_source']['content'] and class_name in qa['_source']['content']):
+            if cond2_package_in_q_a and cond1_submodule_in_text:
                 q_info_cp = dict(stack_answer)
                 q_info_cp['relevant_class'] = class_name
                 q_info_cp['relevant_class_alias'] = class_list[short_class_name]
@@ -273,8 +302,9 @@ def extract_class_mentions(output_dir, classes_map_file):
             with open(output_dir + 'class_matches_in_stackoverflow3.json', 'w', encoding='utf-8') as output_file:
                 json.dump(matches, output_file, indent=2)
         print('Total time filtering: ', time.time() - start)
-    with open(output_dir + 'class_matches_in_stackoverflow3.json', 'w', encoding='utf-8') as output_file:
+    with open(output_dir + 'class_matches_in_stackoverflow_v2.json', 'w', encoding='utf-8') as output_file:
         json.dump(matches, output_file, indent=2)
+    print('Done -- saved {} matches in total'.format(len(matches)))
 
 if __name__ == "__main__":
     # base_dir = '/Users/ibrahimabdelaziz/ibm/github/CodeGraph/embeddingsTest/tasks/test_data/'
