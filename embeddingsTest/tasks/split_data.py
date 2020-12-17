@@ -304,6 +304,10 @@ def extract_class_mentions(output_dir, classes_map_file):
         print('Total time filtering: ', time.time() - start)
     with open(output_dir + 'class_matches_in_stackoverflow_v2.json', 'w', encoding='utf-8') as output_file:
         json.dump(matches, output_file, indent=2)
+    random.shuffle(matches)
+    with open(output_dir + 'sample_class_matches_in_stackoverflow_v2.json', 'w', encoding='utf-8') as output_file:
+        json.dump(matches[:100], output_file, indent=2)
+
     print('Done -- saved {} matches in total'.format(len(matches)))
 
 if __name__ == "__main__":
