@@ -282,7 +282,8 @@ def extract_class_mentions(output_dir, classes_map_file):
             #                                                                         match=match.group()))
 
 
-            if re.search(regex_class_name, qa['_source']['question_text:']) and re.search(regex_class_name, answers_text):
+            # if re.search(regex_class_name, qa['_source']['question_text:']) and re.search(regex_class_name, answers_text):
+            if re.search(regex_class_name, qa['_source']['title:']) and re.search(regex_class_name, answers_text):
                 cond2_package_in_q_a = True
             # for short_class_name, full_names in class_list.items():
             #     parts = short_class_name.split(' ')
@@ -302,10 +303,10 @@ def extract_class_mentions(output_dir, classes_map_file):
             with open(output_dir + 'class_matches_in_stackoverflow3.json', 'w', encoding='utf-8') as output_file:
                 json.dump(matches, output_file, indent=2)
         print('Total time filtering: ', time.time() - start)
-    with open(output_dir + 'class_matches_in_stackoverflow_v2.json', 'w', encoding='utf-8') as output_file:
+    with open(output_dir + 'class_matches_in_stackoverflow_v3.json', 'w', encoding='utf-8') as output_file:
         json.dump(matches, output_file, indent=2)
     random.shuffle(matches)
-    with open(output_dir + 'sample_class_matches_in_stackoverflow_v2.json', 'w', encoding='utf-8') as output_file:
+    with open(output_dir + 'sample_class_matches_in_stackoverflow_v3.json', 'w', encoding='utf-8') as output_file:
         json.dump(matches[:100], output_file, indent=2)
 
     print('Done -- saved {} matches in total'.format(len(matches)))
@@ -326,6 +327,16 @@ if __name__ == "__main__":
     # sample_SO_qa(base_dir + 'stackoverflow_matches_codesearchnet_5k_content.json',
     #              base_dir, 'stackoverflow_matches_codesearchnet_5k_content', search_task=True)
 
+
     output_dir = './test_data/'
     classes_map_file = './test_data/classes.map'
     extract_class_mentions(output_dir, classes_map_file)
+
+    # all_qs = json.load(open('sample_class_matches_in_stackoverflow_v2.json'))
+    # resultfile = open("manual_eval_sample_class_matches.csv", "w")
+    #
+    # for q in all_qs:
+    #     # resultfile.write('{}\t{}\t{}\t{}\n'.format(q['relevant_class'], q['relevant_class_alias'], q['title'],'https://stackoverflow.com/questions/'+q['id']))
+    #     resultfile.write('{},{},{}\n'.format(q['title'].replace(',', ' '), '-'.join(q['relevant_class_alias'][0]), 'https://stackoverflow.com/questions/'+q['id']))
+
+    # resultfile.close()
