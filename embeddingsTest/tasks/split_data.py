@@ -1,5 +1,5 @@
 
-import json, re, sys, time
+import json, re, sys, time, os
 from shutil import copyfile
 import random
 from bs4 import BeautifulSoup
@@ -199,7 +199,7 @@ def do_boolean_and_query(key_terms=None):
     for term in key_terms.split(' '):
         must_clauses.append({"match": {"content": term}})
     query = {
-        "from": 0, "size": 50,
+        "from": 0, "size": 200,
         "query": {
             "bool": {
                 "must": []
@@ -226,7 +226,8 @@ def extract_class_mentions(output_dir, classes_map_file):
         # if 'RandomForestClassifier' not in line:  #debug
         #     continue
         names = line.strip().split(' ')
-        parts = names[0].split('.')
+        # parts = names[0].split('.')
+        parts =  re.split("\.", names[0])
         key = parts[0] + ' ' + parts[-1]
         class_list[key] = [names]
     matches = []
@@ -263,8 +264,10 @@ def extract_class_mentions(output_dir, classes_map_file):
             submodule_names = set([])
             for aliases in class_list[short_class_name]:
                 for alias in aliases:
-                    parts = alias.split('.')[:-1]
-                    submodule_names.update(parts)
+                    # parts = alias.split('\.')[0]   #[:-1] #focus only on package name only
+                    parts = re.split("\.", alias)[0]
+                    if parts != class_name:
+                        submodule_names.add(parts)
             cond1_submodule_in_text = False
             for submodule in submodule_names:
                 regex_submodule_name = r"(\b{}\b)".format(submodule)
@@ -283,7 +286,7 @@ def extract_class_mentions(output_dir, classes_map_file):
 
 
             # if re.search(regex_class_name, qa['_source']['question_text:']) and re.search(regex_class_name, answers_text):
-            if re.search(regex_class_name, qa['_source']['title:']) and re.search(regex_class_name, answers_text):
+            if re.search(regex_class_name, qa['_source']['title']) and re.search(regex_class_name, answers_text):
                 cond2_package_in_q_a = True
             # for short_class_name, full_names in class_list.items():
             #     parts = short_class_name.split(' ')
@@ -295,21 +298,62 @@ def extract_class_mentions(output_dir, classes_map_file):
                 q_info_cp['relevant_class'] = class_name
                 q_info_cp['relevant_class_alias'] = class_list[short_class_name]
                 matches.append(q_info_cp)
+                if num_matches > 5:
+                    break
                 num_matches += 1
         print('# of matches after filtering: ', num_matches)
         # stack_answers.append(stack_answer)
         if len(matches) % 1000 == 0:
             print('Saving intermediate matches, len = ', len(matches))
-            with open(output_dir + 'class_matches_in_stackoverflow3.json', 'w', encoding='utf-8') as output_file:
+            with open(output_dir + 'class_matches_in_stackoverflow_v4.json', 'w', encoding='utf-8') as output_file:
                 json.dump(matches, output_file, indent=2)
         print('Total time filtering: ', time.time() - start)
-    with open(output_dir + 'class_matches_in_stackoverflow_v3.json', 'w', encoding='utf-8') as output_file:
+    with open(output_dir + 'class_matches_in_stackoverflow_v4.json', 'w', encoding='utf-8') as output_file:
         json.dump(matches, output_file, indent=2)
     random.shuffle(matches)
-    with open(output_dir + 'sample_class_matches_in_stackoverflow_v3.json', 'w', encoding='utf-8') as output_file:
+    with open(output_dir + 'sample_class_matches_in_stackoverflow_v4.json', 'w', encoding='utf-8') as output_file:
         json.dump(matches[:100], output_file, indent=2)
 
     print('Done -- saved {} matches in total'.format(len(matches)))
+
+def check_docstr_intersection(docstring_dir, forum_2_class_file):
+    # out_triple_file = open(out_dir+'/docstrings_triples.nq', 'w')
+    all_klasses_found = set([])
+    klass_2_docstr = {}
+    for lib in os.listdir(docstring_dir):
+        if lib.startswith('.'):
+            print('Skip ', lib)
+            continue
+        source_path = os.path.join(docstring_dir, lib)
+        if not os.path.isdir(source_path):  # '../data/mods.22/pyvenv.cfg'
+            continue
+        for f in os.listdir(source_path):
+            # if len(all_klasses_found) > 10000:
+            #     break
+            if not f.endswith('.json'):
+                print('Skip ', lib)
+                continue
+            pth = os.path.join(source_path, f)
+            with open(pth) as input:
+                try:
+                    functions = json.load(input)
+                except:
+                    print('Exception during loading file:' + pth)
+                    continue
+                if type(functions) == dict:
+                    functions = [functions]
+                for function_dic in functions:
+                    if 'klass' in function_dic and 'class_docstring' in function_dic and function_dic['class_docstring'].strip() != '':
+                        all_klasses_found.add(function_dic['klass'])
+    all_qs = json.load(open(forum_2_class_file))
+    num_intersectiion = 0
+    for match in all_qs:
+        for alias in match['relevant_class_alias'][0]:
+            if alias in all_klasses_found:
+                num_intersectiion += 1
+                break
+    print('Total number of classes loaded = ', len(all_klasses_found))
+    print('Number of forum to class matches = ', len(all_qs), ', intersection = ', num_intersectiion)
 
 if __name__ == "__main__":
     # base_dir = '/Users/ibrahimabdelaziz/ibm/github/CodeGraph/embeddingsTest/tasks/test_data/'
@@ -332,11 +376,17 @@ if __name__ == "__main__":
     classes_map_file = './test_data/classes.map'
     extract_class_mentions(output_dir, classes_map_file)
 
-    # all_qs = json.load(open('sample_class_matches_in_stackoverflow_v2.json'))
-    # resultfile = open("manual_eval_sample_class_matches.csv", "w")
+    # check_docstr_intersection("/Users/ibrahimabdelaziz/ibm/github/code_knowledge_graph/data/mods.22/",
+    #                           '/Users/ibrahimabdelaziz/Downloads/sample_class_matches_in_stackoverflow_v3.json')
+    # check_docstr_intersection("/home/ibrahim/full_docstrings-merge-15-22/",
+    #                           './test_data/class_matches_in_stackoverflow_v4.json')
+
+    # all_qs = json.load(open('/Users/ibrahimabdelaziz/Downloads/sample_class_matches_in_stackoverflow_v3.json'))
+    # resultfile = open("/Users/ibrahimabdelaziz/Downloads/manual_eval_sample_class_matches.csv", "w")
     #
     # for q in all_qs:
     #     # resultfile.write('{}\t{}\t{}\t{}\n'.format(q['relevant_class'], q['relevant_class_alias'], q['title'],'https://stackoverflow.com/questions/'+q['id']))
     #     resultfile.write('{},{},{}\n'.format(q['title'].replace(',', ' '), '-'.join(q['relevant_class_alias'][0]), 'https://stackoverflow.com/questions/'+q['id']))
-
+    #
     # resultfile.close()
+
