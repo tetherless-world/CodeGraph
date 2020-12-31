@@ -27,7 +27,7 @@ flattened_negatives = []
 
 flatten(negatives, flattened_negatives, 0)
 
-frac = 0.2  
+frac = 0.1
 
 test_pos = set(random.sample(list(range(len(flattened_positives))), int(frac*len(flattened_positives))))
 test_neg = set(random.sample(list(range(len(flattened_negatives))), int(frac*len(flattened_negatives))))
@@ -53,4 +53,5 @@ with open('class_posts_test_data', 'w') as f:
     json.dump(test, f, indent=4)
 
     
-
+print(len(test))
+print(len(train))
