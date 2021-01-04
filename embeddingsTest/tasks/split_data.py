@@ -4,14 +4,14 @@ from shutil import copyfile
 import random
 from bs4 import BeautifulSoup
 from elasticsearch import Elasticsearch
-
+from bidict import bidict
 
 def prepare_ranking_data(all_qs):
     training_qs = []
     # with open(out_dir + 'stackoverflow_data_ranking_train.json', 'w', encoding='utf-8') as output_file:
     for q in all_qs:
         q_id = q['id:']
-        q_text = q['title'] + ' ' + q['text:']
+        q_text = cleanhtml(q['title'] + ' ' + q['text:'])
         q_url = q['url']
         # accepted_ans_id = q['AcceptedAnswerId']
         q_votes = q['votes:']
@@ -21,6 +21,26 @@ def prepare_ranking_data(all_qs):
         q_data['q_text'] = q_text
         q_data['q_votes'] = q_votes
 
+        #an entry per question and one answer
+        # votes_2_text = {}
+        # for ans in q['answers']:
+        #     if ans['votes']:
+        #         if int(ans['votes']) not in votes_2_text:
+        #             # print('two answers with the same vote??')
+        #             votes_2_text[int(ans['votes'])] = []
+        #         votes_2_text[int(ans['votes'])].append((ans['text'], ans['accepted']))
+        # rank = 1
+        # for a_vote in sorted(votes_2_text.keys(), reverse=True):
+        #     for (a_text, a_accepted) in votes_2_text[a_vote]:
+        #         # a_text, a_accepted = votes_2_text[a_vote]
+        #         a_data = dict(q_data)
+        #         a_data['a_text'] = a_text
+        #         a_data['a_accepted'] = a_accepted
+        #         a_data['a_votes'] = a_vote
+        #         a_data['a_rank'] = rank
+        #         rank += 1
+        #         training_qs.append(a_data)
+
         votes_2_text = {}
         for ans in q['answers']:
             if ans['votes']:
@@ -29,20 +49,31 @@ def prepare_ranking_data(all_qs):
                     votes_2_text[int(ans['votes'])] = []
                 votes_2_text[int(ans['votes'])].append((ans['text'], ans['accepted']))
         rank = 1
+        all_answers = []
         for a_vote in sorted(votes_2_text.keys(), reverse=True):
             for (a_text, a_accepted) in votes_2_text[a_vote]:
                 # a_text, a_accepted = votes_2_text[a_vote]
-                a_data = dict(q_data)
-                a_data['a_text'] = a_text
+                a_data = {}
+                a_data['a_text'] = cleanhtml(a_text)
                 a_data['a_accepted'] = a_accepted
                 a_data['a_votes'] = a_vote
                 a_data['a_rank'] = rank
                 rank += 1
-                training_qs.append(a_data)
+                all_answers.append(a_data)
+        q_data['answers'] = all_answers
+        training_qs.append(q_data)
     return training_qs
 
-def preparse_search_data(all_qs):
+def cleanhtml(raw_html):
+  cleanr = re.compile('<.*?>')
+  cleantext = re.sub(cleanr, '', raw_html)
+  return repr(cleantext)
+
+def preparse_search_data(all_qs, out_dir, base_name):
     training_qs = []
+    queries = bidict()
+    collections = bidict()
+    query_to_matches = {}
     # with open(out_dir + 'stackoverflow_data_ranking_train.json', 'w', encoding='utf-8') as output_file:
     for q in all_qs:
         rank = 1
@@ -51,14 +82,45 @@ def preparse_search_data(all_qs):
             q_data['query'] = q['query']
             q_data['q_id'] = match['question_id']
             q_data['q_url'] = "https://stackoverflow.com/questions/"+match['question_id']
-            q_data['q_title'] =  match['question_title']
-            q_data['q_text'] = match['question_text']
+            q_data['q_title'] =  cleanhtml(match['question_title'])
+            q_data['q_text'] = cleanhtml(match['question_text'])
             q_data['a_text'] = ''
             for ans in match['answers']:
-                q_data['a_text'] = ans['answer_text'] + ' '
+                q_data['a_text'] += (cleanhtml(ans['answer_text']) + ' ')
+            q_data['text'] = q_data['q_title'] + " " + q_data['q_text'] + " " + q_data['a_text']
             q_data['rank'] = rank
             rank += 1
             training_qs.append(q_data)
+            if q_data['query'] not in queries:
+                queries[q_data['query']] = len(queries)
+            if q_data['text'] not in collections:
+                collections[q_data['text']] = len(collections)
+
+            q_id = queries[q_data['query']]
+            text_id = collections[q_data['text']]
+            if q_id not in query_to_matches:
+                query_to_matches[q_id] = []
+            query_to_matches[q_id].append(text_id)
+
+    pos_2_neg_ratio = 5
+    collections_as_list = list(collections.values())
+    with open(out_dir + base_name + '_blanca-qidpidtriples.train.tsv', 'w', encoding='utf-8') as output_file:
+        for q_id, text_ids in query_to_matches.items():
+            for text_id in text_ids:
+                for i in range(pos_2_neg_ratio):
+                    neg_id = random.choice(collections_as_list)
+                    while neg_id in text_ids:
+                        neg_id = random.choice(collections_as_list)
+                    #collections.inverse[neg_id]
+                    #collections.inverse[text_id]
+                    output_file.write(f"{q_id}\t{text_id}\t{neg_id}\n")
+
+    with open(out_dir + base_name + '_queries.tsv', 'w', encoding='utf-8') as output_file:
+        for text, id  in queries.items():
+            output_file.write(f"{id}\t{text}\n")
+    with open(out_dir + base_name + '_collection.tsv', 'w', encoding='utf-8') as output_file:
+        for text, id  in collections.items():
+            output_file.write(f"{id}\t{text}\n")
     return training_qs
 
 def preparse_linkedPost(all_qs, url2post, all_urls, num_neg = 3):
@@ -66,7 +128,7 @@ def preparse_linkedPost(all_qs, url2post, all_urls, num_neg = 3):
     # with open(out_dir + 'stackoverflow_data_ranking_train.json', 'w', encoding='utf-8') as output_file:
     for q in all_qs:
         q_id = q['id:']
-        q_text = q['title'] + ' ' + q['text:']
+        q_text = cleanhtml(q['title'] + ' ' + q['text:'])
         q_url = q['url']
         # accepted_ans_id = q['AcceptedAnswerId']
         # q_votes = q['votes:']
@@ -77,7 +139,7 @@ def preparse_linkedPost(all_qs, url2post, all_urls, num_neg = 3):
         a_text = ''
         for ans in q['answers']:
             a_text = ans['text'] + ' '
-        q_data['text_1'] = q_text + ' ' + a_text
+        q_data['text_1'] = cleanhtml(q_text + ' ' + a_text)
         links = extract_links(q_data['text_1'])
         found_pos = False
         for link in links:
@@ -89,7 +151,7 @@ def preparse_linkedPost(all_qs, url2post, all_urls, num_neg = 3):
             if link in url2post:
                 url2, text2 = url2post[link]
                 new_data['url_2'] = url2
-                new_data['text_2'] = text2
+                new_data['text_2'] = cleanhtml(text2)
                 new_data['class'] = 'relevant'
                 to_add.append(new_data)
                 found_pos = True
@@ -101,7 +163,7 @@ def preparse_linkedPost(all_qs, url2post, all_urls, num_neg = 3):
                     new_data = dict(q_data)
                     url2, text2 = url2post[rand_choice]
                     new_data['url_2'] = url2
-                    new_data['text_2'] = text2
+                    new_data['text_2'] = cleanhtml(text2)
                     new_data['class'] = 'irrelevant'
                     to_add.append(new_data)
             training_qs.extend(to_add)
@@ -114,7 +176,7 @@ def sample_SO_qa(infile, out_dir, base_name, search_task = False):
     random.shuffle(all_qs)
     num_training_qs = int(0.1 * len(all_qs))
     if search_task:
-        training_qs = preparse_search_data(all_qs[:num_training_qs])
+        training_qs = preparse_search_data(all_qs[:num_training_qs], out_dir, base_name)
     else:
         training_qs = prepare_ranking_data(all_qs[:num_training_qs])
     with open(out_dir + base_name + '_train.json', 'w', encoding='utf-8') as output_file:
@@ -122,7 +184,7 @@ def sample_SO_qa(infile, out_dir, base_name, search_task = False):
 
 
     if search_task:
-        testing_qs = preparse_search_data(all_qs[num_training_qs:])
+        testing_qs = preparse_search_data(all_qs[num_training_qs:], out_dir, base_name)
     else:
         testing_qs = prepare_ranking_data(all_qs[num_training_qs:])
     with open(out_dir + base_name + '_testing.json', 'w', encoding='utf-8') as output_file:
@@ -143,7 +205,7 @@ def sample_linked_qa(infile, out_dir, base_name):
     all_urls = []
     for q in all_qs:
         q_id = q['id:']
-        q_text = q['title'] + ' ' + q['text:']
+        q_text = cleanhtml(q['title'] + ' ' + q['text:'])
         q_url = q['url']
         url2post[q_url] = (q_url, q_text)
         all_urls.append(q_url)
@@ -246,15 +308,15 @@ def extract_class_mentions(output_dir, classes_map_file):
         for qa in res['hits']['hits']:
             stack_answer = {}
             stack_answer['id'] = qa['_source']['question_id:']
-            stack_answer['title'] = qa['_source']['title']
-            stack_answer['text'] = qa['_source']['question_text:']
+            stack_answer['title'] =  cleanhtml(qa['_source']['title'])
+            stack_answer['text'] = cleanhtml(qa['_source']['question_text:'])
             answers = []
             answers_text = ''
             for ans in qa['_source']['answers']:
                 # aId, aPostTypeId, aParentId, aAcceptedAnswerId, answerTitle, answerBody, aTags, avotes = answer
                 answer = {}
                 answer['answer_id'] = ans[0]
-                answer['answer_text'] = ans[5]
+                answer['answer_text'] = cleanhtml(ans[5])
                 answers_text += ans[5] + ' '
                 answer['answer_votes'] = ans[7]
                 answers.append(answer)
@@ -356,20 +418,19 @@ def check_docstr_intersection(docstring_dir, forum_2_class_file):
     print('Number of forum to class matches = ', len(all_qs), ', intersection = ', num_intersectiion)
 
 if __name__ == "__main__":
-    # base_dir = '/Users/ibrahimabdelaziz/ibm/github/CodeGraph/embeddingsTest/tasks/test_data/'
+    base_dir = '../../embeddingsTest/tasks/test_data/'
     # base_dir = '/data/blanca/'
-    # sample_SO_qa(base_dir + 'stackoverflow_data_ranking.json',
-    #              base_dir, 'stackoverflow_data_ranking')
+    sample_SO_qa(base_dir + 'stackoverflow_data_ranking.json',
+                 base_dir, 'stackoverflow_data_ranking_v2')
 
-    # sample_linked_qa(base_dir + 'stackoverflow_data_ranking.json',
-    #              base_dir, 'stackoverflow_data_linkedposts_')
+    sample_linked_qa(base_dir + 'stackoverflow_data_ranking.json',
+                 base_dir, 'stackoverflow_data_linkedposts_')
 
-    # # sample_LinkedPost_qa('$DATA/stackoverflow_data_ranking.json', '')
-    # sample_SO_qa(base_dir + 'stackoverflow_matches_codesearchnet_5k.json',
-    #              base_dir, 'stackoverflow_matches_codesearchnet_5k', search_task=True)
-    # #
-    # sample_SO_qa(base_dir + 'stackoverflow_matches_codesearchnet_5k_content.json',
-    #              base_dir, 'stackoverflow_matches_codesearchnet_5k_content', search_task=True)
+    sample_SO_qa(base_dir + 'stackoverflow_matches_codesearchnet_5k.json',
+                 base_dir, 'stackoverflow_matches_codesearchnet_5k', search_task=True)
+    #
+    sample_SO_qa(base_dir + 'stackoverflow_matches_codesearchnet_5k_content.json',
+                 base_dir, 'stackoverflow_matches_codesearchnet_5k_content', search_task=True)
 
 
     output_dir = './test_data/'
