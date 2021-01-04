@@ -1,6 +1,8 @@
 import sys
 import json
 import random
+from bs4 import BeautifulSoup
+
 
 with open(sys.argv[1]) as f:
     positives = json.load(f)
@@ -19,7 +21,8 @@ def flatten(d, result, label):
             text = post['title'] + ' ' + post['text']
             for answer in post['answers']:
                 text = text + ' ' + answer['answer_text']
-                result.append({'id': id, 'docstring': docstring, 'text': text, 'label': label})
+            soup = BeautifulSoup(text)
+            result.append({'id': id, 'docstring': docstring, 'text': soup.get_text(), 'label': label})
 
 flatten(positives, flattened_positives, 1)
 
