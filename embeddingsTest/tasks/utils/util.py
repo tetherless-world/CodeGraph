@@ -24,9 +24,9 @@ class USEModel(object):
     def encode(self, sentences, batch_size=None, show_progress_bar=None, convert_to_numpy=True):
         return self.model(sentences)
 
-def evaluate_regression(f, docPath, embedType):
+def evaluate_regression(f, docPath, embedType, model_dir=None):
     df = pd.DataFrame(json.load(f))
-    (index, docList, docsToClasses, embeddedDocText, classesToDocs, docToEmbedding) = util.build_index_docs(docPath, embedType, generate_dict=True)
+    (index, docList, docsToClasses, embeddedDocText, classesToDocs, docToEmbedding) = util.build_index_docs(docPath, embedType, generate_dict=True, model_dir=model_dir)
     df = df[df['class1'].isin(classesToDocs.keys())]
     df = df[df['class2'].isin(classesToDocs.keys())]
     df['embedding1'] = df['class1'].apply(lambda x: docToEmbedding[classesToDocs[x]])
@@ -81,12 +81,12 @@ def get_model(embed_type, local_model_path='/data/BERTOverflow'):
         embed = embed.to('cuda') 
     return embed 
 
-def embed_sentences(sentences, embed_type): 
+def embed_sentences(sentences, embed_type, model_dir=None):
     embed = get_model(embed_type) 
-    sentence_embeddings = embed.encode(sentences)
+    sentence_embeddings = embed.encode(sentences, model_dir)
     return sentence_embeddings
 
-def build_index_docs(docPath, embedType, valid_classes=None, generate_dict=False):
+def build_index_docs(docPath, embedType, valid_classes=None, generate_dict=False, model_dir=None):
     classesToDocs = {}
     docsToClasses = {}
     embedList = {}
@@ -122,7 +122,7 @@ def build_index_docs(docPath, embedType, valid_classes=None, generate_dict=False
             classesToDocs[className] = docStringText
 
     docList = np.array(list(docsToClasses.keys()))
-    embeddedDocText = np.array(embed_sentences(docList, embedType))
+    embeddedDocText = np.array(embed_sentences(docList, embedType, model_dir))
     faiss.normalize_L2(embeddedDocText)
     index = faiss.IndexFlatIP(len(embeddedDocText[0]))
     index.add(embeddedDocText)
