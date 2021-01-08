@@ -21,7 +21,7 @@ class USEModel(object):
         model_path = 'https://tfhub.dev/google/universal-sentence-encoder/4'
         self.model = hub.load(model_path)
 
-    def encode(self, sentences):
+    def encode(self, sentences, batch_size=None, show_progress_bar=None, convert_to_numpy=True):
         return self.model(sentences)
 
 def evaluate_regression(f, docPath, embedType):
