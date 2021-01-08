@@ -192,7 +192,7 @@ def calculateNDCG(jsonCollect, model, embed_type, folder_name):
     for idx, jsonObject in enumerate(jsonCollect):
         if idx % 1000 == 0:
             print(f'calculateNDCG: finished {idx} out of {len(jsonCollect)}')
-        stackId = jsonObject['id:']
+        stackId = jsonObject['q_id']
         file_path = folder_name + "/q_" + stackId
         embed_dic = {}
         if Path(file_path).is_file():

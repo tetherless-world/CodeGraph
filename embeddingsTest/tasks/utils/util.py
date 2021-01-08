@@ -69,7 +69,7 @@ def get_model(embed_type, local_model_path='/data/BERTOverflow'):
     elif embed_type == 'msmacro':
         model_path = 'msmarco-distilroberta-base-v2'
         embed = SentenceTransformer(model_path)
-    if torch.cuda.is_available(): 
+    if torch.cuda.is_available() and embed_type != 'USE':
         embed = embed.to('cuda') 
     return embed 
 
