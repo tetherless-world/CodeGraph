@@ -119,80 +119,83 @@ def create_search(collection, query_file, train):
     return train_search
 
 # Read the dataset
-model_name = sys.argv[1]
-batch_size = 16
-model_save_path = sys.argv[2] + model_name+'-'+datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+if __name__ == '__main__':
+    
+    model_name = sys.argv[1]
+    batch_size = 16
+    model_save_path = sys.argv[2] + model_name+'-'+datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 
-# Use BERT for mapping tokens to embeddings
-word_embedding_model = models.Transformer(model_name)
+    # Use BERT for mapping tokens to embeddings
+    word_embedding_model = models.Transformer(model_name)
 
-# Apply mean pooling to get one fixed sized sentence vector
-pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension(),
+    # Apply mean pooling to get one fixed sized sentence vector
+    pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension(),
                                pooling_mode_mean_tokens=True,
                                pooling_mode_cls_token=False,
                                pooling_mode_max_tokens=False)
 
-model = SentenceTransformer(modules=[word_embedding_model, pooling_model])
+    model = SentenceTransformer(modules=[word_embedding_model, pooling_model])
 
-# task 1 - class hierarchy prediction
-train_hierarchy_samples = create_hirerachy_examples('/data/blanca/hierarchy_train.json')
-train_data_hierarchy = SentencesDataset(train_hierarchy_samples, model=model)
-train_dataloader_hierarchy = DataLoader(train_data_hierarchy, shuffle=True, batch_size=batch_size)
-train_loss_hierarchy = losses.CosineSimilarityLoss(model=model)
+    # task 1 - class hierarchy prediction
+    train_hierarchy_samples = create_hirerachy_examples('/data/blanca/hierarchy_train.json')
+    train_data_hierarchy = SentencesDataset(train_hierarchy_samples, model=model)
+    train_dataloader_hierarchy = DataLoader(train_data_hierarchy, shuffle=True, batch_size=batch_size)
+    train_loss_hierarchy = losses.CosineSimilarityLoss(model=model)
 
-# task 2 - determine if two posts are linked
-train_linked_posts = create_linked_posts('/data/blanca/stackoverflow_data_linkedposts__train.json')
-train_data_linked_posts = SentencesDataset(train_linked_posts, model=model)
-train_dataloader_linked_posts = DataLoader(train_data_linked_posts, shuffle=True, batch_size=batch_size)
-train_loss_linked_posts = losses.ContrastiveLoss(model=model)
+    # task 2 - determine if two posts are linked
+    train_linked_posts = create_linked_posts('/data/blanca/stackoverflow_data_linkedposts__train.json')
+    train_data_linked_posts = SentencesDataset(train_linked_posts, model=model)
+    train_dataloader_linked_posts = DataLoader(train_data_linked_posts, shuffle=True, batch_size=batch_size)
+    train_loss_linked_posts = losses.ContrastiveLoss(model=model)
 
-# task 3 - determine if a post is related to a class's docstring
-train_class_posts = create_train_class_posts('/data/blanca/class_posts_train_data.json')
-train_data_class_posts = SentencesDataset(train_class_posts, model=model)
-train_dataloader_class_posts = DataLoader(train_data_class_posts, shuffle=True, batch_size=batch_size)
-train_loss_class_posts = losses.ContrastiveLoss(model=model)
+    # task 3 - determine if a post is related to a class's docstring
+    train_class_posts = create_train_class_posts('/data/blanca/class_posts_train_data.json')
+    train_data_class_posts = SentencesDataset(train_class_posts, model=model)
+    train_dataloader_class_posts = DataLoader(train_data_class_posts, shuffle=True, batch_size=batch_size)
+    train_loss_class_posts = losses.ContrastiveLoss(model=model)
 
-# task 4 - class usage prediction
-train_usage = create_train_usage('/data/blanca/usage_train.json')
-train_data_usage = SentencesDataset(train_usage, model=model)
-train_dataloader_usage = DataLoader(train_data_usage, shuffle=True, batch_size=batch_size)
-train_loss_usage = losses.CosineSimilarityLoss(model=model)
+    # task 4 - class usage prediction
+    train_usage = create_train_usage('/data/blanca/usage_train.json')
+    train_data_usage = SentencesDataset(train_usage, model=model)
+    train_dataloader_usage = DataLoader(train_data_usage, shuffle=True, batch_size=batch_size)
+    train_loss_usage = losses.CosineSimilarityLoss(model=model)
 
-# task 5 - predict ranks of a post's answers
-all_posts_ranking = create_posts_ranking('/data/blanca/stackoverflow_data_ranking_v2_train.json')
-train_posts_ranking, dev_posts_ranking = train_test_split(all_posts_ranking, test_size = 0.1)
-train_data_posts_ranking = SentencesDataset(train_posts_ranking, model=model)
-train_dataloader_posts_ranking = DataLoader(train_data_posts_ranking, shuffle=True, batch_size=batch_size)
-train_loss_posts_ranking = losses.CosineSimilarityLoss(model=model)
+    # task 5 - predict ranks of a post's answers
+    all_posts_ranking = create_posts_ranking('/data/blanca/stackoverflow_data_ranking_v2_train.json')
+    train_posts_ranking, dev_posts_ranking = train_test_split(all_posts_ranking, test_size = 0.1)
+    train_data_posts_ranking = SentencesDataset(train_posts_ranking, model=model)
+    train_dataloader_posts_ranking = DataLoader(train_data_posts_ranking, shuffle=True, batch_size=batch_size)
+    train_loss_posts_ranking = losses.CosineSimilarityLoss(model=model)
 
-# task 6 - predict search rank of a post
-train_search = create_search('/data/blanca/stackoverflow_matches_codesearchnet_5k_train_collection.tsv',
+    # task 6 - predict search rank of a post
+    train_search = create_search('/data/blanca/stackoverflow_matches_codesearchnet_5k_train_collection.tsv',
                              '/data/blanca/stackoverflow_matches_codesearchnet_5k_train_queries.tsv',
                              '/data/blanca/stackoverflow_matches_codesearchnet_5k_train_blanca-qidpidtriples.train.tsv')
 
-# We create a DataLoader to load our train samples
-train_dataloader_search = DataLoader(train_search, shuffle=True, batch_size=batch_size)
-train_loss_search = losses.ContrastiveLoss(model=model)
+    # We create a DataLoader to load our train samples
+    train_dataloader_search = DataLoader(train_search, shuffle=True, batch_size=batch_size)
+    train_loss_search = losses.ContrastiveLoss(model=model)
 
-logging.info("Use post ranking as the dev task")
-evaluator = EmbeddingSimilarityEvaluator.from_input_examples(dev_posts_ranking, name='posts-ranking-dev')
+    logging.info("Use post ranking as the dev task")
+    evaluator = EmbeddingSimilarityEvaluator.from_input_examples(dev_posts_ranking, name='posts-ranking-dev')
 
-# Configure the training
-num_epochs = 4
+    # Configure the training
+    num_epochs = 10
 
-warmup_steps = math.ceil(len(train_posts_ranking) * num_epochs / batch_size * 0.1) #10% of train data for warm-up
-logging.info("Warmup-steps: {}".format(warmup_steps))
+    warmup_steps = math.ceil(len(train_posts_ranking) * num_epochs / batch_size * 0.1) #10% of train data for warm-up
+    logging.info("Warmup-steps: {}".format(warmup_steps))
 
 
-train_objectives = [ (train_dataloader_hierarchy, train_loss_hierarchy),
+    train_objectives = [ (train_dataloader_hierarchy, train_loss_hierarchy),
                      (train_dataloader_linked_posts, train_loss_linked_posts),
                      (train_dataloader_class_posts, train_loss_class_posts),
                      (train_dataloader_usage, train_loss_usage),
                      (train_dataloader_posts_ranking, train_loss_posts_ranking)]
 
-# Train the model
-model.fit(train_objectives=train_objectives,
+    # Train the model
+    model.fit(train_objectives=train_objectives,
           evaluator=evaluator,
           epochs=num_epochs,
           evaluation_steps=1000,
@@ -202,31 +205,4 @@ model.fit(train_objectives=train_objectives,
 
 
 
-##############################################################################
-#
-# Load the stored model and evaluate its performance on STS benchmark dataset
-#
-##############################################################################
-test_hierarchy_samples = create_hirerachy_examples('/data/blanca/hierarchy_test.json')
-test_linked_posts = create_linked_posts('/data/blanca/stackoverflow_data_linkedposts__test.json')
-test_class_posts = create_train_class_posts('/data/blanca/class_posts_test_data.json')
-test_usage = create_train_usage('/data/blanca/usage_test.json')
-test_posts_ranking = create_posts_ranking('/data/blanca/stackoverflow_data_ranking_v2_test.json')
-test_search = create_search('/data/blanca/stackoverflow_matches_codesearchnet_5k_test_collection.tsv',
-                             '/data/blanca/stackoverflow_matches_codesearchnet_5k_test_queries.tsv',
-                             '/data/blanca/stackoverflow_matches_codesearchnet_5k_test_blanca-qidpidtriples.train.tsv')
-
-model = SentenceTransformer(model_save_path)
-test_evaluator = EmbeddingSimilarityEvaluator.from_input_examples(test_hierarchy_samples, name='test-hierarchy-samples')
-test_evaluator(model, output_path=model_save_path)
-test_evaluator = EmbeddingSimilarityEvaluator.from_input_examples(test_posts_ranking, name='test-post-ranking')
-test_evaluator(model, output_path=model_save_path)
-test_evaluator = EmbeddingSimilarityEvaluator.from_input_examples(test_usage, name='test-usage')
-test_evaluator(model, output_path=model_save_path)
-
-test_evaluator = BinaryClassificationEvaluator.from_input_examples(test_linked_posts, name='test-linked-posts')
-test_evaluator(model, output_path=model_save_path)
-test_evaluator = BinaryClassificationEvaluator.from_input_examples(test_class_posts, name='test-class-posts')
-test_evaluator(model, output_path=model_save_path)
-test_evaluator = BinaryClassificationEvaluator.from_input_examples(test_search, name='test-search')
-test_evaluator(model, output_path=model_save_path)
+  
