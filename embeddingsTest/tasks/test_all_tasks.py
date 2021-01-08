@@ -19,8 +19,11 @@ if __name__ == '__main__':
     ##############################################################################
     data_dir = args.data_dir
 
-    if args.embed_model_dir:
+    if args.model_dir:
         model = util.get_model(args.embed_type, local_model_path=args.model_dir)
+    else:
+        model = util.get_model(args.embed_type)
+        
     test_hierarchy_samples = create_hirerachy_examples(os.join(data_dir, 'hierarchy_test.json'))
     test_linked_posts = create_linked_posts(os.join(data_dir, 'stackoverflow_data_linkedposts__testing.json'))
     test_class_posts = create_train_class_posts(os.join(data_dir, 'class_posts_test_data.json'))
