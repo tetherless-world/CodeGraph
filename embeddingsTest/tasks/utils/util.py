@@ -82,8 +82,8 @@ def get_model(embed_type, local_model_path='/data/BERTOverflow'):
     return embed 
 
 def embed_sentences(sentences, embed_type, model_dir=None):
-    embed = get_model(embed_type) 
-    sentence_embeddings = embed.encode(sentences, model_dir)
+    embed = get_model(embed_type, model_dir)
+    sentence_embeddings = embed.encode(sentences)
     return sentence_embeddings
 
 def build_index_docs(docPath, embedType, valid_classes=None, generate_dict=False, model_dir=None):
