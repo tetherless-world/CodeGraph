@@ -15,6 +15,15 @@ import scipy
 
 embed = None 
 
+
+class USEModel(object):
+    def __init__(self):
+        model_path = 'https://tfhub.dev/google/universal-sentence-encoder/4'
+        self.model = hub.load(model_path)
+
+    def encode(self, sentences):
+        return self.model(sentences)
+
 def evaluate_regression(f, docPath, embedType):
     df = pd.DataFrame(json.load(f))
     (index, docList, docsToClasses, embeddedDocText, classesToDocs, docToEmbedding) = util.build_index_docs(docPath, embedType, generate_dict=True)
@@ -44,8 +53,7 @@ def get_model(embed_type, local_model_path='/data/BERTOverflow'):
     if embed: 
         return embed 
     if embed_type == 'USE': 
-        model_path = 'https://tfhub.dev/google/universal-sentence-encoder/4' 
-        embed = hub.load(model_path) 
+        embed = USEModel()
     elif embed_type == 'bertoverflow' or embed_type == 'finetuned': 
         print('Loading model from: ', local_model_path) 
         word_embedding_model = models.Transformer(local_model_path, max_seq_length=256) 
@@ -75,12 +83,8 @@ def get_model(embed_type, local_model_path='/data/BERTOverflow'):
 
 def embed_sentences(sentences, embed_type): 
     embed = get_model(embed_type) 
-    if embed_type == 'USE': 
-        sentence_embeddings = embed(sentences) 
-    else: 
-        sentence_embeddings = embed.encode(sentences)
+    sentence_embeddings = embed.encode(sentences)
     return sentence_embeddings
-
 
 def build_index_docs(docPath, embedType, valid_classes=None, generate_dict=False):
     classesToDocs = {}
