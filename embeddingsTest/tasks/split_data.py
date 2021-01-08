@@ -176,7 +176,7 @@ def sample_SO_qa(infile, out_dir, base_name, search_task = False):
     random.shuffle(all_qs)
     num_training_qs = int(0.1 * len(all_qs))
     if search_task:
-        training_qs = preparse_search_data(all_qs[:num_training_qs], out_dir, base_name)
+        training_qs = preparse_search_data(all_qs[:num_training_qs], out_dir, base_name+'_train')
     else:
         training_qs = prepare_ranking_data(all_qs[:num_training_qs])
     with open(out_dir + base_name + '_train.json', 'w', encoding='utf-8') as output_file:
@@ -184,7 +184,7 @@ def sample_SO_qa(infile, out_dir, base_name, search_task = False):
 
 
     if search_task:
-        testing_qs = preparse_search_data(all_qs[num_training_qs:], out_dir, base_name)
+        testing_qs = preparse_search_data(all_qs[num_training_qs:], out_dir, base_name+'_test')
     else:
         testing_qs = prepare_ranking_data(all_qs[num_training_qs:])
     with open(out_dir + base_name + '_testing.json', 'w', encoding='utf-8') as output_file:
@@ -411,36 +411,46 @@ def check_docstr_intersection(docstring_dir, forum_2_class_file):
     num_intersectiion = 0
     for match in all_qs:
         for alias in match['relevant_class_alias'][0]:
-            if alias in all_klasses_found:
-                num_intersectiion += 1
-                break
+            pkg = ' ' + alias.split('.')[0]
+            clazz_part = alias.split('.')[-1]
+            matched_res = False
+
+            for answer in match['answers']:
+                if clazz_part in match['title'] and (
+                        pkg in answer['answer_text'] or pkg in match['text'] or pkg in match['title']) and (
+                        clazz_part in answer['answer_text'] or clazz_part in match['text']):
+                    matched_res = True
+            if matched_res:
+                if alias in all_klasses_found:
+                    num_intersectiion += 1
+                    break
     print('Total number of classes loaded = ', len(all_klasses_found))
     print('Number of forum to class matches = ', len(all_qs), ', intersection = ', num_intersectiion)
 
 if __name__ == "__main__":
-    base_dir = '../../embeddingsTest/tasks/test_data/'
-    # base_dir = '/data/blanca/'
-    sample_SO_qa(base_dir + 'stackoverflow_data_ranking.json',
-                 base_dir, 'stackoverflow_data_ranking_v2')
-
-    sample_linked_qa(base_dir + 'stackoverflow_data_ranking.json',
-                 base_dir, 'stackoverflow_data_linkedposts_')
-
-    sample_SO_qa(base_dir + 'stackoverflow_matches_codesearchnet_5k.json',
-                 base_dir, 'stackoverflow_matches_codesearchnet_5k', search_task=True)
+    # base_dir = '../../embeddingsTest/tasks/test_data/'
+    base_dir = '/data/blanca/'
+    # sample_SO_qa(base_dir + 'stackoverflow_data_ranking.json',
+    #              base_dir, 'stackoverflow_data_ranking_v2')
     #
-    sample_SO_qa(base_dir + 'stackoverflow_matches_codesearchnet_5k_content.json',
-                 base_dir, 'stackoverflow_matches_codesearchnet_5k_content', search_task=True)
+    # sample_linked_qa(base_dir + 'stackoverflow_data_ranking.json',
+    #              base_dir, 'stackoverflow_data_linkedposts_')
+
+    # sample_SO_qa(base_dir + 'stackoverflow_matches_codesearchnet_5k.json',
+    #              base_dir, 'stackoverflow_matches_codesearchnet_5k', search_task=True)
+    #
+    # sample_SO_qa(base_dir + 'stackoverflow_matches_codesearchnet_5k_content.json',
+    #              base_dir, 'stackoverflow_matches_codesearchnet_5k_content', search_task=True)
 
 
-    output_dir = './test_data/'
-    classes_map_file = './test_data/classes.map'
-    extract_class_mentions(output_dir, classes_map_file)
+    # output_dir = './test_data/'
+    # classes_map_file = './test_data/classes.map'
+    # extract_class_mentions(base_dir, classes_map_file)
 
     # check_docstr_intersection("/Users/ibrahimabdelaziz/ibm/github/code_knowledge_graph/data/mods.22/",
     #                           '/Users/ibrahimabdelaziz/Downloads/sample_class_matches_in_stackoverflow_v3.json')
-    # check_docstr_intersection("/home/ibrahim/full_docstrings-merge-15-22/",
-    #                           './test_data/class_matches_in_stackoverflow_v4.json')
+    check_docstr_intersection("/home/ibrahim/full_docstrings-merge-15-22/",
+                              '/data/blanca/class_matches_in_stackoverflow_v4.json')
 
     # all_qs = json.load(open('/Users/ibrahimabdelaziz/Downloads/sample_class_matches_in_stackoverflow_v3.json'))
     # resultfile = open("/Users/ibrahimabdelaziz/Downloads/manual_eval_sample_class_matches.csv", "w")

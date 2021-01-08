@@ -60,6 +60,15 @@ def get_model(embed_type, local_model_path='/data/BERTOverflow'):
     elif embed_type == 'distilbert': 
         model_path = 'distilbert-base-nli-stsb-wkpooling' 
         embed = SentenceTransformer(model_path)
+    elif embed_type == 'distilbert_para':
+        model_path = 'distilroberta-base-paraphrase-v1'
+        embed = SentenceTransformer(model_path)
+    elif embed_type == 'xlm':
+        model_path = 'xlm-r-distilroberta-base-paraphrase-v1'
+        embed = SentenceTransformer(model_path)
+    elif embed_type == 'msmacro':
+        model_path = 'msmarco-distilroberta-base-v2'
+        embed = SentenceTransformer(model_path)
     if torch.cuda.is_available(): 
         embed = embed.to('cuda') 
     return embed 
