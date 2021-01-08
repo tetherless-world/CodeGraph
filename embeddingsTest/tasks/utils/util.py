@@ -47,8 +47,12 @@ def evaluate_regression(f, docPath, embedType, model_dir=None):
     # The coefficient of determination: 1 is perfect prediction
     print('Coefficient of determination: %.2f' % r2_score(distance, y_pred))
 
+    corr, p_value = scipy.stats.pearsonr(df['distance'].values, distance)
+    print('correlation:' + str(corr))
+    print('p-value:' + str(p_value))
 
-def get_model(embed_type, local_model_path='/data/BERTOverflow'): 
+
+def get_model(embed_type, local_model_path='/data/BERTOverflow'):
     global embed 
     if embed: 
         return embed 
