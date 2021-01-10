@@ -123,12 +123,13 @@ def preparse_search_data(all_qs, out_dir, base_name):
             output_file.write(f"{id}\t{text}\n")
     return training_qs
 
-def preparse_linkedPost(all_qs, url2post, all_urls, num_neg = 3):
+def preparse_linkedPost(all_qs, url2post, all_urls, num_neg = 1):
+    print(f"Received: {len(all_qs)}")
     training_qs = []
     # with open(out_dir + 'stackoverflow_data_ranking_train.json', 'w', encoding='utf-8') as output_file:
     for q in all_qs:
         q_id = q['id:']
-        q_text = cleanhtml(q['title'] + ' ' + q['text:'])
+        q_text = q['title'] + ' ' + q['text:']
         q_url = q['url']
         # accepted_ans_id = q['AcceptedAnswerId']
         # q_votes = q['votes:']
@@ -140,7 +141,7 @@ def preparse_linkedPost(all_qs, url2post, all_urls, num_neg = 3):
         for ans in q['answers']:
             a_text = ans['text'] + ' '
         q_data['text_1'] = cleanhtml(q_text + ' ' + a_text)
-        links = extract_links(q_data['text_1'])
+        links = extract_links(q_text)
         found_pos = False
         for link in links:
             if link == q_url:
@@ -205,27 +206,29 @@ def sample_linked_qa(infile, out_dir, base_name):
     all_urls = []
     for q in all_qs:
         q_id = q['id:']
-        q_text = cleanhtml(q['title'] + ' ' + q['text:'])
+        q_text = q['title'] + ' ' + q['text:']
         q_url = q['url']
         url2post[q_url] = (q_url, q_text)
         all_urls.append(q_url)
     random.shuffle(all_qs)
-    num_training_qs = int(0.1 * len(all_qs))
+    # num_training_qs = int(0.1 * len(all_qs))
 
+    #TODO: revisit -- splitting should be based on found links
+    # training_qs = preparse_linkedPost(all_qs[:num_training_qs], url2post, all_urls)
+    # testing_qs = preparse_linkedPost(all_qs[num_training_qs:], url2post, all_urls)
+    all_samples = preparse_linkedPost(all_qs, url2post, all_urls)
+    num_training_qs = int(0.1 * len(all_samples))
 
-
-    training_qs = preparse_linkedPost(all_qs[:num_training_qs], url2post, all_urls)
     with open(out_dir + base_name + '_train.json', 'w', encoding='utf-8') as output_file:
-        json.dump(training_qs, output_file, indent=2)
+        json.dump(all_samples[:num_training_qs], output_file, indent=2)
 
-    testing_qs = preparse_linkedPost(all_qs[num_training_qs:], url2post, all_urls)
     with open(out_dir + base_name + '_testing.json', 'w', encoding='utf-8') as output_file:
-        json.dump(testing_qs, output_file, indent=2)
+        json.dump(all_samples[num_training_qs:], output_file, indent=2)
 
     print('-'*10 + base_name +'-'*10)
     print("Total number of questions: ", len(all_qs))
-    print("Total number of training questions: ", len(training_qs))
-    print("Total number of testing questions: ", len(testing_qs))
+    print("Total number of training questions: ", len(all_samples[:num_training_qs]))
+    print("Total number of testing questions: ", len(all_samples[num_training_qs:]))
     print('-'*20)
 
 def extract_links(postHtml):
@@ -409,6 +412,7 @@ def check_docstr_intersection(docstring_dir, forum_2_class_file):
                         all_klasses_found.add(function_dic['klass'])
     all_qs = json.load(open(forum_2_class_file))
     num_intersectiion = 0
+    found_matches = set([])
     for match in all_qs:
         for alias in match['relevant_class_alias'][0]:
             pkg = ' ' + alias.split('.')[0]
@@ -423,9 +427,10 @@ def check_docstr_intersection(docstring_dir, forum_2_class_file):
             if matched_res:
                 if alias in all_klasses_found:
                     num_intersectiion += 1
+                    found_matches.add(alias)
                     break
     print('Total number of classes loaded = ', len(all_klasses_found))
-    print('Number of forum to class matches = ', len(all_qs), ', intersection = ', num_intersectiion)
+    print('Number of forum to class matches = ', len(all_qs), ', intersection = ', num_intersectiion, ', distinct len(found_matches): ', len(found_matches))
 
 if __name__ == "__main__":
     # base_dir = '../../embeddingsTest/tasks/test_data/'
@@ -433,8 +438,8 @@ if __name__ == "__main__":
     # sample_SO_qa(base_dir + 'stackoverflow_data_ranking.json',
     #              base_dir, 'stackoverflow_data_ranking_v2')
     #
-    # sample_linked_qa(base_dir + 'stackoverflow_data_ranking.json',
-    #              base_dir, 'stackoverflow_data_linkedposts_')
+    sample_linked_qa(base_dir + 'stackoverflow_data_ranking.json',
+                 base_dir, 'stackoverflow_data_linkedposts_1pos1neg_')
 
     # sample_SO_qa(base_dir + 'stackoverflow_matches_codesearchnet_5k.json',
     #              base_dir, 'stackoverflow_matches_codesearchnet_5k', search_task=True)
@@ -449,8 +454,8 @@ if __name__ == "__main__":
 
     # check_docstr_intersection("/Users/ibrahimabdelaziz/ibm/github/code_knowledge_graph/data/mods.22/",
     #                           '/Users/ibrahimabdelaziz/Downloads/sample_class_matches_in_stackoverflow_v3.json')
-    check_docstr_intersection("/home/ibrahim/full_docstrings-merge-15-22/",
-                              '/data/blanca/class_matches_in_stackoverflow_v4.json')
+    # check_docstr_intersection("/home/ibrahim/full_docstrings-merge-15-22/",
+    #                           '/data/blanca/class_matches_in_stackoverflow_v4.json')
 
     # all_qs = json.load(open('/Users/ibrahimabdelaziz/Downloads/sample_class_matches_in_stackoverflow_v3.json'))
     # resultfile = open("/Users/ibrahimabdelaziz/Downloads/manual_eval_sample_class_matches.csv", "w")
