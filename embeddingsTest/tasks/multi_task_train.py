@@ -25,6 +25,9 @@ logging.basicConfig(format='%(asctime)s - %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO,
                     handlers=[LoggingHandler()])
+# Configure the training
+num_epochs = 10
+
 #### /print debug information to stdout
 
 hierarchy_str = 'hierarchy'
@@ -293,9 +296,6 @@ if __name__ == '__main__':
         if args.validate == search_str:
             warmup_steps = w
             evaluator = e
-
-    # Configure the training
-    num_epochs = 10
 
     assert len(train_objectives) >= 1
     assert warmup_steps > 0
