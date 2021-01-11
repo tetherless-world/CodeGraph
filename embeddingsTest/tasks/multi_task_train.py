@@ -76,7 +76,7 @@ def create_hirerachy_examples(fl, data_dir, validate):
 
 def create_linked_posts(fl, data_dir, validate):
     train_linked_posts = []
-    with open(os.path.join(fl, data_dir)) as f:
+    with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
         for obj in data:
             if obj['class'] == 'relevant':
