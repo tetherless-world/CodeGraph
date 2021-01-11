@@ -29,6 +29,7 @@ logging.basicConfig(format='%(asctime)s - %(message)s',
                     handlers=[LoggingHandler()])
 # Configure the training
 num_epochs = 10
+batch_size = 16
 
 #### /print debug information to stdout
 
@@ -242,7 +243,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     model_name = args.model_name
-    batch_size = 16
+
     model_save_path = args.model_save_path + model_name+'-'+datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
     # Use BERT for mapping tokens to embeddings
