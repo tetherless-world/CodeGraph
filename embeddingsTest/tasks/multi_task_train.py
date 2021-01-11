@@ -300,6 +300,7 @@ if __name__ == '__main__':
     # task 5 - predict ranks of a post's answers
     if posts_rank_str in args.tasks:
         train_dataloader_posts_ranking, train_loss_posts_ranking, e, w = create_posts_ranking('stackoverflow_data_ranking_v2_train.json', args.data_dir, args.validate)
+        train_objectives.append((train_dataloader_posts_ranking, train_loss_posts_ranking))
 
         if args.validate == posts_rank_str:
             warmup_steps = w
