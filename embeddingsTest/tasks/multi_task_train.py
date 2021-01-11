@@ -20,6 +20,8 @@ import json
 from sklearn.model_selection import train_test_split
 import argparse
 
+evaluation_steps = 1000
+
 #### Just some code to print debug information to stdout
 logging.basicConfig(format='%(asctime)s - %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
@@ -66,6 +68,8 @@ def create_hirerachy_examples(fl, data_dir, validate):
 
     evaluator = EmbeddingSimilarityEvaluator.from_input_examples(dev_hierarchy_samples, name='hierarchy')
 
+    global evaluation_steps
+    evaluation_steps =  math.ceil(len(train_hierarchy_samples) / 0.1)
     return train_dataloader_hierarchy, train_loss_hierarchy, evaluator, warmup_steps
 
 
@@ -91,6 +95,9 @@ def create_linked_posts(fl, data_dir, validate):
     train_loss_linked_posts = losses.ContrastiveLoss(model=model)
     evaluator = BinaryClassificationEvaluator.from_input_examples(dev_linked_posts, name='linked-posts')
 
+    global evaluation_steps
+    evaluation_steps = math.ceil(len(train_linked_posts) / 0.1)
+
     return train_dataloader_linked_posts, train_loss_linked_posts, evaluator, warmup_steps
 
 
@@ -110,6 +117,9 @@ def create_train_class_posts(fl, data_dir, validate):
     train_dataloader_class_posts = DataLoader(train_data_class_posts, shuffle=True, batch_size=batch_size)
     train_loss_class_posts = losses.ContrastiveLoss(model=model)
     evaluator = BinaryClassificationEvaluator.from_input_examples(dev_class_posts, name='class-posts')
+
+    global evaluation_steps
+    evaluation_steps = math.ceil(len(train_class_posts) / 0.1)
 
     return train_dataloader_class_posts, train_loss_class_posts, evaluator, warmup_steps
 
@@ -140,6 +150,9 @@ def create_train_usage(fl, data_dir, validate):
 
     evaluator = EmbeddingSimilarityEvaluator.from_input_examples(dev_usage, name='usage')
 
+    global evaluation_steps
+    evaluation_steps = math.ceil(len(train_usage) / 0.1)
+
     return train_dataloader_usage, train_loss_usage, evaluator, warmup_steps
 
 
@@ -163,6 +176,9 @@ def create_posts_ranking(fl, data_dir, validate):
     train_loss_posts_ranking = losses.CosineSimilarityLoss(model=model)
 
     evaluator = EmbeddingSimilarityEvaluator.from_input_examples(dev_posts_ranking, name='posts ranking')
+
+    global evaluation_steps
+    evaluation_steps = math.ceil(len(train_posts_ranking) / 0.1)
 
     return train_dataloader_posts_ranking, train_loss_posts_ranking, evaluator, warmup_steps
 
@@ -202,6 +218,9 @@ def create_search(collection, query_file, train, data_dir, validate):
     train_dataloader_search = DataLoader(train_search, shuffle=True, batch_size=batch_size)
     train_loss_search = losses.ContrastiveLoss(model=model)
     evaluator = BinaryClassificationEvaluator.from_input_examples(dev_search, name='search')
+
+    global evaluation_steps
+    evaluation_steps = math.ceil(len(train_search) / 0.1)
 
     return train_dataloader_search, train_loss_search, evaluator, warmup_steps
 
@@ -304,7 +323,7 @@ if __name__ == '__main__':
     model.fit(train_objectives=train_objectives,
           evaluator=evaluator,
           epochs=num_epochs,
-          evaluation_steps=1000,
+          evaluation_steps=evaluation_steps,
           warmup_steps=warmup_steps,
           output_path=model_save_path
           )
