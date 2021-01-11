@@ -44,7 +44,7 @@ all_str = hierarchy_str + ',' + linked_posts_str + ',' + class_posts_str + ',' +
           ',' + 'search_str'
 
 
-def create_hirerachy_examples(fl, data_dir, model, validate=None):
+def create_hirerachy_examples(fl, data_dir, model, validate=None, is_test=False):
     train_hierarchy_samples = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
@@ -57,7 +57,9 @@ def create_hirerachy_examples(fl, data_dir, model, validate=None):
             dist = (max_distance - obj['distance']) / (max_distance - 1)
             train_hierarchy_samples.append(InputExample(texts=[obj['class1'], obj['class2']], label=dist))
 
-    dev_hierarchy_samples = None
+    if is_test:
+        return train_hierarchy_samples
+
     evaluator = None
 
     if hierarchy_str == validate:
@@ -75,7 +77,7 @@ def create_hirerachy_examples(fl, data_dir, model, validate=None):
     return train_dataloader_hierarchy, train_loss_hierarchy, evaluator, warmup_steps
 
 
-def create_linked_posts(fl, data_dir, model, validate=None):
+def create_linked_posts(fl, data_dir, model, validate=None, is_test=False):
     train_linked_posts = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
@@ -86,7 +88,9 @@ def create_linked_posts(fl, data_dir, model, validate=None):
                 label = 0
 
             train_linked_posts.append(InputExample(texts=[obj['text_1'], obj['text_2']], label=label))
-    dev_linked_posts = None
+    if is_test:
+        return train_linked_posts
+
     evaluator = None
     if linked_posts_str == validate:
         train_linked_posts, dev_linked_posts = train_test_split(train_linked_posts, test_size=0.1)
@@ -105,13 +109,15 @@ def create_linked_posts(fl, data_dir, model, validate=None):
     return train_dataloader_linked_posts, train_loss_linked_posts, evaluator, warmup_steps
 
 
-def create_train_class_posts(fl, data_dir, model, validate=None):
+def create_train_class_posts(fl, data_dir, model, validate=None, is_test=False):
     train_class_posts = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
         for obj in data:
             train_class_posts.append(InputExample(texts=[obj['docstring'], obj['text']], label=obj['label']))
-    dev_class_posts = None
+    if is_test:
+        return train_class_posts
+
     evaluator = None
     if class_posts_str == validate:
         train_class_posts, dev_class_posts = train_test_split(train_class_posts, test_size=0.1)
@@ -129,7 +135,7 @@ def create_train_class_posts(fl, data_dir, model, validate=None):
     return train_dataloader_class_posts, train_loss_class_posts, evaluator, warmup_steps
 
 
-def create_train_usage(fl, data_dir, model, validate=None):
+def create_train_usage(fl, data_dir, model, validate=None, is_test=False):
     train_usage = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
@@ -144,7 +150,9 @@ def create_train_usage(fl, data_dir, model, validate=None):
         for obj in data:
             dist = (max_d - obj['distance']) / (max_d - min_d)
             train_usage.append(InputExample(texts=[obj['class1'], obj['class2']], label=dist))
-    dev_usage = None
+    if is_test:
+        return train_usage
+
     evaluator = None
 
     if usage_str == validate:
@@ -162,7 +170,7 @@ def create_train_usage(fl, data_dir, model, validate=None):
     return train_dataloader_usage, train_loss_usage, evaluator, warmup_steps
 
 
-def create_posts_ranking(fl, data_dir, model, validate=None):
+def create_posts_ranking(fl, data_dir, model, validate=None, is_test=False):
     train_posts_ranking = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
@@ -172,7 +180,9 @@ def create_posts_ranking(fl, data_dir, model, validate=None):
                 dist = (len(answers) - answer['a_rank']) / len(answers)
                 train_posts_ranking.append(
                     InputExample(texts=[obj['q_text'], answer['a_text']], label=dist))
-    dev_posts_ranking = None
+    if is_test:
+        return train_posts_ranking
+
     evaluator = None
     if posts_rank_str == validate:
         train_posts_ranking, dev_posts_ranking = train_test_split(train_posts_ranking, test_size=0.1)
@@ -190,7 +200,7 @@ def create_posts_ranking(fl, data_dir, model, validate=None):
     return train_dataloader_posts_ranking, train_loss_posts_ranking, evaluator, warmup_steps
 
 
-def create_search(collection, query_file, train, data_dir, model, validate=None):
+def create_search(collection, query_file, train, data_dir, model, validate=None, is_test=False):
     corpus = {}
     with open(os.path.join(data_dir, collection), 'r', encoding='utf8') as fIn:
         for line in fIn:
@@ -216,7 +226,9 @@ def create_search(collection, query_file, train, data_dir, model, validate=None)
                 train_search.append(InputExample(texts=[query, passage], label=1))
                 added_q.add(qid)
             train_search.append(InputExample(texts=[query, neg_passage], label=0))
-    dev_search = None
+    if is_test:
+        return train_search
+
     evaluator = None
 
     if search_str == validate:
@@ -228,7 +240,7 @@ def create_search(collection, query_file, train, data_dir, model, validate=None)
     # We create a DataLoader to load our train samples
     train_dataloader_search = DataLoader(train_search, shuffle=True, batch_size=batch_size)
     train_loss_search = losses.ContrastiveLoss(model=model)
-  
+
     global evaluation_steps
     evaluation_steps = math.ceil(len(train_search) / 0.1)
 
@@ -272,7 +284,7 @@ if __name__ == '__main__':
     warmup_steps = 0
     # task 1 - class hierarchy prediction
     if hierarchy_str in args.tasks:
-        train_dataloader_hierarchy, train_loss_hierarchy, e, w = create_hirerachy_examples('hierarchy_train.json', args.data_dir, model, args.validate)
+        train_dataloader_hierarchy, train_loss_hierarchy, e, w = create_hirerachy_examples('hierarchy_train.json', args.data_dir, model, validate=args.validate)
         train_objectives.append((train_dataloader_hierarchy, train_loss_hierarchy))
 
         if args.validate == hierarchy_str:
@@ -281,7 +293,7 @@ if __name__ == '__main__':
 
     # task 2 - determine if two posts are linked
     if linked_posts_str in args.tasks:
-        train_dataloader_linked_posts, train_loss_linked_posts, e, w = create_linked_posts('stackoverflow_data_linkedposts__train.json', args.data_dir, model, args.validate)
+        train_dataloader_linked_posts, train_loss_linked_posts, e, w = create_linked_posts('stackoverflow_data_linkedposts__train.json', args.data_dir, model, validate=args.validate)
         train_objectives.append((train_dataloader_linked_posts, train_loss_linked_posts))
 
         if args.validate == linked_posts_str:
@@ -290,7 +302,7 @@ if __name__ == '__main__':
 
     # task 3 - determine if a post is related to a class's docstring
     if class_posts_str in args.tasks:
-        train_dataloader_class_posts, train_loss_class_posts, e, w = create_train_class_posts('class_posts_train_data.json', args.data_dir, model, args.validate)
+        train_dataloader_class_posts, train_loss_class_posts, e, w = create_train_class_posts('class_posts_train_data.json', args.data_dir, model, validate=args.validate)
         train_objectives.append((train_dataloader_class_posts, train_loss_class_posts))
 
         if args.validate == class_posts_str:
@@ -299,7 +311,7 @@ if __name__ == '__main__':
 
     # task 4 - class usage prediction
     if usage_str in args.tasks:
-        train_dataloader_usage, train_loss_usage, e, w = create_train_usage('usage_train.json', args.data_dir, model, args.validate)
+        train_dataloader_usage, train_loss_usage, e, w = create_train_usage('usage_train.json', args.data_dir, model, validate=args.validate)
         train_objectives.append((train_dataloader_usage, train_loss_usage))
 
         if args.validate == usage_str:
@@ -308,7 +320,7 @@ if __name__ == '__main__':
 
     # task 5 - predict ranks of a post's answers
     if posts_rank_str in args.tasks:
-        train_dataloader_posts_ranking, train_loss_posts_ranking, e, w = create_posts_ranking('stackoverflow_data_ranking_v2_train.json', args.data_dir, model, args.validate)
+        train_dataloader_posts_ranking, train_loss_posts_ranking, e, w = create_posts_ranking('stackoverflow_data_ranking_v2_train.json', args.data_dir, model, validate=args.validate)
         train_objectives.append((train_dataloader_posts_ranking, train_loss_posts_ranking))
 
         if args.validate == posts_rank_str:
@@ -320,7 +332,7 @@ if __name__ == '__main__':
         train_dataloader_search, train_loss_search, e, w = create_search('stackoverflow_matches_codesearchnet_5k_train_collection.tsv',
                              'stackoverflow_matches_codesearchnet_5k_train_queries.tsv',
                              'stackoverflow_matches_codesearchnet_5k_train_blanca-qidpidtriples.train.tsv',
-                             args.data_dir, model, args.validate)
+                             args.data_dir, model, validate=args.validate)
         train_objectives.append((train_dataloader_search, train_loss_search))
 
         if args.validate == search_str:
