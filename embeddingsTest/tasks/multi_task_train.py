@@ -58,16 +58,17 @@ def create_hirerachy_examples(fl, data_dir, model, validate=None):
             train_hierarchy_samples.append(InputExample(texts=[obj['class1'], obj['class2']], label=dist))
 
     dev_hierarchy_samples = None
+    evaluator = None
+
     if hierarchy_str == validate:
         train_hierarchy_samples, dev_hierarchy_samples = train_test_split(train_hierarchy_samples, test_size=0.1)
+        evaluator = EmbeddingSimilarityEvaluator.from_input_examples(dev_hierarchy_samples, name='hierarchy')
 
     warmup_steps = math.ceil(len(train_hierarchy_samples) * num_epochs / batch_size * 0.1)  # 10% of train data for warm-up
 
     train_data_hierarchy = SentencesDataset(train_hierarchy_samples, model=model)
     train_dataloader_hierarchy = DataLoader(train_data_hierarchy, shuffle=True, batch_size=batch_size)
     train_loss_hierarchy = losses.CosineSimilarityLoss(model=model)
-
-    evaluator = EmbeddingSimilarityEvaluator.from_input_examples(dev_hierarchy_samples, name='hierarchy')
 
     global evaluation_steps
     evaluation_steps =  math.ceil(len(train_hierarchy_samples) / 0.1)
@@ -86,15 +87,17 @@ def create_linked_posts(fl, data_dir, model, validate=None):
 
             train_linked_posts.append(InputExample(texts=[obj['text_1'], obj['text_2']], label=label))
     dev_linked_posts = None
+    evaluator = None
     if linked_posts_str == validate:
         train_linked_posts, dev_linked_posts = train_test_split(train_linked_posts, test_size=0.1)
+        evaluator = BinaryClassificationEvaluator.from_input_examples(dev_linked_posts, name='linked-posts')
 
     warmup_steps = math.ceil(len(train_linked_posts) * num_epochs / batch_size * 0.1)  # 10% of train data for warm-up
 
     train_data_linked_posts = SentencesDataset(train_linked_posts, model=model)
     train_dataloader_linked_posts = DataLoader(train_data_linked_posts, shuffle=True, batch_size=batch_size)
     train_loss_linked_posts = losses.ContrastiveLoss(model=model)
-    evaluator = BinaryClassificationEvaluator.from_input_examples(dev_linked_posts, name='linked-posts')
+
 
     global evaluation_steps
     evaluation_steps = math.ceil(len(train_linked_posts) / 0.1)
@@ -109,15 +112,16 @@ def create_train_class_posts(fl, data_dir, model, validate=None):
         for obj in data:
             train_class_posts.append(InputExample(texts=[obj['docstring'], obj['text']], label=obj['label']))
     dev_class_posts = None
+    evaluator = None
     if class_posts_str == validate:
         train_class_posts, dev_class_posts = train_test_split(train_class_posts, test_size=0.1)
-
+        evaluator = BinaryClassificationEvaluator.from_input_examples(dev_class_posts, name='class-posts')
     warmup_steps = math.ceil(len(train_class_posts) * num_epochs / batch_size * 0.1)  # 10% of train data for warm-up
 
     train_data_class_posts = SentencesDataset(train_class_posts, model=model)
     train_dataloader_class_posts = DataLoader(train_data_class_posts, shuffle=True, batch_size=batch_size)
     train_loss_class_posts = losses.ContrastiveLoss(model=model)
-    evaluator = BinaryClassificationEvaluator.from_input_examples(dev_class_posts, name='class-posts')
+
 
     global evaluation_steps
     evaluation_steps = math.ceil(len(train_class_posts) / 0.1)
@@ -141,15 +145,16 @@ def create_train_usage(fl, data_dir, model, validate=None):
             dist = (max_d - obj['distance']) / (max_d - min_d)
             train_usage.append(InputExample(texts=[obj['class1'], obj['class2']], label=dist))
     dev_usage = None
+    evaluator = None
+
     if usage_str == validate:
         train_usage, dev_usage = train_test_split(train_usage, test_size=0.1)
+        evaluator = EmbeddingSimilarityEvaluator.from_input_examples(dev_usage, name='usage')
     warmup_steps = math.ceil(len(train_usage) * num_epochs / batch_size * 0.1)  # 10% of train data for warm-up
 
     train_data_usage = SentencesDataset(train_usage, model=model)
     train_dataloader_usage = DataLoader(train_data_usage, shuffle=True, batch_size=batch_size)
     train_loss_usage = losses.CosineSimilarityLoss(model=model)
-
-    evaluator = EmbeddingSimilarityEvaluator.from_input_examples(dev_usage, name='usage')
 
     global evaluation_steps
     evaluation_steps = math.ceil(len(train_usage) / 0.1)
@@ -168,15 +173,16 @@ def create_posts_ranking(fl, data_dir, model, validate=None):
                 train_posts_ranking.append(
                     InputExample(texts=[obj['q_text'], answer['a_text']], label=dist))
     dev_posts_ranking = None
+    evaluator = None
     if posts_rank_str == validate:
         train_posts_ranking, dev_posts_ranking = train_test_split(train_posts_ranking, test_size=0.1)
+        evaluator = EmbeddingSimilarityEvaluator.from_input_examples(dev_posts_ranking, name='posts ranking')
+
     warmup_steps = math.ceil(len(train_posts_ranking) * num_epochs / batch_size * 0.1)  # 10% of train data for warm-up
 
     train_data_posts_ranking = SentencesDataset(train_posts_ranking, model=model)
     train_dataloader_posts_ranking = DataLoader(train_data_posts_ranking, shuffle=True, batch_size=batch_size)
     train_loss_posts_ranking = losses.CosineSimilarityLoss(model=model)
-
-    evaluator = EmbeddingSimilarityEvaluator.from_input_examples(dev_posts_ranking, name='posts ranking')
 
     global evaluation_steps
     evaluation_steps = math.ceil(len(train_posts_ranking) / 0.1)
@@ -211,15 +217,18 @@ def create_search(collection, query_file, train, data_dir, model, validate=None)
                 added_q.add(qid)
             train_search.append(InputExample(texts=[query, neg_passage], label=0))
     dev_search = None
+    evaluator = None
+
     if search_str == validate:
         train_search, dev_search = train_test_split(train_search, test_size=0.1)
+        evaluator = BinaryClassificationEvaluator.from_input_examples(dev_search, name='search')
+
     warmup_steps = math.ceil(len(train_search) * num_epochs / batch_size * 0.1)  # 10% of train data for warm-up
 
     # We create a DataLoader to load our train samples
     train_dataloader_search = DataLoader(train_search, shuffle=True, batch_size=batch_size)
     train_loss_search = losses.ContrastiveLoss(model=model)
-    evaluator = BinaryClassificationEvaluator.from_input_examples(dev_search, name='search')
-
+  
     global evaluation_steps
     evaluation_steps = math.ceil(len(train_search) / 0.1)
 
