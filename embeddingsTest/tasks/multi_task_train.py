@@ -168,7 +168,7 @@ def create_posts_ranking(fl, data_dir, validate):
                 train_posts_ranking.append(
                     InputExample(texts=[obj['q_text'], answer['a_text']], label=dist))
     dev_posts_ranking = None
-    if 'post_rank' == validate:
+    if posts_rank_str == validate:
         train_posts_ranking, dev_posts_ranking = train_test_split(train_posts_ranking, test_size=0.1)
     warmup_steps = math.ceil(len(train_posts_ranking) * num_epochs / batch_size * 0.1)  # 10% of train data for warm-up
 
