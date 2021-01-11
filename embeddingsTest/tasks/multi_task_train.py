@@ -29,7 +29,7 @@ logging.basicConfig(format='%(asctime)s - %(message)s',
                     handlers=[LoggingHandler()])
 # Configure the training
 num_epochs = 10
-batch_size = 16
+batch_size = 32
 
 #### /print debug information to stdout
 
@@ -44,7 +44,7 @@ all_str = hierarchy_str + ',' + linked_posts_str + ',' + class_posts_str + ',' +
           ',' + 'search_str'
 
 
-def create_hirerachy_examples(fl, data_dir, validate=None):
+def create_hirerachy_examples(fl, data_dir, model, validate=None):
     train_hierarchy_samples = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
@@ -74,7 +74,7 @@ def create_hirerachy_examples(fl, data_dir, validate=None):
     return train_dataloader_hierarchy, train_loss_hierarchy, evaluator, warmup_steps
 
 
-def create_linked_posts(fl, data_dir, validate=None):
+def create_linked_posts(fl, data_dir, model, validate=None):
     train_linked_posts = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
@@ -102,7 +102,7 @@ def create_linked_posts(fl, data_dir, validate=None):
     return train_dataloader_linked_posts, train_loss_linked_posts, evaluator, warmup_steps
 
 
-def create_train_class_posts(fl, data_dir, validate=None):
+def create_train_class_posts(fl, data_dir, model, validate=None):
     train_class_posts = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
@@ -125,7 +125,7 @@ def create_train_class_posts(fl, data_dir, validate=None):
     return train_dataloader_class_posts, train_loss_class_posts, evaluator, warmup_steps
 
 
-def create_train_usage(fl, data_dir, validate=None):
+def create_train_usage(fl, data_dir, model, validate=None):
     train_usage = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
@@ -157,7 +157,7 @@ def create_train_usage(fl, data_dir, validate=None):
     return train_dataloader_usage, train_loss_usage, evaluator, warmup_steps
 
 
-def create_posts_ranking(fl, data_dir, validate=None):
+def create_posts_ranking(fl, data_dir, model, validate=None):
     train_posts_ranking = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
@@ -184,7 +184,7 @@ def create_posts_ranking(fl, data_dir, validate=None):
     return train_dataloader_posts_ranking, train_loss_posts_ranking, evaluator, warmup_steps
 
 
-def create_search(collection, query_file, train, data_dir, validate=None):
+def create_search(collection, query_file, train, data_dir, model, validate=None):
     corpus = {}
     with open(os.path.join(data_dir, collection), 'r', encoding='utf8') as fIn:
         for line in fIn:
@@ -263,7 +263,7 @@ if __name__ == '__main__':
     warmup_steps = 0
     # task 1 - class hierarchy prediction
     if hierarchy_str in args.tasks:
-        train_dataloader_hierarchy, train_loss_hierarchy, e, w = create_hirerachy_examples('hierarchy_train.json', args.data_dir, args.validate)
+        train_dataloader_hierarchy, train_loss_hierarchy, e, w = create_hirerachy_examples('hierarchy_train.json', args.data_dir, model, args.validate)
         train_objectives.append((train_dataloader_hierarchy, train_loss_hierarchy))
 
         if args.validate == hierarchy_str:
@@ -272,7 +272,7 @@ if __name__ == '__main__':
 
     # task 2 - determine if two posts are linked
     if linked_posts_str in args.tasks:
-        train_dataloader_linked_posts, train_loss_linked_posts, e, w = create_linked_posts('stackoverflow_data_linkedposts__train.json', args.data_dir, args.validate)
+        train_dataloader_linked_posts, train_loss_linked_posts, e, w = create_linked_posts('stackoverflow_data_linkedposts__train.json', args.data_dir, model, args.validate)
         train_objectives.append((train_dataloader_linked_posts, train_loss_linked_posts))
 
         if args.validate == linked_posts_str:
@@ -281,7 +281,7 @@ if __name__ == '__main__':
 
     # task 3 - determine if a post is related to a class's docstring
     if class_posts_str in args.tasks:
-        train_dataloader_class_posts, train_loss_class_posts, e, w = create_train_class_posts('class_posts_train_data.json', args.data_dir, args.validate)
+        train_dataloader_class_posts, train_loss_class_posts, e, w = create_train_class_posts('class_posts_train_data.json', args.data_dir, model, args.validate)
         train_objectives.append((train_dataloader_class_posts, train_loss_class_posts))
 
         if args.validate == class_posts_str:
@@ -290,7 +290,7 @@ if __name__ == '__main__':
 
     # task 4 - class usage prediction
     if usage_str in args.tasks:
-        train_dataloader_usage, train_loss_usage, e, w = create_train_usage('usage_train.json', args.data_dir, args.validate)
+        train_dataloader_usage, train_loss_usage, e, w = create_train_usage('usage_train.json', args.data_dir, model, args.validate)
         train_objectives.append((train_dataloader_usage, train_loss_usage))
 
         if args.validate == usage_str:
@@ -299,7 +299,7 @@ if __name__ == '__main__':
 
     # task 5 - predict ranks of a post's answers
     if posts_rank_str in args.tasks:
-        train_dataloader_posts_ranking, train_loss_posts_ranking, e, w = create_posts_ranking('stackoverflow_data_ranking_v2_train.json', args.data_dir, args.validate)
+        train_dataloader_posts_ranking, train_loss_posts_ranking, e, w = create_posts_ranking('stackoverflow_data_ranking_v2_train.json', args.data_dir, model, args.validate)
         train_objectives.append((train_dataloader_posts_ranking, train_loss_posts_ranking))
 
         if args.validate == posts_rank_str:
@@ -311,7 +311,7 @@ if __name__ == '__main__':
         train_dataloader_search, train_loss_search, e, w = create_search('stackoverflow_matches_codesearchnet_5k_train_collection.tsv',
                              'stackoverflow_matches_codesearchnet_5k_train_queries.tsv',
                              'stackoverflow_matches_codesearchnet_5k_train_blanca-qidpidtriples.train.tsv',
-                             args.data_dir, args.validate)
+                             args.data_dir, model, args.validate)
         train_objectives.append((train_dataloader_search, train_loss_search))
 
         if args.validate == search_str:
