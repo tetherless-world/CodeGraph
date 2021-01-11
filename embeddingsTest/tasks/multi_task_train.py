@@ -8,14 +8,9 @@ from sentence_transformers import models, losses, InputExample
 from sentence_transformers import SentencesDataset, LoggingHandler, SentenceTransformer, util
 from sentence_transformers.evaluation import EmbeddingSimilarityEvaluator, BinaryClassificationEvaluator
 from sentence_transformers.readers import *
-from sentence_transformers.cross_encoder import CrossEncoder
-#from sentence_transformers.cross_encoder.evaluation import CERerankingEvaluator
 import logging
 from datetime import datetime
-import gzip
-import csv
 import os
-import sys
 import json
 from sklearn.model_selection import train_test_split
 import argparse
