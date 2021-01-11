@@ -24,14 +24,14 @@ if __name__ == '__main__':
     else:
         model = util.get_model(args.embed_type)
 
-    test_hierarchy_samples = create_hirerachy_examples(os.path.join(data_dir, 'hierarchy_test.json'))
-    test_linked_posts = create_linked_posts(os.path.join(data_dir, 'stackoverflow_data_linkedposts__testing.json'))
-    test_class_posts = create_train_class_posts(os.path.join(data_dir, 'class_posts_test_data.json'))
-    test_usage = create_train_usage(os.path.join(data_dir, 'usage_test.json'))
-    test_posts_ranking = create_posts_ranking(os.path.join(data_dir, 'stackoverflow_data_ranking_v2_testing.json'))
-    test_search = create_search(os.path.join(data_dir, 'stackoverflow_matches_codesearchnet_5k_test_collection.tsv'),
-                                 os.path.join(data_dir, 'stackoverflow_matches_codesearchnet_5k_test_queries.tsv'),
-                                 os.path.join(data_dir, 'stackoverflow_matches_codesearchnet_5k_test_blanca-qidpidtriples.train.tsv'))
+    test_hierarchy_samples = create_hirerachy_examples('hierarchy_test.json', data_dir)
+    test_linked_posts = create_linked_posts('stackoverflow_data_linkedposts__testing.json', data_dir)
+    test_class_posts = create_train_class_posts('class_posts_test_data.json', data_dir)
+    test_usage = create_train_usage(os.path.join('usage_test.json', data_dir)
+    test_posts_ranking = create_posts_ranking('stackoverflow_data_ranking_v2_testing.json', data_dir)
+    test_search = create_search('stackoverflow_matches_codesearchnet_5k_test_collection.tsv',
+                                 'stackoverflow_matches_codesearchnet_5k_test_queries.tsv',
+                                 'stackoverflow_matches_codesearchnet_5k_test_blanca-qidpidtriples.train.tsv', data_dir)
 
 
     test_evaluator = EmbeddingSimilarityEvaluator.from_input_examples(test_hierarchy_samples, name='test-hierarchy-samples')

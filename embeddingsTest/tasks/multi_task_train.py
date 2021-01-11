@@ -44,7 +44,7 @@ all_str = hierarchy_str + ',' + linked_posts_str + ',' + class_posts_str + ',' +
           ',' + 'search_str'
 
 
-def create_hirerachy_examples(fl, data_dir, validate):
+def create_hirerachy_examples(fl, data_dir, validate=None):
     train_hierarchy_samples = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
@@ -74,7 +74,7 @@ def create_hirerachy_examples(fl, data_dir, validate):
     return train_dataloader_hierarchy, train_loss_hierarchy, evaluator, warmup_steps
 
 
-def create_linked_posts(fl, data_dir, validate):
+def create_linked_posts(fl, data_dir, validate=None):
     train_linked_posts = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
@@ -102,7 +102,7 @@ def create_linked_posts(fl, data_dir, validate):
     return train_dataloader_linked_posts, train_loss_linked_posts, evaluator, warmup_steps
 
 
-def create_train_class_posts(fl, data_dir, validate):
+def create_train_class_posts(fl, data_dir, validate=None):
     train_class_posts = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
@@ -125,7 +125,7 @@ def create_train_class_posts(fl, data_dir, validate):
     return train_dataloader_class_posts, train_loss_class_posts, evaluator, warmup_steps
 
 
-def create_train_usage(fl, data_dir, validate):
+def create_train_usage(fl, data_dir, validate=None):
     train_usage = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
@@ -157,7 +157,7 @@ def create_train_usage(fl, data_dir, validate):
     return train_dataloader_usage, train_loss_usage, evaluator, warmup_steps
 
 
-def create_posts_ranking(fl, data_dir, validate):
+def create_posts_ranking(fl, data_dir, validate=None):
     train_posts_ranking = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
@@ -184,7 +184,7 @@ def create_posts_ranking(fl, data_dir, validate):
     return train_dataloader_posts_ranking, train_loss_posts_ranking, evaluator, warmup_steps
 
 
-def create_search(collection, query_file, train, data_dir, validate):
+def create_search(collection, query_file, train, data_dir, validate=None):
     corpus = {}
     with open(os.path.join(data_dir, collection), 'r', encoding='utf8') as fIn:
         for line in fIn:
