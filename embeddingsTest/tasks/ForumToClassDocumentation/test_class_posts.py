@@ -62,5 +62,5 @@ if __name__ == '__main__':
     print(np.mean(np.asarray(falses)))
     
     print('Total number of samples = ', len(data))
-    print(scipy.stats.ttest_rel(trues, falses))
+    print(scipy.stats.ttest_ind(trues, falses))
 
