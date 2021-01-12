@@ -126,6 +126,8 @@ def preparse_search_data(all_qs, out_dir, base_name):
 def preparse_linkedPost(all_qs, url2post, all_urls, num_neg = 1):
     print(f"Received: {len(all_qs)}")
     training_qs = []
+    num_pos_found = 0
+    num_neg_found = 0
     # with open(out_dir + 'stackoverflow_data_ranking_train.json', 'w', encoding='utf-8') as output_file:
     for q in all_qs:
         q_id = q['id:']
@@ -143,18 +145,19 @@ def preparse_linkedPost(all_qs, url2post, all_urls, num_neg = 1):
         q_data['text_1'] = cleanhtml(q_text + ' ' + a_text)
         links = extract_links(q_text)
         found_pos = False
+        pos_data = []
+        neg_data = []
         for link in links:
             if link == q_url:
                 continue
 
-            to_add = []
             new_data = dict(q_data)
             if link in url2post:
                 url2, text2 = url2post[link]
                 new_data['url_2'] = url2
                 new_data['text_2'] = cleanhtml(text2)
                 new_data['class'] = 'relevant'
-                to_add.append(new_data)
+                pos_data.append(new_data)
                 found_pos = True
             if found_pos:
                 for i in range(num_neg):
@@ -166,9 +169,16 @@ def preparse_linkedPost(all_qs, url2post, all_urls, num_neg = 1):
                     new_data['url_2'] = url2
                     new_data['text_2'] = cleanhtml(text2)
                     new_data['class'] = 'irrelevant'
-                    to_add.append(new_data)
-            training_qs.extend(to_add)
+                    neg_data.append(new_data)
 
+        neg_data = neg_data[:len(pos_data)]
+        print('pos_data: ', len(pos_data), 'num_neg:', len(neg_data))
+        num_pos_found += len(pos_data)
+        num_neg_found += len(neg_data)
+        training_qs.extend(pos_data)
+        training_qs.extend(neg_data)
+
+    print('num_pos: ', num_pos_found, 'num_neg:', num_neg_found)
     return training_qs
 
 
@@ -211,24 +221,21 @@ def sample_linked_qa(infile, out_dir, base_name):
         url2post[q_url] = (q_url, q_text)
         all_urls.append(q_url)
     random.shuffle(all_qs)
-    # num_training_qs = int(0.1 * len(all_qs))
+    num_training_qs = int(0.1 * len(all_qs))
 
-    #TODO: revisit -- splitting should be based on found links
-    # training_qs = preparse_linkedPost(all_qs[:num_training_qs], url2post, all_urls)
-    # testing_qs = preparse_linkedPost(all_qs[num_training_qs:], url2post, all_urls)
-    all_samples = preparse_linkedPost(all_qs, url2post, all_urls)
-    num_training_qs = int(0.1 * len(all_samples))
 
+    training_qs = preparse_linkedPost(all_qs[:num_training_qs], url2post, all_urls)
     with open(out_dir + base_name + '_train.json', 'w', encoding='utf-8') as output_file:
-        json.dump(all_samples[:num_training_qs], output_file, indent=2)
+        json.dump(training_qs, output_file, indent=2)
 
+    testing_qs = preparse_linkedPost(all_qs[num_training_qs:], url2post, all_urls)
     with open(out_dir + base_name + '_testing.json', 'w', encoding='utf-8') as output_file:
-        json.dump(all_samples[num_training_qs:], output_file, indent=2)
+        json.dump(testing_qs, output_file, indent=2)
 
     print('-'*10 + base_name +'-'*10)
     print("Total number of questions: ", len(all_qs))
-    print("Total number of training questions: ", len(all_samples[:num_training_qs]))
-    print("Total number of testing questions: ", len(all_samples[num_training_qs:]))
+    print("Total number of training questions: ", len(training_qs))
+    print("Total number of testing questions: ", len(testing_qs))
     print('-'*20)
 
 def extract_links(postHtml):

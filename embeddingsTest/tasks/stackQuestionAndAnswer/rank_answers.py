@@ -259,7 +259,7 @@ def calculateNDCG(jsonCollect, model, embed_type, folder_name):
 
 def embed_sentences(sentences, model, embed_type ):
     if embed_type == 'USE':
-        sentence_embeddings = model(sentences)
+        sentence_embeddings = model.encode([sentences])
     else:
         sentence_embeddings = model.encode(sentences)
     return sentence_embeddings

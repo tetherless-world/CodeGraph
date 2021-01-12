@@ -11,19 +11,19 @@ import random
 import statistics
 from scipy import stats as stat
 import pickle
-from utils.util import get_model
+from utils.util import get_model, embed_sentences
 # parse input data file and remove duplicates for analysis
 # also calls all necessary analysis functions
 import os
 from pathlib import Path
 
 
-def embed_sentences(sentences, model, embed_type ):
-    if embed_type == 'USE':
-        sentence_embeddings = model(sentences)
-    else:
-        sentence_embeddings = model.encode(sentences)
-    return sentence_embeddings
+# def embed_sentences(sentences, model, embed_type ):
+#     if embed_type == 'USE':
+#         sentence_embeddings = model(sentences)
+#     else:
+#         sentence_embeddings = model.encode(sentences)
+#     return sentence_embeddings
 
 if __name__ == '__main__':
     dataSetPath = sys.argv[1]
@@ -39,8 +39,8 @@ if __name__ == '__main__':
         data = json.load(data_file)
         i = 0
         for jsonObject in data:
-            srcEmbed = embed_sentences(jsonObject['text_1'], model, embed_type)
-            dstEmbed = embed_sentences(jsonObject['text_2'], model, embed_type)
+            srcEmbed = embed_sentences([jsonObject['text_1']], model, embed_type)
+            dstEmbed = embed_sentences([jsonObject['text_2']], model, embed_type)
             linkedDist = np.linalg.norm(srcEmbed - dstEmbed) ** 2
 
             if jsonObject['class'] == 'relevant':
