@@ -54,7 +54,7 @@ def create_hirerachy_examples(fl, data_dir, model, validate=None, is_test=False)
             dist = (max_distance - obj['distance']) / (max_distance - 1)
             train_hierarchy_samples.append(InputExample(texts=[obj['class1'], obj['class2']], label=dist))
             disbn.append(obj['distance'])
-    train_hierarchy_samples = random.shuffle(train_hierarchy_samples)
+    random.shuffle(train_hierarchy_samples)
 
     if is_test:
         return train_hierarchy_samples
@@ -91,7 +91,7 @@ def create_linked_posts(fl, data_dir, model, validate=None, is_test=False):
             disbn.append(label)
 
             train_linked_posts.append(InputExample(texts=[obj['text_1'], obj['text_2']], label=label))
-    train_linked_posts = random.shuffle(train_linked_posts)
+    random.shuffle(train_linked_posts)
 
     if is_test:
         return train_linked_posts
@@ -123,7 +123,7 @@ def create_train_class_posts(fl, data_dir, model, validate=None, is_test=False):
         for obj in data:
             train_class_posts.append(InputExample(texts=[obj['docstring'], obj['text']], label=obj['label']))
             disbn.append(obj['label'])
-    train_class_posts = random.shuffle(train_class_posts)
+    random.shuffle(train_class_posts)
 
     if is_test:
         return train_class_posts
@@ -162,7 +162,7 @@ def create_train_usage(fl, data_dir, model, validate=None, is_test=False):
             dist = (max_d - obj['distance']) / (max_d - min_d)
             train_usage.append(InputExample(texts=[obj['class1'], obj['class2']], label=dist))
 
-    train_usage = random.shuffle(train_usage)
+    random.shuffle(train_usage)
 
     if is_test:
         return train_usage
@@ -196,7 +196,7 @@ def create_posts_ranking(fl, data_dir, model, validate=None, is_test=False):
                 disbn.append(answer['a_rank'])
                 train_posts_ranking.append(
                     InputExample(texts=[obj['q_text'], answer['a_text']], label=dist))
-    train_posts_ranking = random.shuffle(train_posts_ranking)
+    random.shuffle(train_posts_ranking)
 
     if is_test:
         return train_posts_ranking
@@ -247,7 +247,7 @@ def create_search(collection, query_file, train, data_dir, model, validate=None,
                 added_q.add(qid)
             train_search.append(InputExample(texts=[query, neg_passage], label=0))
             disbn.append(0)
-    train_search = random.shuffle(train_search)
+    random.shuffle(train_search)
 
     if is_test:
         return train_search
