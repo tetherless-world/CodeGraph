@@ -16,7 +16,7 @@ from utils.util import get_model, embed_sentences
 # also calls all necessary analysis functions
 import os
 from pathlib import Path
-
+import numpy as np
 
 # def embed_sentences(sentences, model, embed_type ):
 #     if embed_type == 'USE':
@@ -41,8 +41,10 @@ if __name__ == '__main__':
         for jsonObject in data:
             srcEmbed = embed_sentences([jsonObject['text_1']], model, embed_type)
             dstEmbed = embed_sentences([jsonObject['text_2']], model, embed_type)
-            linkedDist = np.linalg.norm(srcEmbed - dstEmbed) ** 2
-
+#            linkedDist = np.linalg.norm(srcEmbed - dstEmbed) ** 2
+            from scipy.spatial import distance
+            linkedDist = distance.cosine(srcEmbed, dstEmbed)
+            
             if jsonObject['class'] == 'relevant':
                 trues.append(linkedDist)
             else:
@@ -56,6 +58,9 @@ if __name__ == '__main__':
     with open(falseFileName, 'w') as falseFile:
         falseFile.write(json.dumps(falses, indent=2))
 
+    print(np.mean(np.asarray(trues)))
+    print(np.mean(np.asarray(falses)))
+    
     print('Total number of samples = ', len(data))
     print(scipy.stats.ttest_rel(trues, falses))
 
