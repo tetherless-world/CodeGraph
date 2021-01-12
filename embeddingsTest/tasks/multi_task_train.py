@@ -14,6 +14,7 @@ import os
 import json
 from sklearn.model_selection import train_test_split
 import argparse
+import random
 
 evaluation_steps = 1000
 
@@ -41,6 +42,7 @@ all_str = hierarchy_str + ',' + linked_posts_str + ',' + class_posts_str + ',' +
 
 def create_hirerachy_examples(fl, data_dir, model, validate=None, is_test=False):
     train_hierarchy_samples = []
+    disbn = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
         max_distance = 0
@@ -51,6 +53,8 @@ def create_hirerachy_examples(fl, data_dir, model, validate=None, is_test=False)
             # flip the meaning of similarity, since the more distant the two classes, the closer to 0 it should be
             dist = (max_distance - obj['distance']) / (max_distance - 1)
             train_hierarchy_samples.append(InputExample(texts=[obj['class1'], obj['class2']], label=dist))
+            disbn.append(obj['distance'])
+    train_hierarchy_samples = random.shuffle(train_hierarchy_samples)
 
     if is_test:
         return train_hierarchy_samples
@@ -58,7 +62,7 @@ def create_hirerachy_examples(fl, data_dir, model, validate=None, is_test=False)
     evaluator = None
 
     if hierarchy_str == validate:
-        train_hierarchy_samples, dev_hierarchy_samples = train_test_split(train_hierarchy_samples, test_size=0.1)
+        train_hierarchy_samples, dev_hierarchy_samples = train_test_split(train_hierarchy_samples, stratify=disbn, test_size=0.1)
         evaluator = EmbeddingSimilarityEvaluator.from_input_examples(dev_hierarchy_samples, name='hierarchy')
 
     warmup_steps = math.ceil(len(train_hierarchy_samples) * num_epochs / batch_size * 0.1)  # 10% of train data for warm-up
@@ -67,13 +71,16 @@ def create_hirerachy_examples(fl, data_dir, model, validate=None, is_test=False)
     train_dataloader_hierarchy = DataLoader(train_data_hierarchy, shuffle=True, batch_size=batch_size)
     train_loss_hierarchy = losses.CosineSimilarityLoss(model=model)
 
+
     global evaluation_steps
-    evaluation_steps =  math.ceil(len(train_hierarchy_samples) / 0.1)
+    evaluation_steps = math.ceil(len(train_hierarchy_samples) / 0.1)
     return train_dataloader_hierarchy, train_loss_hierarchy, evaluator, warmup_steps
 
 
 def create_linked_posts(fl, data_dir, model, validate=None, is_test=False):
     train_linked_posts = []
+    disbn = []
+
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
         for obj in data:
@@ -81,14 +88,18 @@ def create_linked_posts(fl, data_dir, model, validate=None, is_test=False):
                 label = 1
             else:
                 label = 0
+            disbn.append(label)
 
             train_linked_posts.append(InputExample(texts=[obj['text_1'], obj['text_2']], label=label))
+    train_linked_posts = random.shuffle(train_linked_posts)
+
     if is_test:
         return train_linked_posts
 
+
     evaluator = None
     if linked_posts_str == validate:
-        train_linked_posts, dev_linked_posts = train_test_split(train_linked_posts, test_size=0.1)
+        train_linked_posts, dev_linked_posts = train_test_split(train_linked_posts, stratify=disbn, test_size=0.1)
         evaluator = BinaryClassificationEvaluator.from_input_examples(dev_linked_posts, name='linked-posts')
 
     warmup_steps = math.ceil(len(train_linked_posts) * num_epochs / batch_size * 0.1)  # 10% of train data for warm-up
@@ -106,18 +117,23 @@ def create_linked_posts(fl, data_dir, model, validate=None, is_test=False):
 
 def create_train_class_posts(fl, data_dir, model, validate=None, is_test=False):
     train_class_posts = []
+    disbn = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
         for obj in data:
             train_class_posts.append(InputExample(texts=[obj['docstring'], obj['text']], label=obj['label']))
+            disbn.append(obj['label'])
+    train_class_posts = random.shuffle(train_class_posts)
+
     if is_test:
         return train_class_posts
 
     evaluator = None
     if class_posts_str == validate:
-        train_class_posts, dev_class_posts = train_test_split(train_class_posts, test_size=0.1)
+        train_class_posts, dev_class_posts = train_test_split(train_class_posts, stratify=disbn, test_size=0.1)
         evaluator = BinaryClassificationEvaluator.from_input_examples(dev_class_posts, name='class-posts')
     warmup_steps = math.ceil(len(train_class_posts) * num_epochs / batch_size * 0.1)  # 10% of train data for warm-up
+
 
     train_data_class_posts = SentencesDataset(train_class_posts, model=model)
     train_dataloader_class_posts = DataLoader(train_data_class_posts, shuffle=True, batch_size=batch_size)
@@ -145,6 +161,9 @@ def create_train_usage(fl, data_dir, model, validate=None, is_test=False):
         for obj in data:
             dist = (max_d - obj['distance']) / (max_d - min_d)
             train_usage.append(InputExample(texts=[obj['class1'], obj['class2']], label=dist))
+
+    train_usage = random.shuffle(train_usage)
+
     if is_test:
         return train_usage
 
@@ -167,20 +186,24 @@ def create_train_usage(fl, data_dir, model, validate=None, is_test=False):
 
 def create_posts_ranking(fl, data_dir, model, validate=None, is_test=False):
     train_posts_ranking = []
+    disbn = []
     with open(os.path.join(data_dir, fl)) as f:
         data = json.load(f)
         for obj in data:
             answers = obj['answers']
             for answer in answers:
                 dist = (len(answers) - answer['a_rank']) / len(answers)
+                disbn.append(answer['a_rank'])
                 train_posts_ranking.append(
                     InputExample(texts=[obj['q_text'], answer['a_text']], label=dist))
+    train_posts_ranking = random.shuffle(train_posts_ranking)
+
     if is_test:
         return train_posts_ranking
 
     evaluator = None
     if posts_rank_str == validate:
-        train_posts_ranking, dev_posts_ranking = train_test_split(train_posts_ranking, test_size=0.1)
+        train_posts_ranking, dev_posts_ranking = train_test_split(train_posts_ranking, stratify=disbn, test_size=0.1)
         evaluator = EmbeddingSimilarityEvaluator.from_input_examples(dev_posts_ranking, name='posts ranking')
 
     warmup_steps = math.ceil(len(train_posts_ranking) * num_epochs / batch_size * 0.1)  # 10% of train data for warm-up
@@ -209,6 +232,7 @@ def create_search(collection, query_file, train, data_dir, model, validate=None,
             queries[qid] = query
 
     train_search = []
+    disbn = []
     with open(os.path.join(data_dir, train), 'r', encoding='utf8') \
             as f:
         added_q = set()
@@ -219,15 +243,19 @@ def create_search(collection, query_file, train, data_dir, model, validate=None,
             neg_passage = corpus[neg_id]
             if qid not in added_q:
                 train_search.append(InputExample(texts=[query, passage], label=1))
+                disbn.append(1)
                 added_q.add(qid)
             train_search.append(InputExample(texts=[query, neg_passage], label=0))
+            disbn.append(0)
+    train_search = random.shuffle(train_search)
+
     if is_test:
         return train_search
 
     evaluator = None
 
     if search_str == validate:
-        train_search, dev_search = train_test_split(train_search, test_size=0.1)
+        train_search, dev_search = train_test_split(train_search, stratify=disbn, test_size=0.1)
         evaluator = BinaryClassificationEvaluator.from_input_examples(dev_search, name='search')
 
     warmup_steps = math.ceil(len(train_search) * num_epochs / batch_size * 0.1)  # 10% of train data for warm-up
