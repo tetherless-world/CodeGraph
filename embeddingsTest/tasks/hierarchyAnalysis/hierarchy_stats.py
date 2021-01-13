@@ -28,7 +28,11 @@ if __name__ == '__main__':
     parser.add_argument('--embed_type', type=str,
                         help='USE or bert or roberta or finetuned or bertoverflow')
     parser.add_argument('--model_dir',type=str,
-                        help='dir for finetuned or bertoverflow models')
+                        help='dir for finetuned or bertoverflow models', required=False)
+    parser.add_argument('--classmap',type=str,
+                        help='class_map')
+    parser.add_argument('--classfail', type=str,
+                        help='classfail')
 
     args = parser.parse_args()
 
