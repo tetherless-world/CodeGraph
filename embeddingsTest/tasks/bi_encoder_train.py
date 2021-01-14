@@ -19,7 +19,7 @@ import tarfile
 from collections import defaultdict
 from torch.utils.data import IterableDataset
 import sys
-
+import tqdm
 
 
 #### Just some code to print debug information to stdout
@@ -32,7 +32,8 @@ logging.basicConfig(format='%(asctime)s - %(message)s',
 # The  model we want to fine-tune
 model_name = sys.argv[1]
 
-train_batch_size = 64           #Increasing the train batch size improves the model performance, but requires more GPU memory
+train_batch_size = 8           #Increasing the train batch size improves the model performance, but requires more GPU memory
+epochs = 2
 
 num_dev_queries = 20           #Number of queries we want to use to evaluate the performance while training
 num_max_dev_negatives = 200     #For every dev query, we use up to 200 hard negatives and add them to the dev corpus
@@ -105,42 +106,39 @@ logging.info("Dev Corpus: {}".format(len(dev_corpus)))
 # Create the evaluator that is called during training
 ir_evaluator = evaluation.InformationRetrievalEvaluator(dev_queries, dev_corpus, dev_rel_docs, name='ms-marco-train_eval')
 
-# Read our training file. qidpidtriples consists of triplets (qid, positive_pid, negative_pid)
-train_filepath = os.path.join(data_folder, 'stackoverflow_matches_codesearchnet_5k_test_blanca-qidpidtriples.train.tsv')
+
+def get_train_samples(dev_samples, queries, corpus):
+    # Read our training file. qidpidtriples consists of triplets (qid, positive_pid, negative_pid)
+    train_filepath = os.path.join(data_folder,
+                                  'stackoverflow_matches_codesearchnet_5k_test_blanca-qidpidtriples.train.tsv')
+
+    train_samples = []
+    with open(train_filepath, 'rt') as fIn:
+        for line in tqdm.tqdm(fIn, unit_scale=True):
+            qid, pos_id, neg_id = line.strip().split()
+
+            if qid in dev_samples:
+                continue
+
+           if qid in dev_queries:
+                continue
+            query_text = queries[qid]
+            pos_text = corpus[pos_id]
+            neg_text = corpus[neg_id]
+
+            train_samples.append(InputExample(texts=[query_text, pos_text, neg_text]))
 
 
-#We load the qidpidtriples file on-the-fly by using a custom IterableDataset class
-class TripletsDataset(IterableDataset):
-    def __init__(self, model, queries, corpus, triplets_file, dev_queries):
-        self.model = model
-        self.queries = queries
-        self.corpus = corpus
-        self.triplets_file = triplets_file
-        self.dev_queries = dev_queries
-
-    def __iter__(self):
-        with open(self.triplets_file, 'rt') as fIn:
-            for line in fIn:
-                qid, pos_id, neg_id = line.strip().split()
-                if qid in dev_queries:
-                    continue
-                query_text = self.queries[qid]
-                pos_text = self.corpus[pos_id]
-                neg_text = self.corpus[neg_id]
-                yield InputExample(texts=[query_text, pos_text, neg_text])
-
-    def __len__(self):
-        return 1975000
-
+# We create a DataLoader to load our train samples
+train_samples = get_train_samples(queries=queries, corpus=corpus, dev_samples=dev_queries)
 # For training the SentenceTransformer model, we need a dataset, a dataloader, and a loss used for training.
-train_dataset = TripletsDataset(model=model, queries=queries, corpus=corpus, triplets_file=train_filepath, dev_queries=dev_queries)
-train_dataloader = DataLoader(train_dataset, shuffle=False, batch_size=train_batch_size)
+train_dataloader = DataLoader(train_samples, shuffle=False, batch_size=train_batch_size)
 train_loss = losses.MultipleNegativesRankingLoss(model=model)
 
 # Train the model
 model.fit(train_objectives=[(train_dataloader, train_loss)],
           evaluator=ir_evaluator,
-          epochs=1,
+          epochs=epochs,
           warmup_steps=1000,
           output_path=model_save_path,
           evaluation_steps=5000,
