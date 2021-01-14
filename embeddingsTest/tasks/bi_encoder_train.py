@@ -125,6 +125,7 @@ def get_train_samples(dev_samples, queries, corpus):
             neg_text = corpus[neg_id]
 
             train_samples.append(InputExample(texts=[query_text, pos_text, neg_text]))
+    return train_samples
 
 
 # We create a DataLoader to load our train samples
@@ -139,5 +140,6 @@ model.fit(train_objectives=[(train_dataloader, train_loss)],
           epochs=epochs,
           warmup_steps=1000,
           output_path=model_save_path,
-          evaluation_steps=5000
+          evaluation_steps=5000,
+          use_amp=True
           )
