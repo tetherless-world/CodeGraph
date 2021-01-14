@@ -120,8 +120,6 @@ def get_train_samples(dev_samples, queries, corpus):
             if qid in dev_samples:
                 continue
 
-           if qid in dev_queries:
-                continue
             query_text = queries[qid]
             pos_text = corpus[pos_id]
             neg_text = corpus[neg_id]
