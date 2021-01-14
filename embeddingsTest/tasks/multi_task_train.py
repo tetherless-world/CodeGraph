@@ -56,6 +56,7 @@ def create_hirerachy_examples(fl, data_dir, model, validate=None, is_test=False)
             disbn.append(obj['distance'])
     random.shuffle(train_hierarchy_samples)
     train_hierarchy_samples = train_hierarchy_samples[:100000]
+    disbn = disbn[:100000]
 
     if is_test:
         return train_hierarchy_samples
@@ -66,8 +67,9 @@ def create_hirerachy_examples(fl, data_dir, model, validate=None, is_test=False)
         train_hierarchy_samples, dev_hierarchy_samples = train_test_split(train_hierarchy_samples, stratify=disbn, test_size=0.1)
         evaluator = EmbeddingSimilarityEvaluator.from_input_examples(dev_hierarchy_samples, name='hierarchy')
 
-    warmup_steps = math.ceil(len(train_hierarchy_samples) * num_epochs / batch_size * 0.1)  # 10% of train data for warm-up
 
+    warmup_steps = math.ceil(len(train_hierarchy_samples) * num_epochs / batch_size * 0.1)  # 10% of train data for warm-up
+    
     train_data_hierarchy = SentencesDataset(train_hierarchy_samples, model=model)
     train_dataloader_hierarchy = DataLoader(train_data_hierarchy, shuffle=True, batch_size=batch_size)
     train_loss_hierarchy = losses.CosineSimilarityLoss(model=model)
