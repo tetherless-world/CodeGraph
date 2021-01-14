@@ -139,6 +139,5 @@ model.fit(train_objectives=[(train_dataloader, train_loss)],
           epochs=epochs,
           warmup_steps=1000,
           output_path=model_save_path,
-          evaluation_steps=5000,
-          use_amp=True
+          evaluation_steps=5000
           )
