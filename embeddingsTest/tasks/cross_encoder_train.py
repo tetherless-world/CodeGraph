@@ -81,7 +81,7 @@ num_max_dev_negatives = 200
 # msmarco-qidpidtriples.rnd-shuf.train-eval.tsv.gz and msmarco-qidpidtriples.rnd-shuf.train.tsv.gz is a randomly
 # shuffled version of qidpidtriples.train.full.2.tsv.gz from the MS Marco website
 # We extracted in the train-eval split 500 random queries that can be used for evaluation during training
-train_eval_filepath = os.path.join(data_folder, 'stackoverflow_matches_codesearchnet_5k_train_collection.tsv')
+train_eval_filepath = os.path.join(data_folder, 'stackoverflow_matches_codesearchnet_5k_train_blanca-qidpidtriples.train.tsv')
 
 with open(train_eval_filepath, 'rt') as fIn:
     lines = fIn.readlines()
@@ -101,7 +101,7 @@ with open(train_eval_filepath, 'rt') as fIn:
 
 
 # Read our training file
-train_filepath = os.path.join(data_folder, 'stackoverflow_matches_codesearchnet_5k_train_collection.tsv')
+train_filepath = os.path.join(data_folder, 'stackoverflow_matches_codesearchnet_5k_train_blanca-qidpidtriples.train.tsv')
 
 cnt = 0
 with open(train_filepath, 'rt') as fIn:
