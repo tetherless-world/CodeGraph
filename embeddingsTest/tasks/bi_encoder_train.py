@@ -121,9 +121,9 @@ class TripletsDataset(IterableDataset):
     def __iter__(self):
         with open(self.triplets_file, 'rt') as fIn:
             for line in fIn:
+                qid, pos_id, neg_id = line.strip().split()
                 if qid in dev_queries:
                     continue
-                qid, pos_id, neg_id = line.strip().split()
                 query_text = self.queries[qid]
                 pos_text = self.corpus[pos_id]
                 neg_text = self.corpus[neg_id]
