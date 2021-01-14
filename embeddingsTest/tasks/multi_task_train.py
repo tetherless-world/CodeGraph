@@ -55,6 +55,7 @@ def create_hirerachy_examples(fl, data_dir, model, validate=None, is_test=False)
             train_hierarchy_samples.append(InputExample(texts=[obj['class1'], obj['class2']], label=dist))
             disbn.append(obj['distance'])
     random.shuffle(train_hierarchy_samples)
+    train_hierarchy_samples = train_hierarchy_samples[:100000]
 
     if is_test:
         return train_hierarchy_samples
