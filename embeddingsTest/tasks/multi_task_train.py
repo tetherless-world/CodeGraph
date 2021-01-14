@@ -192,19 +192,33 @@ def create_posts_ranking(fl, data_dir, model, validate=None, is_test=False):
         data = json.load(f)
         for obj in data:
             answers = obj['answers']
+            filtered_answers = []
+            votes = 1000000
             for answer in answers:
-                dist = (len(answers) - answer['a_rank']) / len(answers)
-                disbn.append(answer['a_rank'])
-                train_posts_ranking.append(
-                    InputExample(texts=[obj['q_text'], answer['a_text']], label=dist))
+                my_votes = answer['a_votes']
+                if my_votes < votes:
+                    votes = my_votes
+                    filtered_answers.append(answer)
+
+            if len(filtered_answers) > 1:
+                rank = len(filtered_answers)
+                for answer in filtered_answers:
+                    dist = rank / len(filtered_answers)
+                    disbn.append(answer['a_rank'])
+                    rank = rank - 1
+                    train_posts_ranking.append(
+                        InputExample(texts=[obj['q_text'], answer['a_text']], label=dist))
+
     random.shuffle(train_posts_ranking)
 
+    print("data size " + str(len(train_posts_ranking)))
+    
     if is_test:
         return train_posts_ranking
 
     evaluator = None
     if posts_rank_str == validate:
-        train_posts_ranking, dev_posts_ranking = train_test_split(train_posts_ranking, stratify=disbn, test_size=0.1)
+        train_posts_ranking, dev_posts_ranking = train_test_split(train_posts_ranking, test_size=0.1)
         evaluator = EmbeddingSimilarityEvaluator.from_input_examples(dev_posts_ranking, name='posts ranking')
 
     warmup_steps = math.ceil(len(train_posts_ranking) * num_epochs / batch_size * 0.1)  # 10% of train data for warm-up
@@ -344,7 +358,7 @@ if __name__ == '__main__':
 
     # task 5 - predict ranks of a post's answers
     if posts_rank_str in args.tasks:
-        train_dataloader_posts_ranking, train_loss_posts_ranking, e, w = create_posts_ranking('stackoverflow_data_ranking_v2_train.json', args.data_dir, model, validate=args.validate)
+        train_dataloader_posts_ranking, train_loss_posts_ranking, e, w = create_posts_ranking('stackoverflow_data_ranking_v3_training.json', args.data_dir, model, validate=args.validate)
         train_objectives.append((train_dataloader_posts_ranking, train_loss_posts_ranking))
 
         if args.validate == posts_rank_str:
