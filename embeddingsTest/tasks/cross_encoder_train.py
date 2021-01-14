@@ -27,7 +27,7 @@ import sys
 
 #First, we define the transformer model we want to fine-tune
 model_name = sys.argv[1]
-train_batch_size = 32
+train_batch_size = 16
 num_epochs = 1
 model_save_path = sys.argv[2] + '/training_bi-encoder-'+model_name.replace("/", "-")+'-'+datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
