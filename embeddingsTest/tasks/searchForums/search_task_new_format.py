@@ -27,7 +27,7 @@ def run_analysis(top_k, search_file_name, add_all, embed_type):
         qids = {}
         query_2_matches = {}
         data_as_array = []
-        for obj in data[:100]:
+        for obj in data:
             query = obj['query']
             if query not in query_2_matches:
                 query_2_matches[query] = []
