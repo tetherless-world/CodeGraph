@@ -131,7 +131,7 @@ def get_train_samples(dev_samples, queries, corpus):
 # We create a DataLoader to load our train samples
 train_samples = get_train_samples(queries=queries, corpus=corpus, dev_samples=dev_queries)
 # For training the SentenceTransformer model, we need a dataset, a dataloader, and a loss used for training.
-train_dataloader = DataLoader(train_samples, shuffle=True, atch_size=train_batch_size)
+train_dataloader = DataLoader(train_samples, shuffle=False, atch_size=train_batch_size)
 train_loss = losses.MultipleNegativesRankingLoss(model=model)
 
 # Train the model
