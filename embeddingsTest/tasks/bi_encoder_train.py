@@ -130,7 +130,7 @@ class TripletsDataset(IterableDataset):
                 yield InputExample(texts=[query_text, pos_text, neg_text])
 
     def __len__(self):
-        return 397226027
+        return 1975000
 
 # For training the SentenceTransformer model, we need a dataset, a dataloader, and a loss used for training.
 train_dataset = TripletsDataset(model=model, queries=queries, corpus=corpus, triplets_file=train_filepath, dev_queries=dev_queries)
