@@ -25,7 +25,7 @@ class USEModel(object):
         return self.model(sentences)
 
 
-def evaluate_classification(embed_type, model_path, dataSetPath, true_label):
+def evaluate_classification(embed_type, model_path, dataSetPath, text1, text2, true_label, true_value):
     model = get_model(embed_type, model_path)
     with open(dataSetPath, 'r', encoding="UTF-8") as data_file:
         data = json.load(data_file)
@@ -36,13 +36,13 @@ def evaluate_classification(embed_type, model_path, dataSetPath, true_label):
         cos_distance = []
 
         for jsonObject in data:
-            srcEmbed = embed_sentences([jsonObject['text_1']], model, embed_type)
-            dstEmbed = embed_sentences([jsonObject['text_2']], model, embed_type)
+            srcEmbed = embed_sentences([jsonObject[text1]], model, embed_type)
+            dstEmbed = embed_sentences([jsonObject[text2]], model, embed_type)
             from scipy.spatial import distance
             linkedDist = distance.cosine(srcEmbed, dstEmbed)
             cos_distance.append(linkedDist)
 
-            if jsonObject['class'] == true_label:
+            if jsonObject[true_label] == true_value:
                 trues.append(linkedDist)
             else:
                 falses.append(linkedDist)
