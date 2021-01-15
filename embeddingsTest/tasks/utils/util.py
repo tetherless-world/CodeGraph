@@ -37,8 +37,9 @@ def evaluate_regression(f, docPath, embedType, model_dir=None):
     for idx in range(len(embed1)):
         distance.append(scipy.spatial.distance.cosine(embed1[idx], embed2[idx]))
 
-    df['embedding_cosine_distance'] = distance
-    df.to_csv(embedType + '_test_with_embeddings_distances.csv')
+    out_df = df[['class1','class2','distance']]
+    out_df['embedding_cosine_distance'] = distance
+    out_df.to_csv(embedType + '_test_with_embeddings_distances.csv')
 
     model = linear_model.LinearRegression()
     new_df = df[['distance']]
