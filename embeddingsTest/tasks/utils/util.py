@@ -37,10 +37,6 @@ def evaluate_regression(f, docPath, embedType, model_dir=None):
     for idx in range(len(embed1)):
         distance.append(scipy.spatial.distance.cosine(embed1[idx], embed2[idx]))
 
-    out_df = df[['class1','class2','distance']]
-    out_df['embedding_cosine_distance'] = distance
-    out_df.to_csv(embedType + '_test_with_embeddings_distances.csv')
-
     model = linear_model.LinearRegression()
     new_df = df[['distance']]
     model.fit(new_df.iloc[:], distance)
@@ -54,6 +50,10 @@ def evaluate_regression(f, docPath, embedType, model_dir=None):
     corr, p_value = scipy.stats.pearsonr(df['distance'].values, distance)
     print('correlation:' + str(corr))
     print('p-value:' + str(p_value))
+    out_df = df[['class1','class2','distance']]
+    out_df['embedding_cosine_distance'] = distance
+    out_df.to_csv(embedType + '_test_with_embeddings_distances.csv')
+
 
 
 def get_model(embed_type, local_model_path='/data/BERTOverflow'):
