@@ -13,10 +13,20 @@ import tensorflow as tf
 import tensorflow_hub as hub
 import os
 import sys
-from utils.util import get_model, embed_sentences
+from utils.util import get_model
 from scipy import stats as stat
 from sklearn.metrics import ndcg_score
-def run_analysis(top_k, search_file_name, add_all, embed_type):
+
+def embed_sentences(sentences, embed_type, model_dir=None):
+    model = get_model(embed_type, model_dir)
+    if embed_type == 'USE':
+        sentence_embeddings = model.encode([sentences])
+    else:
+        sentence_embeddings = model.encode(sentences)
+    return sentence_embeddings
+
+
+def run_analysis(top_k, search_file_name, add_all, embed_type, model_dir):
     top_k = top_k
 
     with open(search_file_name, 'r') as f:
@@ -27,7 +37,7 @@ def run_analysis(top_k, search_file_name, add_all, embed_type):
         qids = {}
         query_2_matches = {}
         data_as_array = []
-        for obj in data:
+        for obj in data[:1000]:
             query = obj['query']
             if query not in query_2_matches:
                 query_2_matches[query] = []
@@ -46,9 +56,9 @@ def run_analysis(top_k, search_file_name, add_all, embed_type):
                     continue
                 qids[match['q_id']] = 1
                 if add_all:
-                    content = embed_sentences(match['q_title'] + ' ' + match['q_text'] + ' ' + match['a_text'], embed_type)
+                    content = embed_sentences(match['q_title'] + ' ' + match['q_text'] + ' ' + match['a_text'], embed_type, model_dir)
                 else:
-                    content = embed_sentences(match['q_title'])
+                    content = embed_sentences(match['q_title'], embed_type, model_dir)
                 # not performing this step seems to cause catastrophic
                 # issues in the np.asarray(embeddings) step further down
                 # suspect something is suboptimal about converting whatever
@@ -59,7 +69,7 @@ def run_analysis(top_k, search_file_name, add_all, embed_type):
                 all_matches.append((query, match))
             data_as_array.append((query, obj))
         print('ALL LOADED')
-        queries_embedding = np.asarray(embed_sentences(queries, embed_type))
+        queries_embedding = np.asarray(embed_sentences(queries, embed_type, model_dir))
         print('queries embedded')
         print(len(embeddings))
         embeddings = np.asarray(embeddings).squeeze(1)
@@ -83,7 +93,10 @@ def run_analysis(top_k, search_file_name, add_all, embed_type):
             search_matches = []
             print('Actual matches:')
             for idx, m in enumerate(data_as_array[index][1]):
-                print(f"{idx} -- {m['q_id']}:{m['q_title']}")
+                try:
+                    print(f"{idx} -- {m['q_id']}:{m['q_title']}")
+                except:
+                    pass
                 search_matches.append(m['q_id'])
             print(q)
             print('Returned matches:')
@@ -93,8 +106,10 @@ def run_analysis(top_k, search_file_name, add_all, embed_type):
                 # print(all_matches[k][1]['q_title'])
                 # print(all_matches[k][1]['q_id'])
                 if all_matches[k][1]['q_id'] in search_matches:
-                    print(f"{idx} -- {all_matches[k][1]['q_id']}:{all_matches[k][1]['q_title']}")
-
+                    try:
+                        print(f"{idx} -- {all_matches[k][1]['q_id']}:{all_matches[k][1]['q_title']}")
+                    except:
+                        pass
                     num_matches_to_text += 1
                     rank = search_matches.index(all_matches[k][1]['q_id'])
                     '''
@@ -113,11 +128,12 @@ def run_analysis(top_k, search_file_name, add_all, embed_type):
                     recipRanks.append(reciprocal)
                     ranks.append(rank+1)
             q_mrr = np.mean(np.asarray(ranks))
-            print('y_true: ', y_true, ', y_pred: ', y_pred)
-            q_ndcg = ndcg_score(np.asarray([y_true]), np.asarray([y_pred]))
             ranks_avgs.append(q_mrr)
-            print(f'Question MRR: {q_mrr}, NDCG: {q_ndcg}')
-            all_ndcg.append(q_ndcg)
+            if len(y_true) > 0 and len(y_pred) > 0:
+                print('y_true: ', y_true, ', y_pred: ', y_pred)
+                q_ndcg = ndcg_score(np.asarray([y_true]), np.asarray([y_pred]))
+                print(f'Question MRR: {q_mrr}, NDCG: {q_ndcg}')
+                all_ndcg.append(q_ndcg)
 
         print('num of matches to text:' + str(num_matches_to_text))
         print('num queries:' + str(num_queries))
@@ -142,6 +158,8 @@ if __name__ == '__main__':
                         help='True/False')
     parser.add_argument('--embed_type', type=str, default='bert',
                         help='USE or bert or roberta')
+    parser.add_argument('--model_dir', type=str, default=None,
+                        help='Model directory')
 
     args = parser.parse_args()
 
@@ -160,7 +178,5 @@ if __name__ == '__main__':
     else:
         add_all = False
 
-    assert args.embed_type == 'USE' or args.embed_type == 'bert' or args.embed_type == "roberta"
-
-    run_analysis(args.top_k, args.search_file_results, add_all, args.embed_type)
+    run_analysis(args.top_k, args.search_file_results, add_all, args.embed_type, args.model_dir)
 
