@@ -24,6 +24,40 @@ class USEModel(object):
     def encode(self, sentences, batch_size=None, show_progress_bar=None, convert_to_numpy=True):
         return self.model(sentences)
 
+
+def evaluate_classification(embed_type, model_path, dataSetPath, true_label):
+    model = get_model(embed_type, model_path)
+    with open(dataSetPath, 'r', encoding="UTF-8") as data_file:
+        data = json.load(data_file)
+        df = pd.DataFrame(data)
+
+        trues = []
+        falses = []
+        cos_distance = []
+
+        for jsonObject in data:
+            srcEmbed = embed_sentences([jsonObject['text_1']], model, embed_type)
+            dstEmbed = embed_sentences([jsonObject['text_2']], model, embed_type)
+            from scipy.spatial import distance
+            linkedDist = distance.cosine(srcEmbed, dstEmbed)
+            cos_distance.append(linkedDist)
+
+            if jsonObject['class'] == true_label:
+                trues.append(linkedDist)
+            else:
+                falses.append(linkedDist)
+
+        out_df = df.copy()
+        out_df['embedding_cosine_distance'] = cos_distance
+        out_df.to_csv(embed_type + '_test_with_embeddings_distances.csv')
+        print(np.mean(np.asarray(trues)))
+        print(np.mean(np.asarray(falses)))
+
+        print('Total number of samples = ', len(data))
+        print(scipy.stats.ttest_ind(trues, falses))
+
+
+
 def evaluate_regression(f, docPath, embedType, model_dir=None):
     df = pd.DataFrame(json.load(f))
     (index, docList, docsToClasses, embeddedDocText, classesToDocs, docToEmbedding) = util.build_index_docs(docPath, embedType, generate_dict=True, model_dir=model_dir)
