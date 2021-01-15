@@ -35,7 +35,7 @@ def evaluate_regression(f, docPath, embedType, model_dir=None):
     embed2 = df['embedding2'].values
     distance = []
     for idx in range(len(embed1)):
-        distance.append(scipy.spatial.distance.cosine(embed1[idx] - embed2[idx]))
+        distance.append(scipy.spatial.distance.cosine(embed1[idx], embed2[idx]))
 
     df['embedding_cosine_distance'] = distance
     df.to_csv(embedType + '_test_with_embeddings_distances.csv')
