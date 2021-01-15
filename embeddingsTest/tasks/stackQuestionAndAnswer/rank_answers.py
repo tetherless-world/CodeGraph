@@ -15,7 +15,7 @@ from utils.util import get_model
 # also calls all necessary analysis functions
 import os
 from pathlib import Path
-
+from scipy.spatial import distance
 
 sample = False
 def fetchEmbeddingDict(fileName, model, embed_dir):
@@ -271,6 +271,11 @@ def calculateMRR(jsonCollect, model, embed_type, folder_name):
     recipRanks = []
     if sample:
         jsonCollect = jsonCollect[:100]
+    euclid_distances_to_best_answer = []
+    euclid_distances_to_worst_answer = []
+    cosine_distances_to_best_answer = []
+    cosine_distances_to_worst_answer = []
+
     for idx, jsonObject in enumerate(jsonCollect):
         if idx % 1000 == 0:
             print(f'calculateMRR: finished {idx} out of {len(jsonCollect)}')
@@ -293,7 +298,22 @@ def calculateMRR(jsonCollect, model, embed_type, folder_name):
         distanceOrder = []
         valid = True
         answerCollection = jsonObject['answers']
-        for answer in answerCollection:
+        min_vote = float('inf')
+        max_vote = float('-inf')
+        min_vote_idx = -1
+        max_vote_idx = -1
+
+        for idx, answer in enumerate(answerCollection):
+            answerVotes = int(answer['a_votes']) if answer['a_votes'] != '' else None
+            if answerVotes:
+                if answerVotes < min_vote:
+                    min_vote = answerVotes
+                    min_vote_idx = idx
+                if answerVotes > max_vote:
+                    max_vote = answerVotes
+                    max_vote_idx = idx
+        print(f'Min vote {min_vote} has index {min_vote_idx}, Max vote {max_vote} has index {max_vote_idx}')
+        for idx, answer in enumerate(answerCollection):
             answerText = answer['a_text']
             # answerID = answer['id']
             answerVotes = int(answer['a_votes']) if answer['a_votes'] != '' else 0
@@ -304,8 +324,17 @@ def calculateMRR(jsonCollect, model, embed_type, folder_name):
                 answerArray = embed_sentences(answerText, model, embed_type)
                 embed_dic[answerText] = answerArray
             dist = np.linalg.norm(answerArray-embeddingQuestionArray)**2
+            cosine_dist = distance.cosine(answerArray, embeddingQuestionArray)
             voteOrder.append((answerVotes, answerText))
             distanceOrder.append((dist, answerText))
+            if idx == min_vote_idx:
+                euclid_distances_to_worst_answer.append(dist)
+                cosine_distances_to_worst_answer.append(cosine_dist)
+
+            elif idx == max_vote_idx:
+                euclid_distances_to_best_answer.append(dist)
+                cosine_distances_to_best_answer.append(cosine_dist)
+
         if not voteOrder:
             continue
         voteOrder.sort()
@@ -328,6 +357,10 @@ def calculateMRR(jsonCollect, model, embed_type, folder_name):
     meanRecipRank = sum(recipRanks)/len(recipRanks)
     print('MRR: standard error of the mean ', stat.sem(recipRanks))
     print("Mean reciprocal rank is:", meanRecipRank)
+    print(f"Average distance from question to best answer (highest votes): euclid = {statistics.mean(euclid_distances_to_best_answer)}, "
+          f"cosine = {statistics.mean(cosine_distances_to_best_answer)}")
+    print(f"Average distance from question to worst answer (lowest votes):euclid = {statistics.mean(euclid_distances_to_worst_answer)}, "
+          f"cosine = {statistics.mean(cosine_distances_to_worst_answer)}")
 
 if __name__ == "__main__":
     # stackQandAPath = input("Please enter path to stackoverflow question and answer data")
