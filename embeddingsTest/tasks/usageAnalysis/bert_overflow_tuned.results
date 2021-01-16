@@ -1,0 +1,7 @@
+Loading model from:  /data/BERTOverflow-tuned/usage/data/BERTOverflow/-2021-01-12_15-28-39/0_Transformer/
+Coefficients: 
+ [0.00106954]
+Mean squared error: 0.02
+Coefficient of determination: 0.24
+correlation:0.4889861387261708
+p-value:0.0

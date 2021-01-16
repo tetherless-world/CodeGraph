@@ -1,0 +1,7 @@
+Loading model from:  /data/BERTOverflow
+Coefficients: 
+ [0.00061903]
+Mean squared error: 0.02
+Coefficient of determination: 0.14
+correlation:0.3748100326732745
+p-value:1.2400359393186603e-229
