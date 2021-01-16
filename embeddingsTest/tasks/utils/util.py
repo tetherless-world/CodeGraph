@@ -47,7 +47,7 @@ def evaluate_classification(embed_type, model_path, dataSetPath, text1, text2, t
             else:
                 falses.append(linkedDist)
 
-        out_df = df.copy()
+        out_df = df[[true_label, true_value]]
         out_df['embedding_cosine_distance'] = cos_distance
         out_df.to_csv(embed_type + '_test_with_embeddings_distances.csv')
         print(np.mean(np.asarray(trues)))
