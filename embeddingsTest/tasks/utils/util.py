@@ -49,7 +49,7 @@ def evaluate_classification(embed_type, model_path, dataSetPath, text1, text2, t
                 labels.append(1)
             else:
                 falses.append(linkedDist)
-                labels.append(1)
+                labels.append(0)
 
         out_df = pd.DataFrame(labels, columns =['label'])
 
