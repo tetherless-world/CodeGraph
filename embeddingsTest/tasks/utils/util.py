@@ -35,6 +35,8 @@ def evaluate_classification(embed_type, model_path, dataSetPath, text1, text2, t
         falses = []
         cos_distance = []
 
+        labels = []
+
         for jsonObject in data:
             srcEmbed = embed_sentences([jsonObject[text1]], model, embed_type)
             dstEmbed = embed_sentences([jsonObject[text2]], model, embed_type)
@@ -44,10 +46,13 @@ def evaluate_classification(embed_type, model_path, dataSetPath, text1, text2, t
 
             if jsonObject[true_label] == true_value:
                 trues.append(linkedDist)
+                labels.append(1)
             else:
                 falses.append(linkedDist)
+                labels.append(1)
 
-        out_df = df[[true_label, true_value]]
+        out_df = pd.DataFrame(labels, columns =['label'])
+
         out_df['embedding_cosine_distance'] = cos_distance
         out_df.to_csv(embed_type + '_test_with_embeddings_distances.csv')
         print(np.mean(np.asarray(trues)))
