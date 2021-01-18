@@ -1,67 +1,16 @@
-#!/bin/sh
+python test_class_posts.py /data/blanca/class_posts_test_data.json USE /dev/null > USE.results
 
-#wget -nc https://ia801500.us.archive.org/24/items/$1/stackoverflow_questions_per_class_func_3M_filtered_new/$1/stackoverflow_questions_per_class_func_3M_filtered_new.json
-#wget -nc https://archive.org/download/classes2superclass/classes2superclass.out
+python test_class_posts.py /data/blanca/class_posts_test_data.json bert /dev/null > bert.results
 
-python embedDocstringsEvaluateStackOverFlow-relevantBuckets.py $1/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 T 4
-#The Stackoverflow post is embedded with One masking: The particular class associated with the stackoverflow post is 
-#masked and then embedded and evaluated for precision of predicting the closest docstrings(after embedding), 
-#for the model USE by Sliding window technique, each bucket/bag of the doclabel assigned to a fixed number of sentences = bucket/bag size (4), 
-#with fixed nearest neighbors, since more than one vector created from the same doclabel, results can be misleading ,
-#so instead more neighbors are calculated and the first 10 nearest unique neighbors are picked
+python test_class_posts.py /data/blanca/class_posts_test_data.json xlm /dev/null > xlm.results
 
-python allEmbedDocstringsEvaluateStackOverFlowAllMask.py $1/stackoverflow_questions_per_class_func_3M_filtered_new.json 10
-#when all the relevant classes associated with the stackoverflow post (Across all rows) are masked and then embedded, 
-#and evaluated for precision of predicting the closest docstrings(after embedding), for the models-Roberta and Bert (base)
+python test_class_posts.py /data/blanca/class_posts_test_data.json distilbert_para /dev/null > distilbert.results
 
-python embedDocstringsEvaluateStackOverFlowAllMask-lengthanalysis-newJson.py $1/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 
-#when all the relevant classes associated with the stackoverflow post (Across all rows) are masked and then embedded, and evaluated for
-#precision of predicting the closest docstrings(after embedding), for the model USE
+python test_class_posts.py /data/blanca/class_posts_test_data.json msmacro /dev/null > msmarco.results
 
-python allModelsembedDocstringsEvaluateStackOverFlow.py $1/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 T
+python test_class_posts.py /data/blanca/class_posts_test_data.json finetuned /data/BERTOverflow-tuned/class_posts/dccstor/m3/blanca/BERTOverflow/-2021-01-11_12-14-54/0_Transformer/ > tuned.results
 
-#No masking:The Stackoverflow post is embedded as-is. One masking: The particular class associated with the stackoverflow post is masked and then embedded and evaluated for precision of predicting the closest docstrings(after embedding), for the models: 'bert-base-nli-stsb-mean-tokens', 'bert-large-nli-stsb-mean-tokens','roberta-base-nli-stsb-mean-tokens','roberta-large-nli-stsb-mean-tokens', 'distilbert-base-nli-stsb-mean-tokens', corresponding output in stackNewJson_NoOrOneMask_'+model_name+'_.txt ##provide input file path of the above json for example ../../data/codeGraph/$1/stackoverflow_questions_per_class_func_3M_filtered_new.json
-python embedDocstringsEvaluateStackOverFlow-lengthanalysis-newJson.py $1/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 T
- #The Stackoverflow One masked: The particular class associated with the stackoverflow post is masked and then embedded and evaluated for 
- #precision of predicting the closest docstrings(after embedding), for the model USE 
- 
-python embedDocstringsEvaluateStackOverFlow-relevantBuckets.py $1/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 F 4
-#The Stackoverflow post is embedded with no  masking: The  stackoverflow post is embedded and evaluated for precision of predicting the closest 
-#docstrings(after embedding), 
-#for the model USE by Sliding window technique, each bucket/bag of the doclabel assigned to a fixed number of sentences = bucket/bag size (4), 
-#with fixed nearest neighbors, since more than one vector created from the same doclabel, results can be misleading ,
-#so instead more neighbors are calculated and the first 10 nearest unique neighbors are picked
-
-python embedDocstringsEvaluateStackOverFlow-relevantBuckets.py $1/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 T 11
-#The Stackoverflow post is embedded with One masking: The particular class associated with the stackoverflow post is 
-#masked and then embedded and evaluated for precision of predicting the closest docstrings(after embedding), 
-#for the model USE by Sliding window technique, each bucket/bag of the doclabel assigned to a fixed number of sentences = bucket/bag size (11), 
-#with fixed nearest neighbors, since more than one vector created from the same doclabel, results can be misleading ,
-#so instead more neighbors are calculated and the first 10 nearest unique neighbors are picked
-
-python embedDocstringsEvaluateStackOverFlow-relevantBuckets.py $1/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 F 11
-#The Stackoverflow post is embedded with no  masking: The  stackoverflow post is embedded and evaluated for precision of predicting the closest 
-#docstrings(after embedding), 
-#for the model USE by Sliding window technique, each bucket/bag of the doclabel assigned to a fixed number of sentences = bucket/bag size (11), 
-#with fixed nearest neighbors, since more than one vector created from the same doclabel, results can be misleading ,
-#so instead more neighbors are calculated and the first 10 nearest unique neighbors are picked
-
-python embedDocstringsEvaluateStackOverFlow-lengthanalysis-newJson.py $1/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 F
-# The Stackoverflow post is embedded as-is and evaluated for precision of predicting the closest docstrings(after embedding), for the model USE 
-
-python allModelsembedDocstringsEvaluateStackOverFlow.py $1/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 F
-
- #The Stackoverflow is embedded and evaluated for 
- #precision of predicting the closest docstrings(after embedding), for the model USE 
- 
-
-python useMRR.py $1/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 T
-##MRR computation with hits and mean for the model USE
-
-
-
-python allModelsMRR.py $1/stackoverflow_questions_per_class_func_3M_filtered_new.json 10 T
-#MRR computation with hits and mean for the models: 'bert-base-nli-stsb-mean-tokens','roberta-base-nli-stsb-mean-tokens'
+python test_class_posts.py /data/blanca/class_posts_test_data.json bertoverflow /data/BERTOverflow > bertoverflow.results
 
 
 

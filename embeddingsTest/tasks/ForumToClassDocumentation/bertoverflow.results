@@ -1,0 +1,5 @@
+Loading model from:  /data/BERTOverflow
+0.35544759427507716
+0.40433225198740413
+Total number of samples =  3652
+Ttest_indResult(statistic=-10.416739934040537, pvalue=4.653256013983164e-25)

@@ -24,6 +24,45 @@ class USEModel(object):
     def encode(self, sentences, batch_size=None, show_progress_bar=None, convert_to_numpy=True):
         return self.model(sentences)
 
+
+def evaluate_classification(embed_type, model_path, dataSetPath, text1, text2, true_label, true_value):
+    model = get_model(embed_type, model_path)
+    with open(dataSetPath, 'r', encoding="UTF-8") as data_file:
+        data = json.load(data_file)
+        df = pd.DataFrame(data)
+
+        trues = []
+        falses = []
+        cos_distance = []
+
+        labels = []
+
+        for jsonObject in data:
+            srcEmbed = embed_sentences([jsonObject[text1]], model, embed_type)
+            dstEmbed = embed_sentences([jsonObject[text2]], model, embed_type)
+            from scipy.spatial import distance
+            linkedDist = distance.cosine(srcEmbed, dstEmbed)
+            cos_distance.append(linkedDist)
+
+            if jsonObject[true_label] == true_value:
+                trues.append(linkedDist)
+                labels.append(1)
+            else:
+                falses.append(linkedDist)
+                labels.append(0)
+
+        out_df = pd.DataFrame(labels, columns =['label'])
+
+        out_df['embedding_cosine_distance'] = cos_distance
+        out_df.to_csv(embed_type + '_test_with_embeddings_distances.csv')
+        print(np.mean(np.asarray(trues)))
+        print(np.mean(np.asarray(falses)))
+
+        print('Total number of samples = ', len(data))
+        print(scipy.stats.ttest_ind(trues, falses))
+
+
+
 def evaluate_regression(f, docPath, embedType, model_dir=None):
     df = pd.DataFrame(json.load(f))
     (index, docList, docsToClasses, embeddedDocText, classesToDocs, docToEmbedding) = util.build_index_docs(docPath, embedType, generate_dict=True, model_dir=model_dir)
@@ -36,9 +75,6 @@ def evaluate_regression(f, docPath, embedType, model_dir=None):
     distance = []
     for idx in range(len(embed1)):
         distance.append(scipy.spatial.distance.cosine(embed1[idx], embed2[idx]))
-
-    df['embedding_cosine_distance'] = distance
-    df.to_csv(embedType + '_test_with_embeddings_distances.csv')
 
     model = linear_model.LinearRegression()
     new_df = df[['distance']]
@@ -53,6 +89,10 @@ def evaluate_regression(f, docPath, embedType, model_dir=None):
     corr, p_value = scipy.stats.pearsonr(df['distance'].values, distance)
     print('correlation:' + str(corr))
     print('p-value:' + str(p_value))
+    out_df = df[['class1','class2','distance']]
+    out_df['embedding_cosine_distance'] = distance
+    out_df.to_csv(embedType + '_test_with_embeddings_distances.csv')
+
 
 
 def get_model(embed_type, local_model_path='/data/BERTOverflow'):
