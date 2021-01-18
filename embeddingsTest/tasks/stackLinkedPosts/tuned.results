@@ -1,0 +1,5 @@
+Loading model from:  /data/BERTOverflow-tuned/linked_posts/dccstor/m3/blanca/BERTOverflow/-2021-01-14_10-23-55/0_Transformer/
+0.08536520436390863
+0.5248386943843286
+Total number of samples =  5854
+Ttest_indResult(statistic=-180.4178017305873, pvalue=0.0)
