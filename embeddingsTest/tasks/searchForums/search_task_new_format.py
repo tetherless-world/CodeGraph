@@ -19,10 +19,10 @@ from sklearn.metrics import ndcg_score
 
 def embed_sentences(sentences, embed_type, model_dir=None):
     model = get_model(embed_type, model_dir)
-    if embed_type == 'USE':
-        sentence_embeddings = model.encode([sentences])
-    else:
-        sentence_embeddings = model.encode(sentences)
+    print(type(sentences))
+    if embed_type == 'USE' and type(sentences) == str:
+        sentences = [sentences]
+    sentence_embeddings = model.encode(sentences)
     return sentence_embeddings
 
 
@@ -37,7 +37,7 @@ def run_analysis(top_k, search_file_name, add_all, embed_type, model_dir):
         qids = {}
         query_2_matches = {}
         data_as_array = []
-        for obj in data[:1000]:
+        for obj in data:
             query = obj['query']
             if query not in query_2_matches:
                 query_2_matches[query] = []
