@@ -85,6 +85,7 @@ def run_analysis(top_k, search_file_name, add_all, embed_type, model_dir):
         num_matches_to_text = 0
         all_ndcg = []
         ranks_avgs = []
+        overlap_avgs = []
         recipRanks = []
         for index, q in enumerate(query_neighbors):
             ranks = []
@@ -102,6 +103,7 @@ def run_analysis(top_k, search_file_name, add_all, embed_type, model_dir):
             print('Returned matches:')
             y_true = []
             y_pred = []
+            num_overlap = 0
             for idx, k in enumerate(q):
                 # print(all_matches[k][1]['q_title'])
                 # print(all_matches[k][1]['q_id'])
@@ -110,6 +112,7 @@ def run_analysis(top_k, search_file_name, add_all, embed_type, model_dir):
                         print(f"{idx} -- {all_matches[k][1]['q_id']}:{all_matches[k][1]['q_title']}")
                     except:
                         pass
+                    num_overlap += 1
                     num_matches_to_text += 1
                     rank = search_matches.index(all_matches[k][1]['q_id'])
                     '''
@@ -129,6 +132,10 @@ def run_analysis(top_k, search_file_name, add_all, embed_type, model_dir):
                     ranks.append(rank+1)
             q_mrr = np.mean(np.asarray(ranks))
             ranks_avgs.append(q_mrr)
+            q_overlap = num_overlap / top_k
+            overlap_avgs.append(q_overlap)
+            if q_overlap < 0.1:
+                print('Very low overlap: ', q_overlap)
             if len(y_true) > 0 and len(y_pred) > 0:
                 print('y_true: ', y_true, ', y_pred: ', y_pred)
                 q_ndcg = ndcg_score(np.asarray([y_true]), np.asarray([y_pred]))
