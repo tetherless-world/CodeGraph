@@ -19,7 +19,6 @@ from sklearn.metrics import ndcg_score
 
 def embed_sentences(sentences, embed_type, model_dir=None):
     model = get_model(embed_type, model_dir)
-    print(type(sentences))
     if embed_type == 'USE' and type(sentences) == str:
         sentences = [sentences]
     sentence_embeddings = model.encode(sentences)
@@ -91,10 +90,11 @@ def run_analysis(top_k, search_file_name, add_all, embed_type, model_dir):
             ranks = []
             print(data_as_array[index][0])
             search_matches = []
-            print('Actual matches:')
-            for idx, m in enumerate(data_as_array[index][1]):
+            print('Actual matches (top-100):')
+            for idx, m in enumerate(data_as_array[index][1] ):
                 try:
-                    print(f"{idx} -- {m['q_id']}:{m['q_title']}")
+                    if idx < 100:
+                        print(f"{idx} -- {m['q_id']}:{m['q_title']}")
                 except:
                     pass
                 search_matches.append(m['q_id'])
@@ -138,8 +138,7 @@ def run_analysis(top_k, search_file_name, add_all, embed_type, model_dir):
         print('num of matches to text:' + str(num_matches_to_text))
         print('num queries:' + str(num_queries))
         print('average overlap with search:' + str(num_matches_to_text / (num_queries * top_k)))
-        print('mean search rank')
-        print(np.mean(np.asarray(ranks_avgs)))
+        print('mean search rank:', np.mean(np.asarray(ranks_avgs)))
         meanRecipRank = sum(recipRanks) / len(recipRanks)
         print('MRR: standard error of the mean ', stat.sem(recipRanks))
         print("Mean reciprocal rank is:", meanRecipRank)
