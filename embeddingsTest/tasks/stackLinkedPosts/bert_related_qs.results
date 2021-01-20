@@ -1,0 +1,38 @@
+nohup: ignoring input
+2021-01-19 21:45:42.121234: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcudart.so.10.1'; dlerror: libcudart.so.10.1: cannot open shared object file: No such file or directory
+2021-01-19 21:45:42.121283: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+/home/ksrinivs/anaconda3/envs/nltasks/lib/python3.7/site-packages/torch/cuda/__init__.py:52: UserWarning: CUDA initialization: Found no NVIDIA driver on your system. Please check that you have an NVIDIA GPU and installed a driver from http://www.nvidia.com/Download/index.aspx (Triggered internally at  /pytorch/c10/cuda/CUDAFunctions.cpp:100.)
+  return torch._C._cuda_getDeviceCount() > 0
+<bound method DataFrame.count of            id  ...         class
+29933  167089  ...    "direct"\n
+67024  244719  ...  "indirect"\n
+8451   322910  ...  "isolated"\n
+70370  249425  ...  "indirect"\n
+68722  251642  ...  "indirect"\n
+...       ...  ...           ...
+15815  234530  ...  "indirect"\n
+59827  336774  ...  "isolated"\n
+79183  259086  ...  "indirect"\n
+87017  172375  ...    "direct"\n
+50918  343185  ...  "isolated"\n
+
+[5211 rows x 24 columns]>
+skipped:0
+direct
+0.48392225398264194
+1314
+indirect
+0.5296209071655045
+1313
+isolated
+0.5902483187860983
+1301
+duplicate
+0.5864370306550463
+1283
+direct-isolated
+Ttest_indResult(statistic=-11.791857943880562, pvalue=2.6338714553181394e-31)
+dup - isolated
+Ttest_indResult(statistic=-0.35501685915924736, pvalue=0.7226059567787522)
+indirect - isolated
+Ttest_indResult(statistic=-6.602591808384403, pvalue=4.876433991458957e-11)
