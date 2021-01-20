@@ -20,7 +20,7 @@ def evaluate_classification(embed_type, model_path, dataSetPath, otherDatasetPat
 
     with open(otherDatasetPath, 'r', encoding="UTF-8") as other:
         df = pd.read_csv(other)
-        df = df.sample(frac=0.05, replace=False, random_state=1)
+#        df = df.sample(frac=0.05, replace=False, random_state=1)
         
         print(df.count)
         for _, row in df.iterrows():
