@@ -1,0 +1,38 @@
+2021-01-19 22:26:19.295385: I tensorflow/stream_executor/platform/default/dso_loader.cc:48] Successfully opened dynamic library libcudart.so.10.1
+WARNING:root:You try to use a model that was created with version 0.3.4, however, your version is 0.3.3. This might cause unexpected behavior or errors. In that case, try to update to the latest version.
+
+
+
+<bound method DataFrame.count of             id  ...          class
+0       242558  ...   "indirect"\n
+1       162086  ...     "direct"\n
+2       161516  ...     "direct"\n
+3       160972  ...     "direct"\n
+4       253004  ...   "indirect"\n
+...        ...  ...            ...
+104207  154542  ...     "direct"\n
+104208  152625  ...     "direct"\n
+104209  329158  ...   "isolated"\n
+104210  322347  ...   "isolated"\n
+104211   65652  ...  "duplicate"\n
+
+[104212 rows x 24 columns]>
+skipped:0
+indirect
+0.5871579099201765
+26053
+direct
+0.5435241120440424
+26053
+duplicate
+0.5874601165154034
+26053
+isolated
+0.681401392824941
+26053
+direct-isolated
+Ttest_indResult(statistic=-85.19264997624953, pvalue=0.0)
+dup - isolated
+Ttest_indResult(statistic=-45.04853280608212, pvalue=0.0)
+indirect - isolated
+Ttest_indResult(statistic=-59.58395525588599, pvalue=0.0)

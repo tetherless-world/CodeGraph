@@ -1,0 +1,38 @@
+2021-01-19 21:41:57.557870: I tensorflow/stream_executor/platform/default/dso_loader.cc:48] Successfully opened dynamic library libcudart.so.10.1
+Some weights of the model checkpoint at /home/ibrahim/BERTOverflow_finedtuned_linked_posts were not used when initializing BertModel: ['embeddings.position_ids']
+- This IS expected if you are initializing BertModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPretraining model).
+- This IS NOT expected if you are initializing BertModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Loading model from:  /home/ibrahim/BERTOverflow_finedtuned_linked_posts
+<bound method DataFrame.count of             id  ...          class
+0       242558  ...   "indirect"\n
+1       162086  ...     "direct"\n
+2       161516  ...     "direct"\n
+3       160972  ...     "direct"\n
+4       253004  ...   "indirect"\n
+...        ...  ...            ...
+104207  154542  ...     "direct"\n
+104208  152625  ...     "direct"\n
+104209  329158  ...   "isolated"\n
+104210  322347  ...   "isolated"\n
+104211   65652  ...  "duplicate"\n
+
+[104212 rows x 24 columns]>
+skipped:0
+indirect
+0.313079698999976
+26053
+direct
+0.27030264267144777
+26053
+duplicate
+0.3839351063506212
+26053
+isolated
+0.49093009734771004
+26053
+direct-isolated
+Ttest_indResult(statistic=-136.25043631630118, pvalue=0.0)
+dup - isolated
+Ttest_indResult(statistic=-55.96201177745424, pvalue=0.0)
+indirect - isolated
+Ttest_indResult(statistic=-109.4755310704492, pvalue=0.0)
