@@ -19,10 +19,9 @@ from sklearn.metrics import ndcg_score
 
 def embed_sentences(sentences, embed_type, model_dir=None):
     model = get_model(embed_type, model_dir)
-    if embed_type == 'USE':
-        sentence_embeddings = model.encode([sentences])
-    else:
-        sentence_embeddings = model.encode(sentences)
+    if embed_type == 'USE' and type(sentences) == str:
+        sentences = [sentences]
+    sentence_embeddings = model.encode(sentences)
     return sentence_embeddings
 
 
@@ -37,7 +36,7 @@ def run_analysis(top_k, search_file_name, add_all, embed_type, model_dir):
         qids = {}
         query_2_matches = {}
         data_as_array = []
-        for obj in data[:1000]:
+        for obj in data:
             query = obj['query']
             if query not in query_2_matches:
                 query_2_matches[query] = []
@@ -86,15 +85,17 @@ def run_analysis(top_k, search_file_name, add_all, embed_type, model_dir):
         num_matches_to_text = 0
         all_ndcg = []
         ranks_avgs = []
+        overlap_avgs = []
         recipRanks = []
         for index, q in enumerate(query_neighbors):
             ranks = []
             print(data_as_array[index][0])
             search_matches = []
-            print('Actual matches:')
-            for idx, m in enumerate(data_as_array[index][1]):
+            print('Actual matches (top-100):')
+            for idx, m in enumerate(data_as_array[index][1] ):
                 try:
-                    print(f"{idx} -- {m['q_id']}:{m['q_title']}")
+                    if idx < 100:
+                        print(f"{idx} -- {m['q_id']}:{m['q_title']}")
                 except:
                     pass
                 search_matches.append(m['q_id'])
@@ -102,6 +103,7 @@ def run_analysis(top_k, search_file_name, add_all, embed_type, model_dir):
             print('Returned matches:')
             y_true = []
             y_pred = []
+            num_overlap = 0
             for idx, k in enumerate(q):
                 # print(all_matches[k][1]['q_title'])
                 # print(all_matches[k][1]['q_id'])
@@ -110,6 +112,7 @@ def run_analysis(top_k, search_file_name, add_all, embed_type, model_dir):
                         print(f"{idx} -- {all_matches[k][1]['q_id']}:{all_matches[k][1]['q_title']}")
                     except:
                         pass
+                    num_overlap += 1
                     num_matches_to_text += 1
                     rank = search_matches.index(all_matches[k][1]['q_id'])
                     '''
@@ -129,6 +132,10 @@ def run_analysis(top_k, search_file_name, add_all, embed_type, model_dir):
                     ranks.append(rank+1)
             q_mrr = np.mean(np.asarray(ranks))
             ranks_avgs.append(q_mrr)
+            q_overlap = num_overlap / top_k
+            overlap_avgs.append(q_overlap)
+            if q_overlap < 0.1:
+                print('Very low overlap: ', q_overlap)
             if len(y_true) > 0 and len(y_pred) > 0:
                 print('y_true: ', y_true, ', y_pred: ', y_pred)
                 q_ndcg = ndcg_score(np.asarray([y_true]), np.asarray([y_pred]))
@@ -138,8 +145,7 @@ def run_analysis(top_k, search_file_name, add_all, embed_type, model_dir):
         print('num of matches to text:' + str(num_matches_to_text))
         print('num queries:' + str(num_queries))
         print('average overlap with search:' + str(num_matches_to_text / (num_queries * top_k)))
-        print('mean search rank')
-        print(np.mean(np.asarray(ranks_avgs)))
+        print('mean search rank:', np.mean(np.asarray(ranks_avgs)))
         meanRecipRank = sum(recipRanks) / len(recipRanks)
         print('MRR: standard error of the mean ', stat.sem(recipRanks))
         print("Mean reciprocal rank is:", meanRecipRank)
