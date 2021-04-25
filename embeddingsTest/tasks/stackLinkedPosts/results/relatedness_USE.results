@@ -1,0 +1,59 @@
+nohup: ignoring input
+2021-01-19 21:35:07.012967: I tensorflow/stream_executor/platform/default/dso_loader.cc:48] Successfully opened dynamic library libcudart.so.10.1
+INFO:absl:Using /tmp/tfhub_modules to cache modules.
+2021-01-19 21:35:08.847388: I tensorflow/stream_executor/platform/default/dso_loader.cc:48] Successfully opened dynamic library libcuda.so.1
+2021-01-19 21:35:09.973379: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1716] Found device 0 with properties: 
+pciBusID: 0000:af:00.0 name: Tesla P100-PCIE-16GB computeCapability: 6.0
+coreClock: 1.3285GHz coreCount: 56 deviceMemorySize: 15.90GiB deviceMemoryBandwidth: 681.88GiB/s
+2021-01-19 21:35:09.974267: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1716] Found device 1 with properties: 
+pciBusID: 0000:d8:00.0 name: Tesla P100-PCIE-16GB computeCapability: 6.0
+coreClock: 1.3285GHz coreCount: 56 deviceMemorySize: 15.90GiB deviceMemoryBandwidth: 681.88GiB/s
+2021-01-19 21:35:09.974295: I tensorflow/stream_executor/platform/default/dso_loader.cc:48] Successfully opened dynamic library libcudart.so.10.1
+2021-01-19 21:35:09.976020: I tensorflow/stream_executor/platform/default/dso_loader.cc:48] Successfully opened dynamic library libcublas.so.10
+2021-01-19 21:35:09.977632: I tensorflow/stream_executor/platform/default/dso_loader.cc:48] Successfully opened dynamic library libcufft.so.10
+2021-01-19 21:35:09.977907: I tensorflow/stream_executor/platform/default/dso_loader.cc:48] Successfully opened dynamic library libcurand.so.10
+2021-01-19 21:35:09.979622: I tensorflow/stream_executor/platform/default/dso_loader.cc:48] Successfully opened dynamic library libcusolver.so.10
+2021-01-19 21:35:09.980512: I tensorflow/stream_executor/platform/default/dso_loader.cc:48] Successfully opened dynamic library libcusparse.so.10
+2021-01-19 21:35:09.980610: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcudnn.so.7'; dlerror: libcudnn.so.7: cannot open shared object file: No such file or directory
+2021-01-19 21:35:09.980619: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1753] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+2021-01-19 21:35:09.981438: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-01-19 21:35:10.004574: I tensorflow/core/platform/profile_utils/cpu_utils.cc:104] CPU Frequency: 2299985000 Hz
+2021-01-19 21:35:10.011871: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55eb3b86f7a0 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2021-01-19 21:35:10.011915: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2021-01-19 21:35:10.015723: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1257] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-01-19 21:35:10.015756: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1263]      
+<bound method DataFrame.count of             id  ...          class
+0       242558  ...   "indirect"\n
+1       162086  ...     "direct"\n
+2       161516  ...     "direct"\n
+3       160972  ...     "direct"\n
+4       253004  ...   "indirect"\n
+...        ...  ...            ...
+104207  154542  ...     "direct"\n
+104208  152625  ...     "direct"\n
+104209  329158  ...   "isolated"\n
+104210  322347  ...   "isolated"\n
+104211   65652  ...  "duplicate"\n
+
+[104212 rows x 24 columns]>
+skipped:0
+indirect
+0.5893081366840732
+26053
+direct
+0.535776227957965
+26053
+duplicate
+0.6211034648451486
+26053
+isolated
+0.7609925273028565
+26053
+direct-isolated
+Ttest_indResult(statistic=-119.089086774495, pvalue=0.0)
+dup - isolated
+Ttest_indResult(statistic=-59.22728077275534, pvalue=0.0)
+indirect - isolated
+Ttest_indResult(statistic=-92.8512305734201, pvalue=0.0)

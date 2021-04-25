@@ -1,0 +1,41 @@
+2021-01-19 22:21:07.028418: I tensorflow/stream_executor/platform/default/dso_loader.cc:48] Successfully opened dynamic library libcudart.so.10.1
+WARNING:root:You try to use a model that was created with version 0.3.7, however, your version is 0.3.3. This might cause unexpected behavior or errors. In that case, try to update to the latest version.
+
+
+
+WARNING:transformers.modeling_utils:Some weights of the model checkpoint at /home/ibrahim/.cache/torch/sentence_transformers/public.ukp.informatik.tu-darmstadt.de_reimers_sentence-transformers_v0.2_msmarco-distilroberta-base-v2.zip/0_Transformer were not used when initializing RobertaModel: ['embeddings.position_ids']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPretraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+<bound method DataFrame.count of             id  ...          class
+0       242558  ...   "indirect"\n
+1       162086  ...     "direct"\n
+2       161516  ...     "direct"\n
+3       160972  ...     "direct"\n
+4       253004  ...   "indirect"\n
+...        ...  ...            ...
+104207  154542  ...     "direct"\n
+104208  152625  ...     "direct"\n
+104209  329158  ...   "isolated"\n
+104210  322347  ...   "isolated"\n
+104211   65652  ...  "duplicate"\n
+
+[104212 rows x 24 columns]>
+skipped:0
+indirect
+0.610545205833086
+26053
+direct
+0.5505714915262332
+26053
+duplicate
+0.6374603362169011
+26053
+isolated
+0.7464410567027636
+26053
+direct-isolated
+Ttest_indResult(statistic=-100.39285008778039, pvalue=0.0)
+dup - isolated
+Ttest_indResult(statistic=-45.27492331466413, pvalue=0.0)
+indirect - isolated
+Ttest_indResult(statistic=-71.64791050278028, pvalue=0.0)

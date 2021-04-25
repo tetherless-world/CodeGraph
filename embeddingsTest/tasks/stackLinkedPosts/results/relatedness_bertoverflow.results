@@ -1,0 +1,35 @@
+2021-01-19 21:36:20.246161: I tensorflow/stream_executor/platform/default/dso_loader.cc:48] Successfully opened dynamic library libcudart.so.10.1
+Loading model from:  /home/ibrahim/BERTOverflow/
+<bound method DataFrame.count of             id  ...          class
+0       242558  ...   "indirect"\n
+1       162086  ...     "direct"\n
+2       161516  ...     "direct"\n
+3       160972  ...     "direct"\n
+4       253004  ...   "indirect"\n
+...        ...  ...            ...
+104207  154542  ...     "direct"\n
+104208  152625  ...     "direct"\n
+104209  329158  ...   "isolated"\n
+104210  322347  ...   "isolated"\n
+104211   65652  ...  "duplicate"\n
+
+[104212 rows x 24 columns]>
+skipped:0
+indirect
+0.3306945852527224
+26053
+direct
+0.30653920953746805
+26053
+duplicate
+0.39442516131528815
+26053
+isolated
+0.37571195638525695
+26053
+direct-isolated
+Ttest_indResult(statistic=-41.84843576058171, pvalue=0.0)
+dup - isolated
+Ttest_indResult(statistic=9.354730691205908, pvalue=8.701894655079353e-21)
+indirect - isolated
+Ttest_indResult(statistic=-26.959184260400686, pvalue=5.522620719164171e-159)
