@@ -18,6 +18,7 @@ import random
 
 evaluation_steps = 1000
 
+max_size = 23000
 #### Just some code to print debug information to stdout
 logging.basicConfig(format='%(asctime)s - %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
@@ -58,6 +59,10 @@ def create_hirerachy_examples(fl, data_dir, model, validate=None, is_test=False)
     train_hierarchy_samples = train_hierarchy_samples[:100000]
     disbn = disbn[:100000]
 
+    if max_size:
+        train_hierarchy_samples = train_hierarchy_samples[:max_size]
+        disbn = disbn[:max_size]
+
     if is_test:
         return train_hierarchy_samples
 
@@ -74,6 +79,7 @@ def create_hirerachy_examples(fl, data_dir, model, validate=None, is_test=False)
     train_dataloader_hierarchy = DataLoader(train_data_hierarchy, shuffle=True, batch_size=batch_size)
     train_loss_hierarchy = losses.CosineSimilarityLoss(model=model)
 
+    print('H: Number of training examples: ', len(train_hierarchy_samples))
 
     global evaluation_steps
     evaluation_steps = math.ceil(len(train_hierarchy_samples) / 0.1)
@@ -99,6 +105,8 @@ def create_linked_posts(fl, data_dir, model, validate=None, is_test=False):
     if is_test:
         return train_linked_posts
 
+    if max_size:
+        train_linked_posts = train_linked_posts[:max_size]
 
     evaluator = None
     if linked_posts_str == validate:
@@ -111,6 +119,7 @@ def create_linked_posts(fl, data_dir, model, validate=None, is_test=False):
     train_dataloader_linked_posts = DataLoader(train_data_linked_posts, shuffle=True, batch_size=batch_size)
     train_loss_linked_posts = losses.ContrastiveLoss(model=model)
 
+    print('L: Number of training examples: ', len(train_linked_posts))
 
     global evaluation_steps
     evaluation_steps = math.ceil(len(train_linked_posts) / 0.1)
@@ -130,6 +139,8 @@ def create_train_class_posts(fl, data_dir, model, validate=None, is_test=False):
 
     if is_test:
         return train_class_posts
+    if max_size:
+        train_class_posts = train_class_posts[:max_size]
 
     evaluator = None
     if class_posts_str == validate:
@@ -142,6 +153,7 @@ def create_train_class_posts(fl, data_dir, model, validate=None, is_test=False):
     train_dataloader_class_posts = DataLoader(train_data_class_posts, shuffle=True, batch_size=batch_size)
     train_loss_class_posts = losses.ContrastiveLoss(model=model)
 
+    print('class_posts: Number of training examples: ', len(train_class_posts))
 
     global evaluation_steps
     evaluation_steps = math.ceil(len(train_class_posts) / 0.1)
@@ -170,6 +182,9 @@ def create_train_usage(fl, data_dir, model, validate=None, is_test=False):
     if is_test:
         return train_usage
 
+    if max_size:
+        train_usage = train_usage[:max_size]
+
     evaluator = None
 
     if usage_str == validate:
@@ -180,6 +195,8 @@ def create_train_usage(fl, data_dir, model, validate=None, is_test=False):
     train_data_usage = SentencesDataset(train_usage, model=model)
     train_dataloader_usage = DataLoader(train_data_usage, shuffle=True, batch_size=batch_size)
     train_loss_usage = losses.CosineSimilarityLoss(model=model)
+
+    print('U: Number of training examples: ', len(train_usage))
 
     global evaluation_steps
     evaluation_steps = math.ceil(len(train_usage) / 0.1)
@@ -218,6 +235,9 @@ def create_posts_ranking(fl, data_dir, model, validate=None, is_test=False):
     if is_test:
         return train_posts_ranking
 
+    if max_size:
+        train_posts_ranking = train_posts_ranking[:max_size]
+
     evaluator = None
     if posts_rank_str == validate:
         train_posts_ranking, dev_posts_ranking = train_test_split(train_posts_ranking, test_size=0.1)
@@ -228,6 +248,8 @@ def create_posts_ranking(fl, data_dir, model, validate=None, is_test=False):
     train_data_posts_ranking = SentencesDataset(train_posts_ranking, model=model)
     train_dataloader_posts_ranking = DataLoader(train_data_posts_ranking, shuffle=True, batch_size=batch_size)
     train_loss_posts_ranking = losses.CosineSimilarityLoss(model=model)
+
+    print('R: Number of training examples: ', len(train_posts_ranking))
 
     global evaluation_steps
     evaluation_steps = math.ceil(len(train_posts_ranking) / 0.1)
@@ -269,6 +291,8 @@ def create_search(collection, query_file, train, data_dir, model, validate=None,
     if is_test:
         return train_search
 
+    if max_size:
+        train_search = train_search[:max_size]
     evaluator = None
 
     if search_str == validate:
@@ -280,6 +304,8 @@ def create_search(collection, query_file, train, data_dir, model, validate=None,
     # We create a DataLoader to load our train samples
     train_dataloader_search = DataLoader(train_search, shuffle=True, batch_size=batch_size)
     train_loss_search = losses.ContrastiveLoss(model=model)
+
+    print('S: Number of training examples: ', len(train_search))
 
     global evaluation_steps
     evaluation_steps = math.ceil(len(train_search) / 0.1)
@@ -299,7 +325,8 @@ if __name__ == '__main__':
                         help='list of tasks to use to train:' + all_str)
     parser.add_argument('--validate', type=str,
                         help='validation task', required=False)
-
+    parser.add_argument('--finetuned', action="store_true",
+                        help='validation task', required=False)
 
     args = parser.parse_args()
 
@@ -307,16 +334,21 @@ if __name__ == '__main__':
 
     model_save_path = args.model_save_path + model_name+'-'+datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
-    # Use BERT for mapping tokens to embeddings
-    word_embedding_model = models.Transformer(model_name)
+    if args.finetuned:
+        word_embedding_model = models.Transformer(model_name, max_seq_length=256)
+        pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension())
+        model = SentenceTransformer(modules=[word_embedding_model, pooling_model])
+    else:
+        # Use BERT for mapping tokens to embeddings
+        word_embedding_model = models.Transformer(model_name)
 
-    # Apply mean pooling to get one fixed sized sentence vector
-    pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension(),
-                               pooling_mode_mean_tokens=True,
-                               pooling_mode_cls_token=False,
-                               pooling_mode_max_tokens=False)
+        # Apply mean pooling to get one fixed sized sentence vector
+        pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension(),
+                                   pooling_mode_mean_tokens=True,
+                                   pooling_mode_cls_token=False,
+                                   pooling_mode_max_tokens=False)
 
-    model = SentenceTransformer(modules=[word_embedding_model, pooling_model])
+        model = SentenceTransformer(modules=[word_embedding_model, pooling_model])
 
     train_objectives = []
 
@@ -342,7 +374,7 @@ if __name__ == '__main__':
 
     # task 3 - determine if a post is related to a class's docstring
     if class_posts_str in args.tasks:
-        train_dataloader_class_posts, train_loss_class_posts, e, w = create_train_class_posts('class_posts_train_data.json', args.data_dir, model, validate=args.validate)
+        train_dataloader_class_posts, train_loss_class_posts, e, w = create_train_class_posts('class_posts_train_data_new', args.data_dir, model, validate=args.validate)
         train_objectives.append((train_dataloader_class_posts, train_loss_class_posts))
 
         if args.validate == class_posts_str:
