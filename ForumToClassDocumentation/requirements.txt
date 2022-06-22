@@ -32,7 +32,7 @@ matplotlib==3.2.1
 msgpack==1.0.0
 nltk==3.5
 numba==0.50.1
-numpy==1.18.5
+numpy==1.22.0
 oauthlib==3.1.0
 opt-einsum==3.2.1
 packaging==20.4
