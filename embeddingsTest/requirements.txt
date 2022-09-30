@@ -22,7 +22,7 @@ h5py==2.10.0
 idna==2.9
 ijson==3.0.4
 importlib-metadata==1.6.0
-joblib==0.16.0
+joblib==1.2.0
 Keras-Preprocessing==1.1.2
 kiwisolver==1.2.0
 lenskit==0.10.1
